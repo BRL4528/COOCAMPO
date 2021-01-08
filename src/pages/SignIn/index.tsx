@@ -1,5 +1,6 @@
 import React from 'react';
 import { FiUser, FiLock } from 'react-icons/fi';
+import { Form } from '@unform/web';
 
 import logoImg from '../../assets/logo.svg';
 
@@ -8,29 +9,35 @@ import Button from '../../components/Button';
 
 import { Container, Content } from './styles';
 
-const SignIn: React.FC = () => (
-  <Container>
-    <Content>
-      <img src={logoImg} alt="Samasc" />
+const SignIn: React.FC = () => {
+  function handleSubmit(data: object): void {
+    console.log(data);
+  }
 
-      <form>
-        <h1>Realize seu login</h1>
+  return (
+    <Container>
+      <Content>
+        <img src={logoImg} alt="Samasc" />
 
-        <Input name="user" icon={FiUser} placeholder="Usuário" />
+        <Form onSubmit={handleSubmit}>
+          <h1>Realize seu login</h1>
 
-        <Input
-          name="password"
-          icon={FiLock}
-          type="password"
-          placeholder="Senha"
-        />
+          <Input name="user" icon={FiUser} placeholder="Usuário" />
 
-        <Button type="submit">Entrar</Button>
+          <Input
+            name="password"
+            icon={FiLock}
+            type="password"
+            placeholder="Senha"
+          />
 
-        <a href="forgot">Recuperar senha</a>
-      </form>
-    </Content>
-  </Container>
-);
+          <Button type="submit">Entrar</Button>
+
+          <a href="forgot">Recuperar senha</a>
+        </Form>
+      </Content>
+    </Container>
+  );
+};
 
 export default SignIn;
