@@ -1,6 +1,16 @@
 import { createGlobalStyle } from 'styled-components';
 
 export default createGlobalStyle`
+
+  :root {
+    --text-primary: #b2b2b2;
+    --text-secondary: #ececec;
+    --text-terciary: rgba(150, 156, 186, 0.2);
+    --bg-primary: #F8F8FB;
+    --bg-secondary: #fff;
+    --transition-speed: 600ms;
+  }
+
   * {
     margin: 0;
     padding: 0;
@@ -13,6 +23,21 @@ export default createGlobalStyle`
     color: #fff;
     -webkit-font-smoothing: antialiased;
   }
+
+  //add agora
+  body::-webkit-scrollbar {
+  width: 0.25rem;
+  }
+
+  body::-webkit-scrollbar-track {
+    background: #1e1e24;
+  }
+
+  body::-webkit-scrollbar-thumb {
+    background: #6649b8;
+  }
+
+
 
   body, input, button {
     font-family: 'Roboto', sans-serif;
