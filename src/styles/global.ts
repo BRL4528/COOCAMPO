@@ -26,7 +26,8 @@ export default createGlobalStyle`
 
   //add agora
   body::-webkit-scrollbar {
-  width: 0.25rem;
+  width: 0.5rem;
+  height: 0.5rem
   }
 
   body::-webkit-scrollbar-track {
@@ -34,7 +35,7 @@ export default createGlobalStyle`
   }
 
   body::-webkit-scrollbar-thumb {
-    background: #6649b8;
+    background:  #1c9cd9;
   }
 
 

@@ -8,6 +8,8 @@ import {
 import { useAuth } from '../hooks/auth';
 import SignIn from '../pages/SignIn';
 
+import Layout from '../pages/_Layouts/admin';
+
 interface RouteProps extends ReactDOMRouteProps {
   isPrivate?: boolean;
   isAdmin?: boolean;
@@ -32,7 +34,9 @@ const Route: React.FC<RouteProps> = ({
             {...rest}
             render={({ location }) => {
               return isPrivate === !!user && isAdmin ? (
-                <Component />
+                <Layout path={location.pathname}>
+                  <Component />
+                </Layout>
               ) : (
                 <Redirect
                   to={{
