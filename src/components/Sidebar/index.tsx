@@ -3,6 +3,19 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
+import {
+  FiBarChart,
+  FiLayers,
+  FiSliders,
+  FiMapPin,
+  FiUsers,
+  FiFileText,
+  FiFilePlus,
+  FiSettings,
+  FiPieChart,
+  FiTerminal,
+} from 'react-icons/fi';
+
 import logoImg from '../../assets/logo.svg';
 
 import { OptionList } from './styles';
@@ -18,7 +31,7 @@ const Sidebar: React.FC<LayoutProps> = ({ pathname }) => {
       <nav className="navbar">
         <ul className="navbar-nav">
           <li className="logo">
-            <a href="#" className="nav-link">
+            <a href="#" className="nav-header">
               <span className="link-text logo-text">
                 <img className="img-logo" src={logoImg} alt="Samasc" />
               </span>
@@ -52,9 +65,10 @@ const Sidebar: React.FC<LayoutProps> = ({ pathname }) => {
 
           <OptionList pathname={pathname} path="/admin" className="nav-item">
             <Link to="admin" className="nav-link">
-              <svg
-                width="22"
-                height="22"
+              <FiBarChart color="#1c9cd9" size={18} />
+              {/* <svg
+                width="18"
+                height="18"
                 viewBox="0 0 24 24"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
@@ -89,7 +103,7 @@ const Sidebar: React.FC<LayoutProps> = ({ pathname }) => {
                     strokeLinejoin="round"
                   />
                 </g>
-              </svg>
+              </svg> */}
               <span className="link-text">Dashboard</span>
             </Link>
           </OptionList>
@@ -100,11 +114,12 @@ const Sidebar: React.FC<LayoutProps> = ({ pathname }) => {
             className="nav-item"
           >
             <Link to="selector-folders" className="nav-link">
-              <svg
+              <FiLayers color="#1c9cd9" size={18} />
+              {/* <svg
                 aria-hidden="true"
                 focusable="false"
-                width="22"
-                height="22"
+                width="18"
+                height="18"
                 viewBox="0 0 24 24"
                 fill="none"
                 role="img"
@@ -122,16 +137,17 @@ const Sidebar: React.FC<LayoutProps> = ({ pathname }) => {
                     strokeLinejoin="round"
                   />
                 </g>
-              </svg>
-              <span className="link-text">Pastas</span>
+              </svg> */}
+              <span className="link-text">Metas e Submetas</span>
             </Link>
           </OptionList>
 
           <OptionList pathname={pathname} path="/e-mail" className="nav-item">
             <Link to="e-mail" className="nav-link">
-              <svg
-                width="22"
-                height="22"
+              <FiMapPin color="#1c9cd9" size={18} />
+              {/* <svg
+                width="18"
+                height="18"
                 viewBox="0 0 24 24"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
@@ -155,16 +171,17 @@ const Sidebar: React.FC<LayoutProps> = ({ pathname }) => {
                     strokeLinejoin="round"
                   />
                 </g>
-              </svg>
-              <span className="link-text">Email</span>
+              </svg> */}
+              <span className="link-text">Setor</span>
             </Link>
           </OptionList>
 
           <OptionList pathname={pathname} path="/report" className="nav-item">
             <Link to="report" className="nav-link">
-              <svg
-                width="22"
-                height="22"
+              <FiUsers color="#1c9cd9" size={18} />
+              {/* <svg
+                width="18"
+                height="18"
                 viewBox="0 0 24 24"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
@@ -187,14 +204,128 @@ const Sidebar: React.FC<LayoutProps> = ({ pathname }) => {
                     strokeLinejoin="round"
                   />
                 </g>
-              </svg>
+              </svg> */}
+              <span className="link-text">Colaboradores</span>
+            </Link>
+          </OptionList>
+
+          <OptionList pathname={pathname} path="/report" className="nav-item">
+            <Link to="report" className="nav-link">
+              <FiSliders color="#1c9cd9" size={18} />
+              {/* <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <g className="fa-group">
+                  <path
+                    d="M13 2H6C5.46957 2 4.96086 2.21071 4.58579 2.58579C4.21071 2.96086 4 3.46957 4 4V20C4 20.5304 4.21071 21.0391 4.58579 21.4142C4.96086 21.7893 5.46957 22 6 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V9L13 2Z"
+                    fill="#969CBA"
+                    fillOpacity="0.2"
+                    stroke="#1c9cd9"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                  <path
+                    d="M13 2V9H20"
+                    stroke="#1c9cd9"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </g>
+              </svg> */}
+              <span className="link-text">Módulos de análise</span>
+            </Link>
+          </OptionList>
+          <OptionList pathname={pathname} path="/report" className="nav-item">
+            <Link to="report" className="nav-link">
+              <FiFilePlus color="#1c9cd9" size={18} />
+              {/* <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <g className="fa-group">
+                  <path
+                    d="M13 2H6C5.46957 2 4.96086 2.21071 4.58579 2.58579C4.21071 2.96086 4 3.46957 4 4V20C4 20.5304 4.21071 21.0391 4.58579 21.4142C4.96086 21.7893 5.46957 22 6 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V9L13 2Z"
+                    fill="#969CBA"
+                    fillOpacity="0.2"
+                    stroke="#1c9cd9"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                  <path
+                    d="M13 2V9H20"
+                    stroke="#1c9cd9"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </g>
+              </svg> */}
+              <span className="link-text">Importações</span>
+            </Link>
+          </OptionList>
+          <OptionList pathname={pathname} path="/report" className="nav-item">
+            <Link to="report" className="nav-link">
+              <FiFileText color="#1c9cd9" size={18} />
+              {/* <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <g className="fa-group">
+                  <path
+                    d="M13 2H6C5.46957 2 4.96086 2.21071 4.58579 2.58579C4.21071 2.96086 4 3.46957 4 4V20C4 20.5304 4.21071 21.0391 4.58579 21.4142C4.96086 21.7893 5.46957 22 6 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V9L13 2Z"
+                    fill="#969CBA"
+                    fillOpacity="0.2"
+                    stroke="#1c9cd9"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                  <path
+                    d="M13 2V9H20"
+                    stroke="#1c9cd9"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </g>
+              </svg> */}
               <span className="link-text">Relatório</span>
+            </Link>
+          </OptionList>
+
+          <OptionList pathname={pathname} path="/report" className="nav-item">
+            <Link to="report" className="nav-link">
+              <FiPieChart color="#1c9cd9" size={18} />
+
+              <span className="link-text">Gráficos</span>
+            </Link>
+          </OptionList>
+
+          <OptionList pathname={pathname} path="/report" className="nav-item">
+            <Link to="report" className="nav-link">
+              <FiTerminal color="#1c9cd9" size={18} />
+
+              <span className="link-text">Macros</span>
             </Link>
           </OptionList>
 
           <OptionList pathname={pathname} path="/import" className="nav-item">
             <Link to="#" className="nav-link">
-              <svg
+              <FiSettings color="#1c9cd9" size={18} />
+              {/* <svg
                 width="22"
                 height="22"
                 viewBox="0 0 24 24"
@@ -219,7 +350,7 @@ const Sidebar: React.FC<LayoutProps> = ({ pathname }) => {
                     stroke="#1c9cd9"
                   />
                 </g>
-              </svg>
+              </svg> */}
               <span className="link-text">Configurações</span>
             </Link>
           </OptionList>

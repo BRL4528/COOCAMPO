@@ -71,6 +71,16 @@ export const HeaderContent = styled.div<ContainerProps>`
     align-items: center;
     flex-direction: column;
   } */
+
+  strong {
+    cursor: pointer;
+    transition: var(--transition-speed);
+
+    :hover {
+      transition: var(--transition-speed);
+      color: #1c9cd9;
+    }
+  }
 `;
 
 export const Profile = styled.div`

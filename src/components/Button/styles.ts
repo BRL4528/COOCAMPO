@@ -1,11 +1,16 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { shade } from 'polished';
 
-export const Container = styled.button`
+interface ContainerProps {
+  groud?: boolean;
+}
+
+export const Container = styled.button<ContainerProps>`
   background: #1c9cd9;
   height: 45px;
   border-radius: 6px;
-  border: 0;
+  border: solid 2px #1c9cd9;
+  /* border: 0; */
   padding: 0 10px;
   color: #fff;
   width: 100%;
@@ -13,7 +18,16 @@ export const Container = styled.button`
   margin-top: 16px;
   transition: background-color 0.2s;
 
+  ${props =>
+    props.groud &&
+    css`
+      background: #fff;
+      color: #1c9cd9;
+    `}
+
   &:hover {
     background: ${shade(0.2, '#1c9cd9')};
+
+    border: ${shade(0.2, '#1c9cd9')};
   }
 `;
