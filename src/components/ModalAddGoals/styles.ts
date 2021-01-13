@@ -1,6 +1,8 @@
 import styled from 'styled-components';
 
-export const Form = styled.form`
+import { Form as unform } from '@unform/web';
+
+export const Form = styled(unform)`
   padding: 48px 40px;
   display: flex;
   flex-direction: column;
@@ -14,7 +16,7 @@ export const Form = styled.form`
     align-self: flex-end;
   }
 
-  button {
+  /* button {
     font-weight: 600;
     border-radius: 6px;
     border: 0;
@@ -36,5 +38,5 @@ export const Form = styled.form`
       border-radius: 0 8px 8px 0;
       margin: 0 auto;
     }
-  }
+  } */
 `;

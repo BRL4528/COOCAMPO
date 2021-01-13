@@ -1,8 +1,15 @@
-import React from 'react';
+import React, { useCallback, useRef } from 'react';
 
-import { FiCheckSquare } from 'react-icons/fi';
+import { FormHandles } from '@unform/core';
+
+// import { FiCheckSquare } from 'react-icons/fi';
 
 import { Form } from './styles';
+
+// import { FormContainer } from './styles';
+import Input from '../Input';
+import Button from '../Button';
+
 import Modal from '../Modal';
 
 interface IModalProps {
@@ -10,23 +17,40 @@ interface IModalProps {
   setIsOpen: () => void;
 }
 
+interface AddGoalsModal {
+  name: string;
+  weight: string;
+  source: string;
+  term: string;
+}
+
 const ModalAddFood: React.FC<IModalProps> = ({ isOpen, setIsOpen }) => {
+  const formRef = useRef<FormHandles>(null);
+
+  const handleSubmit = useCallback((data: AddGoalsModal) => {
+    console.log(data);
+  }, []);
+
   return (
     <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
-      <Form>
-        <h1>Nova meta</h1>
-        <input placeholder="Cole o link aqui" />
+      <Form ref={formRef} onSubmit={handleSubmit}>
+        <h2>Nova meta</h2>
+        <Input name="name" placeholder="Nome da meta" />
 
-        <input placeholder="Ex: Moda Italiana" />
-        <input placeholder="Ex: 19.90" />
+        <Input name="weight" placeholder="Peso da meta" />
+        <Input name="source" placeholder="" />
 
-        <input placeholder="Descrição" />
-        <button type="submit" data-testid="add-food-button">
-          <p className="text">Adicionar Prato</p>
-          <div className="icon">
-            <FiCheckSquare size={24} />
-          </div>
-        </button>
+        <Input name="term" placeholder="Descrição" />
+
+        <Button type="submit" data-testid="add-food-button">
+          Entrar
+        </Button>
+        {/* <button type="submit">
+            <p className="text">Adicionar Meta</p>
+            <div className="icon">
+              <FiCheckSquare size={24} />
+            </div>
+          </button> */}
       </Form>
     </Modal>
   );
