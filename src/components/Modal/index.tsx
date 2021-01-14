@@ -23,7 +23,7 @@ const Modal: React.FC<IModalProps> = ({ children, isOpen, setIsOpen }) => {
       ariaHideApp={false}
       style={{
         content: {
-          top: '50%',
+          top: '45%',
           left: '50%',
           right: 'auto',
           bottom: 'auto',
@@ -32,11 +32,12 @@ const Modal: React.FC<IModalProps> = ({ children, isOpen, setIsOpen }) => {
           background: '#F8F8FB',
           color: '#000000',
           borderRadius: '4px',
-          width: '736px',
+          width: '60%',
+          maxHeight: '500px',
           border: 'none',
         },
         overlay: {
-          backgroundColor: 'rgb(41, 41, 56, 0.2)',
+          backgroundColor: 'rgb(41, 41, 56, 0.4)',
         },
       }}
     >

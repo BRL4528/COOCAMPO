@@ -19,9 +19,7 @@ export const Container = styled.div<ContainerProps>`
   display: flex;
   align-items: center;
 
-  & + div {
-    margin: 6px 0 6px 0;
-  }
+  margin: 6px 0 6px 6px;
 
   ${props =>
     props.isErrored &&
@@ -44,8 +42,9 @@ export const Container = styled.div<ContainerProps>`
 
 
 
-  input {
+  textarea {
     flex: 1;
+    /* width: 100%; */
     background: transparent;
     border: 0;
     color: #433f59;

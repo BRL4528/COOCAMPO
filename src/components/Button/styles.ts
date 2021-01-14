@@ -6,6 +6,7 @@ interface ContainerProps {
 }
 
 export const Container = styled.button<ContainerProps>`
+  z-index: 1;
   background: #1c9cd9;
   height: 45px;
   border-radius: 6px;
