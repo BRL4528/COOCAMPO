@@ -110,10 +110,10 @@ const Sidebar: React.FC<LayoutProps> = ({ pathname }) => {
 
           <OptionList
             pathname={pathname}
-            path="/selector-folders"
+            path="/goals-subgoals"
             className="nav-item"
           >
-            <Link to="selector-folders" className="nav-link">
+            <Link to="goals-subgoals" className="nav-link">
               <FiLayers color="#1c9cd9" size={18} />
               {/* <svg
                 aria-hidden="true"
@@ -142,8 +142,8 @@ const Sidebar: React.FC<LayoutProps> = ({ pathname }) => {
             </Link>
           </OptionList>
 
-          <OptionList pathname={pathname} path="/e-mail" className="nav-item">
-            <Link to="e-mail" className="nav-link">
+          <OptionList pathname={pathname} path="/sector" className="nav-item">
+            <Link to="sector" className="nav-link">
               <FiMapPin color="#1c9cd9" size={18} />
               {/* <svg
                 width="18"

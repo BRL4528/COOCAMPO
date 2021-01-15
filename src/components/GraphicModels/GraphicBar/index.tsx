@@ -205,7 +205,7 @@ const GrapichBar: React.FC = () => {
             ],
           },
         ]}
-        animate
+        animate={false}
         motionStiffness={90}
         motionDamping={15}
       />

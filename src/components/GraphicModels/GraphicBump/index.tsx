@@ -315,6 +315,7 @@ const GraphicPie: React.FC = () => {
       // activeLineWidth={6}
       // inactiveLineWidth={3}
       // inactiveOpacity={0.15}
+      animate={false}
       pointSize={10}
       activePointSize={16}
       inactivePointSize={0}

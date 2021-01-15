@@ -6,9 +6,10 @@ import Route from './Route';
 import SignIn from '../pages/SignIn';
 
 import DashboardAdm from '../pages/Dashboard-adm';
-import SelectorFolders from '../pages/Dashboard-adm/SelectorFolders';
+import SelectorFolders from '../pages/Dashboard-adm/GoalsSubgoals';
 import Email from '../pages/Dashboard-adm/Email';
 import Report from '../pages/Dashboard-adm/Report';
+import Sector from '../pages/Dashboard-adm/Sector';
 
 import DashboardUser from '../pages/Dashboard-user';
 
@@ -18,13 +19,14 @@ const Routes: React.FC = () => (
 
     <Route path="/admin" component={DashboardAdm} isPrivate isAdmin />
     <Route
-      path="/selector-folders"
+      path="/goals-subgoals"
       component={SelectorFolders}
       isPrivate
       isAdmin
     />
     <Route path="/e-mail" component={Email} isPrivate isAdmin />
     <Route path="/report" component={Report} isPrivate isAdmin />
+    <Route path="/sector" component={Sector} isPrivate isAdmin />
 
     <Route path="/user" component={DashboardUser} isPrivate isUser />
   </Switch>

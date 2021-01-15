@@ -40,9 +40,10 @@ const ModalAddFood: React.FC<IModalProps> = ({ isOpen, setIsOpen }) => {
   }, []);
 
   const options = [
-    { value: 'employer', label: 'Empresa' },
-    { value: 'merchant', label: 'Comercio' },
-    { value: 'salesman', label: 'Vendedor' },
+    { value: 'sage', label: 'Sistema Sage' },
+    { value: 's2', label: 'Sistema S2' },
+    { value: 'Senior', label: 'Sistema Senior' },
+    // { value: 'Senior', label: 'Sistema Senior' },
   ];
 
   const subGoals = [
@@ -71,10 +72,14 @@ const ModalAddFood: React.FC<IModalProps> = ({ isOpen, setIsOpen }) => {
         <nav>
           <span>
             <button onClick={hanleOpenSubGoals} type="button">
-              Atribuir submeta
+              Atribuir módulo de análise
               <FiLink2 size={20} />
             </button>
 
+            <button onClick={hanleOpenSubGoals} type="button">
+              Atribuir submeta
+              <FiLink2 size={20} />
+            </button>
             <button onClick={hanleOpenSubGoals} type="button">
               Criar nova submeta
               <FiPlus size={20} />
