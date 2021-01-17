@@ -1,7 +1,16 @@
 /* eslint-disable jsx-a11y/control-has-associated-label */
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState, useRef } from 'react';
+import { Pie } from '@reactchartjs/react-chart.js';
 
-import { FiEdit, FiPrinter, FiMaximize } from 'react-icons/fi';
+import { useReactToPrint } from 'react-to-print';
+
+import {
+  FiEdit,
+  FiPrinter,
+  FiMaximize,
+  FiTrendingDown,
+  FiTrendingUp,
+} from 'react-icons/fi';
 
 import Button from '../../../components/Button';
 import ModalAddGoals from '../../../components/ModalAddGoals';
@@ -13,14 +22,56 @@ import {
   CardGraphic,
   CardGraphicText,
   GraphicTitle,
+  CardGoalsTrends,
+  TrendsTitle,
+  GoalItem,
+  Info,
+  Graphic,
+  CardBodyGoals,
 } from './styles';
 
 const SelectorFolders: React.FC = () => {
+  const componentRef = useRef<HTMLDivElement>(null);
+
   const [modalOpen, setModalOpen] = useState(false);
 
   const toggleModal = useCallback(() => {
     setModalOpen(!modalOpen);
   }, [modalOpen]);
+
+  const data = {
+    // labels: ['1', '2', '3'],
+
+    labels: ['Meta Global', 'Meta Setor', 'Meta Individual'],
+    datasets: [
+      {
+        // width: 400,
+
+        data: [12, 19, 3],
+
+        backgroundColor: [
+          'rgb(255, 99, 132)',
+          'rgb(54, 162, 235)',
+          'rgb(255, 205, 86)',
+        ],
+      },
+    ],
+  };
+  const handlePrint = useReactToPrint({
+    content: () => componentRef.current,
+  });
+
+  const options = {
+    title: {
+      display: true,
+      fontSize: 20,
+      text: 'Composição de metas',
+    },
+  };
+
+  // const handlePrint = useReactToPrint({
+  //   content: () => <div>ererer</div>,
+  // });
 
   return (
     <>
@@ -41,21 +92,74 @@ const SelectorFolders: React.FC = () => {
           </CardButton>
         </CardeHeader>
 
-        <CardGraphic>
+        <CardGraphic ref={componentRef}>
           <CardGraphicText>
             <GraphicTitle>Financeiro</GraphicTitle>
             <span>
               <FiEdit />
-              <FiPrinter />
+              <FiPrinter onClick={handlePrint} />
               <FiMaximize />
             </span>
           </CardGraphicText>
-          <div>
-            <span>Uso de epi</span>
-            <span>Uso de epi</span>
-            <span>Uso de epi</span>
-            <span>Uso de epi</span>
-          </div>
+
+          <CardBodyGoals>
+            <CardGoalsTrends>
+              <TrendsTitle>
+                <h4>Metas trends - Janeiro a Fevereiro</h4>
+                {/* <h4>Metas trends - 01/01/2021 a 01/02/2021</h4> */}
+              </TrendsTitle>
+              <GoalItem trendUp>
+                <Info title="Uso de epi">
+                  <p>Uso de epi</p>
+                </Info>
+                <strong>2,5%</strong>
+                <FiTrendingUp />
+              </GoalItem>
+
+              <GoalItem trendUp>
+                <Info title="Fechamentos">
+                  <p>Fechamentos</p>
+                </Info>
+                <strong>1,5%</strong>
+                <FiTrendingUp />
+              </GoalItem>
+              <GoalItem trendDown>
+                <Info title="Horarios">
+                  <p>Horarios</p>
+                </Info>
+                <strong>3%</strong>
+                <FiTrendingDown />
+              </GoalItem>
+              <GoalItem trendUp>
+                <Info title="Cumprimento de orçamentos">
+                  <p>Cumprimento de orçamentos</p>
+                </Info>
+                <strong>3%</strong>
+
+                <FiTrendingUp />
+              </GoalItem>
+              <GoalItem trendUp>
+                <Info title="Cumprimento de orçamentos">
+                  <p>Cumprimento de orçamentos</p>
+                </Info>
+                <strong>3%</strong>
+
+                <FiTrendingUp />
+              </GoalItem>
+              <GoalItem trendDown>
+                <Info title="Cumprimento de orçamentos">
+                  <p>Cumprimento de orçamentos</p>
+                </Info>
+                <strong>3%</strong>
+
+                <FiTrendingUp />
+              </GoalItem>
+            </CardGoalsTrends>
+
+            <Graphic>
+              <Pie type="pie" data={data} options={options} />
+            </Graphic>
+          </CardBodyGoals>
         </CardGraphic>
 
         <CardGraphic>
