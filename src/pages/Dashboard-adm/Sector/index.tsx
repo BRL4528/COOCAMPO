@@ -1,6 +1,7 @@
 /* eslint-disable jsx-a11y/control-has-associated-label */
 import React, { useCallback, useState, useRef } from 'react';
-import { Pie } from '@reactchartjs/react-chart.js';
+// import { Pie } from '@reactchartjs/react-chart.js';
+import ReactSpeedometer from 'react-d3-speedometer';
 
 import { useReactToPrint } from 'react-to-print';
 
@@ -39,35 +40,35 @@ const SelectorFolders: React.FC = () => {
     setModalOpen(!modalOpen);
   }, [modalOpen]);
 
-  const data = {
-    // labels: ['1', '2', '3'],
+  // const data = {
+  //   // labels: ['1', '2', '3'],
 
-    labels: ['Meta Global', 'Meta Setor', 'Meta Individual'],
-    datasets: [
-      {
-        // width: 400,
+  //   labels: ['Meta Global', 'Meta Setor', 'Meta Individual'],
+  //   datasets: [
+  //     {
+  //       // width: 400,
 
-        data: [12, 19, 3],
+  //       data: [12, 19, 3],
 
-        backgroundColor: [
-          'rgb(255, 99, 132)',
-          'rgb(54, 162, 235)',
-          'rgb(255, 205, 86)',
-        ],
-      },
-    ],
-  };
+  //       backgroundColor: [
+  //         'rgb(255, 99, 132)',
+  //         'rgb(54, 162, 235)',
+  //         'rgb(255, 205, 86)',
+  //       ],
+  //     },
+  //   ],
+  // };
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,
   });
 
-  const options = {
-    title: {
-      display: true,
-      fontSize: 20,
-      text: 'Composição de metas',
-    },
-  };
+  // const options = {
+  //   title: {
+  //     display: true,
+  //     fontSize: 20,
+  //     text: 'Composição de metas',
+  //   },
+  // };
 
   // const handlePrint = useReactToPrint({
   //   content: () => <div>ererer</div>,
@@ -157,7 +158,13 @@ const SelectorFolders: React.FC = () => {
             </CardGoalsTrends>
 
             <Graphic>
-              <Pie type="pie" data={data} options={options} />
+              <ReactSpeedometer
+                value={333}
+                maxSegmentLabels={2}
+                segments={1000}
+                width={100}
+              />
+              {/* <Pie type="pie" data={data} options={options} /> */}
             </Graphic>
           </CardBodyGoals>
         </CardGraphic>

@@ -242,10 +242,10 @@ export const Info = styled(Tooltip)`
 `;
 
 export const Graphic = styled.div`
-  display: flex;
+  /* display: flex; */
 
   margin-left: 20px;
-
-  width: 500px;
+  background: red;
+  width: 200px;
   height: 200px;
 `;
