@@ -1,7 +1,8 @@
 import React from 'react';
 
 // import { FiMaximize, FiPrinter, FiEdit } from 'react-icons/fi';
-import { Line } from '@reactchartjs/react-chart.js';
+
+import CardGraphic from '../../components/GraphicModels/CardGraphic';
 
 // import GraphicBar from '../../components/GraphicModels/GraphicBar';
 // import GraphicPie from '../../components/GraphicModels/GraphicPie';
@@ -10,87 +11,51 @@ import { Line } from '@reactchartjs/react-chart.js';
 
 import {
   Conatiner,
-  CardGraphic,
+
   // GraphicTitle,
   // CardGraphicText,
 } from './styles';
 
+// interface PropsArray {
+//   name: string;
+// }
+
 const Dashboard: React.FC = () => {
-  const data = {
-    labels: ['1', '2', '3', '4'],
-
-    datasets: [
-      {
-        // width: 400,
-
-        data: [12, 19, 3, 50],
-
-        borderColor: '#7fdaea',
-        backgroundColor: '#f1fafc',
-      },
-    ],
+  const array = [];
+  const temp1 = {
+    name: 'Matriz',
+    valor: '2',
+    border: '#7fdaea',
+    backcolor: '#f1fafc',
   };
-
-  const options = {
-    responsive: true,
-    maintainAspectRatio: true,
-
-    elements: {
-      point: {
-        radius: 0,
-      },
-      line: {
-        tension: 0.33,
-      },
-    },
-    scales: {
-      xAxes: [
-        {
-          ticks: { display: false },
-          gridLines: {
-            display: false,
-            drawBorder: false,
-          },
-        },
-      ],
-      yAxes: [
-        {
-          ticks: {
-            display: false,
-            isplay: false,
-          },
-
-          gridLines: {
-            display: false,
-            drawBorder: false,
-          },
-        },
-      ],
-    },
-    legend: {
-      display: false,
-    },
-    tooltips: {
-      enabled: false,
-    },
+  const temp2 = {
+    name: 'UPL I',
+    valor: '3',
+    border: '#fef0cf',
+    backcolor: '#fdfaf1',
   };
+  const temp3 = {
+    name: 'Crechario',
+    valor: '4',
+    border: '#fea8ba',
+    backcolor: '#fdf3f5',
+  };
+  array.push(temp1);
+  array.push(temp2);
+  array.push(temp3);
 
   return (
     <>
       <Conatiner>
-        <CardGraphic>
-          <h2>Matriz</h2>
-          <strong>2,5%</strong>
-          <span>
-            <Line
-              type="line"
-              // chartArea={area}
-              redraw
-              data={data}
-              options={options}
-            />
-          </span>
-        </CardGraphic>
+        {array.map(ar => (
+          <CardGraphic
+            key={ar.valor}
+            backcolor={ar.backcolor}
+            border={ar.border}
+            name={ar.name}
+          />
+        ))}
+
         {/* <CardGraphic>
           <CardGraphicText>
             <GraphicTitle>Desempenho mensal</GraphicTitle>
