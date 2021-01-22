@@ -5,7 +5,7 @@ interface PropsBorder {
 }
 
 export const Container = styled.div`
-  display: flex;
+  /* display: flex; */
   color: #333;
   /* width: 100%; */
 
@@ -47,8 +47,9 @@ export const ItemGraphic = styled.div<PropsBorder>`
   }
   p {
     z-index: 1;
-    font-size: 22px;
-    font-weight: 100;
+    font-size: 20px;
+    font-weight: 400;
+    color: #433f59;
   }
   strong {
     z-index: 1;

@@ -1,120 +1,132 @@
 import styled from 'styled-components';
 
 export const Conatiner = styled.div`
-  display: flex;
-
+  /* display: flex; */
   color: #333;
   width: 100%;
   padding-left: 80px;
   z-index: 0;
-
+  overflow-x: hidden;
   /* grid-template-columns: 600px; */
   /* grid-template-rows: 46px auto 52px; */
 
   /* grid-template-areas: 'GA GA GA'; */
 `;
-// export const CardGraphic = styled.div`
-//   box-shadow: 0 0 14px 0 rgba(0, 0, 0, 0.02);
-//   border-radius: 2px;
-//   padding: 20px 0 0;
+export const CardItem = styled.div`
+  display: flex;
+  color: #333;
+  /* width: 100%; */
+  z-index: 0;
+  /* grid-template-columns: 600px; */
+  /* grid-template-rows: 46px auto 52px; */
 
-//   /* margin-left: 80px; */
+  /* grid-template-areas: 'GA GA GA'; */
+  @media only screen and (max-width: 600px) {
+    display: grid;
+  }
+`;
+export const CardGraphic = styled.div`
+  box-shadow: 0 0 14px 0 rgba(0, 0, 0, 0.02);
+  border-radius: 2px;
+  padding: 20px 0 0;
 
-//   display: flex;
-//   align-items: center;
-//   flex-direction: column;
-//   text-align: center;
+  /* margin-left: 80px; */
 
-//   background: #fff;
-//   border-radius: 6px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  text-align: center;
 
-//   /* transition: var(--transition-speed); */
-//   border-bottom: solid 3px rgba(28, 156, 217, 0.12);
+  background: #fff;
+  border-radius: 6px;
 
-//   /* padding: 20px; */
-//   margin: 20px 20px 20px 20px;
+  /* transition: var(--transition-speed); */
+  border-bottom: solid 3px rgba(28, 156, 217, 0.12);
 
-//   width: 250px;
-//   height: 150px;
-//   transition: var(--transition-speed);
+  /* padding: 20px; */
+  margin: 20px 20px 20px 20px;
 
-//   :hover {
-//     transition: var(--transition-speed);
-//     border-bottom: solid 3px #1c9cd9;
+  width: 250px;
+  height: 150px;
+  transition: var(--transition-speed);
 
-//     box-shadow: 0px 5px 8px rgba(0, 0, 0, 0.15);
-//   }
+  :hover {
+    transition: var(--transition-speed);
+    border-bottom: solid 3px #1c9cd9;
 
-//   span {
-//     left: 90px;
-//     top: 110px;
-//     display: flex;
-//     align-items: center;
-//     padding: 0;
-//     margin: 0;
-//     max-width: 260px;
-//     max-height: 200px;
-//     position: absolute;
-//   }
-// `;
+    box-shadow: 0px 5px 8px rgba(0, 0, 0, 0.15);
+  }
 
-// export const CardGraphic = styled.div`
-//   box-shadow: 0 0 14px 0 rgba(0, 0, 0, 0.02);
-//   border-radius: 2px;
-//   padding: 30px 10px 40px 30px;
+  span {
+    left: 90px;
+    top: 110px;
+    display: flex;
+    align-items: center;
+    padding: 0;
+    margin: 0;
+    max-width: 260px;
+    max-height: 200px;
+    position: absolute;
+  }
+`;
 
-//   /* margin-left: 80px; */
+export const CardGraphicItem = styled.div`
+  box-shadow: 0 0 14px 0 rgba(0, 0, 0, 0.02);
+  border-radius: 2px;
+  padding: 30px 10px 40px 30px;
 
-//   display: flex;
-//   align-items: center;
-//   flex-direction: column;
+  /* margin-left: 80px; */
 
-//   background: #fff;
-//   border-radius: 6px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
 
-//   /* transition: var(--transition-speed); */
-//   border-bottom: solid 3px rgba(28, 156, 217, 0.12);
+  background: #fff;
+  border-radius: 6px;
 
-//   /* padding: 20px; */
-//   margin: 20px 20px 20px 20px;
+  /* transition: var(--transition-speed); */
+  border-bottom: solid 3px rgba(28, 156, 217, 0.12);
 
-//   height: 350px;
-//   width: 550px;
+  /* padding: 20px; */
+  margin: 20px 20px 20px 20px;
 
-//   :hover {
-//     transition: var(--transition-speed);
-//     border-bottom: solid 3px #1c9cd9;
+  height: 350px;
+  width: 550px;
 
-//     box-shadow: 0px 5px 8px rgba(0, 0, 0, 0.15);
-//   }
-// `;
+  :hover {
+    transition: var(--transition-speed);
+    border-bottom: solid 3px #1c9cd9;
 
-// export const CardGraphicText = styled.div`
-//   display: flex;
-//   width: 100%;
+    box-shadow: 0px 5px 8px rgba(0, 0, 0, 0.15);
+  }
+`;
 
-//   justify-content: space-between;
-//   border-bottom: solid 1px rgba(150, 156, 186, 0.2);
+export const CardGraphicText = styled.div`
+  display: flex;
+  width: 100%;
 
-//   > span {
-//     display: flex;
-//     flex-direction: row;
+  justify-content: space-between;
+  border-bottom: solid 1px rgba(150, 156, 186, 0.2);
 
-//     svg {
-//       color: #999591;
-//       width: 20px;
-//       height: 20px;
-//       margin: 10px;
-//       transition: color 0.5s;
-//       :hover {
-//         cursor: pointer;
-//         color: #1c9cd9;
-//       }
-//     }
-//   }
-// `;
+  > span {
+    display: flex;
+    flex-direction: row;
 
-// export const GraphicTitle = styled.h2`
-//   width: 100%;
-//   padding-bottom: 15px;
-// `;
+    svg {
+      color: #999591;
+      width: 20px;
+      height: 20px;
+      margin: 10px;
+      transition: color 0.5s;
+      :hover {
+        cursor: pointer;
+        color: #1c9cd9;
+      }
+    }
+  }
+`;
+
+export const GraphicTitle = styled.h2`
+  width: 100%;
+  padding-bottom: 15px;
+`;

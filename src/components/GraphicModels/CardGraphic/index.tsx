@@ -8,21 +8,24 @@ interface PropsValue {
   name: string;
   backcolor: string;
   border: string;
+  data: number[];
+  labels: string[];
 }
 
 const CardGraphic: React.FC<PropsValue> = ({
   name,
   backcolor,
   border,
+  data,
+  labels,
 }: PropsValue) => {
-  const data = {
-    labels: ['1', '2', '3', '4'],
+  const date = {
+    labels,
 
     datasets: [
       {
+        data,
         // width: 400,
-
-        data: [12, 19, 30, 10],
 
         borderColor: `${border}`,
         backgroundColor: `${backcolor}`,
@@ -98,7 +101,7 @@ const CardGraphic: React.FC<PropsValue> = ({
             type="line"
             // chartArea={area}
             redraw
-            data={data}
+            data={date}
             options={options}
           />
         </span>
