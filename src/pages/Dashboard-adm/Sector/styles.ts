@@ -20,6 +20,14 @@ export const Container = styled.div`
     color: var(--text-primary);
     font-size: 14px;
   }
+
+  .fullscreen-enabled .fullscreen-item {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow: scroll;
+  }
 `;
 
 export const CardeHeader = styled.div`
@@ -95,6 +103,12 @@ export const CardGraphic = styled.div`
       overflow: initial !important;
       -webkit-print-color-adjust: exact;
     }
+    width: 100%;
+    height: 800px;
+    display: flex;
+    align-items: center;
+    padding: 30px 20px 0px 10px;
+    border-bottom: solid 3px #1c9cd9;
   }
 
   @media print {
@@ -230,22 +244,62 @@ export const Info = styled(Tooltip)`
     margin-left: 16px;
     text-align: center;
   }
-
-  span {
-    background: rgba(28, 156, 217, 0.9);
-    color: #fff;
-
-    &::before {
-      border-color: rgba(28, 156, 217, 0.9) transparent;
-    }
-  }
 `;
 
-export const Graphic = styled.div`
-  /* display: flex; */
+export const GraphicSpeed = styled.div`
+  box-shadow: 0 0 14px 0 rgba(0, 0, 0, 0.02);
+  border-radius: 2px;
+  padding: 30px;
+  box-shadow: 0 0 14px 0 rgba(0, 0, 0, 0.09);
+  /* margin-left: 80px; */
 
-  margin-left: 20px;
-  background: red;
-  width: 200px;
-  height: 200px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+
+  background: #fff;
+  border-radius: 6px;
+
+  /* transition: var(--transition-speed); */
+
+  /* padding: 20px; */
+  margin: 20px 20px 20px 20px;
+
+  height: 290px;
+  width: 280px;
+  @media print {
+    margin: 5px 5px 15px 5px;
+    height: 280px;
+    padding: 15px;
+  }
+`;
+export const CardGraphicItem = styled.div`
+  box-shadow: 0 0 14px 0 rgba(0, 0, 0, 0.02);
+  border-radius: 2px;
+  padding: 30px 10px 40px 30px;
+  box-shadow: 0 0 14px 0 rgba(0, 0, 0, 0.09);
+  /* margin-left: 80px; */
+
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+
+  background: #fff;
+  border-radius: 6px;
+
+  /* transition: var(--transition-speed); */
+
+  /* padding: 20px; */
+  margin: 20px 20px 20px 20px;
+
+  height: 350px;
+  width: 550px;
+
+  @media print {
+    margin: 15px 5px 5px 5px;
+    padding: 15px;
+
+    max-width: 510px;
+    max-height: 340px;
+  }
 `;
