@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/control-has-associated-label */
 import React, { useCallback, useState, useRef } from 'react';
 // import { Pie } from '@reactchartjs/react-chart.js';
-import ReactSpeedometer from 'react-d3-speedometer';
+import { FullScreen, useFullScreenHandle } from 'react-full-screen';
 
 import { useReactToPrint } from 'react-to-print';
 
@@ -9,9 +9,13 @@ import {
   FiEdit,
   FiPrinter,
   FiMaximize,
-  FiTrendingDown,
-  FiTrendingUp,
+  // FiTrendingDown,
+  // FiTrendingUp,
 } from 'react-icons/fi';
+import GraphicBar from '../../../components/GraphicModels/GraphicBar';
+import GraphicLine from '../../../components/GraphicModels/GraphicLine';
+import GraphicSpeedometer from '../../../components/GraphicModels/GraphicSpeedometer';
+import Table from '../../../components/DataTable';
 
 import Button from '../../../components/Button';
 import ModalAddGoals from '../../../components/ModalAddGoals';
@@ -21,17 +25,20 @@ import {
   CardeHeader,
   CardButton,
   CardGraphic,
-  CardGraphicText,
   GraphicTitle,
-  CardGoalsTrends,
-  TrendsTitle,
-  GoalItem,
-  Info,
-  Graphic,
+  // CardGoalsTrends,
+  // TrendsTitle,
+  // GoalItem,
+  // Info,
+  GraphicSpeed,
   CardBodyGoals,
+  CardGraphicText,
+  CardGraphicItem,
 } from './styles';
 
 const SelectorFolders: React.FC = () => {
+  const handle = useFullScreenHandle();
+
   const componentRef = useRef<HTMLDivElement>(null);
 
   const [modalOpen, setModalOpen] = useState(false);
@@ -40,39 +47,9 @@ const SelectorFolders: React.FC = () => {
     setModalOpen(!modalOpen);
   }, [modalOpen]);
 
-  // const data = {
-  //   // labels: ['1', '2', '3'],
-
-  //   labels: ['Meta Global', 'Meta Setor', 'Meta Individual'],
-  //   datasets: [
-  //     {
-  //       // width: 400,
-
-  //       data: [12, 19, 3],
-
-  //       backgroundColor: [
-  //         'rgb(255, 99, 132)',
-  //         'rgb(54, 162, 235)',
-  //         'rgb(255, 205, 86)',
-  //       ],
-  //     },
-  //   ],
-  // };
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,
   });
-
-  // const options = {
-  //   title: {
-  //     display: true,
-  //     fontSize: 20,
-  //     text: 'Composição de metas',
-  //   },
-  // };
-
-  // const handlePrint = useReactToPrint({
-  //   content: () => <div>ererer</div>,
-  // });
 
   return (
     <>
@@ -93,105 +70,105 @@ const SelectorFolders: React.FC = () => {
           </CardButton>
         </CardeHeader>
 
-        <CardGraphic ref={componentRef}>
-          <CardGraphicText>
-            <GraphicTitle>Financeiro</GraphicTitle>
-            <span>
-              <FiEdit />
-              <FiPrinter onClick={handlePrint} />
-              <FiMaximize />
-            </span>
-          </CardGraphicText>
+        <FullScreen handle={handle}>
+          <CardGraphic className="fullscreen-item" ref={componentRef}>
+            <CardGraphicText>
+              <GraphicTitle>Financeiro</GraphicTitle>
+              <span>
+                <FiEdit />
+                <FiPrinter onClick={handlePrint} />
+                <FiMaximize onClick={handle.enter} />
+              </span>
+            </CardGraphicText>
+            <CardBodyGoals>
+              <CardGraphicItem>
+                <CardGraphicText>
+                  <GraphicTitle>Desempenho mensal</GraphicTitle>
+                </CardGraphicText>
+                <GraphicBar />
+              </CardGraphicItem>
+              <CardGraphicItem>
+                <CardGraphicText>
+                  <GraphicTitle>Desempenho mensal</GraphicTitle>
+                </CardGraphicText>
+                <GraphicLine />
+              </CardGraphicItem>
+            </CardBodyGoals>
+            <CardBodyGoals>
+              {/* <CardGoalsTrends>
+                <TrendsTitle>
+                  <h4>Metas trends - Janeiro a Fevereiro</h4>
+                </TrendsTitle>
+                <GoalItem trendUp>
+                  <Info title="Uso de epi">
+                    <p>Uso de epi</p>
+                  </Info>
+                  <strong>2,5%</strong>
+                  <FiTrendingUp />
+                </GoalItem>
 
-          <CardBodyGoals>
-            <CardGoalsTrends>
-              <TrendsTitle>
-                <h4>Metas trends - Janeiro a Fevereiro</h4>
-                {/* <h4>Metas trends - 01/01/2021 a 01/02/2021</h4> */}
-              </TrendsTitle>
-              <GoalItem trendUp>
-                <Info title="Uso de epi">
-                  <p>Uso de epi</p>
-                </Info>
-                <strong>2,5%</strong>
-                <FiTrendingUp />
-              </GoalItem>
+                <GoalItem trendUp>
+                  <Info title="Fechamentos">
+                    <p>Fechamentos</p>
+                  </Info>
+                  <strong>1,5%</strong>
+                  <FiTrendingUp />
+                </GoalItem>
+                <GoalItem trendDown>
+                  <Info title="Horarios">
+                    <p>Horarios</p>
+                  </Info>
+                  <strong>3%</strong>
+                  <FiTrendingDown />
+                </GoalItem>
+                <GoalItem trendUp>
+                  <Info title="Cumprimento de orçamentos">
+                    <p>Cumprimento de orçamentos</p>
+                  </Info>
+                  <strong>3%</strong>
 
-              <GoalItem trendUp>
-                <Info title="Fechamentos">
-                  <p>Fechamentos</p>
-                </Info>
-                <strong>1,5%</strong>
-                <FiTrendingUp />
-              </GoalItem>
-              <GoalItem trendDown>
-                <Info title="Horarios">
-                  <p>Horarios</p>
-                </Info>
-                <strong>3%</strong>
-                <FiTrendingDown />
-              </GoalItem>
-              <GoalItem trendUp>
-                <Info title="Cumprimento de orçamentos">
-                  <p>Cumprimento de orçamentos</p>
-                </Info>
-                <strong>3%</strong>
+                  <FiTrendingUp />
+                </GoalItem>
+                <GoalItem trendUp>
+                  <Info title="Cumprimento de orçamentos">
+                    <p>Cumprimento de orçamentos</p>
+                  </Info>
+                  <strong>3%</strong>
 
-                <FiTrendingUp />
-              </GoalItem>
-              <GoalItem trendUp>
-                <Info title="Cumprimento de orçamentos">
-                  <p>Cumprimento de orçamentos</p>
-                </Info>
-                <strong>3%</strong>
+                  <FiTrendingUp />
+                </GoalItem>
+                <GoalItem trendDown>
+                  <Info title="Cumprimento de orçamentos">
+                    <p>Cumprimento de orçamentos</p>
+                  </Info>
+                  <strong>3%</strong>
 
-                <FiTrendingUp />
-              </GoalItem>
-              <GoalItem trendDown>
-                <Info title="Cumprimento de orçamentos">
-                  <p>Cumprimento de orçamentos</p>
-                </Info>
-                <strong>3%</strong>
+                  <FiTrendingUp />
+                </GoalItem>
+              </CardGoalsTrends> */}
 
-                <FiTrendingUp />
-              </GoalItem>
-            </CardGoalsTrends>
-
-            <Graphic>
-              <ReactSpeedometer
-                value={333}
-                maxSegmentLabels={2}
-                segments={1000}
-                width={100}
-              />
-              {/* <Pie type="pie" data={data} options={options} /> */}
-            </Graphic>
-          </CardBodyGoals>
-        </CardGraphic>
-
-        <CardGraphic>
-          <CardGraphicText>
-            <GraphicTitle>Contabilidade</GraphicTitle>
-            <span>
-              <FiEdit />
-              <FiPrinter />
-              <FiMaximize />
-            </span>
-          </CardGraphicText>
-          {/* <GraphicBar /> */}
-        </CardGraphic>
-
-        <CardGraphic>
-          <CardGraphicText>
-            <GraphicTitle>Tecnologia da informação</GraphicTitle>
-            <span>
-              <FiEdit />
-              <FiPrinter />
-              <FiMaximize />
-            </span>
-          </CardGraphicText>
-          {/* <GraphicBar /> */}
-        </CardGraphic>
+              <GraphicSpeed>
+                <CardGraphicText>
+                  <GraphicTitle>Meta 01</GraphicTitle>
+                </CardGraphicText>
+                <GraphicSpeedometer dataValue={150} />
+              </GraphicSpeed>
+              <GraphicSpeed>
+                <CardGraphicText>
+                  <GraphicTitle>Meta 02</GraphicTitle>
+                </CardGraphicText>
+                <GraphicSpeedometer dataValue={250} />
+              </GraphicSpeed>
+              <GraphicSpeed>
+                <CardGraphicText>
+                  <GraphicTitle>Meta 03</GraphicTitle>
+                </CardGraphicText>
+                <GraphicSpeedometer dataValue={450} />
+              </GraphicSpeed>
+            </CardBodyGoals>
+            <Table />
+          </CardGraphic>
+        </FullScreen>
       </Container>
     </>
   );
