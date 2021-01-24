@@ -6,109 +6,44 @@ import { Container } from './styles';
 const GrapichBar: React.FC = () => {
   const data = [
     {
-      country: 'AD',
-      'hot dog': 100,
-      'hot dogColor': 'hsl(278, 70%, 50%)',
-      burger: 178,
-      burgerColor: 'hsl(247, 70%, 50%)',
-      sandwich: 75,
-      sandwichColor: 'hsl(353, 70%, 50%)',
-      kebab: 91,
-      kebabColor: 'hsl(213, 70%, 50%)',
-      fries: 162,
-      friesColor: 'hsl(175, 70%, 50%)',
-      donut: 28,
-      donutColor: 'hsl(15, 70%, 50%)',
+      country: 'Janeiro',
+
+      meta01: 200,
+      meta01Color: 'hsl(353, 70%, 50%)',
     },
     {
-      country: 'AE',
-      'hot dog': 56,
-      'hot dogColor': 'hsl(257, 70%, 50%)',
-      burger: 30,
-      burgerColor: 'hsl(68, 70%, 50%)',
-      sandwich: 45,
-      sandwichColor: 'hsl(59, 70%, 50%)',
-      kebab: 160,
-      kebabColor: 'hsl(199, 70%, 50%)',
-      fries: 81,
-      friesColor: 'hsl(31, 70%, 50%)',
-      donut: 56,
-      donutColor: 'hsl(113, 70%, 50%)',
+      country: 'Fevereiro',
+      meta02: 500,
+      meta02Color: 'hsl(257, 70%, 50%)',
     },
     {
-      country: 'AF',
-      'hot dog': 142,
-      'hot dogColor': 'hsl(195, 70%, 50%)',
-      burger: 197,
-      burgerColor: 'hsl(283, 70%, 50%)',
-      sandwich: 159,
-      sandwichColor: 'hsl(182, 70%, 50%)',
-      kebab: 170,
-      kebabColor: 'hsl(2, 70%, 50%)',
-      fries: 120,
-      friesColor: 'hsl(276, 70%, 50%)',
-      donut: 12,
-      donutColor: 'hsl(2, 70%, 50%)',
+      country: 'Março',
+
+      meta03: 350,
+      meta03Color: 'hsl(276, 70%, 50%)',
     },
     {
-      country: 'AG',
-      'hot dog': 159,
-      'hot dogColor': 'hsl(96, 70%, 50%)',
-      burger: 55,
-      burgerColor: 'hsl(172, 70%, 50%)',
-      sandwich: 181,
-      sandwichColor: 'hsl(295, 70%, 50%)',
-      kebab: 88,
-      kebabColor: 'hsl(229, 70%, 50%)',
-      fries: 113,
-      friesColor: 'hsl(178, 70%, 50%)',
-      donut: 191,
-      donutColor: 'hsl(228, 70%, 50%)',
+      country: 'Abril',
+
+      meta04: 800,
+      meta04Color: 'hsl(229, 70%, 50%)',
     },
     {
-      country: 'AI',
-      'hot dog': 188,
-      'hot dogColor': 'hsl(238, 70%, 50%)',
-      burger: 130,
-      burgerColor: 'hsl(289, 70%, 50%)',
-      sandwich: 177,
-      sandwichColor: 'hsl(50, 70%, 50%)',
-      kebab: 199,
-      kebabColor: 'hsl(86, 70%, 50%)',
-      fries: 85,
-      friesColor: 'hsl(277, 70%, 50%)',
-      donut: 149,
-      donutColor: 'hsl(234, 70%, 50%)',
+      country: 'Maio',
+      meta05: 188,
+      meta05Color: 'hsl(238, 70%, 50%)',
     },
     {
-      country: 'A1',
-      'hot dog': 21,
-      'hot dogColor': 'hsl(305, 70%, 50%)',
-      burger: 197,
-      burgerColor: 'hsl(274, 70%, 50%)',
-      sandwich: 150,
-      sandwichColor: 'hsl(117, 70%, 50%)',
-      kebab: 107,
-      kebabColor: 'hsl(81, 70%, 50%)',
-      fries: 78,
-      friesColor: 'hsl(25, 70%, 50%)',
-      donut: 198,
-      donutColor: 'hsl(310, 70%, 50%)',
+      country: 'Junho',
+
+      meta06: 150,
+      meta06Color: 'hsl(117, 70%, 50%)',
     },
     {
-      country: 'AM',
-      'hot dog': 3,
-      'hot dogColor': 'hsl(198, 70%, 50%)',
-      burger: 105,
-      burgerColor: 'hsl(196, 70%, 50%)',
-      sandwich: 117,
-      sandwichColor: 'hsl(12, 70%, 50%)',
-      kebab: 102,
-      kebabColor: 'hsl(351, 70%, 50%)',
-      fries: 157,
-      friesColor: 'hsl(124, 70%, 50%)',
-      donut: 163,
-      donutColor: 'hsl(32, 70%, 50%)',
+      country: 'Julho',
+
+      meta01: 157,
+      meta01Color: 'hsl(124, 70%, 50%)',
     },
   ];
 
@@ -116,14 +51,16 @@ const GrapichBar: React.FC = () => {
     <Container>
       <ResponsiveBar
         data={data}
-        keys={['hot dog', 'burger', 'sandwich', 'kebab', 'fries', 'donut']}
+        keys={['meta01', 'meta02', 'meta03', 'meta04', 'meta05', 'meta06']}
         indexBy="country"
         margin={{ top: 50, right: 130, bottom: 50, left: 60 }}
         padding={0.3}
-        groupMode="grouped"
-        layout="vertical"
+        groupMode="stacked"
+        layout="horizontal"
+        enableGridX
+        enableGridY
         valueScale={{ type: 'linear' }}
-        indexScale={{ type: 'band', round: true }}
+        indexScale={{ type: 'band', round: false }}
         colors={{ scheme: 'nivo' }}
         defs={[
           {
@@ -154,7 +91,7 @@ const GrapichBar: React.FC = () => {
           },
           {
             match: {
-              id: 'sandwich',
+              id: 'Meta03',
             },
             id: 'lines',
           },
@@ -166,7 +103,7 @@ const GrapichBar: React.FC = () => {
           tickSize: 5,
           tickPadding: 5,
           tickRotation: 0,
-          legend: 'country',
+          // legend: 'country',
           legendPosition: 'middle',
           legendOffset: 32,
         }}
@@ -174,7 +111,7 @@ const GrapichBar: React.FC = () => {
           tickSize: 5,
           tickPadding: 5,
           tickRotation: 0,
-          legend: 'food',
+          // legend: 'food',
           legendPosition: 'middle',
           legendOffset: -40,
         }}
@@ -205,7 +142,7 @@ const GrapichBar: React.FC = () => {
             ],
           },
         ]}
-        animate={false}
+        animate
         motionStiffness={90}
         motionDamping={15}
       />
