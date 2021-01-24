@@ -130,3 +130,9 @@ export const GraphicTitle = styled.h2`
   width: 100%;
   padding-bottom: 15px;
 `;
+
+export const CardBodyGoals = styled.div`
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+`;

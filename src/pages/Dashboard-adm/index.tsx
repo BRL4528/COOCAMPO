@@ -1,3 +1,7 @@
+/* eslint-disable no-undef */
+/* eslint-disable no-shadow */
+/* eslint-disable no-unused-vars */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React from 'react';
 import { FiMaximize, FiPrinter, FiEdit } from 'react-icons/fi';
 import Carousel from '@brainhubeu/react-carousel';
@@ -7,6 +11,7 @@ import CardGraphic from '../../components/GraphicModels/CardGraphic';
 // import GraphicBar from '../../components/GraphicModels/GraphicBar';
 // import GraphicPie from '../../components/GraphicModels/GraphicPie';
 import GraphicLine from '../../components/GraphicModels/GraphicLine';
+import GraphicPie from '../../components/GraphicModels/GraphicChartPie';
 // import GraphicBump from '../../components/GraphicModels/GraphicBump';
 
 import {
@@ -15,13 +20,14 @@ import {
   GraphicTitle,
   CardGraphicText,
   CardGraphicItem,
+  CardBodyGoals,
 } from './styles';
 
 // interface PropsArray {
 //   name: string;
 // }
 
-const Dashboard: React.FC = () => {
+const Dashboard: React.FC = (onRequest, ref) => {
   const array = [];
   const temp1 = {
     name: 'Matriz',
@@ -87,55 +93,31 @@ const Dashboard: React.FC = () => {
           </CardItem>
         </Carousel>
 
-        <CardGraphicItem>
-          <CardGraphicText>
-            <GraphicTitle>Desempenho mensal</GraphicTitle>
-            <span>
-              <FiEdit />
-              <FiPrinter />
-              <FiMaximize />
-            </span>
-          </CardGraphicText>
-          <GraphicLine />
-        </CardGraphicItem>
+        <CardBodyGoals>
+          <CardGraphicItem>
+            <CardGraphicText>
+              <GraphicTitle>Desempenho mensal</GraphicTitle>
+              <span>
+                <FiEdit />
+                <FiPrinter />
+                <FiMaximize />
+              </span>
+            </CardGraphicText>
+            <GraphicLine />
+          </CardGraphicItem>
 
-        {/* <CardGraphic>
-          <CardGraphicText>
-            <GraphicTitle>Desempenho metas gerais</GraphicTitle>
-            <span>
-              <FiEdit />
-              <FiPrinter />
-              <FiMaximize />
-            </span>
-          </CardGraphicText>
-          <GraphicPie />
-        </CardGraphic>
-
-        <CardGraphic>
-          <CardGraphicText>
-            <GraphicTitle>Análise critica</GraphicTitle>
-            <span>
-              <FiEdit />
-              <FiPrinter />
-              <FiMaximize />
-            </span>
-          </CardGraphicText>
-
-          <GraphicLine />
-        </CardGraphic>
-
-        <CardGraphic>
-          <CardGraphicText>
-            <GraphicTitle>Rotina interna</GraphicTitle>
-            <span>
-              <FiEdit />
-              <FiPrinter />
-              <FiMaximize />
-            </span>
-          </CardGraphicText>
-
-          <GraphicBump />
-        </CardGraphic> */}
+          <CardGraphicItem>
+            <CardGraphicText>
+              <GraphicTitle>Desempenho mensal</GraphicTitle>
+              <span>
+                <FiEdit />
+                <FiPrinter />
+                <FiMaximize />
+              </span>
+            </CardGraphicText>
+            <GraphicPie />
+          </CardGraphicItem>
+        </CardBodyGoals>
       </Conatiner>
     </>
   );

@@ -6574,6 +6574,11 @@ fs.realpath@^1.0.0:
   resolved "https://registry.yarnpkg.com/fs.realpath/-/fs.realpath-1.0.0.tgz#1504ad2523158caa40db4a2787cb01411994ea4f"
   integrity sha1-FQStJSMVjKpA20onh8sBQRmU6k8=
 
+fscreen@^1.0.2:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/fscreen/-/fscreen-1.1.0.tgz#80f432f24dc915ba0be0f5f6a7d60ca12ecbab5c"
+  integrity sha512-nSRkgHknnCRy7ZBWIu9S4IWe1m/VBROczUEU4RzXK3QvDtc89m79m4e5mbyFSugewgB8ajQKsDzeqaQ8sZ+7hA==
+
 fsevents@^1.2.7:
   version "1.2.12"
   resolved "https://registry.yarnpkg.com/fsevents/-/fsevents-1.2.12.tgz#db7e0d8ec3b0b45724fd4d83d43554a8f1f0de5c"
@@ -8476,6 +8481,11 @@ lodash.memoize@^4.1.2:
   version "4.1.2"
   resolved "https://registry.yarnpkg.com/lodash.memoize/-/lodash.memoize-4.1.2.tgz#bcc6c49a42a2840ed997f323eada5ecd182e0bfe"
   integrity sha1-vMbEmkKihA7Zl/Mj6tpezRguC/4=
+
+lodash.orderby@^4.6.0:
+  version "4.6.0"
+  resolved "https://registry.yarnpkg.com/lodash.orderby/-/lodash.orderby-4.6.0.tgz#e697f04ce5d78522f54d9338b32b81a3393e4eb3"
+  integrity sha1-5pfwTOXXhSL1TZM4syuBozk+TrM=
 
 lodash.sortby@^4.7.0:
   version "4.7.0"
@@ -10716,6 +10726,14 @@ react-d3-speedometer@^1.0.1:
     memoize-one "^5.0.5"
     prop-types "^15.7.2"
 
+react-data-table-component@^7.0.0-alpha-5:
+  version "7.0.0-alpha-5"
+  resolved "https://registry.yarnpkg.com/react-data-table-component/-/react-data-table-component-7.0.0-alpha-5.tgz#1b33aa0219d815b0899fb16c7ac2070843e86f9e"
+  integrity sha512-DfCde6/jgnTqnqiXd0JEliNVP0CKCnWIKuE4NN/g1wGPveHc+M/9ARh42AKYWiyUP1ZhSmDnER7sclMTTVhXqw==
+  dependencies:
+    deepmerge "^4.2.2"
+    lodash.orderby "^4.6.0"
+
 react-dev-utils@^11.0.1:
   version "11.0.1"
   resolved "https://registry.yarnpkg.com/react-dev-utils/-/react-dev-utils-11.0.1.tgz#30106c2055acfd6b047d2dc478a85c356e66fe45"
@@ -10764,6 +10782,13 @@ react-fast-compare@^3.1.1:
   version "3.2.0"
   resolved "https://registry.yarnpkg.com/react-fast-compare/-/react-fast-compare-3.2.0.tgz#641a9da81b6a6320f270e89724fb45a0b39e43bb"
   integrity sha512-rtGImPZ0YyLrscKI9xTpV8psd6I8VAtjKCzQDlzyDvqJA8XOW78TXYQwNRNd8g8JZnDu8q9Fu/1v4HPAVwVdHA==
+
+react-full-screen@^0.3.2-0:
+  version "0.3.2-0"
+  resolved "https://registry.yarnpkg.com/react-full-screen/-/react-full-screen-0.3.2-0.tgz#a89834c0942f61b3345b6ca15dc74e21a6cff334"
+  integrity sha512-4tnF2m6ErBGhPodwriqYAxoWLgosPlW5g/Bt/8qsDIGuYHBPuR50TdO8HgOFGDp6q6fEf9QwSbw/B+csU5qKQA==
+  dependencies:
+    fscreen "^1.0.2"
 
 react-helmet@^6.1.0:
   version "6.1.0"
