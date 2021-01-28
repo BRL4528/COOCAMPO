@@ -1,9 +1,11 @@
 import styled from 'styled-components';
 
 export const Conatiner = styled.div`
-  /* display: flex; */
+  display: flex;
   color: #333;
   width: 100%;
+  /* background: red; */
+  height: 745px;
   padding-left: 80px;
   z-index: 0;
   overflow-x: hidden;
