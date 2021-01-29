@@ -13,12 +13,12 @@ import {
 } from './styles';
 
 // import { FormContainer } from './styles';
-import Input from '../Input';
-import TextArea from '../TextArea';
-import Button from '../Button';
-import Select from '../Select';
+import Input from '../../Input';
+import TextArea from '../../TextArea';
+import Button from '../../Button';
+import Select from '../../Select';
 
-import Modal from '../Modal';
+import Modal from '../index';
 
 interface IModalProps {
   isOpen: boolean;

@@ -209,8 +209,12 @@ const Sidebar: React.FC<LayoutProps> = ({ pathname }) => {
             </Link>
           </OptionList>
 
-          <OptionList pathname={pathname} path="/report" className="nav-item">
-            <Link to="report" className="nav-link">
+          <OptionList
+            pathname={pathname}
+            path="/analyticModule"
+            className="nav-item"
+          >
+            <Link to="analyticModule" className="nav-link">
               <FiSliders color="#1c9cd9" size={18} />
               {/* <svg
                 width="18"

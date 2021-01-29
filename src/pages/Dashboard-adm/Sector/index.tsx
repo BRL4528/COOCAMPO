@@ -19,7 +19,7 @@ import GraphicSpeedometer from '../../../components/GraphicModels/GraphicSpeedom
 import Table from '../../../components/DataTable';
 
 import Button from '../../../components/Button';
-import ModalAddGoals from '../../../components/ModalAddGoals';
+import ModalAddGoals from '../../../components/Modal/ModalAddGoals';
 
 import {
   Container,

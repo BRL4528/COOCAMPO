@@ -2,7 +2,7 @@
 import React, { useCallback, useState } from 'react';
 
 import Button from '../../../components/Button';
-import ModalAddGoals from '../../../components/Modal/ModalAddGoals';
+import ModalAddGoals from '../../../components/Modal/ModalAddAnalyticModule';
 
 import { Container, CardeHeader, CardButton, TableContainer } from './styles';
 
@@ -19,14 +19,14 @@ const SelectorFolders: React.FC = () => {
       <Container>
         <CardeHeader>
           <div>
-            <h2>Metas e Submetas</h2>
-            <strong>Cadastre novas metas ou edite metas existentes</strong>
+            <h2>Módulo de Análise</h2>
+            <strong>Verifique as formas de inserção de dados manuais.</strong>
           </div>
 
           <CardButton>
             <div>
               <Button onClick={toggleModal} type="button">
-                Criar nova meta
+                Criar novo módulo de análise
               </Button>
             </div>
             {/* <div>
