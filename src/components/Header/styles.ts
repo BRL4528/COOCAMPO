@@ -78,7 +78,7 @@ export const HeaderContent = styled.div<ContainerProps>`
 
     :hover {
       transition: var(--transition-speed);
-      color: #1c9cd9;
+      color: #f2c811;
     }
   }
 `;
@@ -96,6 +96,6 @@ export const Profile = styled.div`
     color: #f4ede8;
   }
   strong {
-    color: #1c9cd9;
+    color: #f2c811;
   }
 `;

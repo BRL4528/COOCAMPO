@@ -7,10 +7,10 @@ interface ContainerProps {
 
 export const Container = styled.button<ContainerProps>`
   z-index: 1;
-  background: #1c9cd9;
+  background: #f2c811;
   height: 45px;
   border-radius: 6px;
-  border: solid 2px #1c9cd9;
+  border: solid 2px #f2c811;
   /* border: 0; */
   padding: 0 10px;
   color: #fff;
@@ -23,12 +23,12 @@ export const Container = styled.button<ContainerProps>`
     props.groud &&
     css`
       background: #fff;
-      color: #1c9cd9;
+      color: #f2c811;
     `}
 
   &:hover {
-    background: ${shade(0.2, '#1c9cd9')};
+    background: ${shade(0.2, '#f2c811')};
 
-    border: ${shade(0.2, '#1c9cd9')};
+    border: ${shade(0.2, '#f2c811')};
   }
 `;

@@ -15,7 +15,7 @@ export const OptionList = styled.li<LayoutProps>`
   }
 
   ${({ path, pathname }: LayoutProps): string =>
-    path === pathname ? 'border-left: solid 4px #1c9cd9;' : ''}
+    path === pathname ? 'border-left: solid 4px #f2c811;' : ''}
   ${({ path, pathname }: LayoutProps): string =>
     path === pathname ? ' background: #fff;' : ''}
 
@@ -26,7 +26,7 @@ export const OptionList = styled.li<LayoutProps>`
 
   span {
     ${({ path, pathname }: LayoutProps): string =>
-      path === pathname ? 'color: #1c9cd9;' : ''}
+      path === pathname ? 'color: #f2c811;' : ''}
 
     ${({ path, pathname }: LayoutProps): string =>
       path === pathname ? 'filter: grayscale(0%) opacity(1);' : ''}
