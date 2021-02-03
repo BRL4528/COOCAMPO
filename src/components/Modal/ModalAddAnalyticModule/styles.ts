@@ -22,7 +22,7 @@ export const Form = styled(unform)`
   }
 
   button {
-    margin: 0 0 20px 0;
+    margin: 25px 0 20px 0;
     align-self: flex-end;
   }
 

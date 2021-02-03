@@ -58,9 +58,9 @@ const ModalAddFood: React.FC<IModalProps> = ({ isOpen, setIsOpen }) => {
 
   const handleSubmit = useCallback(
     (data: AddGoalsModal) => {
-      console.log(data, selectedSubGoalsItems);
+      console.log(data, selectedSubGoalsItems, selectedAnalyticItems);
     },
-    [selectedSubGoalsItems],
+    [selectedSubGoalsItems, selectedAnalyticItems],
   );
 
   const handleSelectSubGoalsItem = useCallback(
@@ -131,7 +131,6 @@ const ModalAddFood: React.FC<IModalProps> = ({ isOpen, setIsOpen }) => {
         openSub={openSubGoals}
         openAnalytic={openAnalyticModule}
         onSubmit={handleSubmit}
-        // name={itemSelected}
       >
         <h2>Nova meta</h2>
         <header>
@@ -162,16 +161,6 @@ const ModalAddFood: React.FC<IModalProps> = ({ isOpen, setIsOpen }) => {
               Atribuir submeta
               <FiLink2 size={20} />
             </button>
-            {/*
-            <button onClick={hanleOpenSubGoals} type="button">
-              Atribuir importação
-              <FiLink2 size={20} />
-            </button> */}
-            {/*
-            <button onClick={hanleOpenSubGoals} type="button">
-              Criar nova submeta
-              <FiPlus size={20} />
-            </button> */}
           </span>
 
           <ContainerSub>
@@ -203,25 +192,11 @@ const ModalAddFood: React.FC<IModalProps> = ({ isOpen, setIsOpen }) => {
               </CardAnalytic>
             ))}
           </ContainerAnalytic>
-          {/*
-          <ContainerSub>
-            {subGoals.map(sub => (
-              <CardSub key={sub.id} openSub={openSubGoals}>
-                <h4>{sub.name}</h4>
-              </CardSub>
-            ))}
-          </ContainerSub> */}
+
           <Button type="submit" data-testid="add-food-button">
             Salvar
           </Button>
         </nav>
-
-        {/* <button type="submit">
-            <p className="text">Adicionar Meta</p>
-            <div className="icon">
-              <FiCheckSquare size={24} />
-            </div>
-          </button> */}
       </Form>
     </Modal>
   );

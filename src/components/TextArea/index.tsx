@@ -50,6 +50,7 @@ const Input: React.FC<TextAreaProps> = ({ name, icon: Icon, ...rest }) => {
         defaultValue={defaultValue}
         ref={inputRef}
         {...rest}
+        rows={10}
       />
       {error && (
         <Error title={error}>

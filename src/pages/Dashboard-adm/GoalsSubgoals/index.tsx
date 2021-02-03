@@ -29,11 +29,11 @@ const SelectorFolders: React.FC = () => {
                 Criar nova meta
               </Button>
             </div>
-            {/* <div>
+            <div>
               <Button groud type="button">
                 Criar Submeta
               </Button>
-            </div> */}
+            </div>
           </CardButton>
         </CardeHeader>
 
