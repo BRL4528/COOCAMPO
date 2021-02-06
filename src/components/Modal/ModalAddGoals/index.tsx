@@ -1,4 +1,5 @@
-import React, { useCallback, useRef, useState } from 'react';
+/* eslint-disable no-unused-vars */
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 
 import { FormHandles } from '@unform/core';
 
@@ -23,9 +24,18 @@ import Select from '../../Select';
 import Modal from '../index';
 import api from '../../../services/api';
 
+interface IGoals {
+  id: string;
+  name: string;
+  status: string;
+  weight: string;
+  observations: string;
+}
+
 interface IModalProps {
   isOpen: boolean;
   setIsOpen: () => void;
+  handleGoals: (goal: Omit<IGoals, 'id'>) => void;
 }
 
 interface AddGoalsModal {
@@ -35,7 +45,18 @@ interface AddGoalsModal {
   observations: string;
 }
 
-const ModalAddFood: React.FC<IModalProps> = ({ isOpen, setIsOpen }) => {
+interface DataSubGoals {
+  id: string;
+  name: string;
+  status: string;
+  weight: string;
+}
+
+const ModalAddFood: React.FC<IModalProps> = ({
+  isOpen,
+  setIsOpen,
+  handleGoals,
+}) => {
   const formRef = useRef<FormHandles>(null);
   const { addToast } = useToast();
 
@@ -44,6 +65,7 @@ const ModalAddFood: React.FC<IModalProps> = ({ isOpen, setIsOpen }) => {
   const [selectedSubGoalsItems, setSelectedSubGoalsItems] = useState<string[]>(
     [],
   );
+  const [dataSubGoals, setDataSubGoals] = useState<DataSubGoals[]>([]);
   const [selectedAnalyticItems, setSelectedAnalyticItems] = useState<string[]>(
     [],
   );
@@ -85,13 +107,23 @@ const ModalAddFood: React.FC<IModalProps> = ({ isOpen, setIsOpen }) => {
           status,
         };
 
-        await api.post('/goals', formData);
+        const response = await api.post('/goals', formData);
+
+        handleGoals(formData);
+
+        if (selectedSubGoalsItems.length > 0) {
+          await api.post('/sub-goals-of-goals/create-all', {
+            subGoalsIds: selectedSubGoalsItems,
+            goal_id: response.data.id,
+          });
+        }
+
         setIsOpen();
 
         addToast({
           type: 'success',
-          title: 'Metas do setor',
-          description: 'Criado sucesso com sucesso',
+          title: 'Meta do setor',
+          description: 'Criada sucesso com sucesso',
         });
       } catch (err) {
         console.log(err);
@@ -103,7 +135,7 @@ const ModalAddFood: React.FC<IModalProps> = ({ isOpen, setIsOpen }) => {
         });
       }
     },
-    [addToast, setIsOpen],
+    [addToast, setIsOpen, handleGoals, selectedSubGoalsItems],
   );
 
   const handleSelectSubGoalsItem = useCallback(
@@ -148,14 +180,13 @@ const ModalAddFood: React.FC<IModalProps> = ({ isOpen, setIsOpen }) => {
     { value: 's2', label: 'Sistema S2' },
     { value: 'Senior', label: 'Sistema Senior' },
     { value: 'Módulo de análise', label: 'Módulo de análise' },
-    // { value: 'Senior', label: 'Sistema Senior' },
   ];
 
-  const subGoals = [
-    { id: '1q', name: 'Orçamento de IPVA' },
-    { id: '2q', name: 'Orçamento de Leite' },
-    { id: '3q', name: 'Verificação dos pneus' },
-  ];
+  useEffect(() => {
+    api.get('/sub-goals').then(response => {
+      setDataSubGoals(response.data);
+    });
+  });
 
   const analyticModule = [
     { id: '1', name: 'Verificação do uso de EPI' },
@@ -207,7 +238,7 @@ const ModalAddFood: React.FC<IModalProps> = ({ isOpen, setIsOpen }) => {
           </span>
 
           <ContainerSub>
-            {subGoals.map(sub => (
+            {dataSubGoals.map(sub => (
               <CardSub
                 onClick={() => handleSelectSubGoalsItem(sub.id)}
                 key={sub.id}

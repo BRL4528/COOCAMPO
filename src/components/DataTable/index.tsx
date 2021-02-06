@@ -47,24 +47,6 @@ const Table: React.FC = () => {
       sortable: true,
       right: true,
     },
-    // {
-    //   name: 'Janeiro',
-    //   selector: 'janeiro',
-    //   sortable: true,
-    //   right: true,
-    // },
-    // {
-    //   name: 'Fevereiro',
-    //   selector: 'fevereiro',
-    //   sortable: true,
-    //   right: true,
-    // },
-    // {
-    //   name: 'Março',
-    //   selector: 'marco',
-    //   sortable: true,
-    //   right: true,
-    // },
   ];
 
   const data = [

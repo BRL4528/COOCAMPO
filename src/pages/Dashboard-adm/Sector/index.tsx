@@ -22,6 +22,14 @@ import {
   CardGraphicText,
 } from './styles';
 
+interface IGoals {
+  id: string;
+  name: string;
+  status: string;
+  weight: string;
+  observations: string;
+}
+
 const SelectorFolders: React.FC = () => {
   const handle = useFullScreenHandle();
 
@@ -37,9 +45,21 @@ const SelectorFolders: React.FC = () => {
     content: () => componentRef.current,
   });
 
+  const handleGoals = useCallback((goal: Omit<IGoals, 'id'>) => {
+    try {
+      console.log(goal);
+    } catch (err) {
+      console.log(err);
+    }
+  }, []);
+
   return (
     <>
-      <ModalAddGoals isOpen={modalOpen} setIsOpen={toggleModal} />
+      <ModalAddGoals
+        isOpen={modalOpen}
+        setIsOpen={toggleModal}
+        handleGoals={handleGoals}
+      />
       <Container>
         <CardeHeader>
           <div>

@@ -9,18 +9,19 @@ import api from '../../../services/api';
 
 import { Container, CardeHeader, CardButton, TableContainer } from './styles';
 
-interface SubGoal {
+interface IGoals {
   id: string;
   name: string;
   status: string;
-  weight: number;
+  weight: string;
   observations: string;
 }
 
 const SelectorFolders: React.FC = () => {
   const [modalOpenGoals, setModalGoalsOpen] = useState(false);
   const [modalOpenSubGoals, setModalOpen] = useState(false);
-  const [dataSubGoals, setDataSubGoals] = useState<SubGoal[]>([]);
+  const [dataSubGoals, setDataSubGoals] = useState<IGoals[]>([]);
+  const [dataTemp, setDataTemp] = useState({});
 
   const toggleModalGoals = useCallback(() => {
     setModalGoalsOpen(!modalOpenGoals);
@@ -31,15 +32,27 @@ const SelectorFolders: React.FC = () => {
   }, [modalOpenSubGoals]);
 
   useEffect(() => {
-    api.get('/sub-goals').then(response => {
+    api.get('/goals').then(response => {
       setDataSubGoals(response.data);
-      console.log(dataSubGoals);
     });
+  }, [dataTemp]);
+
+  const handleGoals = useCallback((goal: Omit<IGoals, 'id'>) => {
+    try {
+      const temp = goal;
+      setDataTemp(temp);
+    } catch (err) {
+      console.log(err);
+    }
   }, []);
 
   return (
     <>
-      <ModalAddGoals isOpen={modalOpenGoals} setIsOpen={toggleModalGoals} />
+      <ModalAddGoals
+        isOpen={modalOpenGoals}
+        setIsOpen={toggleModalGoals}
+        handleGoals={handleGoals}
+      />
       <ModalAddSubGoals
         isOpen={modalOpenSubGoals}
         setIsOpen={toggleModalSubgoals}
@@ -92,21 +105,6 @@ const SelectorFolders: React.FC = () => {
             </tbody>
           </table>
         </TableContainer>
-
-        {/* <CardSelector>
-        <CardTitle>
-          Metas e Submetas
-        </CardTitle>
-        <CardTitle>
-          Setor
-        </CardTitle>
-        <CardTitle>
-          Colaborador
-        </CardTitle>
-        <CardTitle>
-          Módulos de
-        </CardTitle>
-      </CardSelector> */}
       </Container>
     </>
   );
