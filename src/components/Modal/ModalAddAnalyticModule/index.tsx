@@ -13,7 +13,7 @@ import { useToast } from '../../../hooks/toast';
 import getValidationErrors from '../../../utils/getValidationErrors';
 
 import Modal from '../index';
-// import api from '../../../services/api';
+import api from '../../../services/api';
 
 interface IModalProps {
   isOpen: boolean;
@@ -57,7 +57,7 @@ const ModalAddFood: React.FC<IModalProps> = ({ isOpen, setIsOpen }) => {
           observations,
         };
         console.log(formData);
-        // await api.post('/analysis-module', formData);
+        await api.post('/analysis-module', formData);
         setIsOpen();
 
         addToast({

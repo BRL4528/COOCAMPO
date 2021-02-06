@@ -16,6 +16,7 @@ export const OptionList = styled.li<LayoutProps>`
 
   ${({ path, pathname }: LayoutProps): string =>
     path === pathname ? 'border-left: solid 4px #f2c811;' : ''}
+
   ${({ path, pathname }: LayoutProps): string =>
     path === pathname ? ' background: #fff;' : ''}
 
