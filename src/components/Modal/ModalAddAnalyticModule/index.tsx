@@ -39,7 +39,7 @@ const ModalAddFood: React.FC<IModalProps> = ({ isOpen, setIsOpen }) => {
         const schema = Yup.object().shape({
           name: Yup.string().required('Nome obrigatório'),
           responsible: Yup.string()
-            .required('E-mail obrigatório')
+            .required('Representante obrigátorio')
             .email('Digite um e-mail válido'),
           condition: Yup.string(),
           observations: Yup.string(),
@@ -57,7 +57,7 @@ const ModalAddFood: React.FC<IModalProps> = ({ isOpen, setIsOpen }) => {
           observations,
         };
         console.log(formData);
-        // await api.put('/analysis-module', formData);
+        // await api.post('/analysis-module', formData);
         setIsOpen();
 
         addToast({

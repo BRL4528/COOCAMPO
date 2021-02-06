@@ -32,7 +32,7 @@ const Modal: React.FC<IModalProps> = ({ children, isOpen, setIsOpen }) => {
           background: '#F8F8FB',
           color: '#000000',
           borderRadius: '4px',
-          width: '60%',
+          width: '50%',
           maxHeight: '90%',
           border: 'none',
         },

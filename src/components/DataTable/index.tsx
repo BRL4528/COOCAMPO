@@ -36,35 +36,35 @@ const Table: React.FC = () => {
       right: true,
     },
     {
-      name: 'Meta',
-      selector: 'meta',
+      name: 'Situação',
+      selector: 'situacao',
       sortable: true,
       right: true,
     },
     {
-      name: 'Prazo',
-      selector: 'prazo',
+      name: 'Editar',
+      selector: 'editar',
       sortable: true,
       right: true,
     },
-    {
-      name: 'Janeiro',
-      selector: 'janeiro',
-      sortable: true,
-      right: true,
-    },
-    {
-      name: 'Fevereiro',
-      selector: 'fevereiro',
-      sortable: true,
-      right: true,
-    },
-    {
-      name: 'Março',
-      selector: 'marco',
-      sortable: true,
-      right: true,
-    },
+    // {
+    //   name: 'Janeiro',
+    //   selector: 'janeiro',
+    //   sortable: true,
+    //   right: true,
+    // },
+    // {
+    //   name: 'Fevereiro',
+    //   selector: 'fevereiro',
+    //   sortable: true,
+    //   right: true,
+    // },
+    // {
+    //   name: 'Março',
+    //   selector: 'marco',
+    //   sortable: true,
+    //   right: true,
+    // },
   ];
 
   const data = [

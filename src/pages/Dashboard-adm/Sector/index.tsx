@@ -7,7 +7,6 @@ import { useReactToPrint } from 'react-to-print';
 import { FiEdit, FiPrinter, FiMaximize } from 'react-icons/fi';
 
 import GraphicSpeedometer from '../../../components/GraphicModels/GraphicSpeedometer';
-import Table from '../../../components/DataTable';
 
 import Button from '../../../components/Button';
 import ModalAddGoals from '../../../components/Modal/ModalAddGoals';
@@ -87,7 +86,6 @@ const SelectorFolders: React.FC = () => {
                 <GraphicSpeedometer dataValue={450} />
               </GraphicSpeed>
             </CardBodyGoals>
-            <Table />
           </CardGraphic>
         </FullScreen>
       </Container>

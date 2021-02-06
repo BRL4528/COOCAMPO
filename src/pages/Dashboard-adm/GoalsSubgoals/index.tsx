@@ -1,21 +1,50 @@
 /* eslint-disable jsx-a11y/control-has-associated-label */
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState, useEffect } from 'react';
 
 import Button from '../../../components/Button';
 import ModalAddGoals from '../../../components/Modal/ModalAddGoals';
+import ModalAddSubGoals from '../../../components/Modal/ModalAddSubGoals';
+
+import api from '../../../services/api';
 
 import { Container, CardeHeader, CardButton, TableContainer } from './styles';
 
-const SelectorFolders: React.FC = () => {
-  const [modalOpen, setModalOpen] = useState(false);
+interface SubGoal {
+  id: string;
+  name: string;
+  status: string;
+  weight: number;
+  observations: string;
+}
 
-  const toggleModal = useCallback(() => {
-    setModalOpen(!modalOpen);
-  }, [modalOpen]);
+const SelectorFolders: React.FC = () => {
+  const [modalOpenGoals, setModalGoalsOpen] = useState(false);
+  const [modalOpenSubGoals, setModalOpen] = useState(false);
+  const [dataSubGoals, setDataSubGoals] = useState<SubGoal[]>([]);
+
+  const toggleModalGoals = useCallback(() => {
+    setModalGoalsOpen(!modalOpenGoals);
+  }, [modalOpenGoals]);
+
+  const toggleModalSubgoals = useCallback(() => {
+    setModalOpen(!modalOpenSubGoals);
+  }, [modalOpenSubGoals]);
+
+  useEffect(() => {
+    api.get('/sub-goals').then(response => {
+      setDataSubGoals(response.data);
+      console.log(dataSubGoals);
+    });
+  }, []);
 
   return (
     <>
-      <ModalAddGoals isOpen={modalOpen} setIsOpen={toggleModal} />
+      <ModalAddGoals isOpen={modalOpenGoals} setIsOpen={toggleModalGoals} />
+      <ModalAddSubGoals
+        isOpen={modalOpenSubGoals}
+        setIsOpen={toggleModalSubgoals}
+      />
+
       <Container>
         <CardeHeader>
           <div>
@@ -25,12 +54,12 @@ const SelectorFolders: React.FC = () => {
 
           <CardButton>
             <div>
-              <Button onClick={toggleModal} type="button">
+              <Button onClick={toggleModalGoals} type="button">
                 Criar nova meta
               </Button>
             </div>
             <div>
-              <Button groud type="button">
+              <Button onClick={toggleModalSubgoals} groud type="button">
                 Criar Submeta
               </Button>
             </div>
@@ -43,35 +72,23 @@ const SelectorFolders: React.FC = () => {
               <tr>
                 <th />
                 <th>Peso</th>
-                <th>Resultado previsto</th>
-                <th>Prazo</th>
-                <th>Variação</th>
+                <th>Situação</th>
+
                 <th />
               </tr>
             </thead>
 
             <tbody>
-              <tr>
-                <td>
-                  <h3>Cumprimentos de orçamento</h3>
-                </td>
-                <td>10%</td>
-                <td>Submetas</td>
-                <td>Dezembro 2021</td>
-                <td>On/Off</td>
-                <td>...</td>
-              </tr>
-
-              <tr>
-                <td>
-                  <h3>Mortalidade de leitoes</h3>
-                </td>
-                <td>10%</td>
-                <td>Submetas</td>
-                <td>Dezembro 2021</td>
-                <td>On/Off</td>
-                <td>...</td>
-              </tr>
+              {dataSubGoals.map(subgoal => (
+                <tr key={subgoal.id}>
+                  <td>
+                    <h3>{subgoal.name}</h3>
+                  </td>
+                  <td>{subgoal.weight}</td>
+                  <td>{subgoal.status}</td>
+                  <td>...</td>
+                </tr>
+              ))}
             </tbody>
           </table>
         </TableContainer>

@@ -3,6 +3,7 @@ import { Report } from 'powerbi-report-component';
 import { useLoading, Oval } from '@agney/react-loading';
 
 import { Conatiner, ContainerBI } from './styles';
+import { useToast } from '../../hooks/toast';
 import api from '../../services/api';
 
 interface PropsPowerBI {
@@ -18,6 +19,8 @@ interface PropsPowerBI {
 
 const Dashboard: React.FC = () => {
   const componentRef = useRef<HTMLDivElement>(null);
+  const { addToast } = useToast();
+
   const [dataBI, setDataBI] = useState<PropsPowerBI>();
   const [loadDash, setLoadDash] = useState(true);
 
@@ -42,10 +45,16 @@ const Dashboard: React.FC = () => {
         // console.log(response.data.embedUrl[0].reportId);
       } catch (err) {
         console.log(err);
+
+        addToast({
+          type: 'error',
+          title: 'Gráficos de analíse',
+          description: 'Não foi posivel carrgar os gráficos de analíse',
+        });
       }
     }
     loadTokenBI();
-  }, [setLoadDash]);
+  }, [setLoadDash, addToast]);
 
   return (
     <>
@@ -57,13 +66,6 @@ const Dashboard: React.FC = () => {
               tokenType="Embed"
               accessToken={dataBI ? dataBI.accessToken : 'sem token'}
               embedUrl={dataBI ? dataBI.embedUrl[0].embedUrl : 'sem token'}
-              {...console.log(dataBI ? dataBI.accessToken : 'sem token')}
-              {...console.log(
-                dataBI ? dataBI.embedUrl[0].embedUrl : 'sem token',
-              )}
-              {...console.log(
-                dataBI ? dataBI.embedUrl[0].reportId : 'sem token',
-              )}
               embedId={dataBI ? dataBI.embedUrl[0].reportId : 'sem token'}
               // pageName="Sentiment"
               reportMode="View"

@@ -2,10 +2,6 @@ import styled, { css } from 'styled-components';
 
 import { Form as unform } from '@unform/web';
 
-interface PropsForm {
-  openSub: boolean;
-  openAnalytic: boolean;
-}
 interface PropsSub {
   openSub: boolean;
 }
@@ -13,7 +9,7 @@ interface PropsAnalytic {
   openAnalytic: boolean;
 }
 
-export const Form = styled(unform)<PropsForm>`
+export const Form = styled(unform)`
   .selected {
     background: rgba(28, 156, 217, 0.2);
     border: 2px solid #1c9cd9;
@@ -31,22 +27,6 @@ export const Form = styled(unform)<PropsForm>`
   button {
     margin: 0 0 20px 0;
     align-self: flex-end;
-  }
-
-  > header {
-    margin: 0;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
-
-    div {
-      margin: 0 0 6px;
-
-      & + div {
-        margin: 0 0 6px 6px;
-      }
-    }
   }
 
   nav {
@@ -81,17 +61,6 @@ export const Form = styled(unform)<PropsForm>`
     }
     height: 115px;
     transition: height 600ms ease;
-
-    ${props =>
-      props.openSub &&
-      css`
-        height: 20rem;
-      `}
-    ${props =>
-      props.openAnalytic &&
-      css`
-        height: 20rem;
-      `}
   }
   @media only screen and (max-width: 600px) {
     padding: 10px 20px;

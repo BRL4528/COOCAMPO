@@ -2,7 +2,9 @@ import React, { useCallback, useRef, useState } from 'react';
 
 import { FormHandles } from '@unform/core';
 
+import * as Yup from 'yup';
 import { FiLink2 } from 'react-icons/fi';
+import { useToast } from '../../../hooks/toast';
 
 import {
   Form,
@@ -19,6 +21,7 @@ import Button from '../../Button';
 import Select from '../../Select';
 
 import Modal from '../index';
+import api from '../../../services/api';
 
 interface IModalProps {
   isOpen: boolean;
@@ -29,11 +32,12 @@ interface AddGoalsModal {
   name: string;
   weight: string;
   source: string;
-  term: string;
+  observations: string;
 }
 
 const ModalAddFood: React.FC<IModalProps> = ({ isOpen, setIsOpen }) => {
   const formRef = useRef<FormHandles>(null);
+  const { addToast } = useToast();
 
   const [openSubGoals, setOpenSubGoals] = useState(false);
   const [openAnalyticModule, setAnlalyticModule] = useState(false);
@@ -43,8 +47,6 @@ const ModalAddFood: React.FC<IModalProps> = ({ isOpen, setIsOpen }) => {
   const [selectedAnalyticItems, setSelectedAnalyticItems] = useState<string[]>(
     [],
   );
-
-  // const [itemSelected, setNameSelected] = useState('');
 
   const hanleOpenSubGoals = useCallback(() => {
     setOpenSubGoals(!openSubGoals);
@@ -57,10 +59,51 @@ const ModalAddFood: React.FC<IModalProps> = ({ isOpen, setIsOpen }) => {
   }, [openAnalyticModule]);
 
   const handleSubmit = useCallback(
-    (data: AddGoalsModal) => {
-      console.log(data, selectedSubGoalsItems, selectedAnalyticItems);
+    async (data: AddGoalsModal) => {
+      try {
+        formRef.current?.setErrors({});
+
+        const schema = Yup.object().shape({
+          name: Yup.string().required('Nome da meta obrigatório'),
+          weight: Yup.number().required('Peso obrigatório'),
+          source: Yup.string(),
+          observations: Yup.string(),
+        });
+        await schema.validate(data, {
+          abortEarly: false,
+        });
+
+        const status = 'ativo';
+
+        const { name, observations, source, weight } = data;
+
+        const formData = {
+          name,
+          observations,
+          source,
+          weight,
+          status,
+        };
+
+        await api.post('/goals', formData);
+        setIsOpen();
+
+        addToast({
+          type: 'success',
+          title: 'Metas do setor',
+          description: 'Criado sucesso com sucesso',
+        });
+      } catch (err) {
+        console.log(err);
+        setIsOpen();
+        addToast({
+          type: 'error',
+          title: 'Erro na atualização',
+          description: 'Ocorreu um erro ao criar nova meta.',
+        });
+      }
     },
-    [selectedSubGoalsItems, selectedAnalyticItems],
+    [addToast, setIsOpen],
   );
 
   const handleSelectSubGoalsItem = useCallback(
@@ -144,7 +187,7 @@ const ModalAddFood: React.FC<IModalProps> = ({ isOpen, setIsOpen }) => {
 
         <Input type="date" name="date" placeholder="Prazo" />
 
-        <TextArea name="term" placeholder="Descrição" />
+        <TextArea name="observations" placeholder="Descrição" />
 
         <nav>
           <span>
