@@ -15,24 +15,31 @@ import getValidationErrors from '../../../utils/getValidationErrors';
 import Modal from '../index';
 import api from '../../../services/api';
 
-interface IModalProps {
-  isOpen: boolean;
-  setIsOpen: () => void;
-}
-
-interface AnalyticModule {
+interface IAnalyticModule {
+  id: string;
   name: string;
   responsible: string;
   condition: string;
   observations: string;
 }
 
-const ModalAddFood: React.FC<IModalProps> = ({ isOpen, setIsOpen }) => {
+interface IModalProps {
+  isOpen: boolean;
+  setIsOpen: () => void;
+  // eslint-disable-next-line no-unused-vars
+  handleAnalytic: (analytic: Omit<IAnalyticModule, 'status'>) => void;
+}
+
+const ModalAddFood: React.FC<IModalProps> = ({
+  isOpen,
+  setIsOpen,
+  handleAnalytic,
+}) => {
   const formRef = useRef<FormHandles>(null);
   const { addToast } = useToast();
 
   const handleSubmit = useCallback(
-    async (data: AnalyticModule) => {
+    async (data: IAnalyticModule) => {
       try {
         formRef.current?.setErrors({});
 
@@ -56,8 +63,10 @@ const ModalAddFood: React.FC<IModalProps> = ({ isOpen, setIsOpen }) => {
           condition,
           observations,
         };
-        console.log(formData);
-        await api.post('/analysis-module', formData);
+
+        const response = await api.post('/analysis-module', formData);
+        handleAnalytic(response.data);
+
         setIsOpen();
 
         addToast({
@@ -81,7 +90,7 @@ const ModalAddFood: React.FC<IModalProps> = ({ isOpen, setIsOpen }) => {
         });
       }
     },
-    [addToast, setIsOpen],
+    [addToast, handleAnalytic, setIsOpen],
   );
 
   return (

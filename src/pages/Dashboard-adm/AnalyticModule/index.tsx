@@ -1,21 +1,57 @@
 /* eslint-disable jsx-a11y/control-has-associated-label */
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 
 import Button from '../../../components/Button';
 import ModalAddGoals from '../../../components/Modal/ModalAddAnalyticModule';
+import api from '../../../services/api';
 
 import { Container, CardeHeader, CardButton, TableContainer } from './styles';
 
+interface IAnalyticModule {
+  id: string;
+  name: string;
+  responsible: string;
+  condition: string;
+  observations: string;
+}
+
 const SelectorFolders: React.FC = () => {
   const [modalOpen, setModalOpen] = useState(false);
+  const [dataAnalytic, setDataAnalytic] = useState<IAnalyticModule>();
+
+  const [dataAnalyticModule, setDataAnalyticModule] = useState<
+    IAnalyticModule[]
+  >([]);
 
   const toggleModal = useCallback(() => {
     setModalOpen(!modalOpen);
   }, [modalOpen]);
 
+  useEffect(() => {
+    api.get('/analysis-module').then(response => {
+      setDataAnalyticModule(response.data);
+    });
+  }, [dataAnalytic]);
+
+  const handleAnalytic = useCallback(
+    (analytic: Omit<IAnalyticModule, 'status'>) => {
+      try {
+        const temp = analytic;
+        setDataAnalytic(temp);
+      } catch (err) {
+        console.log(err);
+      }
+    },
+    [],
+  );
+
   return (
     <>
-      <ModalAddGoals isOpen={modalOpen} setIsOpen={toggleModal} />
+      <ModalAddGoals
+        isOpen={modalOpen}
+        setIsOpen={toggleModal}
+        handleAnalytic={handleAnalytic}
+      />
       <Container>
         <CardeHeader>
           <div>
@@ -29,11 +65,6 @@ const SelectorFolders: React.FC = () => {
                 Criar novo módulo de análise
               </Button>
             </div>
-            {/* <div>
-              <Button groud type="button">
-                Criar Submeta
-              </Button>
-            </div> */}
           </CardButton>
         </CardeHeader>
 
@@ -51,45 +82,21 @@ const SelectorFolders: React.FC = () => {
             </thead>
 
             <tbody>
-              <tr>
-                <td>
-                  <h3>Cumprimentos de orçamento</h3>
-                </td>
-                <td>10%</td>
-                <td>Submetas</td>
-                <td>Dezembro 2021</td>
-                <td>On/Off</td>
-                <td>...</td>
-              </tr>
-
-              <tr>
-                <td>
-                  <h3>Mortalidade de leitoes</h3>
-                </td>
-                <td>10%</td>
-                <td>Submetas</td>
-                <td>Dezembro 2021</td>
-                <td>On/Off</td>
-                <td>...</td>
-              </tr>
+              {dataAnalyticModule.map(analyticModule => (
+                <tr key={analyticModule.id}>
+                  <td>
+                    <h3>{analyticModule.name}</h3>
+                  </td>
+                  <td>10%</td>
+                  <td>Submetas</td>
+                  <td>Dezembro 2021</td>
+                  <td>On/Off</td>
+                  <td>...</td>
+                </tr>
+              ))}
             </tbody>
           </table>
         </TableContainer>
-
-        {/* <CardSelector>
-        <CardTitle>
-          Metas e Submetas
-        </CardTitle>
-        <CardTitle>
-          Setor
-        </CardTitle>
-        <CardTitle>
-          Colaborador
-        </CardTitle>
-        <CardTitle>
-          Módulos de
-        </CardTitle>
-      </CardSelector> */}
       </Container>
     </>
   );
