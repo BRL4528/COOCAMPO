@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useRef } from 'react';
+import React, { useCallback, useState, useRef, useEffect } from 'react';
 
 import { FullScreen, useFullScreenHandle } from 'react-full-screen';
 
@@ -9,7 +9,7 @@ import { FiEdit, FiPrinter, FiMaximize } from 'react-icons/fi';
 import GraphicSpeedometer from '../../../components/GraphicModels/GraphicSpeedometer';
 
 import Button from '../../../components/Button';
-import ModalAddGoals from '../../../components/Modal/ModalAddGoals';
+import ModalAddGoals from '../../../components/Modal/ModalAddSector';
 
 import {
   Container,
@@ -21,12 +21,12 @@ import {
   CardBodyGoals,
   CardGraphicText,
 } from './styles';
+import api from '../../../services/api';
 
-interface IGoals {
+interface ISector {
   id: string;
   name: string;
-  status: string;
-  weight: string;
+  leader: string;
   observations: string;
 }
 
@@ -36,6 +36,8 @@ const SelectorFolders: React.FC = () => {
   const componentRef = useRef<HTMLDivElement>(null);
 
   const [modalOpen, setModalOpen] = useState(false);
+  const [dataSector, setDataSector] = useState<ISector>();
+  const [dataUpdateSector, setDataUpdateSector] = useState<ISector[]>([]);
 
   const toggleModal = useCallback(() => {
     setModalOpen(!modalOpen);
@@ -45,9 +47,16 @@ const SelectorFolders: React.FC = () => {
     content: () => componentRef.current,
   });
 
-  const handleGoals = useCallback((goal: Omit<IGoals, 'id'>) => {
+  useEffect(() => {
+    api.get('/sectors').then(response => {
+      setDataUpdateSector(response.data);
+    });
+  }, [dataSector]);
+
+  const handleSector = useCallback((sector: Omit<ISector, ''>) => {
     try {
-      console.log(goal);
+      const sectorData = sector;
+      setDataSector(sectorData);
     } catch (err) {
       console.log(err);
     }
@@ -58,7 +67,7 @@ const SelectorFolders: React.FC = () => {
       <ModalAddGoals
         isOpen={modalOpen}
         setIsOpen={toggleModal}
-        handleGoals={handleGoals}
+        handleSector={handleSector}
       />
       <Container>
         <CardeHeader>
@@ -76,38 +85,40 @@ const SelectorFolders: React.FC = () => {
           </CardButton>
         </CardeHeader>
 
-        <FullScreen handle={handle}>
-          <CardGraphic className="fullscreen-item" ref={componentRef}>
-            <CardGraphicText>
-              <GraphicTitle>Financeiro</GraphicTitle>
-              <span>
-                <FiEdit />
-                <FiPrinter onClick={handlePrint} />
-                <FiMaximize onClick={handle.enter} />
-              </span>
-            </CardGraphicText>
-            <CardBodyGoals>
-              <GraphicSpeed>
-                <CardGraphicText>
-                  <GraphicTitle>Meta 01</GraphicTitle>
-                </CardGraphicText>
-                <GraphicSpeedometer dataValue={150} />
-              </GraphicSpeed>
-              <GraphicSpeed>
-                <CardGraphicText>
-                  <GraphicTitle>Meta 02</GraphicTitle>
-                </CardGraphicText>
-                <GraphicSpeedometer dataValue={250} />
-              </GraphicSpeed>
-              <GraphicSpeed>
-                <CardGraphicText>
-                  <GraphicTitle>Meta 03</GraphicTitle>
-                </CardGraphicText>
-                <GraphicSpeedometer dataValue={450} />
-              </GraphicSpeed>
-            </CardBodyGoals>
-          </CardGraphic>
-        </FullScreen>
+        {dataUpdateSector.map(sector => (
+          <FullScreen key={sector.id} handle={handle}>
+            <CardGraphic className="fullscreen-item" ref={componentRef}>
+              <CardGraphicText>
+                <GraphicTitle>{sector.name}</GraphicTitle>
+                <span>
+                  <FiEdit />
+                  <FiPrinter onClick={handlePrint} />
+                  <FiMaximize onClick={handle.enter} />
+                </span>
+              </CardGraphicText>
+              <CardBodyGoals>
+                <GraphicSpeed>
+                  <CardGraphicText>
+                    <GraphicTitle>Meta 01</GraphicTitle>
+                  </CardGraphicText>
+                  <GraphicSpeedometer dataValue={150} />
+                </GraphicSpeed>
+                <GraphicSpeed>
+                  <CardGraphicText>
+                    <GraphicTitle>Meta 02</GraphicTitle>
+                  </CardGraphicText>
+                  <GraphicSpeedometer dataValue={250} />
+                </GraphicSpeed>
+                <GraphicSpeed>
+                  <CardGraphicText>
+                    <GraphicTitle>Meta 03</GraphicTitle>
+                  </CardGraphicText>
+                  <GraphicSpeedometer dataValue={450} />
+                </GraphicSpeed>
+              </CardBodyGoals>
+            </CardGraphic>
+          </FullScreen>
+        ))}
       </Container>
     </>
   );

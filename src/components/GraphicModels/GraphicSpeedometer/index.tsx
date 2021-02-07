@@ -13,7 +13,7 @@ const GraphicSpeedometer: React.FC<PropsSpeed> = dataValue => {
         value={dataValue.dataValue}
         // maxSegmentLabels={2}
         // segments={10}
-        width={280}
+        width={220}
         paddingHorizontal={5}
         paddingVertical={5}
         // startColor="#1c9cd9"
@@ -36,7 +36,7 @@ const GraphicSpeedometer: React.FC<PropsSpeed> = dataValue => {
             color: '#6d6a81',
           },
           {
-            text: 'Admirável!',
+            text: 'Otimo!',
             // position: 'OUTSIDE',
             color: '#6d6a81',
           },
@@ -45,6 +45,7 @@ const GraphicSpeedometer: React.FC<PropsSpeed> = dataValue => {
         needleTransitionDuration={3333}
         // needleTransition="easeElastic"
         needleColor="#6d6a81"
+        // needleHeightRatio={20}
         textColor="#6d6a81"
       />
     </>

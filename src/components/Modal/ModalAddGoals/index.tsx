@@ -52,6 +52,14 @@ interface DataSubGoals {
   weight: string;
 }
 
+interface IAnalyticModule {
+  id: string;
+  name: string;
+  responsible: string;
+  condition: string;
+  observations: string;
+}
+
 const ModalAddFood: React.FC<IModalProps> = ({
   isOpen,
   setIsOpen,
@@ -69,6 +77,21 @@ const ModalAddFood: React.FC<IModalProps> = ({
   const [selectedAnalyticItems, setSelectedAnalyticItems] = useState<string[]>(
     [],
   );
+  const [analyticModule, setAnalyticModule] = useState<IAnalyticModule[]>([]);
+
+  useEffect(() => {
+    try {
+      api.get('/sub-goals').then(response => {
+        setDataSubGoals(response.data);
+      });
+
+      api.get('/analysis-module').then(response => {
+        setAnalyticModule(response.data);
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  }, []);
 
   const hanleOpenSubGoals = useCallback(() => {
     setOpenSubGoals(!openSubGoals);
@@ -106,14 +129,24 @@ const ModalAddFood: React.FC<IModalProps> = ({
           weight,
           status,
         };
-
         const response = await api.post('/goals', formData);
 
         handleGoals(formData);
 
+        if (selectedAnalyticItems.length > 0) {
+          console.log('item selecionado', selectedAnalyticItems[0]);
+          await api.put(
+            `/analysis-module?analyze_module_id=${selectedAnalyticItems[0]}`,
+            {
+              url: `http://localhost:3000/painel-analytic-module/${selectedAnalyticItems[0]}`,
+            },
+          );
+        }
+
         if (selectedSubGoalsItems.length > 0) {
+          console.log('entrou');
           await api.post('/sub-goals-of-goals/create-all', {
-            subGoalsIds: selectedSubGoalsItems,
+            sub_goals_ids: selectedSubGoalsItems,
             goal_id: response.data.id,
           });
         }
@@ -135,7 +168,13 @@ const ModalAddFood: React.FC<IModalProps> = ({
         });
       }
     },
-    [addToast, setIsOpen, handleGoals, selectedSubGoalsItems],
+    [
+      addToast,
+      setIsOpen,
+      handleGoals,
+      selectedSubGoalsItems,
+      selectedAnalyticItems,
+    ],
   );
 
   const handleSelectSubGoalsItem = useCallback(
@@ -156,6 +195,7 @@ const ModalAddFood: React.FC<IModalProps> = ({
     },
     [selectedSubGoalsItems],
   );
+
   const handleSelectItem = useCallback(
     (id: string) => {
       const alreadySelected = selectedAnalyticItems.findIndex(
@@ -180,22 +220,6 @@ const ModalAddFood: React.FC<IModalProps> = ({
     { value: 's2', label: 'Sistema S2' },
     { value: 'Senior', label: 'Sistema Senior' },
     { value: 'Módulo de análise', label: 'Módulo de análise' },
-  ];
-
-  useEffect(() => {
-    api.get('/sub-goals').then(response => {
-      setDataSubGoals(response.data);
-    });
-  });
-
-  const analyticModule = [
-    { id: '1', name: 'Verificação do uso de EPI' },
-    { id: '2', name: 'Verificação de Limpeza area externa' },
-    { id: '3', name: 'Estoque Insumos agricolas' },
-    { id: '4', name: 'Fechamento UPL I' },
-    { id: '5', name: 'Organização de contratos' },
-    { id: '6', name: 'Fechamento UPL I' },
-    { id: '7', name: 'Organização de contratos' },
   ];
 
   return (

@@ -18,6 +18,11 @@ export const Container = styled.div`
     color: var(--text-primary);
     font-size: 14px;
   }
+
+  @media only screen and (max-width: 600px) {
+    transition: var(--transition-speed);
+    margin-left: 1%;
+  }
 `;
 
 export const CardeHeader = styled.div`
@@ -139,6 +144,12 @@ export const TableInfo = styled.div`
   /* background: red; */
   margin-left: 750px;
   margin-top: 80px;
+  /* transition: var(--transition-speed);
+  transform: rotate(0deg);
+
+  :hover {
+    transform: rotate(180deg);
+  } */
 `;
 
 export const CadView = styled.div<IGoals>`

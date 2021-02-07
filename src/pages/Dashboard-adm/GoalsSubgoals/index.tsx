@@ -56,8 +56,10 @@ interface IDataGoals {
 const SelectorFolders: React.FC = () => {
   const [modalOpenGoals, setModalGoalsOpen] = useState(false);
   const [modalOpenSubGoals, setModalOpen] = useState(false);
+
   const [dataGoals, setDataGoals] = useState<IDataGoals[]>([]);
   const [dataTemp, setDataTemp] = useState({});
+
   const [itemSelected, setItemSelected] = useState('');
 
   const toggleModalGoals = useCallback(() => {

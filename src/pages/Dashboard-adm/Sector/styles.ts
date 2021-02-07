@@ -265,8 +265,8 @@ export const GraphicSpeed = styled.div`
   /* padding: 20px; */
   margin: 20px 20px 20px 20px;
 
-  height: 290px;
-  width: 280px;
+  height: 240px;
+  width: 220px;
   @media print {
     margin: 5px 5px 15px 5px;
     height: 280px;

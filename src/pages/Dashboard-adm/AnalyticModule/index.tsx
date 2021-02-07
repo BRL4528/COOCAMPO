@@ -1,11 +1,18 @@
 /* eslint-disable jsx-a11y/control-has-associated-label */
 import React, { useCallback, useEffect, useState } from 'react';
 
+import { FiChevronRight } from 'react-icons/fi';
+
 import Button from '../../../components/Button';
 import ModalAddGoals from '../../../components/Modal/ModalAddAnalyticModule';
 import api from '../../../services/api';
 
-import { Container, CardeHeader, CardButton, TableContainer } from './styles';
+import {
+  Container,
+  CardeHeader,
+  CardButton,
+  TableContainerList,
+} from './styles';
 
 interface IAnalyticModule {
   id: string;
@@ -68,7 +75,7 @@ const SelectorFolders: React.FC = () => {
           </CardButton>
         </CardeHeader>
 
-        <TableContainer>
+        {/* <TableContainer>
           <table>
             <thead>
               <tr>
@@ -96,7 +103,47 @@ const SelectorFolders: React.FC = () => {
               ))}
             </tbody>
           </table>
-        </TableContainer>
+        </TableContainer> */}
+
+        <TableContainerList>
+          {dataAnalyticModule.map(analyticModule => (
+            <span key={analyticModule.id}>
+              <div>
+                <strong>{analyticModule.name}</strong>
+                <p>{analyticModule.observations}</p>
+              </div>
+
+              <FiChevronRight size={20} />
+            </span>
+          ))}
+        </TableContainerList>
+        {/* <TableInfo>
+            {dataGoals.map(subgoal => (
+              <CadView
+                key={subgoal.id}
+                item={subgoal.id}
+                selected={itemSelected}
+              >
+                <span key={subgoal.id}>
+                  <div>
+                    <strong>{subgoal.name}</strong>
+                    <p>{subgoal.observations}</p>
+                  </div>
+                </span>
+                <ViewSubGoals>
+                  <h3>Composição</h3>
+                  {subgoal.sub_goals_of_goals.map(sub => (
+                    <span key={sub.sub_goals.id}>
+                      <div>
+                        <strong>{sub.sub_goals.name}</strong>
+                        <p>{sub.sub_goals.observations}</p>
+                      </div>
+                    </span>
+                  ))}
+                </ViewSubGoals>
+              </CadView>
+            ))}
+          </TableInfo> */}
       </Container>
     </>
   );

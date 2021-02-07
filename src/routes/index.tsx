@@ -11,6 +11,7 @@ import Email from '../pages/Dashboard-adm/Email';
 import Report from '../pages/Dashboard-adm/Report';
 import Sector from '../pages/Dashboard-adm/Sector';
 import AnalyticModulo from '../pages/Dashboard-adm/AnalyticModule';
+import PainelAnalyticModulo from '../pages/Dashboard-adm/PainelAnalyticModule';
 
 import DashboardUser from '../pages/Dashboard-user';
 
@@ -31,6 +32,12 @@ const Routes: React.FC = () => (
     <Route
       path="/analyticModule"
       component={AnalyticModulo}
+      isPrivate
+      isAdmin
+    />
+    <Route
+      path="/painel-analytic-module"
+      component={PainelAnalyticModulo}
       isPrivate
       isAdmin
     />
