@@ -138,7 +138,7 @@ const ModalAddFood: React.FC<IModalProps> = ({
           await api.put(
             `/analysis-module?analyze_module_id=${selectedAnalyticItems[0]}`,
             {
-              url: `http://localhost:3000/painel-analytic-module/${selectedAnalyticItems[0]}`,
+              url: `http://localhost:3000/painel-analytic-module/?${response.data.id}`,
             },
           );
         }

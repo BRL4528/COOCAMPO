@@ -36,10 +36,10 @@ const Routes: React.FC = () => (
       isAdmin
     />
     <Route
-      path="/painel-analytic-module"
+      path="/painel-analytic-module/:goalId?"
       component={PainelAnalyticModulo}
       isPrivate
-      isAdmin
+      isUser
     />
 
     <Route path="/user" component={DashboardUser} isPrivate isUser />
