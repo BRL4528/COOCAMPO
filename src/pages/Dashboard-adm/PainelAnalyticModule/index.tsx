@@ -1,8 +1,15 @@
-/* eslint-disable jsx-a11y/label-has-associated-control */
-import React, { useEffect, useState } from 'react';
+/* eslint-disable prettier/prettier */
+import React, { useEffect, useState, useRef, useCallback } from 'react';
+
+import { Form } from '@unform/web';
+import { FormHandles } from '@unform/core';
+
 import api from '../../../services/api';
 
 import { Container, CardContainer } from './styles';
+
+import CheckboxInput from '../../../components/InputRadio';
+import Button from '../../../components/Button';
 
 interface IGoalsAnalytics {
   id: string;
@@ -31,13 +38,32 @@ interface IGoalsAnalytics {
   };
 }
 
+interface CheckboxOption {
+  id: string;
+  value: string;
+  label: string;
+}
+
 const PainelAnalyticModule: React.FC = () => {
+  const formRef = useRef<FormHandles>(null);
   const parsed = window.location.search;
-  // console.log(parsed.slice(1));
-  // console.log(parsed);'
+
   const [dataGoalsAnalytic, setDataGoalsAnalytic] = useState<IGoalsAnalytics[]>(
     [],
   );
+
+  const handleSubmit = useCallback((data: CheckboxOption) => {
+    const result = Object.values(data).map(dataItem => dataItem[0].split('#'));
+
+    const value = result.map(res => ({
+      id_sector: res[0],
+      id_result: res[1],
+      id_subGoal: res[2],
+      id_goal: res[3],
+    }));
+
+    console.log(value);
+  }, []);
 
   useEffect(() => {
     try {
@@ -62,18 +88,37 @@ const PainelAnalyticModule: React.FC = () => {
             <h2>{dataAnalytic.sector.name}</h2>
             <h3>{dataAnalytic.goals.name}</h3>
 
-            {dataAnalytic.goals.sub_goals_of_goals.map(dataSubGoal => (
-              <div>
-                <div>
-                  <strong>{dataSubGoal.sub_goals.name}</strong>
-                </div>
+            <Form ref={formRef} onSubmit={handleSubmit}>
+              {dataAnalytic.goals.sub_goals_of_goals.map(dataSubGoal => (
+                <div key={dataSubGoal.id}>
+                  <div>
+                    <strong>{dataSubGoal.sub_goals.name}</strong>
+                  </div>
 
-                <input id="teste1" type="radio" value="MALE" name="gender" />
-                <label htmlFor="teste1">Sim</label>
-                <input id="teste2" type="radio" value="FEMALE" name="gender" />
-                <label htmlFor="teste2">Não</label>
-              </div>
-            ))}
+                  <CheckboxInput
+                    name={`sim-${dataSubGoal.id}`}
+                    options={[
+                      {
+                        id: dataSubGoal.sub_goals.id,
+                        value: `${dataAnalytic.sector.id}#yes#${dataAnalytic.goals.id}#${dataSubGoal.sub_goals.id}`,
+                        label: 'Sim',
+                      },
+                    ]}
+                  />
+                  <CheckboxInput
+                    name={`nao-${dataSubGoal.id}`}
+                    options={[
+                      {
+                        id: dataSubGoal.sub_goals.id,
+                        value: `${dataAnalytic.sector.id}#no#${dataAnalytic.goals.id}#${dataSubGoal.sub_goals.id}`,
+                        label: 'Não',
+                      },
+                    ]}
+                  />
+                </div>
+              ))}
+              <Button type="submit">Salvar</Button>
+            </Form>
           </div>
         </CardContainer>
       ))}
