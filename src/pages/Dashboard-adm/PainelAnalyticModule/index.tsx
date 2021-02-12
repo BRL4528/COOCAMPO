@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable prettier/prettier */
 import React, { useEffect, useState, useRef, useCallback } from 'react';
 
@@ -52,8 +53,13 @@ const PainelAnalyticModule: React.FC = () => {
     [],
   );
 
+  const [temp, setTemp] = useState<any>();
+
   const handleSubmit = useCallback((data: CheckboxOption) => {
-    const result = Object.values(data).map(dataItem => dataItem[0].split('#'));
+    console.log(data);
+    const result = Object.values(data)
+      .map(dataItem => dataItem[0].split('#'))
+      .filter(obj => obj.value !== undefined);
 
     const value = result.map(res => ({
       id_sector: res[0],
@@ -62,7 +68,7 @@ const PainelAnalyticModule: React.FC = () => {
       id_goal: res[3],
     }));
 
-    console.log(value);
+    setTemp(value);
   }, []);
 
   useEffect(() => {
