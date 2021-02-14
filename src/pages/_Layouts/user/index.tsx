@@ -7,7 +7,7 @@ interface LayoutProps {
   children: React.HTMLAttributes<HTMLElement>;
   path: string;
 }
-
+// temp
 const LayoutUser: React.FC<LayoutProps> = ({ children, path }: LayoutProps) => {
   return (
     <>
