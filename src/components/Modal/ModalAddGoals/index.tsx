@@ -144,7 +144,6 @@ const ModalAddFood: React.FC<IModalProps> = ({
         }
 
         if (selectedSubGoalsItems.length > 0) {
-          console.log('entrou');
           await api.post('/sub-goals-of-goals/create-all', {
             sub_goals_ids: selectedSubGoalsItems,
             goal_id: response.data.id,

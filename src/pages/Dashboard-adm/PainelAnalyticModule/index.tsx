@@ -1,6 +1,8 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable prettier/prettier */
 import React, { useEffect, useState, useRef, useCallback } from 'react';
+
+import UseAnimations from 'react-useanimations';
+import radioButton from 'react-useanimations/lib/radioButton';
+import { FiCheck } from 'react-icons/fi';
 
 import { Form } from '@unform/web';
 import { FormHandles } from '@unform/core';
@@ -9,11 +11,12 @@ import api from '../../../services/api';
 
 import { Container, CardContainer } from './styles';
 
-import CheckboxInput from '../../../components/InputRadio';
+import CheckboxInput from '../../../components/InputCheckBox';
 import Button from '../../../components/Button';
 
 interface IGoalsAnalytics {
   id: string;
+  status_of_conclusion: boolean;
   sector: {
     id: string;
     name: string;
@@ -49,38 +52,87 @@ const PainelAnalyticModule: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
   const parsed = window.location.search;
 
+  const [idRelationSector, seIdRelationSector] = useState('');
+  const [checked, setChecked] = useState(true);
+  const [grupChecked, setGrupChecked] = useState<string[]>([]);
   const [dataGoalsAnalytic, setDataGoalsAnalytic] = useState<IGoalsAnalytics[]>(
     [],
   );
 
-  const [temp, setTemp] = useState<any>();
+  const handleSubmit = useCallback(
+    async (data: CheckboxOption) => {
+      const results_of_sub_goals: {
+        id_sector: string;
+        result: boolean;
+        id_subGoal: string;
+        id_goal: string;
+      }[] = [];
 
-  const handleSubmit = useCallback((data: CheckboxOption) => {
-    console.log(data);
-    const result = Object.values(data)
-      .map(dataItem => dataItem[0].split('#'))
-      .filter(obj => obj.value !== undefined);
+      Object.values(data).forEach(function (item) {
+        if (item.length !== 0) {
+          const dataItem = item[0].split('#');
 
-    const value = result.map(res => ({
-      id_sector: res[0],
-      id_result: res[1],
-      id_subGoal: res[2],
-      id_goal: res[3],
-    }));
+          const dataIter = {
+            id_sector: dataItem[0],
+            result: Boolean(dataItem[1]),
+            id_subGoal: dataItem[3],
+            id_goal: dataItem[2],
+          };
+          results_of_sub_goals.push(dataIter);
+        }
+      });
 
-    setTemp(value);
-  }, []);
+      setChecked(!checked);
+
+      const status = {
+        status_of_conclusion: true,
+      };
+      await api.post('/results-of-sub-goals/create-all', results_of_sub_goals);
+
+      await api
+        .put(`/goals-of-sectors?goal_of_sector_id=${idRelationSector}`, status)
+        .then(response => {
+          console.log(response.data);
+        });
+    },
+    [checked, idRelationSector],
+  );
 
   useEffect(() => {
     try {
       api.get(`goals-of-sectors?goal_id=${parsed.slice(1)}`).then(response => {
+        const status_of_conclusion: React.SetStateAction<string[]> = [];
+
+        response.data.forEach(function (item: IGoalsAnalytics) {
+          if (item.status_of_conclusion) {
+            status_of_conclusion.push(item.id);
+          }
+        });
+        setGrupChecked(status_of_conclusion);
         setDataGoalsAnalytic(response.data);
-        console.log(response.data, dataGoalsAnalytic);
       });
     } catch (err) {
       console.log(err);
     }
   }, [parsed]);
+
+  const handleChecked = useCallback(
+    (id: string) => {
+      seIdRelationSector(id);
+      const alreadySelected = grupChecked.findIndex(
+        (item: string) => item === id,
+      );
+
+      if (alreadySelected >= 0) {
+        const filteredItems = grupChecked.filter((item: string) => item !== id);
+
+        setGrupChecked(filteredItems);
+      } else {
+        setGrupChecked([...grupChecked, id]);
+      }
+    },
+    [grupChecked],
+  );
 
   return (
     <Container>
@@ -89,11 +141,33 @@ const PainelAnalyticModule: React.FC = () => {
       </header>
 
       {dataGoalsAnalytic.map(dataAnalytic => (
-        <CardContainer key={dataAnalytic.id}>
-          <div>
-            <h2>{dataAnalytic.sector.name}</h2>
-            <h3>{dataAnalytic.goals.name}</h3>
+        <CardContainer
+          checked={checked}
+          idCurrent={dataAnalytic.sector.id}
+          idChecked="e"
+          key={dataAnalytic.id}
+        >
+          <div
+            className={grupChecked.includes(dataAnalytic.id) ? 'selected' : ''}
+          >
+            <h2>
+              {dataAnalytic.sector.name}
 
+              <span>
+                {grupChecked.includes(dataAnalytic.id) ? (
+                  <UseAnimations
+                    animation={radioButton}
+                    size={40}
+                    strokeColor="#4CAF50"
+                    style={{ padding: 50 }}
+                    reverse={!!grupChecked.includes(dataAnalytic.id)}
+                  />
+                ) : (
+                  <FiCheck size={34} />
+                )}
+              </span>
+            </h2>
+            <h3>{dataAnalytic.goals.name}</h3>
             <Form ref={formRef} onSubmit={handleSubmit}>
               {dataAnalytic.goals.sub_goals_of_goals.map(dataSubGoal => (
                 <div key={dataSubGoal.id}>
@@ -102,28 +176,37 @@ const PainelAnalyticModule: React.FC = () => {
                   </div>
 
                   <CheckboxInput
-                    name={`sim-${dataSubGoal.id}`}
+                    name={`yes-${dataSubGoal.id}`}
                     options={[
                       {
-                        id: dataSubGoal.sub_goals.id,
-                        value: `${dataAnalytic.sector.id}#yes#${dataAnalytic.goals.id}#${dataSubGoal.sub_goals.id}`,
-                        label: 'Sim',
+                        id: `yes-${dataAnalytic.sector.id}-${dataSubGoal.id}`,
+                        value: `${dataAnalytic.sector.id}#${true}#${
+                          dataAnalytic.goals.id
+                        }#${dataSubGoal.sub_goals.id}`,
+                        label: 'Conforme',
                       },
                     ]}
                   />
                   <CheckboxInput
-                    name={`nao-${dataSubGoal.id}`}
+                    name={`no-${dataSubGoal.id}`}
                     options={[
                       {
-                        id: dataSubGoal.sub_goals.id,
-                        value: `${dataAnalytic.sector.id}#no#${dataAnalytic.goals.id}#${dataSubGoal.sub_goals.id}`,
-                        label: 'Não',
+                        id: `no-${dataAnalytic.sector.id}-${dataSubGoal.id}`,
+                        value: `${dataAnalytic.sector.id}#${false}#${
+                          dataAnalytic.goals.id
+                        }#${dataSubGoal.sub_goals.id}`,
+                        label: 'Não conforme',
                       },
                     ]}
                   />
                 </div>
               ))}
-              <Button type="submit">Salvar</Button>
+              <Button
+                onClick={() => handleChecked(dataAnalytic.id)}
+                type="submit"
+              >
+                Salvar
+              </Button>
             </Form>
           </div>
         </CardContainer>

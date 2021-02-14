@@ -1,6 +1,35 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
+
+interface ICheck {
+  checked: boolean;
+  idCurrent: string;
+  idChecked: string;
+}
+
+// transition: width 600ms ease;
 
 export const Container = styled.div`
+  .selected {
+    background: rgba(194, 217, 211, 0.58);
+    border-bottom: 3px solid #4caf50;
+    max-height: 80px;
+
+    h2 {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      > span {
+        visibility: visible;
+        svg {
+          color: #4caf50;
+          border-color: #f2c811;
+
+          cursor: pointer;
+        }
+      }
+    }
+  }
+
   display: flex;
   align-items: center;
   flex-direction: column;
@@ -23,11 +52,25 @@ export const Container = styled.div`
     background: #f2c811;
   }
 `;
-export const CardContainer = styled.div`
+export const CardContainer = styled.div<ICheck>`
   display: flex;
   align-items: center;
   flex-direction: column;
   min-width: 700px;
+
+  div {
+    h2 {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      > span {
+        visibility: hidden;
+        div {
+          height: 11px;
+        }
+      }
+    }
+  }
 
   h3 {
     border-bottom: solid 1px rgba(150, 156, 186, 0.2);
@@ -37,10 +80,28 @@ export const CardContainer = styled.div`
 
   > div {
     min-width: 700px;
-    padding: 25px;
-    border-bottom: 3px solid #fff;
+    /* background-color: rgba(194, 217, 211, 0.58); */
+
+    transition: max-height 1s;
     background: #fff;
-    margin: 7px;
+    border-bottom: 3px solid #fff;
+    max-height: 600px;
+
+    /* ${props =>
+      props.checked &&
+      css`
+        transition: max-height 2s;
+        max-height: 600px;
+        background-color: #fff;
+        border-bottom: 3px solid #fff;
+      `}; */
+
+    overflow: hidden;
+    white-space: nowrap;
+
+    padding: 25px;
+
+    margin: 15px 0 15px 0;
     border-radius: 6px;
     transition: var(--transition-speed);
 
@@ -55,6 +116,7 @@ export const CardContainer = styled.div`
       input {
         margin: 15px;
       }
+
       div {
         /* background: red; */
         width: 200px;
