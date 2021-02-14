@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import ReactModal from 'react-modal';
 
 interface IModalProps {
-  children: any;
+  children: unknown;
   isOpen: boolean;
   setIsOpen: () => void;
 }
