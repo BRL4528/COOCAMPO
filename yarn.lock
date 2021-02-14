@@ -12711,10 +12711,10 @@ to-regex@^3.0.1, to-regex@^3.0.2:
     regex-not "^1.0.2"
     safe-regex "^1.1.0"
 
-toast@^0.3.39:
-  version "0.3.39"
-  resolved "https://registry.yarnpkg.com/toast/-/toast-0.3.39.tgz#694865dcf79fa72f0655ae77185c10c7c7bacb8d"
-  integrity sha512-bc0eusYiE138Vr7839KwpZUUN58jVW+zfljma4EMuux5X/ZCkHPkpsDDEyqSZEF0MnSOvHK8HZQ5jGujZNXEIw==
+toast@^0.3.42:
+  version "0.3.42"
+  resolved "https://registry.yarnpkg.com/toast/-/toast-0.3.42.tgz#7ee22e2b9efb3c3fa14a23bdbe73e7778ca5356d"
+  integrity sha512-Kx2++1BHjhrM44/FHpc2b238H5kCSJKWB7UDOhWDbYPonXKQO8oMke5lgv1ozi/gcYdddtnoAEDq1mN3VdgL/A==
   dependencies:
     "@mdx-js/preact" "2.0.0-next.8"
     "@svgr/cli" "^5.4.0"
