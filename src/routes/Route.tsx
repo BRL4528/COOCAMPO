@@ -8,7 +8,8 @@ import {
 import { useAuth } from '../hooks/auth';
 import SignIn from '../pages/SignIn';
 
-import Layout from '../pages/_Layouts/admin';
+import LayoutAdm from '../pages/_Layouts/admin';
+import LayoutUser from '../pages/_Layouts/user';
 
 interface RouteProps extends ReactDOMRouteProps {
   isPrivate?: boolean;
@@ -34,9 +35,9 @@ const Route: React.FC<RouteProps> = ({
             {...rest}
             render={({ location }) => {
               return isPrivate === !!user && isAdmin ? (
-                <Layout path={location.pathname}>
+                <LayoutAdm path={location.pathname}>
                   <Component />
-                </Layout>
+                </LayoutAdm>
               ) : (
                 <Redirect
                   to={{
@@ -56,7 +57,9 @@ const Route: React.FC<RouteProps> = ({
             {...rest}
             render={({ location }) => {
               return isPrivate === !!user && isUser ? (
-                <Component />
+                <LayoutUser path={location.pathname}>
+                  <Component />
+                </LayoutUser>
               ) : (
                 <Redirect
                   to={{

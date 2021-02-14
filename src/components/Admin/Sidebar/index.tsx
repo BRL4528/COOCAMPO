@@ -176,8 +176,12 @@ const Sidebar: React.FC<LayoutProps> = ({ pathname }) => {
             </Link>
           </OptionList>
 
-          <OptionList pathname={pathname} path="/report" className="nav-item">
-            <Link to="report" className="nav-link">
+          <OptionList
+            pathname={pathname}
+            path="/error404-1"
+            className="nav-item"
+          >
+            <Link to="/error404-1" className="nav-link">
               <FiUsers color="#f2c811" size={18} />
               {/* <svg
                 width="18"
@@ -245,8 +249,12 @@ const Sidebar: React.FC<LayoutProps> = ({ pathname }) => {
               <span className="link-text">Módulos de análise</span>
             </Link>
           </OptionList>
-          <OptionList pathname={pathname} path="/report" className="nav-item">
-            <Link to="report" className="nav-link">
+          <OptionList
+            pathname={pathname}
+            path="/error404-2"
+            className="nav-item"
+          >
+            <Link to="/error404-2" className="nav-link">
               <FiFilePlus color="#f2c811" size={18} />
               {/* <svg
                 width="18"
@@ -277,8 +285,12 @@ const Sidebar: React.FC<LayoutProps> = ({ pathname }) => {
               <span className="link-text">Importações</span>
             </Link>
           </OptionList>
-          <OptionList pathname={pathname} path="/report" className="nav-item">
-            <Link to="report" className="nav-link">
+          <OptionList
+            pathname={pathname}
+            path="/error404-3"
+            className="nav-item"
+          >
+            <Link to="/error404-3" className="nav-link">
               <FiFileText color="#f2c811" size={18} />
               {/* <svg
                 width="18"
@@ -310,16 +322,24 @@ const Sidebar: React.FC<LayoutProps> = ({ pathname }) => {
             </Link>
           </OptionList>
 
-          <OptionList pathname={pathname} path="/report" className="nav-item">
-            <Link to="report" className="nav-link">
+          <OptionList
+            pathname={pathname}
+            path="/error404-5"
+            className="nav-item"
+          >
+            <Link to="/error404-5" className="nav-link">
               <FiPieChart color="#f2c811" size={18} />
 
               <span className="link-text">Gráficos</span>
             </Link>
           </OptionList>
 
-          <OptionList pathname={pathname} path="/report" className="nav-item">
-            <Link to="report" className="nav-link">
+          <OptionList
+            pathname={pathname}
+            path="/error404-6"
+            className="nav-item"
+          >
+            <Link to="/error404-6" className="nav-link">
               <FiTerminal color="#f2c811" size={18} />
 
               <span className="link-text">Macros</span>

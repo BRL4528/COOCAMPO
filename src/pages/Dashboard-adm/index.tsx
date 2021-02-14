@@ -40,7 +40,9 @@ const Dashboard: React.FC = () => {
   useEffect(() => {
     async function loadTokenBI(): Promise<void> {
       try {
-        const response = await api.get('/getEmbedToken');
+        const response = await api.get(
+          '/getEmbedToken?reportId=c6216fce-c528-4600-b8f0-3510d25b0ce8',
+        );
         setLoadDash(false);
         setDataBI(response.data);
         // console.log(response.data.embedUrl[0].reportId);

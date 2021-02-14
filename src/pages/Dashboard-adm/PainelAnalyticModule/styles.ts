@@ -34,9 +34,9 @@ export const Container = styled.div`
   align-items: center;
   flex-direction: column;
   color: #073b4c;
-  background: #f6eee7;
+  /* background: #f6eee7; */
   width: 100%;
-  height: 100vh;
+  /* height: 100vh; */
 
   > header {
     display: flex;
@@ -84,6 +84,7 @@ export const CardContainer = styled.div<ICheck>`
 
     transition: max-height 1s;
     background: #fff;
+    box-shadow: 0 0 14px 0 rgba(0, 0, 0, 0.07);
     border-bottom: 3px solid #fff;
     max-height: 600px;
 
@@ -130,5 +131,13 @@ export const CardContainer = styled.div<ICheck>`
         }
       }
     }
+  }
+`;
+
+export const CardLoading = styled.div`
+  > svg {
+    margin-top: 200px;
+    color: var(--text-primary);
+    width: 80px;
   }
 `;
