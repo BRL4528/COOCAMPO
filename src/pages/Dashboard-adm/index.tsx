@@ -1,5 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { Report } from 'powerbi-report-component';
+
 import { useLoading, Oval } from '@agney/react-loading';
 
 import { Conatiner, ContainerBI } from './styles';
@@ -49,7 +50,7 @@ const Dashboard: React.FC = () => {
         addToast({
           type: 'error',
           title: 'Gráficos de analíse',
-          description: 'Não foi posivel carrgar os gráficos de analíse',
+          description: 'Não foi posivel carregar os gráficos de analíse',
         });
       }
     }

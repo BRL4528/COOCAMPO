@@ -3,8 +3,8 @@ import React, { useCallback, useEffect, useState } from 'react';
 
 import { FiChevronRight } from 'react-icons/fi';
 
-import Button from '../../../components/Button';
-import ModalAddGoals from '../../../components/Modal/ModalAddAnalyticModule';
+import Button from '../../../components/Global/Button';
+import ModalAddGoals from '../../../components/Admin/Modal/ModalAddAnalyticModule';
 import api from '../../../services/api';
 
 import {
@@ -16,6 +16,7 @@ import {
 
 interface IAnalyticModule {
   id: string;
+  url?: string;
   name: string;
   responsible: string;
   condition: string;
@@ -111,6 +112,7 @@ const SelectorFolders: React.FC = () => {
               <div>
                 <strong>{analyticModule.name}</strong>
                 <p>{analyticModule.observations}</p>
+                <a href={analyticModule.url}>Painel módulo de ánalise</a>
               </div>
 
               <FiChevronRight size={20} />

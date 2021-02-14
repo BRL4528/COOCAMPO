@@ -5,7 +5,7 @@ import { FormHandles } from '@unform/core';
 
 import * as Yup from 'yup';
 import { FiLink2 } from 'react-icons/fi';
-import { useToast } from '../../../hooks/toast';
+import { useToast } from '../../../../hooks/toast';
 
 import {
   Form,
@@ -16,13 +16,13 @@ import {
 } from './styles';
 
 // import { FormContainer } from './styles';
-import Input from '../../Input';
-import TextArea from '../../TextArea';
-import Button from '../../Button';
-import Select from '../../Select';
+import Input from '../../../Global/Input';
+import TextArea from '../../../Global/TextArea';
+import Button from '../../../Global/Button';
+import Select from '../../../Global/Select';
 
 import Modal from '../index';
-import api from '../../../services/api';
+import api from '../../../../services/api';
 
 interface IGoals {
   id: string;

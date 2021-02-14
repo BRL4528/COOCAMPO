@@ -1,14 +1,14 @@
 import React from 'react';
 
-import Header from '../../../components/Header';
-import Sidebar from '../../../components/Sidebar';
+import Header from '../../../components/Global/Header';
+import Sidebar from '../../../components/Admin/Sidebar';
 
 interface LayoutProps {
   children: React.HTMLAttributes<HTMLElement>;
   path: string;
 }
 
-const Layout: React.FC<LayoutProps> = ({ children, path }: LayoutProps) => {
+const LayoutAdm: React.FC<LayoutProps> = ({ children, path }: LayoutProps) => {
   return (
     <>
       <Header>
@@ -20,4 +20,4 @@ const Layout: React.FC<LayoutProps> = ({ children, path }: LayoutProps) => {
   );
 };
 
-export default Layout;
+export default LayoutAdm;

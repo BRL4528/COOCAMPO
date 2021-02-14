@@ -17,7 +17,7 @@ export const Conatiner = styled.div`
   z-index: 0;
   overflow-x: hidden;
 
-  svg {
+  > svg {
     margin-top: 200px;
     color: var(--text-primary);
     width: 80px;
@@ -27,7 +27,11 @@ export const Conatiner = styled.div`
 export const ContainerBI = styled.div<PropsBI>`
   width: 100%;
   height: 100%;
-  background: red;
+  background: #eee;
+
+  margin-left: -2px;
+  margin-top: -2px;
+  right: 50px;
   ${props =>
     props.load &&
     css`

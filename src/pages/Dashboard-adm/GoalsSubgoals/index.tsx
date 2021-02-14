@@ -2,9 +2,9 @@
 import React, { useCallback, useState, useEffect } from 'react';
 import { FiChevronRight } from 'react-icons/fi';
 
-import Button from '../../../components/Button';
-import ModalAddGoals from '../../../components/Modal/ModalAddGoals';
-import ModalAddSubGoals from '../../../components/Modal/ModalAddSubGoals';
+import Button from '../../../components/Global/Button';
+import ModalAddGoals from '../../../components/Admin/Modal/ModalAddGoals';
+import ModalAddSubGoals from '../../../components/Admin/Modal/ModalAddSubGoals';
 
 import api from '../../../services/api';
 

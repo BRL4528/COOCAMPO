@@ -7,7 +7,7 @@ import { Container, Profile, HeaderContent } from './styles';
 
 // import Logo from '../../assets/logoGoFinances.svg';
 
-import { useAuth } from '../../hooks/auth';
+import { useAuth } from '../../../hooks/auth';
 
 interface HeaderProps {
   size?: 'small' | 'large';

@@ -4,16 +4,16 @@ import { FormHandles } from '@unform/core';
 
 import * as Yup from 'yup';
 
-import { useToast } from '../../../hooks/toast';
+import { useToast } from '../../../../hooks/toast';
 
 import { Form } from './styles';
 
-import Input from '../../Input';
-import TextArea from '../../TextArea';
-import Button from '../../Button';
+import Input from '../../../Global/Input';
+import TextArea from '../../../Global/TextArea';
+import Button from '../../../Global/Button';
 
 import Modal from '../index';
-import api from '../../../services/api';
+import api from '../../../../services/api';
 
 interface IModalProps {
   isOpen: boolean;

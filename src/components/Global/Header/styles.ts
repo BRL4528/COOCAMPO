@@ -7,6 +7,7 @@ interface ContainerProps {
 export const Container = styled.div<ContainerProps>`
   background: #fff;
   padding: 8px 0;
+  border-bottom: 2px solid rgba(150, 156, 186, 0.2);
 `;
 export const HeaderContent = styled.div<ContainerProps>`
   width: 100%;

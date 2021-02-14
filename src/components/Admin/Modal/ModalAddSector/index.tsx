@@ -8,16 +8,16 @@ import { FiX, FiLink2 } from 'react-icons/fi';
 
 import * as Yup from 'yup';
 
-import { useToast } from '../../../hooks/toast';
+import { useToast } from '../../../../hooks/toast';
 
 import { Form, ContainerSub, CardSub } from './styles';
 
-import Input from '../../Input';
-import TextArea from '../../TextArea';
-import Button from '../../Button';
+import Input from '../../../Global/Input';
+import TextArea from '../../../Global/TextArea';
+import Button from '../../../Global/Button';
 
 import Modal from '../index';
-import api from '../../../services/api';
+import api from '../../../../services/api';
 
 // interface AddSectorModal {
 //   name: string;
@@ -79,7 +79,7 @@ const ModalAddSector: React.FC<IModalProps> = ({
           abortEarly: false,
         });
 
-        const { name, observations, leader } = data;
+        const { name, leader } = data;
 
         const formData = {
           name,

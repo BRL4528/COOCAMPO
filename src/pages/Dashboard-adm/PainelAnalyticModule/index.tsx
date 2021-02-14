@@ -11,8 +11,8 @@ import api from '../../../services/api';
 
 import { Container, CardContainer } from './styles';
 
-import CheckboxInput from '../../../components/InputCheckBox';
-import Button from '../../../components/Button';
+import CheckboxInput from '../../../components/Global/InputCheckBox';
+import Button from '../../../components/Global/Button';
 
 interface IGoalsAnalytics {
   id: string;
@@ -62,10 +62,10 @@ const PainelAnalyticModule: React.FC = () => {
   const handleSubmit = useCallback(
     async (data: CheckboxOption) => {
       const results_of_sub_goals: {
-        id_sector: string;
+        sector_id: string;
         result: boolean;
-        id_subGoal: string;
-        id_goal: string;
+        sub_goal_id: string;
+        goal_id: string;
       }[] = [];
 
       Object.values(data).forEach(function (item) {
@@ -73,10 +73,10 @@ const PainelAnalyticModule: React.FC = () => {
           const dataItem = item[0].split('#');
 
           const dataIter = {
-            id_sector: dataItem[0],
-            result: Boolean(dataItem[1]),
-            id_subGoal: dataItem[3],
-            id_goal: dataItem[2],
+            sector_id: dataItem[0],
+            result: Boolean(dataItem[1] === 'true'),
+            sub_goal_id: dataItem[3],
+            goal_id: dataItem[2],
           };
           results_of_sub_goals.push(dataIter);
         }
@@ -87,6 +87,7 @@ const PainelAnalyticModule: React.FC = () => {
       const status = {
         status_of_conclusion: true,
       };
+
       await api.post('/results-of-sub-goals/create-all', results_of_sub_goals);
 
       await api

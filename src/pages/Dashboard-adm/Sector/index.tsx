@@ -6,10 +6,10 @@ import { useReactToPrint } from 'react-to-print';
 
 import { FiEdit, FiPrinter, FiMaximize } from 'react-icons/fi';
 
-import GraphicSpeedometer from '../../../components/GraphicModels/GraphicSpeedometer';
+import GraphicSpeedometer from '../../../components/Global/GraphicModels/GraphicSpeedometer';
 
-import Button from '../../../components/Button';
-import ModalAddGoals from '../../../components/Modal/ModalAddSector';
+import Button from '../../../components/Global/Button';
+import ModalAddGoals from '../../../components/Admin/Modal/ModalAddSector';
 
 import {
   Container,

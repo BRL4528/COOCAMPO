@@ -16,7 +16,7 @@ import {
   FiTerminal,
 } from 'react-icons/fi';
 
-import logoImg from '../../assets/logo.svg';
+import logoImg from '../../../assets/logo.svg';
 
 import { OptionList } from './styles';
 import './styles.css';

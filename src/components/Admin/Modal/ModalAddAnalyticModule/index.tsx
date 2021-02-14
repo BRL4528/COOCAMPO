@@ -6,14 +6,14 @@ import * as Yup from 'yup';
 import { Form } from './styles';
 
 // import { FormContainer } from './styles';
-import Input from '../../Input';
-import TextArea from '../../TextArea';
-import Button from '../../Button';
-import { useToast } from '../../../hooks/toast';
-import getValidationErrors from '../../../utils/getValidationErrors';
+import Input from '../../../Global/Input';
+import TextArea from '../../../Global/TextArea';
+import Button from '../../../Global/Button';
+import { useToast } from '../../../../hooks/toast';
+import getValidationErrors from '../../../../utils/getValidationErrors';
 
 import Modal from '../index';
-import api from '../../../services/api';
+import api from '../../../../services/api';
 
 interface IAnalyticModule {
   id: string;
