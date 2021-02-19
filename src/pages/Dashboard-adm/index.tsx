@@ -1,87 +1,145 @@
-import React, { useRef, useState, useEffect } from 'react';
-import { Report } from 'powerbi-report-component';
+import React, { useCallback, useRef, useState } from 'react';
 
-import { useLoading, Oval } from '@agney/react-loading';
+// import { useReactToPrint } from 'react-to-print';
 
-import { Conatiner, ContainerBI } from './styles';
-import { useToast } from '../../hooks/toast';
-import api from '../../services/api';
+// import { FiPrinter, FiEdit, FiMaximize } from 'react-icons/fi';
+import Carousel from '@brainhubeu/react-carousel';
+import '@brainhubeu/react-carousel/lib/style.css';
 
-interface PropsPowerBI {
-  accessToken: string;
-  embedUrl: [
-    {
-      reportId: string;
-      reportName: string;
-      embedUrl: string;
-    },
-  ];
-}
+import CardGraphic from '../../components/Global/GraphicModels/CardGraphic';
+
+import GraphicBar from '../../components/Global/GraphicModels/ApexGraphicBar';
+import GraphicLine from '../../components/Global/GraphicModels/ApexGraphicLine';
+import GraphicPie from '../../components/Global/GraphicModels/ApexGraphicPie';
+
+// import GraphicPie from '../../components/Global/GraphicModels/GraphicChartPie';
+
+import {
+  Conatiner,
+  CardItem,
+  // GraphicTitle,
+  // CardGraphicText,
+  CardGraphicItem,
+  CardBodyGoals,
+} from './styles';
 
 const Dashboard: React.FC = () => {
   const componentRef = useRef<HTMLDivElement>(null);
-  const { addToast } = useToast();
 
-  const [dataBI, setDataBI] = useState<PropsPowerBI>();
-  const [loadDash, setLoadDash] = useState(true);
+  const [colorize, setcolorize] = useState('#240dac');
 
-  const { containerProps, indicatorEl } = useLoading({
-    loading: loadDash,
-    indicator: <Oval />,
-  });
+  // const [loadDash, setLoadDash] = useState(true);
 
-  const layoutSettings = {
-    width: '100%',
-    height: '93vh',
-    background: '#FFF',
-    borderColor: '#FFF',
+  const array = [];
+  const temp1 = {
+    name: 'Matriz',
+    valor: '2',
+    border: '#7fdaea',
+    backcolor: '#f1fafc',
+    data: [2.5, 2, 3, 2.5, 2, 3.5, 1],
+    labels: ['12', '10', '15', '12', '10', '15'],
   };
+  const temp2 = {
+    name: 'UPL I',
+    valor: '3',
+    border: '#fed87e',
+    backcolor: '#fdfaf1',
+    data: [12, 19, 15, 14, 12, 9, 5],
+    labels: ['12', '10', '15', '12', '10', '15'],
+  };
+  const temp3 = {
+    name: 'Crechario',
+    valor: '4',
+    border: '#8ae0b7',
+    backcolor: '#f1fbf7',
+    data: [2.5, 2.0, 1, 2],
+    labels: ['12', '19', '8', '10'],
+  };
+  const temp4 = {
+    name: 'Confinamento',
+    valor: '5',
+    border: '#fea8ba',
+    backcolor: '#fdf3f5',
+    data: [12, 13, 10, 10],
+    labels: ['12', '19', '30', '10'],
+  };
+  const temp5 = {
+    name: 'Veterinaria',
+    valor: '6',
+    border: '#fea8ba',
+    backcolor: '#fdf3f5',
+    data: [10, 11, 15, 10],
+    labels: ['12', '19', '30', '10'],
+  };
+  array.push(temp1);
+  array.push(temp2);
+  array.push(temp3);
+  array.push(temp4);
+  array.push(temp5);
 
-  useEffect(() => {
-    async function loadTokenBI(): Promise<void> {
-      try {
-        const response = await api.get(
-          '/getEmbedToken?reportId=c6216fce-c528-4600-b8f0-3510d25b0ce8',
-        );
-        setLoadDash(false);
-        setDataBI(response.data);
-        // console.log(response.data.embedUrl[0].reportId);
-      } catch (err) {
-        console.log(err);
+  // const layoutSettings = {
+  //   width: '100%',
+  //   border: '1px solid #fff',
+  //   // height: '100%',
+  // };
 
-        addToast({
-          type: 'error',
-          title: 'Gráficos de analíse',
-          description: 'Não foi posivel carregar os gráficos de analíse',
-        });
-      }
-    }
-    loadTokenBI();
-  }, [setLoadDash, addToast]);
+  // const handlePrint = useReactToPrint({
+  //   content: () => componentRef.current,
+  // });
+
+  const handleColor = useCallback(() => {
+    setcolorize('#a70dac');
+  }, []);
 
   return (
     <>
-      <Conatiner {...containerProps} ref={componentRef}>
-        {indicatorEl}
-        <ContainerBI load={loadDash}>
-          {dataBI ? (
-            <Report
-              tokenType="Embed"
-              accessToken={dataBI ? dataBI.accessToken : 'sem token'}
-              embedUrl={dataBI ? dataBI.embedUrl[0].embedUrl : 'sem token'}
-              embedId={dataBI ? dataBI.embedUrl[0].reportId : 'sem token'}
-              // pageName="Sentiment"
-              reportMode="View"
-              // datasetId={datasetId}
-              // groupId={groupId}
-              // extraSettings={extraSettings}
-              style={layoutSettings}
-              permissions="All"
-            />
-          ) : (
-            ''
-          )}
-        </ContainerBI>
+      <Conatiner ref={componentRef}>
+        {/* <FiPrinter onClick={handlePrint} /> */}
+
+        <Carousel plugins={['arrows']}>
+          <CardItem>
+            {array.map(ar => (
+              <CardGraphic
+                key={ar.valor}
+                backcolor={ar.backcolor}
+                border={ar.border}
+                name={ar.name}
+                data={ar.data}
+                labels={ar.labels}
+              />
+            ))}
+          </CardItem>
+        </Carousel>
+
+        <CardBodyGoals>
+          <CardGraphicItem>
+            <GraphicBar color={colorize} />
+          </CardGraphicItem>
+
+          <CardGraphicItem>
+            <GraphicPie />
+          </CardGraphicItem>
+
+          <CardGraphicItem>
+            <GraphicLine color={colorize} />
+          </CardGraphicItem>
+        </CardBodyGoals>
+        <CardBodyGoals>
+          <CardGraphicItem>
+            <GraphicBar color={colorize} />
+          </CardGraphicItem>
+
+          <CardGraphicItem>
+            <GraphicPie />
+          </CardGraphicItem>
+          <CardGraphicItem>
+            <GraphicLine color={colorize} />
+          </CardGraphicItem>
+        </CardBodyGoals>
+
+        <button type="button" onClick={() => handleColor()}>
+          Mudar
+        </button>
       </Conatiner>
     </>
   );
