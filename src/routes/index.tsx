@@ -5,6 +5,7 @@ import Route from './Route';
 
 import SignIn from '../pages/SignIn';
 
+// Routes user ADM
 import DashboardAdm from '../pages/Dashboard-adm';
 import SelectorFolders from '../pages/Dashboard-adm/GoalsSubgoals';
 import Email from '../pages/Dashboard-adm/Email';
@@ -12,7 +13,9 @@ import Report from '../pages/Dashboard-adm/Report';
 import Sector from '../pages/Dashboard-adm/Sector';
 import AnalyticModuloAdm from '../pages/Dashboard-adm/AnalyticModule';
 import PainelAnalyticModulo from '../pages/Dashboard-adm/PainelAnalyticModule';
+import Import from '../pages/Dashboard-adm/Imports';
 
+// Routes user no ADM
 import DashboardUser from '../pages/Dashboard-user';
 import AnalyticModuloUser from '../pages/Dashboard-user/AnalyticModule';
 
@@ -32,6 +35,7 @@ const Routes: React.FC = () => (
     <Route path="/e-mail" component={Email} isPrivate isAdmin />
     <Route path="/report" component={Report} isPrivate isAdmin />
     <Route path="/sector" component={Sector} isPrivate isAdmin />
+    <Route path="/import" component={Import} isPrivate isAdmin />
     <Route
       path="/analyticModule"
       component={AnalyticModuloAdm}
