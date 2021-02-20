@@ -10,7 +10,7 @@ import * as Yup from 'yup';
 
 import { useToast } from '../../../../hooks/toast';
 
-import { Form, ContainerSub, CardSub } from './styles';
+import { Form, ContainerSub, CardSub, DivLeft } from './styles';
 
 import Input from '../../../Global/Input';
 import TextArea from '../../../Global/TextArea';
@@ -177,9 +177,11 @@ const ModalAddSector: React.FC<IModalProps> = ({
             ))}
           </ContainerSub>
 
-          <Button type="submit" data-testid="add-food-button">
-            Salvar
-          </Button>
+          <DivLeft>
+            <Button type="submit" data-testid="add-food-button">
+              Salvar
+            </Button>
+          </DivLeft>
         </nav>
       </Form>
     </Modal>

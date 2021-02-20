@@ -113,6 +113,22 @@ export const Form = styled(unform)<PropsSub>`
     }
   }
 `;
+
+export const DivLeft = styled.div`
+  text-align: right;
+  width: 100%;
+
+  button {
+    width: 200px;
+    div {
+      > svg {
+        color: #fff;
+        width: 20px;
+      }
+    }
+  }
+`;
+
 export const ContainerSub = styled.div`
   margin: 30px;
 `;

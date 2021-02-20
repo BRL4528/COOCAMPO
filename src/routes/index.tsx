@@ -47,6 +47,7 @@ const Routes: React.FC = () => (
       component={PainelAnalyticModulo}
       isPrivate
       isUser
+      isAdmin
     />
 
     <Route path="/user" component={DashboardUser} isPrivate isUser />

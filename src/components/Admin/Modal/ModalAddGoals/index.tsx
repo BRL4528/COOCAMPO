@@ -3,8 +3,10 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 
 import { FormHandles } from '@unform/core';
 
+import { FiX, FiLink2 } from 'react-icons/fi';
+
 import * as Yup from 'yup';
-import { FiLink2 } from 'react-icons/fi';
+
 import { useToast } from '../../../../hooks/toast';
 
 import {
@@ -13,6 +15,7 @@ import {
   CardSub,
   ContainerAnalytic,
   CardAnalytic,
+  DivLeft,
 } from './styles';
 
 // import { FormContainer } from './styles';
@@ -229,7 +232,10 @@ const ModalAddFood: React.FC<IModalProps> = ({
         openAnalytic={openAnalyticModule}
         onSubmit={handleSubmit}
       >
-        <h2>Nova meta</h2>
+        <span>
+          <h2>Novo Meta</h2>
+          <FiX size={20} onClick={() => setIsOpen()} />
+        </span>
         <header>
           <Input name="name" placeholder="Nome da meta" />
 
@@ -290,9 +296,11 @@ const ModalAddFood: React.FC<IModalProps> = ({
             ))}
           </ContainerAnalytic>
 
-          <Button type="submit" data-testid="add-food-button">
-            Salvar
-          </Button>
+          <DivLeft>
+            <Button type="submit" data-testid="add-food-button">
+              Salvar
+            </Button>
+          </DivLeft>
         </nav>
       </Form>
     </Modal>

@@ -1,6 +1,6 @@
 import React, { useCallback, useRef, useState } from 'react';
 
-// import { useReactToPrint } from 'react-to-print';
+// import { useLoading, Oval } from '@agney/react-loading';
 
 // import { FiPrinter, FiEdit, FiMaximize } from 'react-icons/fi';
 import Carousel from '@brainhubeu/react-carousel';
@@ -29,6 +29,11 @@ const Dashboard: React.FC = () => {
   const [colorize, setcolorize] = useState('#240dac');
 
   // const [loadDash, setLoadDash] = useState(true);
+
+  // const { containerProps, indicatorEl } = useLoading({
+  //   loading: loadDash,
+  //   indicator: <Oval />,
+  // });
 
   const array = [];
   const temp1 = {

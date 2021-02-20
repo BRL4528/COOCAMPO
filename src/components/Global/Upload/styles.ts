@@ -30,13 +30,14 @@ export const DropContainer = styled.div.attrs({
 `;
 
 const messageColors = {
-  default: '#5636D3',
+  default: '#969cb3',
   error: '#e83f5b',
   success: '#12a454',
 };
 
 export const UploadMessage = styled.p`
   display: flex;
+  font-size: 20px;
   font-size: 16px;
   line-height: 24px;
   padding: 48px 0;

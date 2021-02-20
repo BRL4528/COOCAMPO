@@ -2,13 +2,16 @@ import React, { useCallback, useRef } from 'react';
 
 import { FormHandles } from '@unform/core';
 
+import { FiX } from 'react-icons/fi';
+
 import * as Yup from 'yup';
-import { Form } from './styles';
+import { Form, DivLeft } from './styles';
 
 // import { FormContainer } from './styles';
 import Input from '../../../Global/Input';
 import TextArea from '../../../Global/TextArea';
 import Button from '../../../Global/Button';
+
 import { useToast } from '../../../../hooks/toast';
 import getValidationErrors from '../../../../utils/getValidationErrors';
 
@@ -96,7 +99,10 @@ const ModalAddFood: React.FC<IModalProps> = ({
   return (
     <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
       <Form ref={formRef} onSubmit={handleSubmit}>
-        <h2>Novo Módo de Análise</h2>
+        <span>
+          <h2>Novo Módulo de Análise</h2>
+          <FiX size={20} onClick={() => setIsOpen()} />
+        </span>
 
         <Input type="text" name="name" placeholder="Nome do módulo" />
 
@@ -105,9 +111,11 @@ const ModalAddFood: React.FC<IModalProps> = ({
 
         <TextArea name="observations" placeholder="Observações" />
 
-        <Button type="submit" data-testid="add-food-button">
-          Salvar
-        </Button>
+        <DivLeft>
+          <Button type="submit" data-testid="add-food-button">
+            Salvar
+          </Button>
+        </DivLeft>
       </Form>
     </Modal>
   );

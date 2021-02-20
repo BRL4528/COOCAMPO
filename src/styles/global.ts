@@ -52,4 +52,9 @@ export default createGlobalStyle`
   button {
     cursor: pointer;
   }
+
+  //Class Global
+  .styleLoadButton {
+    cursor: wait;
+  }
 `;

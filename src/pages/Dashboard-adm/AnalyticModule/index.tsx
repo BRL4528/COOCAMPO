@@ -62,56 +62,6 @@ const SelectorFolders: React.FC = () => {
         handleAnalytic={handleAnalytic}
       />
       <Container>
-        <iframe
-          src="https://open.spotify.com/embed/track/54OBgO0Xwu20Jak9TMXbR7"
-          width="250"
-          height="80"
-          frameBorder="0"
-          // allowtransparency="true"
-          allow="encrypted-media"
-        />
-        <iframe
-          src="https://open.spotify.com/embed/track/3FAJ6O0NOHQV8Mc5Ri6ENp"
-          width="250"
-          height="80"
-          frameBorder="0"
-          allow="encrypted-media"
-        />
-        <iframe
-          src="https://open.spotify.com/embed/track/5GRf6zSrCi8gErdN6CyRJT"
-          width="250"
-          height="80"
-          frameBorder="0"
-          // allowtransparency="true"
-          allow="encrypted-media"
-        />
-
-        <iframe
-          src="https://open.spotify.com/embed/track/3QdYdYTLk3fL3f9CJ4ZS59"
-          width="250"
-          height="80"
-          frameBorder="0"
-          // allowtransparency="true"
-          allow="encrypted-media"
-        />
-
-        <iframe
-          src="https://open.spotify.com/embed/track/08E0TIudwefGjA27W4zrnf"
-          width="250"
-          height="80"
-          frameBorder="0"
-          // allowtransparency="true"
-          allow="encrypted-media"
-        />
-
-        <iframe
-          src="https://open.spotify.com/embed/track/08fDeQNLTu0bZnT6tRcXUP"
-          width="250"
-          height="80"
-          frameBorder="0"
-          // allowtransparency="true"
-          allow="encrypted-media"
-        />
         <CardeHeader>
           <div>
             <h2>Módulo de Análise</h2>

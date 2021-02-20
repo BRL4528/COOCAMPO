@@ -2,11 +2,13 @@ import React, { useCallback, useRef } from 'react';
 
 import { FormHandles } from '@unform/core';
 
+import { FiX } from 'react-icons/fi';
+
 import * as Yup from 'yup';
 
 import { useToast } from '../../../../hooks/toast';
 
-import { Form } from './styles';
+import { Form, DivLeft } from './styles';
 
 import Input from '../../../Global/Input';
 import TextArea from '../../../Global/TextArea';
@@ -79,7 +81,10 @@ const ModalAddFood: React.FC<IModalProps> = ({ isOpen, setIsOpen }) => {
   return (
     <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
       <Form ref={formRef} onSubmit={handleSubmit}>
-        <h2>Nova Submeta</h2>
+        <span>
+          <h2>Nova Submeta</h2>
+          <FiX size={20} onClick={() => setIsOpen()} />
+        </span>
 
         <Input name="name" placeholder="Nome da meta" />
 
@@ -87,9 +92,11 @@ const ModalAddFood: React.FC<IModalProps> = ({ isOpen, setIsOpen }) => {
 
         <TextArea name="observations" placeholder="Descrição" />
 
-        <Button type="submit" data-testid="add-food-button">
-          Salvar
-        </Button>
+        <DivLeft>
+          <Button type="submit" data-testid="add-food-button">
+            Salvar
+          </Button>
+        </DivLeft>
       </Form>
     </Modal>
   );

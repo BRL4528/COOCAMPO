@@ -19,11 +19,28 @@ export const Form = styled(unform)`
   display: flex;
   flex-direction: column;
 
-  h2 {
-    color: #433f59;
-    margin-bottom: 20px;
-  }
+  > span {
+    display: flex;
+    width: 100%;
+    margin: 0 auto;
+    justify-content: space-between;
+    /* align-items: center; */
 
+    svg {
+      cursor: pointer;
+      color: #433f59;
+      transition: var(--transition-speed);
+
+      :hover {
+        color: var(--text-primary);
+      }
+    }
+
+    h2 {
+      color: #433f59;
+      margin-bottom: 20px;
+    }
+  }
   button {
     margin: 0 0 20px 0;
     align-self: flex-end;
@@ -92,6 +109,23 @@ export const Form = styled(unform)`
     }
   }
 `;
+
+export const DivLeft = styled.div`
+  text-align: right;
+  width: 100%;
+
+  button {
+    margin-top: 25px;
+    width: 200px;
+    div {
+      > svg {
+        color: #fff;
+        width: 20px;
+      }
+    }
+  }
+`;
+
 export const ContainerSub = styled.div`
   margin: 30px;
 `;
