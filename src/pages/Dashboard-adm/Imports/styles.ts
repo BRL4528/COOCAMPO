@@ -1,24 +1,16 @@
 import styled from 'styled-components';
 
 export const Container = styled.div`
-  /* display: flex; */
-
   width: 100%;
   max-width: 736px;
   margin: 0 auto;
   padding: 40px 20px;
-
-  /* margin-top: 12px;
-  margin-left: 8%; */
-
   color: #433f59;
 `;
 
 export const CardHeader = styled.div`
   margin-top: 18px;
   margin-left: 8%;
-  /* width: 100%; */
-
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -35,7 +27,6 @@ export const ImportFileContainer = styled.section`
   margin-top: 40px;
   border-radius: 5px;
   padding: 64px;
-  /* max-width: 736px; */
 
   p {
     color: var(--text-primary);

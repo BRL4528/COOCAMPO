@@ -1,4 +1,3 @@
-/* eslint-disable jsx-a11y/control-has-associated-label */
 import React, { useCallback, useState, useEffect } from 'react';
 import { FiChevronRight } from 'react-icons/fi';
 
@@ -44,14 +43,6 @@ interface IDataGoals {
     },
   ];
 }
-
-// interface ISubgoalsItem {
-//   sub_goals: {
-//     name: string;
-//     status: string;
-//     observations: string;
-//   };
-// }
 
 const SelectorFolders: React.FC = () => {
   const [modalOpenGoals, setModalGoalsOpen] = useState(false);
@@ -109,6 +100,7 @@ const SelectorFolders: React.FC = () => {
       />
 
       <Container>
+        {/* Primeiro elemento */}
         <CardeHeader>
           <div>
             <h2>Metas e Submetas</h2>
@@ -129,78 +121,57 @@ const SelectorFolders: React.FC = () => {
           </CardButton>
         </CardeHeader>
 
-        {/* <TableContainer>
-          <table>
-            <thead>
-              <tr>
-                <th />
-                <th>Peso</th>
-                <th>Situação</th>
-                <th />
-                <th>Composição</th>
-              </tr>
-            </thead>
-
-            <tbody>
-              {dataSubGoals.map(subgoal => (
-                <tr key={subgoal.id}>
-                  <td>
-                    <h3>{subgoal.name}</h3>
-                  </td>
-                  <td>{subgoal.weight}</td>
-                  <td>{subgoal.status}</td>
-                  <td>...</td>
-                  <td>abrir</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </TableContainer> */}
         <ContainerInfo>
-          <TableContainer>
-            {dataGoals.map(subgoal => (
-              <button
-                type="button"
-                key={subgoal.id}
-                onClick={() => hanleSelectedItem(subgoal.id)}
-              >
-                <div>
-                  <strong>{subgoal.name}</strong>
-                  <p>{subgoal.observations}</p>
-                </div>
-
-                <FiChevronRight size={20} />
-              </button>
-            ))}
-          </TableContainer>
-
-          <TableInfo>
-            {dataGoals.map(subgoal => (
-              <CadView
-                key={subgoal.id}
-                item={subgoal.id}
-                selected={itemSelected}
-              >
-                <span key={subgoal.id}>
+          <div>
+            <span>
+              <input name="seach" />
+            </span>
+            <TableContainer>
+              {dataGoals.map(subgoal => (
+                <button
+                  type="button"
+                  key={subgoal.id}
+                  onClick={() => hanleSelectedItem(subgoal.id)}
+                >
                   <div>
                     <strong>{subgoal.name}</strong>
                     <p>{subgoal.observations}</p>
                   </div>
-                </span>
-                <ViewSubGoals>
-                  <h3>Composição</h3>
-                  {subgoal.sub_goals_of_goals.map(sub => (
-                    <span key={sub.sub_goals.id}>
-                      <div>
-                        <strong>{sub.sub_goals.name}</strong>
-                        <p>{sub.sub_goals.observations}</p>
-                      </div>
-                    </span>
-                  ))}
-                </ViewSubGoals>
-              </CadView>
-            ))}
-          </TableInfo>
+
+                  <FiChevronRight size={20} />
+                </button>
+              ))}
+            </TableContainer>
+          </div>
+          <div>
+            <TableInfo>
+              {dataGoals.map(subgoal => (
+                <CadView
+                  key={subgoal.id}
+                  item={subgoal.id}
+                  selected={itemSelected}
+                >
+                  <span key={subgoal.id}>
+                    <div>
+                      <strong>{subgoal.name}</strong>
+                      <p>{subgoal.observations}</p>
+                    </div>
+                  </span>
+                  <ViewSubGoals>
+                    <h3>Composição</h3>
+                    {subgoal.sub_goals_of_goals.map(sub => (
+                      <span key={sub.sub_goals.id}>
+                        <div>
+                          <strong>{sub.sub_goals.name}</strong>
+                          <p>{sub.sub_goals.observations}</p>
+                        </div>
+                      </span>
+                    ))}
+                  </ViewSubGoals>
+                </CadView>
+              ))}
+            </TableInfo>
+          </div>
         </ContainerInfo>
       </Container>
     </>

@@ -6,12 +6,8 @@ interface IGoals {
 }
 
 export const Container = styled.div`
-  /* display: flex; */
-  /* align-items: stretch; */
-
   margin-top: 12px;
   margin-left: 8%;
-
   color: #433f59;
 
   strong {
@@ -42,59 +38,61 @@ export const CardButton = styled.div`
   div {
     min-width: 200px;
     margin: 0 10px 0 10px;
-    /* transition: var(--transition-speed); */
 
     @media only screen and (max-width: 600px) {
-      /* transition: var(--transition-speed); */
       display: none;
     }
   }
 `;
 
-// export const TableContainer = styled.section`
-//   /* margin-top: 40px; */
-//   margin: 40px 30px 0 0;
-
-//   table {
-//     width: 100%;
-//     border-spacing: 0 8px;
-//     th {
-//       color: #969cb3;
-//       font-weight: normal;
-//       padding: 20px 32px;
-//       text-align: left;
-//       font-size: 14px;
-//       line-height: 24px;
-//     }
-
-//     td {
-//       /* cursor: pointer; */
-//       padding: 20px 32px;
-//       border: 0;
-//       background: #fff;
-//       font-size: 14px;
-//       font-weight: normal;
-//       color: #969cb3;
-//       border-radius: 5px;
-
-//       h3 {
-//         color: #433f59;
-//       }
-//     }
-//   }
-// `;
 export const ContainerInfo = styled.div`
-  display: flex;
-  width: 100%;
+  display: grid;
 
-  /* margin-left: 110px; */
+  grid-template-columns: 500px 500px;
+  grid-template-rows: auto;
+
+  grid-template-areas: 'Goals Composition';
+
+  div {
+    span {
+      align-items: center;
+      padding: 0px 60px 0px 20px;
+      > input {
+        border: 1px solid #a0a4a8;
+        border-radius: 3px;
+        color: #433f59;
+        width: 200px;
+
+        &::placeholder {
+          color: #a0a4a8;
+        }
+      }
+    }
+  }
 `;
 
 export const TableContainer = styled.div`
-  position: absolute;
-  margin-top: 80px;
-  max-width: 700px;
-  /* overflow: scroll; */
+  margin-top: 45px;
+  max-height: 700px;
+  padding: 15px;
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  ::-webkit-scrollbar {
+    width: 0.2rem;
+    height: 0.5rem;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: rgba(25, 25, 26, 0.23);
+    border-radius: 12px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #f2c811;
+    border-radius: 12px;
+  }
+
   button {
     background: #fff;
     border-radius: 5px;
@@ -140,51 +138,33 @@ export const TableContainer = styled.div`
 `;
 
 export const TableInfo = styled.div`
-  width: 100%;
-  /* background: red; */
-  margin-left: 750px;
-  margin-top: 80px;
-  /* transition: var(--transition-speed);
-  transform: rotate(0deg);
-
-  :hover {
-    transform: rotate(180deg);
-  } */
+  margin: 80px 0px 0px 25px;
 `;
 
 export const CadView = styled.div<IGoals>`
-  visibility: hidden;
   position: absolute;
-  /* overflow: auto; */
+  visibility: hidden;
   background: #fff;
   border-radius: 5px;
-  width: 700px;
-  height: 60%;
   padding: 24px;
-  display: block;
   text-decoration: none;
   display: flex;
   flex-direction: column;
-  /* align-items: center; */
   text-align: initial;
-
   transition: transform 0.2s;
   border: none;
-  /* width: 200px; */
 
   ${({ item, selected }: IGoals): string =>
     item === selected ? 'visibility: visible;' : ''}
 
   >span {
-    /* background: #fff; */
-    border-radius: 5px;
-    width: 100%;
-    padding: 24px;
-    display: block;
-    text-decoration: none;
     display: flex;
     align-items: center;
     text-align: initial;
+    width: 100%;
+    padding: 24px;
+    border-radius: 5px;
+    text-decoration: none;
 
     transition: transform 0.2s;
     border: none;

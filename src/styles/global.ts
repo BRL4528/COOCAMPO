@@ -8,7 +8,7 @@ export default createGlobalStyle`
     --text-terciary: rgba(150, 156, 186, 0.2);
     --bg-primary: #F8F8FB;
     --bg-secondary: #fff;
-    --transition-speed: 600ms;
+    --transition-speed: 800ms;
   }
 
   * {
