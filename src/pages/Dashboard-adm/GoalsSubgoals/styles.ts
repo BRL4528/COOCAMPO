@@ -8,7 +8,7 @@ interface IGoals {
 export const Container = styled.div`
   margin-top: 12px;
   margin-left: 8%;
-  color: #433f59;
+  color: var(--text-quarterly);
 
   strong {
     color: var(--text-primary);
@@ -73,7 +73,7 @@ export const ContainerInfo = styled.div`
 
 export const TableContainer = styled.div`
   margin-top: 45px;
-  max-height: 700px;
+  max-height: 500px;
   padding: 15px;
   overflow-y: auto;
   overflow-x: hidden;

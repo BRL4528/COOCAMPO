@@ -29,7 +29,7 @@ interface ISector {
   id: string;
   name: string;
   leader: string;
-  observations: string;
+  // observations: string;
 }
 
 interface IGoals {
@@ -42,22 +42,69 @@ interface IGoals {
 
 interface IModalProps {
   isOpen: boolean;
+  dataEditSector: string;
   setIsOpen: () => void;
   handleSector: (sector: Omit<ISector, ''>) => void;
+  // setDataEditSector: () => void;
+}
+
+interface IGoalsAnalytics {
+  id: string;
+  status_of_conclusion: boolean;
+  sector: {
+    id: string;
+    name: string;
+    leader: string;
+    // observations: string;
+  };
+  goals: {
+    id: string;
+    name: string;
+    status: string;
+    weight: string;
+    source: string;
+    observations: string;
+    type: string;
+    sub_goals_of_goals: [
+      {
+        id: string;
+        sub_goals: {
+          id: string;
+          name: string;
+        };
+      },
+    ];
+  };
 }
 
 const ModalAddSector: React.FC<IModalProps> = ({
   isOpen,
   setIsOpen,
   handleSector,
+  dataEditSector,
+  // setDataEditSector,
 }) => {
   const formRef = useRef<FormHandles>(null);
+
   const { addToast } = useToast();
 
   const [selectedGoalsItems, setSelectedGoalsItems] = useState<string[]>([]);
 
-  const [openGoals, setOpenGoals] = useState(false);
+  const [opengoals, setOpenGoals] = useState<boolean>(false);
   const [dataGoals, setDataGoals] = useState<IGoals[]>([]);
+
+  const [dataInitialSector, setDataInitialSector] = useState<ISector>();
+  // const [dataInitialGoals, setDataInitialGoals] = useState<string[]>([]);
+
+  useEffect(() => {
+    if (isOpen === false) {
+      setDataInitialSector({
+        id: '',
+        name: '',
+        leader: '',
+      });
+    }
+  }, [isOpen]);
 
   useEffect(() => {
     api.get('/goals').then(response => {
@@ -65,13 +112,47 @@ const ModalAddSector: React.FC<IModalProps> = ({
     });
   }, []);
 
+  // Esperar dev fazer rota api
+  useEffect(() => {
+    if (isOpen) {
+      if (dataEditSector !== '') {
+        api
+          .get<IGoalsAnalytics[]>(
+            `/goals-of-sectors?sector_id=${dataEditSector}`,
+          )
+          .then(response => {
+            console.log('teste', response.data);
+            const initialSector = {
+              id: response.data[0].sector.id,
+              name: response.data[0].sector.name,
+              leader: response.data[0].sector.leader,
+              // observations: response.data[0].sector.observations,
+            };
+            const initialGoals:
+              | IGoals
+              | ((prevState: IGoals | undefined) => IGoals | undefined)
+              | string[]
+              | undefined = [];
+
+            response.data.forEach(function (goals) {
+              initialGoals.push(goals.goals.id);
+            });
+
+            setSelectedGoalsItems(initialGoals);
+            setDataInitialSector(initialSector);
+            setOpenGoals(true);
+          });
+      }
+    }
+  }, [dataEditSector, isOpen]);
+
   const handleSubmit = useCallback(
     async (data: ISector) => {
       try {
         formRef.current?.setErrors({});
 
         const schema = Yup.object().shape({
-          name: Yup.string().required('Nome do setoe é Obrigatório'),
+          name: Yup.string().required('Nome do setor é Obrigatório'),
           leader: Yup.string().required('Lider é obrigatório'),
           observations: Yup.string(),
         });
@@ -87,23 +168,59 @@ const ModalAddSector: React.FC<IModalProps> = ({
           leader,
         };
 
-        const response = await api.post('/sectors', formData);
-        handleSector(response.data);
+        // Cria novo item
+        if (dataEditSector === '') {
+          console.log('cria um novo setor');
+          const response = await api.post('/sectors', formData);
+          handleSector(response.data);
 
-        if (selectedGoalsItems.length > 0) {
-          await api.post('/goals-of-sectors/create-all', {
-            goals_ids: selectedGoalsItems,
-            sector_id: response.data.id,
+          if (selectedGoalsItems.length > 0) {
+            await api.post('/goals-of-sectors/create-all', {
+              goals_ids: selectedGoalsItems,
+              sector_id: response.data.id,
+            });
+          }
+
+          setIsOpen();
+
+          addToast({
+            type: 'success',
+            title: 'Setor',
+            description: 'Setor criado sucesso com sucesso',
           });
         }
 
-        setIsOpen();
+        // Atualiza dados editados
+        if (dataEditSector) {
+          console.log('atualiza setor');
+          const response = await api.put(
+            `/sectors?sector_id=${dataEditSector}`,
+            formData,
+          );
+          console.log(formData);
 
-        addToast({
-          type: 'success',
-          title: 'Setor',
-          description: 'Setor criado sucesso com sucesso',
-        });
+          if (selectedGoalsItems.length > 0) {
+            await api.post('/goals-of-sectors/create-all', {
+              goals_ids: selectedGoalsItems,
+              sector_id: response.data.id,
+            });
+          }
+
+          setIsOpen();
+          setSelectedGoalsItems([]);
+          setDataInitialSector({
+            id: '',
+            name: '',
+            leader: '',
+          });
+          // setDataEditSector();
+
+          addToast({
+            type: 'success',
+            title: 'Setor',
+            description: 'Setor atualizado sucesso com sucesso',
+          });
+        }
       } catch (err) {
         console.log(err);
         setIsOpen();
@@ -114,7 +231,7 @@ const ModalAddSector: React.FC<IModalProps> = ({
         });
       }
     },
-    [addToast, setIsOpen, handleSector, selectedGoalsItems],
+    [dataEditSector, handleSector, selectedGoalsItems, setIsOpen, addToast],
   );
 
   const handleSelectGoalsItem = useCallback(
@@ -137,14 +254,25 @@ const ModalAddSector: React.FC<IModalProps> = ({
   );
 
   const hanleOpenGoals = useCallback(() => {
-    setOpenGoals(!openGoals);
-  }, [openGoals]);
+    setOpenGoals(!opengoals);
+  }, [opengoals]);
 
   return (
     <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
-      <Form ref={formRef} openGoals={openGoals} onSubmit={handleSubmit}>
+      {/* {console.log(dataInitialSector)} */}
+      <Form
+        ref={formRef}
+        opengoals={opengoals}
+        onSubmit={handleSubmit}
+        initialData={dataInitialSector}
+      >
         <span>
-          <h2>Novo Setor</h2>
+          {dataEditSector === '' ? (
+            <h2>Criar novo setor</h2>
+          ) : (
+            <h2>Editar setor existente</h2>
+          )}
+
           <FiX size={20} onClick={() => setIsOpen()} />
         </span>
 
@@ -167,7 +295,7 @@ const ModalAddSector: React.FC<IModalProps> = ({
               <CardSub
                 onClick={() => handleSelectGoalsItem(sub.id)}
                 key={sub.id}
-                openGoals={openGoals}
+                opengoals={opengoals}
                 className={
                   selectedGoalsItems.includes(sub.id) ? 'selected' : ''
                 }

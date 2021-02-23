@@ -1,40 +1,19 @@
 import styled from 'styled-components';
 
 export const Conatiner = styled.div`
-  /* display: flex; */
   color: #333;
   width: 100%;
   height: 100vh;
-  /* background: red; */
-  /* height: 745px; */
+
   padding-left: 80px;
   z-index: 0;
   overflow-x: visible;
-  /* grid-template-columns: 600px; */
-  /* grid-template-rows: 46px auto 52px; */
-  /* grid-template-areas: 'GA GA GA'; */
-
-  /* ::-webkit-scrollbar {
-    width: 0.5rem;
-    height: 0.5rem;
-  }
-
-  ::-webkit-scrollbar-track {
-    background: #1e1e24;
-  }
-
-  ::-webkit-scrollbar-thumb {
-    background: #f2c811;
-  } */
 `;
 export const CardItem = styled.div`
   display: flex;
   color: #333;
-  /* width: 100%; */
   z-index: 0;
-  /* grid-template-columns: 600px; */
-  /* grid-template-rows: 46px auto 52px; */
-  /* grid-template-areas: 'GA GA GA'; */
+
   @media only screen and (max-width: 600px) {
     display: grid;
   }
@@ -43,16 +22,16 @@ export const CardGraphic = styled.div`
   box-shadow: 0 0 14px 0 rgba(0, 0, 0, 0.02);
   border-radius: 2px;
   padding: 20px 0 0;
-  /* margin-left: 80px; */
+
   display: flex;
   align-items: center;
   flex-direction: column;
   text-align: center;
   background: #fff;
   border-radius: 6px;
-  /* transition: var(--transition-speed); */
+
   border-bottom: solid 3px rgba(28, 156, 217, 0.12);
-  /* padding: 20px; */
+
   margin: 20px 20px 20px 20px;
   width: 250px;
   height: 150px;

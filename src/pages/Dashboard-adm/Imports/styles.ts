@@ -5,7 +5,7 @@ export const Container = styled.div`
   max-width: 736px;
   margin: 0 auto;
   padding: 40px 20px;
-  color: #433f59;
+  color: var(--text-quarterly);
 `;
 
 export const CardHeader = styled.div`
@@ -14,7 +14,7 @@ export const CardHeader = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  color: #433f59;
+  color: var(--text-quarterly);
 
   strong {
     color: var(--text-primary);

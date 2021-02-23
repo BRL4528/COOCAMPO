@@ -1,4 +1,4 @@
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 
 interface ICheck {
   checked: boolean;
@@ -6,12 +6,10 @@ interface ICheck {
   idChecked: string;
 }
 
-// transition: width 600ms ease;
-
 export const Container = styled.div`
   .selected {
-    background: rgba(194, 217, 211, 0.58);
-    border-bottom: 3px solid #4caf50;
+    background: var(--green-secundary);
+    border-bottom: 3px solid var(--green-primary);
     max-height: 80px;
 
     h2 {
@@ -21,8 +19,8 @@ export const Container = styled.div`
       > span {
         visibility: visible;
         svg {
-          color: #4caf50;
-          border-color: #f2c811;
+          color: var(--green-primary);
+          border-color: var(--color-theme-primary);
 
           cursor: pointer;
         }
@@ -34,9 +32,7 @@ export const Container = styled.div`
   align-items: center;
   flex-direction: column;
   color: #073b4c;
-  /* background: #f6eee7; */
   width: 100%;
-  /* height: 100vh; */
 
   > header {
     display: flex;
@@ -48,8 +44,7 @@ export const Container = styled.div`
     border-radius: 6px;
     min-height: 100px;
     padding: 35px;
-    /* border-bottom: 3px solid #f2c811; */
-    background: #f2c811;
+    background: var(--color-theme-primary);
   }
 `;
 export const CardContainer = styled.div<ICheck>`
@@ -73,41 +68,29 @@ export const CardContainer = styled.div<ICheck>`
   }
 
   h3 {
-    border-bottom: solid 1px rgba(150, 156, 186, 0.2);
+    border-bottom: solid 1px var(--text-tertiary);
     margin: 14px 0 15px 5px;
     color: var(--text-primary);
   }
 
   > div {
     min-width: 700px;
-    /* background-color: rgba(194, 217, 211, 0.58); */
-
     transition: max-height 1s;
-    background: #fff;
+    background: var(--white-secondary);
     box-shadow: 0 0 14px 0 rgba(0, 0, 0, 0.07);
-    border-bottom: 3px solid #fff;
+    border-bottom: 3px solid var(--white-secondary);
     max-height: 600px;
-
-    /* ${props =>
-      props.checked &&
-      css`
-        transition: max-height 2s;
-        max-height: 600px;
-        background-color: #fff;
-        border-bottom: 3px solid #fff;
-      `}; */
 
     overflow: hidden;
     white-space: nowrap;
 
     padding: 25px;
-
     margin: 15px 0 15px 0;
     border-radius: 6px;
     transition: var(--transition-speed);
 
     :hover {
-      border-bottom: 3px solid #f2c811;
+      border-bottom: 3px solid var(--color-theme-primary);
     }
 
     div {
@@ -119,7 +102,6 @@ export const CardContainer = styled.div<ICheck>`
       }
 
       div {
-        /* background: red; */
         width: 200px;
 
         strong {

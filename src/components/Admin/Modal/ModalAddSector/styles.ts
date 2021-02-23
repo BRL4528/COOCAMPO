@@ -3,7 +3,7 @@ import styled, { css } from 'styled-components';
 import { Form as unform } from '@unform/web';
 
 interface PropsSub {
-  openGoals: boolean;
+  opengoals: boolean;
 }
 
 export const Form = styled(unform)<PropsSub>`
@@ -78,7 +78,7 @@ export const Form = styled(unform)<PropsSub>`
     transition: height 600ms ease;
 
     ${props =>
-      props.openGoals &&
+      props.opengoals &&
       css`
         height: 20rem;
       `}
@@ -147,7 +147,7 @@ export const CardSub = styled.div<PropsSub>`
   cursor: pointer;
 
   ${props =>
-    props.openGoals &&
+    props.opengoals &&
     css`
       display: flex;
       filter: grayscale(0) opacity(0.7);

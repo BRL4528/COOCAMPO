@@ -6,7 +6,7 @@ export const Container = styled.ul`
     display: flex;
     justify-content: space-between;
     align-items: center;
-    color: #444;
+    color: var(--dark-secondary);
     & + li {
       margin-top: 15px;
     }
@@ -21,7 +21,7 @@ export const FileInfo = styled.div`
   button {
     border: 0;
     background: transparent;
-    color: #e83f5b;
+    color: var(--red-primary);
     margin-left: 5px;
     cursor: pointer;
   }
@@ -31,7 +31,7 @@ export const FileInfo = styled.div`
     justify-content: space-between;
     span {
       font-size: 12px;
-      color: #999;
+      color: var(--dark-tertiary);
       margin-top: 5px;
     }
   }

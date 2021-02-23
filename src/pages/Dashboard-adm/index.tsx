@@ -28,13 +28,6 @@ const Dashboard: React.FC = () => {
 
   const [colorize, setcolorize] = useState('#240dac');
 
-  // const [loadDash, setLoadDash] = useState(true);
-
-  // const { containerProps, indicatorEl } = useLoading({
-  //   loading: loadDash,
-  //   indicator: <Oval />,
-  // });
-
   const array = [];
   const temp1 = {
     name: 'Matriz',
@@ -81,16 +74,6 @@ const Dashboard: React.FC = () => {
   array.push(temp3);
   array.push(temp4);
   array.push(temp5);
-
-  // const layoutSettings = {
-  //   width: '100%',
-  //   border: '1px solid #fff',
-  //   // height: '100%',
-  // };
-
-  // const handlePrint = useReactToPrint({
-  //   content: () => componentRef.current,
-  // });
 
   const handleColor = useCallback(() => {
     setcolorize('#a70dac');

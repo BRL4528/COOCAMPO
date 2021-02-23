@@ -5,10 +5,31 @@ export default createGlobalStyle`
   :root {
     --text-primary: #b2b2b2;
     --text-secondary: #ececec;
-    --text-terciary: rgba(150, 156, 186, 0.2);
-    --bg-primary: #F8F8FB;
-    --bg-secondary: #fff;
-    --transition-speed: 800ms;
+    --text-tertiary: rgba(150, 156, 186, 0.2);
+    --text-quarterly: #433f59;
+
+    --white-primary: #F8F8FB;
+    --white-secondary: #fff;
+    --white-tertiary: #f4ede8;
+
+    --beige-primary: #fdf6e3;
+    --beige-secondary: #f5e5b8;
+
+    --dark-primary: #1e1e24;
+    --dark-secondary: #444;
+    --dark-tertiary: #999591;
+    --dark-quaternary: #a0a4a8;
+
+    --red-primary: #e83f5b;
+    --red-secundary: #c53030;
+
+    --green-primary: #4caf50;
+    --green-secundary: rgba(194, 217, 211, 0.58);
+
+    --color-theme-primary: #f2c811;
+    --color-theme-secundary: #1c9cd9;
+
+    --transition-speed: 600ms;
   }
 
   * {
@@ -19,8 +40,8 @@ export default createGlobalStyle`
   }
 
   body {
-    background: #f8f8fb;
-    color: #fff;
+    background: var(--white-primary);
+    color: var(--white-secondary);
     -webkit-font-smoothing: antialiased;
   }
 
@@ -31,18 +52,18 @@ export default createGlobalStyle`
   }
 
   body::-webkit-scrollbar-track {
-    background: #1e1e24;
+    background: var(--dark-primary);
   }
 
   body::-webkit-scrollbar-thumb {
-    background:   #f2c811;
+    background:   var(--color-theme-primary);
   }
 
 
 
   body, input, button, textarea {
     font-family: 'Roboto', sans-serif;
-    /* font-size: 16px; */
+
   }
 
   h1, h2, h3, h4, h5, h6, strong {
@@ -53,8 +74,5 @@ export default createGlobalStyle`
     cursor: pointer;
   }
 
-  //Class Global
-  .styleLoadButton {
-    cursor: wait;
-  }
+
 `;

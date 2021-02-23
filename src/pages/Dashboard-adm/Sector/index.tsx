@@ -1,6 +1,3 @@
-/* eslint-disable react/no-this-in-sfc */
-/* eslint-disable no-return-assign */
-/* eslint-disable no-alert */
 import React, { useCallback, useState, useRef, useEffect } from 'react';
 
 import { FullScreen, useFullScreenHandle } from 'react-full-screen';
@@ -12,7 +9,6 @@ import { FiEdit, FiPrinter, FiMaximize, FiChevronsDown } from 'react-icons/fi';
 import { React15Tabulator } from 'react-tabulator';
 
 import 'react-tabulator/lib/css/bootstrap/tabulator_bootstrap.min.css';
-// import GraphicSpeedometer from '../../../components/Global/GraphicModels/GraphicSpeedometer';
 
 import Button from '../../../components/Global/Button';
 import ModalAddGoals from '../../../components/Admin/Modal/ModalAddSector';
@@ -33,7 +29,7 @@ interface ISector {
   id: string;
   name: string;
   leader: string;
-  observations: string;
+  observations?: string;
 }
 
 const SelectorFolders: React.FC = () => {
@@ -43,17 +39,26 @@ const SelectorFolders: React.FC = () => {
   const componentRef = useRef<HTMLDivElement>(null);
 
   const [modalOpen, setModalOpen] = useState(false);
+  const [dataEditSector, setDataEditSector] = useState('');
+
   const [dataSector, setDataSector] = useState<ISector>();
   const [dataUpdateSector, setDataUpdateSector] = useState<ISector[]>([]);
 
-  // const [checked, setChecked] = useState(true);
   const [grupSectorsSelected, setGrupSectorsSelected] = useState<string[]>([]);
-
-  console.log('teste', grupSectorsSelected);
 
   const toggleModal = useCallback(() => {
     setModalOpen(!modalOpen);
   }, [modalOpen]);
+
+  const handleEdit = useCallback((idSector: string) => {
+    setModalOpen(true);
+    setDataEditSector(idSector);
+  }, []);
+
+  // const setHandleEdit = useCallback(() => {
+  //   console.log('esta aq');
+  //   setDataEditSector('');
+  // }, []);
 
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,
@@ -95,15 +100,20 @@ const SelectorFolders: React.FC = () => {
 
   const columns = [
     { title: 'Nome', field: 'name', width: 300 },
-    { title: 'Peso', field: 'weight', align: 'center' },
-    { title: 'Resultado', field: 'result', align: 'center' },
-    { title: 'Alcance', field: 'age', align: 'left', formatter: 'progress' },
-    { title: 'Mês corrente', field: 'dob', align: 'center' },
-    { title: 'Etrelas', field: 'rating', align: 'center', formatter: 'star' },
+    { title: 'Peso', field: 'weight', hozAlign: 'center' },
+    { title: 'Resultado', field: 'result', hozAlign: 'center' },
+    { title: 'Alcance', field: 'age', hozAlign: 'left', formatter: 'progress' },
+    { title: 'Mês corrente', field: 'dob', hozAlign: 'center' },
+    {
+      title: 'Etrelas',
+      field: 'rating',
+      hozAlign: 'center',
+      formatter: 'star',
+    },
     {
       title: 'Realizado',
       field: 'passed',
-      align: 'center',
+      hozAlign: 'center',
       formatter: 'tickCross',
     },
   ];
@@ -219,6 +229,8 @@ const SelectorFolders: React.FC = () => {
         isOpen={modalOpen}
         setIsOpen={toggleModal}
         handleSector={handleSector}
+        dataEditSector={dataEditSector}
+        // setDataEditSector={setHandleEdit}
       />
       <Container>
         <CardeHeader>
@@ -249,7 +261,7 @@ const SelectorFolders: React.FC = () => {
               <CardGraphicText>
                 <GraphicTitle>{sector.name}</GraphicTitle>
                 <span>
-                  <FiEdit />
+                  <FiEdit onClick={() => handleEdit(sector.id)} />
                   <FiPrinter onClick={handlePrint} />
                   <FiMaximize onClick={handle.enter} />
                   <FiChevronsDown

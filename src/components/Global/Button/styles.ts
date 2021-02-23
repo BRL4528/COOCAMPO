@@ -7,12 +7,12 @@ interface ContainerProps {
 
 export const Container = styled.button<ContainerProps>`
   z-index: 1;
-  background: #f2c811;
+  background: var(--color-theme-primary);
   height: 45px;
   border-radius: 3px;
-  border: solid 2px #f2c811;
+  border: solid 2px var(--color-theme-primary);
   padding: 0 10px;
-  color: #fff;
+  color: var(--white-secondary);
   width: 100%;
   font-weight: 500;
   margin-top: 16px;
@@ -21,13 +21,17 @@ export const Container = styled.button<ContainerProps>`
   ${props =>
     props.groud &&
     css`
-      background: #fff;
-      color: #f2c811;
+      background: var(--white-secondary);
+      color: var(--color-theme-primary);
     `}
 
   &:hover {
     background: ${shade(0.2, '#f2c811')};
 
     border: ${shade(0.2, '#f2c811')};
+  }
+
+  .styleLoadButton {
+    cursor: wait;
   }
 `;
