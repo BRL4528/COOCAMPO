@@ -253,26 +253,28 @@ const ModalAddFood: React.FC<IModalProps> = ({
 
         // Para atualizar o modulo de analise de uma meta, o usuario deve ter
         // selecionado um modulo de analise diferente que estiver ja cadastrado para a meta
+        console.log(analyticModule);
         if (!currentAnalyticItem.includes(selectedAnalyticItems[0])) {
           if (
             selectedAnalyticItems.length === 0 &&
-            analyticModule.length !== 0
+            currentAnalyticItem.length > 0
           ) {
             // Se o modulo de analise for igual a [0] ele deve exluir o relacionamente que existir
             // no banco, entre a meta e o modulo de analise
-
+            console.log(selectedAnalyticItems.length, analyticModule.length);
+            console.log('deletar');
             await api.delete(
               `analysis-module-of-goals/${dataAnalitycModuleOfGoal?.id}`,
             );
             await api.put(
               `/analysis-module?analyze_module_id=${currentAnalyticItem[0]}`,
               {
-                url: '',
+                url: 'off',
               },
             );
           } else if (
             currentAnalyticItem.length === 0 &&
-            analyticModule.length !== 0
+            selectedAnalyticItems.length > 0
           ) {
             console.log('criar novo');
             await api.post('analysis-module-of-goals', {
@@ -285,7 +287,10 @@ const ModalAddFood: React.FC<IModalProps> = ({
                 url: `http://localhost:3000/painel-analytic-module?${dataEditGoal}`,
               },
             );
-          } else if (analyticModule.length !== 0) {
+          } else if (
+            currentAnalyticItem.length > 0 &&
+            selectedAnalyticItems.length > 0
+          ) {
             console.log('atualiza');
             await api.put(`analysis-module-of-goals/${dataEditGoal}`, {
               analyze_module_id: selectedAnalyticItems[0],
@@ -320,11 +325,11 @@ const ModalAddFood: React.FC<IModalProps> = ({
       handleGoals,
       selectedSubGoalsItems,
       currentSubGoals,
+      analyticModule,
       currentAnalyticItem,
       selectedAnalyticItems,
       setIsOpen,
       addToast,
-      analyticModule.length,
       dataAnalitycModuleOfGoal?.id,
     ],
   );
@@ -368,12 +373,10 @@ const ModalAddFood: React.FC<IModalProps> = ({
   );
 
   const options = [
-    { value: '1', label: 'Sistema Sage' },
-    { value: '2', label: 'Sistema S2' },
-    { value: '3', label: 'Sistema Senior' },
-    { value: '4', label: 'Módulo de análise' },
+    { value: '1', label: 'Meta global' },
+    { value: '2', label: 'Meta do setor' },
+    { value: '3', label: 'Meta individual' },
   ];
-
   return (
     <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
       <Form
@@ -401,12 +404,17 @@ const ModalAddFood: React.FC<IModalProps> = ({
           </div>
           <div>
             <p>Peso da meta</p>
-            <Input type="number" name="weight" placeholder="Ex: 10" />
+            <Input
+              step="0.010"
+              type="number"
+              name="weight"
+              placeholder="Ex: 10"
+            />
           </div>
         </header>
 
         <p>Resultado previsto</p>
-        <Input name="source" placeholder="Ex: 5" />
+        <Input step="0.010" name="source" type="number" placeholder="Ex: 5" />
         <p>Modalidade da meta</p>
         <Select name="type" options={options} />
         <p>Prazo da meta</p>

@@ -152,7 +152,7 @@ const ModalAddFood: React.FC<IModalProps> = ({
         <p>Observações</p>
         <TextArea
           name="observations"
-          placeholder="Ex: Meta destinada ao controle das utilizações corretas dos equipamentos de segurança do trabalho"
+          placeholder="Ex: Submeta destinada ao controle das utilizações corretas dos equipamentos de segurança do trabalho"
         />
 
         <DivLeft>

@@ -241,7 +241,6 @@ const ModalAddFood: React.FC<IModalProps> = ({
     { value: '1', label: 'Meta global' },
     { value: '2', label: 'Meta do setor' },
     { value: '3', label: 'Meta individual' },
-    { value: '4', label: 'Módulo de análise' },
   ];
 
   return (
@@ -270,12 +269,17 @@ const ModalAddFood: React.FC<IModalProps> = ({
           </div>
           <div>
             <p>Peso da meta</p>
-            <Input type="number" name="weight" placeholder="Ex: 10" />
+            <Input
+              type="number"
+              step="0.010"
+              name="weight"
+              placeholder="Ex: 10"
+            />
           </div>
         </header>
 
         <p>Resultado previsto</p>
-        <Input name="source" placeholder="Ex: 5" />
+        <Input name="source" step="0.010" placeholder="Ex: 5" />
         <p>Modalidade da meta</p>
         <Select name="type" options={options} />
         <p>Prazo da meta</p>
