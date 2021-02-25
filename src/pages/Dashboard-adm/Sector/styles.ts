@@ -179,7 +179,7 @@ export const CardGraphicText = styled.span`
     flex-direction: row;
 
     svg {
-      color: #999591;
+      color: var(--dark-tertiary);
       width: 20px;
       height: 20px;
       margin: 10px;

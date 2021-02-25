@@ -4,7 +4,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 
 import { FormHandles } from '@unform/core';
 
-import { FiX, FiLink2, FiPlus } from 'react-icons/fi';
+import { FiX, FiLink2, FiEdit2 } from 'react-icons/fi';
 
 import * as Yup from 'yup';
 
@@ -32,7 +32,7 @@ interface ISector {
   leader: string;
   email: string;
   branch: string;
-  // observations: string;
+  observations: string;
 }
 
 interface IGoals {
@@ -75,7 +75,7 @@ interface IGoalsAnalytics {
   };
 }
 
-const ModalAddSector: React.FC<IModalProps> = ({
+const ModalEditSector: React.FC<IModalProps> = ({
   isOpen,
   setIsOpen,
   handleSector,
@@ -87,6 +87,7 @@ const ModalAddSector: React.FC<IModalProps> = ({
   const { addToast } = useToast();
 
   const [selectedGoalsItems, setSelectedGoalsItems] = useState<string[]>([]);
+  const [currentGoals, setCurrentGoals] = useState<string[]>([]);
 
   const [opengoals, setOpenGoals] = useState<boolean>(false);
   const [dataGoals, setDataGoals] = useState<IGoals[]>([]);
@@ -97,12 +98,14 @@ const ModalAddSector: React.FC<IModalProps> = ({
   useEffect(() => {
     if (isOpen === false) {
       setSelectedGoalsItems([]);
+      setCurrentGoals([]);
       setDataInitialSector({
         id: '',
         name: '',
         leader: '',
         branch: '',
         email: '',
+        observations: '',
       });
     }
   }, [isOpen]);
@@ -121,29 +124,32 @@ const ModalAddSector: React.FC<IModalProps> = ({
             `/goals-of-sectors?sector_id=${dataEditSector}`,
           )
           .then(response => {
-            console.log(response.data);
-            const initialSector = {
-              id: response.data[0].sector.id,
-              name: response.data[0].sector.name,
-              leader: response.data[0].sector.leader,
-              email: response.data[0].sector.email,
-              branch: response.data[0].sector.branch,
-              // observations: response.data[0].sector.observations,
-            };
-            const initialGoals:
-              | IGoals
-              | ((prevState: IGoals | undefined) => IGoals | undefined)
-              | string[]
-              | undefined = [];
+            if (response.data) {
+              // const initialSector = {
+              //   id: response.data[0].sector.id,
+              //   name: response.data[0].sector.name,
+              //   leader: response.data[0].sector.leader,
+              //   email: response.data[0].sector.email,
+              //   branch: response.data[0].sector.branch,
+              //   // observations: response.data[0].sector.observations,
+              // };
+              const initialGoals:
+                | IGoals
+                | ((prevState: IGoals | undefined) => IGoals | undefined)
+                | string[]
+                | undefined = [];
 
-            response.data.forEach(function (goals) {
-              initialGoals.push(goals.goals.id);
-            });
-
-            setSelectedGoalsItems(initialGoals);
-            setDataInitialSector(initialSector);
-            setOpenGoals(true);
+              response.data.forEach(function (goals) {
+                initialGoals.push(goals.goals.id);
+              });
+              setSelectedGoalsItems(initialGoals);
+              setCurrentGoals(initialGoals);
+            }
           });
+        api.get<ISector>(`sectors/${dataEditSector}`).then(res => {
+          setDataInitialSector(res.data);
+        });
+        setOpenGoals(true);
       }
     }
   }, [dataEditSector, isOpen]);
@@ -162,80 +168,84 @@ const ModalAddSector: React.FC<IModalProps> = ({
           abortEarly: false,
         });
 
-        const { name, leader, branch, email } = data;
+        const { name, leader, branch, email, id, observations } = data;
 
         const formData = {
+          id,
           name,
           branch,
           email,
-          // observations,
+          observations,
           leader,
         };
+        // Atualiza informações do setor
+        await api.put(`/sectors?sector_id=${dataEditSector}`, formData);
+        handleSector(formData);
 
-        // Cria novo item
-        if (dataEditSector === '') {
-          const response = await api.post('/sectors', formData);
-          handleSector(response.data);
+        // verifica se houve alterações nas metas
+        const checked = selectedGoalsItems.filter(a =>
+          currentGoals.includes(a),
+        );
 
-          if (selectedGoalsItems.length > 0) {
-            await api.post('/goals-of-sectors/create-all', {
-              goals_ids: selectedGoalsItems,
-              sector_id: response.data.id,
-            });
-          }
+        // Cria novo relacionamento entre a meta selecionanda e o setor
+        if (currentGoals.length === 0 && selectedGoalsItems.length !== 0) {
+          console.log('cria novo relacionamento');
+          await api.post('/goals-of-sectors/create-all', {
+            goals_ids: selectedGoalsItems,
+            sector_id: dataEditSector,
+          });
+          // Atualiza se houve alterações
+        } else if (!(checked.length === currentGoals.length)) {
+          await api.delete(`/goals-of-sectors/${dataEditSector}`);
 
-          setIsOpen();
+          await api.post('/goals-of-sectors/create-all', {
+            goals_ids: selectedGoalsItems,
+            sector_id: dataEditSector,
+          });
+          // Atualiza se houve alterações
+        } else if (!(checked.length === selectedGoalsItems.length)) {
+          await api.delete(`/goals-of-sectors/${dataEditSector}`);
 
-          addToast({
-            type: 'success',
-            title: 'Setor',
-            description: 'Setor criado sucesso com sucesso',
+          await api.post('/goals-of-sectors/create-all', {
+            goals_ids: selectedGoalsItems,
+            sector_id: dataEditSector,
           });
         }
 
-        // Atualiza dados editados
-        if (dataEditSector) {
-          const response = await api.put(
-            `/sectors?sector_id=${dataEditSector}`,
-            formData,
-          );
-          console.log(formData);
+        setIsOpen();
+        // setSelectedGoalsItems([]);
+        // setDataInitialSector({
+        //   id: '',
+        //   name: '',
+        //   leader: '',
+        //   branch: '',
+        //   email: '',
+        // });
+        // setDataEditSector();
 
-          if (selectedGoalsItems.length > 0) {
-            await api.post('/goals-of-sectors/create-all', {
-              goals_ids: selectedGoalsItems,
-              sector_id: response.data.id,
-            });
-          }
-
-          setIsOpen();
-          setSelectedGoalsItems([]);
-          setDataInitialSector({
-            id: '',
-            name: '',
-            leader: '',
-            branch: '',
-            email: '',
-          });
-          // setDataEditSector();
-
-          addToast({
-            type: 'success',
-            title: 'Setor',
-            description: 'Setor atualizado sucesso com sucesso',
-          });
-        }
+        addToast({
+          type: 'success',
+          title: 'Setor',
+          description: 'Setor atualizado com com sucesso',
+        });
       } catch (err) {
         console.log(err);
         setIsOpen();
         addToast({
           type: 'error',
-          title: 'Erro na criação',
-          description: 'Ocorreu um erro ao criar novo setor.',
+          title: 'Erro na ação',
+          description: 'Recarregue a pagina e tente novamente.',
         });
       }
     },
-    [dataEditSector, handleSector, selectedGoalsItems, setIsOpen, addToast],
+    [
+      dataEditSector,
+      handleSector,
+      selectedGoalsItems,
+      currentGoals,
+      setIsOpen,
+      addToast,
+    ],
   );
 
   const options = [
@@ -286,8 +296,8 @@ const ModalAddSector: React.FC<IModalProps> = ({
       >
         <span>
           <div>
-            <h2>Criar novo setor</h2>
-            <FiPlus size={20} />
+            <h2>Editar setor</h2>
+            <FiEdit2 size={20} />
           </div>
 
           <FiX size={20} onClick={() => setIsOpen()} />
@@ -341,4 +351,4 @@ const ModalAddSector: React.FC<IModalProps> = ({
   );
 };
 
-export default ModalAddSector;
+export default ModalEditSector;

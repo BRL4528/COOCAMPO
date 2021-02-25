@@ -16,6 +16,12 @@ export const Form = styled(unform)<PropsSub>`
   display: flex;
   flex-direction: column;
 
+  p {
+    color: var(--text-quarterly);
+    font-size: 0.9rem;
+    margin-top: 7px;
+  }
+
   > span {
     display: flex;
     width: 100%;
@@ -33,9 +39,26 @@ export const Form = styled(unform)<PropsSub>`
       }
     }
 
-    h2 {
-      color: #433f59;
+    > div {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-direction: row;
       margin-bottom: 20px;
+
+      h2 {
+        color: #433f59;
+      }
+      svg {
+        color: #433f59;
+        margin: 0px 0px 0px 5px;
+        transition: var(--transition-speed);
+
+        :hover {
+          color: var(--green-primary);
+          transform: rotate(90deg);
+        }
+      }
     }
   }
 

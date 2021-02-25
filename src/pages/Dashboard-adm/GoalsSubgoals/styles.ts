@@ -159,26 +159,29 @@ export const CadView = styled.div<IGoals>`
 
   >span {
     display: flex;
+    flex-direction: row;
     align-items: center;
     text-align: initial;
     width: 100%;
     padding: 24px;
     border-radius: 5px;
     text-decoration: none;
-
     transition: transform 0.2s;
-    border: none;
-    & + button {
-      margin-top: 16px;
-    }
+    border-bottom: 2px solid var(--text-tertiary);
 
-    img {
+    /* & + button {
+      margin-top: 16px;
+    } */
+    /* img {
       width: 64px;
       height: 64px;
       border-radius: 50%;
-    }
+    } */
     div {
-      margin: 0 16px;
+      display: flex;
+      flex-direction: column;
+      text-align: initial;
+      margin: 7px 0px 7px 0px;
       flex: 1;
       strong {
         font-size: 20px;
@@ -190,19 +193,35 @@ export const CadView = styled.div<IGoals>`
         margin-top: 4px;
       }
     }
+    svg {
+      color: var(--dark-tertiary);
+      width: 20px;
+      height: 20px;
+      margin: 10px;
+      transition: color 0.5s;
+
+      :hover {
+        cursor: pointer;
+        color: var(--color-theme-primary);
+      }
+    }
   }
 `;
 
 export const ViewSubGoals = styled.div`
+  margin-top: 20px;
   > span {
     padding: 24px;
 
-    div {
+    > div {
+      display: flex;
+      align-items: center;
+      flex-direction: row;
+      justify-content: space-between;
       margin: 0 16px;
       flex: 1;
       padding: 10px;
       border-radius: 4px;
-      cursor: pointer;
       strong {
         font-size: 17px;
         color: #3d3d4d;
@@ -215,6 +234,20 @@ export const ViewSubGoals = styled.div`
 
       :hover {
         background: #eee;
+      }
+
+      svg {
+        color: var(--dark-tertiary);
+        /* width: 15px;  */
+        /* height: 20px; */
+        margin: 0px 0px 0px 20px;
+        transition: color 0.5s;
+        /* background: red */
+
+        :hover {
+          cursor: pointer;
+          color: var(--color-theme-primary);
+        }
       }
     }
   }

@@ -15,6 +15,12 @@ export const Form = styled(unform)`
   flex-direction: column;
   /* align-items: center; */
   /* overflow: -moz-hidden-unscrollable; */
+
+  p {
+    color: var(--text-quarterly);
+    font-size: 0.9rem;
+    margin-top: 10px;
+  }
   > span {
     display: flex;
     width: 100%;

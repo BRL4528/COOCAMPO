@@ -12,6 +12,7 @@ import 'react-tabulator/lib/css/bootstrap/tabulator_bootstrap.min.css';
 
 import Button from '../../../components/Global/Button';
 import ModalAddGoals from '../../../components/Admin/Modal/ModalAddSector';
+import ModalEditGoals from '../../../components/Admin/Modal/ModalEditSector';
 
 import {
   Container,
@@ -38,6 +39,8 @@ const SelectorFolders: React.FC = () => {
 
   const componentRef = useRef<HTMLDivElement>(null);
 
+  const [modalEditSectorOpen, setModalEditSectorOpen] = useState(false);
+
   const [modalOpen, setModalOpen] = useState(false);
   const [dataEditSector, setDataEditSector] = useState('');
 
@@ -47,11 +50,17 @@ const SelectorFolders: React.FC = () => {
   const [grupSectorsSelected, setGrupSectorsSelected] = useState<string[]>([]);
 
   const toggleModal = useCallback(() => {
+    setDataEditSector('');
     setModalOpen(!modalOpen);
   }, [modalOpen]);
 
+  const toggleModalEditSector = useCallback(() => {
+    setDataEditSector('');
+    setModalEditSectorOpen(!modalEditSectorOpen);
+  }, [modalEditSectorOpen]);
+
   const handleEdit = useCallback((idSector: string) => {
-    setModalOpen(true);
+    setModalEditSectorOpen(true);
     setDataEditSector(idSector);
   }, []);
 
@@ -228,6 +237,13 @@ const SelectorFolders: React.FC = () => {
       <ModalAddGoals
         isOpen={modalOpen}
         setIsOpen={toggleModal}
+        handleSector={handleSector}
+        dataEditSector={dataEditSector}
+        // setDataEditSector={setHandleEdit}
+      />
+      <ModalEditGoals
+        isOpen={modalEditSectorOpen}
+        setIsOpen={toggleModalEditSector}
         handleSector={handleSector}
         dataEditSector={dataEditSector}
         // setDataEditSector={setHandleEdit}

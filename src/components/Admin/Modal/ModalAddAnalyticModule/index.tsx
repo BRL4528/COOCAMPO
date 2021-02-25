@@ -103,12 +103,21 @@ const ModalAddFood: React.FC<IModalProps> = ({
           <h2>Novo Módulo de Análise</h2>
           <FiX size={20} onClick={() => setIsOpen()} />
         </span>
-
-        <Input type="text" name="name" placeholder="Nome do módulo" />
-
-        <Input type="email" name="responsible" placeholder="Representante" />
-        <Input type="text" name="condition" placeholder="Condição" />
-
+        <p>Nome do módulo de análise</p>
+        <Input
+          type="text"
+          name="name"
+          placeholder="Ex: Limpeza e organização dos veículos e maquinas"
+        />
+        <p>E-mail do representante</p>
+        <Input
+          type="email"
+          name="responsible"
+          placeholder="Ex: carlos.alto@empresa.com.br"
+        />
+        <p>Frequência(Mês)</p>
+        <Input type="text" name="condition" placeholder="Ex: 4" />
+        <p>Observações</p>
         <TextArea name="observations" placeholder="Observações" />
 
         <DivLeft>

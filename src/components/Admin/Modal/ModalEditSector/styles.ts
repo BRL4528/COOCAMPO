@@ -2,18 +2,11 @@ import styled, { css } from 'styled-components';
 
 import { Form as unform } from '@unform/web';
 
-interface PropsForm {
-  openSub: boolean;
-  openAnalytic: boolean;
-}
 interface PropsSub {
-  openSub: boolean;
-}
-interface PropsAnalytic {
-  openAnalytic: boolean;
+  opengoals: boolean;
 }
 
-export const Form = styled(unform)<PropsForm>`
+export const Form = styled(unform)<PropsSub>`
   .selected {
     background: rgba(28, 156, 217, 0.2);
     border: 2px solid #1c9cd9;
@@ -35,15 +28,17 @@ export const Form = styled(unform)<PropsForm>`
     margin: 0 auto;
     justify-content: space-between;
     /* align-items: center; */
-    > svg {
-      color: #433f59;
+
+    svg {
       cursor: pointer;
+      color: #433f59;
       transition: var(--transition-speed);
 
       :hover {
         color: var(--text-primary);
       }
     }
+
     > div {
       display: flex;
       align-items: center;
@@ -67,26 +62,9 @@ export const Form = styled(unform)<PropsForm>`
     }
   }
 
-  /* button {
+  button {
     margin: 0 0 20px 0;
     align-self: flex-end;
-  } */
-
-  > header {
-    margin: 0;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
-
-    div {
-      width: 100%;
-      /* margin: 0 0 6px; */
-
-      & + div {
-        margin: 0 0 0px 6px;
-      }
-    }
   }
 
   nav {
@@ -114,10 +92,6 @@ export const Form = styled(unform)<PropsForm>`
           color: #1c9cd9;
         }
 
-        p {
-          font-size: 12px;
-        }
-
         & + button {
           margin-left: 20px;
         }
@@ -127,12 +101,7 @@ export const Form = styled(unform)<PropsForm>`
     transition: height 600ms ease;
 
     ${props =>
-      props.openSub &&
-      css`
-        height: 20rem;
-      `}
-    ${props =>
-      props.openAnalytic &&
+      props.opengoals &&
       css`
         height: 20rem;
       `}
@@ -201,37 +170,7 @@ export const CardSub = styled.div<PropsSub>`
   cursor: pointer;
 
   ${props =>
-    props.openSub &&
-    css`
-      display: flex;
-      filter: grayscale(0) opacity(0.7);
-    `}
-
-  :hover {
-    transition: var(--transition-speed);
-    background: rgba(28, 156, 217, 0.1);
-    border: 2px solid rgba(28, 156, 217, 0);
-  }
-`;
-export const ContainerAnalytic = styled.div`
-  margin: 30px;
-`;
-
-export const CardAnalytic = styled.div<PropsAnalytic>`
-  margin: 10px;
-  background: #fff;
-  border-radius: 6px;
-  padding: 20px;
-  color: #433f59;
-  filter: grayscale(100%) opacity(0);
-  transition: var(--transition-speed);
-  display: none;
-  border: 2px solid #fff;
-
-  cursor: pointer;
-
-  ${props =>
-    props.openAnalytic &&
+    props.opengoals &&
     css`
       display: flex;
       filter: grayscale(0) opacity(0.7);
