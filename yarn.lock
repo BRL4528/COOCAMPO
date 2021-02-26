@@ -7986,11 +7986,6 @@ lodash.memoize@^4.1.2:
   resolved "https://registry.yarnpkg.com/lodash.memoize/-/lodash.memoize-4.1.2.tgz#bcc6c49a42a2840ed997f323eada5ecd182e0bfe"
   integrity sha1-vMbEmkKihA7Zl/Mj6tpezRguC/4=
 
-lodash.orderby@^4.6.0:
-  version "4.6.0"
-  resolved "https://registry.yarnpkg.com/lodash.orderby/-/lodash.orderby-4.6.0.tgz#e697f04ce5d78522f54d9338b32b81a3393e4eb3"
-  integrity sha1-5pfwTOXXhSL1TZM4syuBozk+TrM=
-
 lodash.sortby@^4.7.0:
   version "4.7.0"
   resolved "https://registry.yarnpkg.com/lodash.sortby/-/lodash.sortby-4.7.0.tgz#edd14c824e2cc9c1e0b0a1b42bb5210516a42438"
@@ -10217,14 +10212,6 @@ react-d3-speedometer@^1.0.1:
     lodash-es "^4.17.15"
     memoize-one "^5.0.5"
     prop-types "^15.7.2"
-
-react-data-table-component@^7.0.0-alpha-5:
-  version "7.0.0-alpha-5"
-  resolved "https://registry.yarnpkg.com/react-data-table-component/-/react-data-table-component-7.0.0-alpha-5.tgz#1b33aa0219d815b0899fb16c7ac2070843e86f9e"
-  integrity sha512-DfCde6/jgnTqnqiXd0JEliNVP0CKCnWIKuE4NN/g1wGPveHc+M/9ARh42AKYWiyUP1ZhSmDnER7sclMTTVhXqw==
-  dependencies:
-    deepmerge "^4.2.2"
-    lodash.orderby "^4.6.0"
 
 react-dev-utils@^11.0.1:
   version "11.0.1"

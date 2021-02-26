@@ -238,9 +238,9 @@ const ModalAddFood: React.FC<IModalProps> = ({
   );
 
   const options = [
-    { value: '1', label: 'Meta global' },
-    { value: '2', label: 'Meta do setor' },
-    { value: '3', label: 'Meta individual' },
+    { value: 'Meta global', label: 'Meta global' },
+    { value: 'Meta do setor', label: 'Meta do setor' },
+    { value: 'Meta individual', label: 'Meta individual' },
   ];
 
   return (
