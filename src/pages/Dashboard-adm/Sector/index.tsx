@@ -36,6 +36,7 @@ const SelectorFolders: React.FC = () => {
   const componentRef = useRef<HTMLDivElement>(null);
 
   const [modalEditSectorOpen, setModalEditSectorOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
   const [modalOpen, setModalOpen] = useState(false);
   const [dataEditSector, setDataEditSector] = useState('');
@@ -60,10 +61,9 @@ const SelectorFolders: React.FC = () => {
     setDataEditSector(idSector);
   }, []);
 
-  // const setHandleEdit = useCallback(() => {
-  //   console.log('esta aq');
-  //   setDataEditSector('');
-  // }, []);
+  const togleOpenCard = useCallback(() => {
+    setIsOpen(true);
+  }, []);
 
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,
@@ -71,6 +71,7 @@ const SelectorFolders: React.FC = () => {
 
   const handleHepand = useCallback(
     (id: string) => {
+      setIsOpen(!isOpen);
       const alreadySelected = grupSectorsSelected.findIndex(
         (item: string) => item === id,
       );
@@ -85,7 +86,7 @@ const SelectorFolders: React.FC = () => {
         setGrupSectorsSelected([...grupSectorsSelected, id]);
       }
     },
-    [grupSectorsSelected],
+    [grupSectorsSelected, isOpen],
   );
 
   useEffect(() => {
@@ -173,8 +174,11 @@ const SelectorFolders: React.FC = () => {
                   grupSectorsSelected.includes(sector.id) ? 'selected' : ''
                 }
               >
-                {console.log(sector.id)}
-                <Table idSector={sector.id} />
+                <Table
+                  idSector={sector.id}
+                  isOpen={isOpen}
+                  setIsOpen={togleOpenCard}
+                />
               </div>
             </CardGraphic>
           </FullScreen>

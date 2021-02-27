@@ -1,8 +1,21 @@
-import React, { useEffect, useState, useRef, useCallback } from 'react';
+/* eslint-disable import/no-duplicates */
+import React, {
+  useEffect,
+  useState,
+  useRef,
+  useCallback,
+  useMemo,
+} from 'react';
 
 import UseAnimations from 'react-useanimations';
 import radioButton from 'react-useanimations/lib/radioButton';
-import { FiCheck } from 'react-icons/fi';
+import { FiCheck, FiCalendar } from 'react-icons/fi';
+
+import { format } from 'date-fns';
+import ptBR from 'date-fns/locale/pt-BR';
+
+import DayPicker, { DayModifiers } from 'react-day-picker';
+import 'react-day-picker/lib/style.css';
 
 import { useLoading, Oval } from '@agney/react-loading';
 
@@ -11,7 +24,13 @@ import { FormHandles } from '@unform/core';
 
 import api from '../../../services/api';
 
-import { Container, CardContainer, CardLoading } from './styles';
+import {
+  Container,
+  CardContainer,
+  CardLoading,
+  Calendar,
+  TogleCalendar,
+} from './styles';
 
 import CheckboxInput from '../../../components/Global/InputCheckBox';
 import Button from '../../../components/Global/Button';
@@ -38,6 +57,7 @@ interface IGoalsAnalytics {
         sub_goals: {
           id: string;
           name: string;
+          weight: number;
         };
       },
     ];
@@ -55,6 +75,10 @@ const PainelAnalyticModule: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
   const parsed = window.location.search;
 
+  const [openCalendar, setOpenCalendar] = useState(false);
+  const [selectedDate, setSelectedDate] = useState(new Date());
+  // const [currentMonth, setCurrentMonth] = useState(new Date());
+
   const [loadingItens, setLoading] = useState(true);
   const [idRelationSector, seIdRelationSector] = useState('');
   const [checked, setChecked] = useState(true);
@@ -68,6 +92,26 @@ const PainelAnalyticModule: React.FC = () => {
     indicator: <Oval />,
   });
 
+  const handleopenCalendar = useCallback(() => {
+    setOpenCalendar(!openCalendar);
+  }, [openCalendar]);
+
+  const handleDateChange = useCallback(
+    (day: Date, modifiers: DayModifiers) => {
+      if (modifiers.available && !modifiers.disabled) {
+        console.log(day);
+        setSelectedDate(day);
+        setOpenCalendar(!openCalendar);
+      }
+    },
+    [openCalendar],
+  );
+
+  // const handleMonthChange = useCallback((month: Date) => {
+  //   console.log(month);
+  //   setCurrentMonth(month);
+  // }, []);
+
   const handleSubmit = useCallback(
     async (data: CheckboxOption) => {
       const results_of_sub_goals: {
@@ -75,17 +119,22 @@ const PainelAnalyticModule: React.FC = () => {
         result: boolean;
         sub_goal_id: string;
         goal_id: string;
+        weight: number;
+        date: Date;
       }[] = [];
 
       Object.values(data).forEach(function (item) {
         if (item.length !== 0) {
           const dataItem = item[0].split('#');
 
+          // console.log('corrente', currentMonth);
           const dataIter = {
             sector_id: dataItem[0],
             result: Boolean(dataItem[1] === 'true'),
             sub_goal_id: dataItem[3],
             goal_id: dataItem[2],
+            weight: dataItem[4],
+            date: selectedDate,
           };
           results_of_sub_goals.push(dataIter);
         }
@@ -105,7 +154,7 @@ const PainelAnalyticModule: React.FC = () => {
           console.log(response.data);
         });
     },
-    [checked, idRelationSector],
+    [checked, idRelationSector, selectedDate],
   );
 
   useEffect(() => {
@@ -145,11 +194,54 @@ const PainelAnalyticModule: React.FC = () => {
     [grupChecked],
   );
 
+  const formatedDate = useMemo(() => {
+    return format(selectedDate, "'Dia' dd 'de' MMMM 'de' yyy", {
+      locale: ptBR,
+    });
+  }, [selectedDate]);
+
   return (
     <Container>
       <header>
         <h1>Painel módulo de análise</h1>
       </header>
+      <span>
+        <button type="button" onClick={() => handleopenCalendar()}>
+          {formatedDate}
+
+          <FiCalendar size={20} />
+        </button>
+      </span>
+      <TogleCalendar openCalendar={openCalendar}>
+        <div>
+          <Calendar>
+            <DayPicker
+              weekdaysShort={['D', 'S', 'T', 'Q', 'Q', 'S', 'S']}
+              // fromMonth={new Date()}
+              selectedDays={selectedDate}
+              disabledDays={[{ daysOfWeek: [0, 6] }]}
+              modifiers={{
+                available: { daysOfWeek: [1, 2, 3, 4, 5] },
+              }}
+              onDayClick={handleDateChange}
+              months={[
+                'Janeiro',
+                'Fevereiro',
+                'Março',
+                'Abril',
+                'Maio',
+                'Junho',
+                'Julho',
+                'Agosto',
+                'Setembro',
+                'Outubro',
+                'Novembro',
+                'Dezembro',
+              ]}
+            />
+          </Calendar>
+        </div>
+      </TogleCalendar>
       {loadingItens ? (
         <CardLoading {...containerProps} ref={componentRef}>
           {indicatorEl}
@@ -200,7 +292,9 @@ const PainelAnalyticModule: React.FC = () => {
                             id: `yes-${dataAnalytic.sector.id}-${dataSubGoal.id}`,
                             value: `${dataAnalytic.sector.id}#${true}#${
                               dataAnalytic.goals.id
-                            }#${dataSubGoal.sub_goals.id}`,
+                            }#${dataSubGoal.sub_goals.id}#${
+                              dataSubGoal.sub_goals.weight
+                            }`,
                             label: 'Conforme',
                           },
                         ]}
@@ -212,7 +306,7 @@ const PainelAnalyticModule: React.FC = () => {
                             id: `no-${dataAnalytic.sector.id}-${dataSubGoal.id}`,
                             value: `${dataAnalytic.sector.id}#${false}#${
                               dataAnalytic.goals.id
-                            }#${dataSubGoal.sub_goals.id}`,
+                            }#${dataSubGoal.sub_goals.id}#0`,
                             label: 'Não conforme',
                           },
                         ]}

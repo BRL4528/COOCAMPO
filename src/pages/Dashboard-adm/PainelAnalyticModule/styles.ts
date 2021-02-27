@@ -1,9 +1,15 @@
 import styled from 'styled-components';
 
+import { shade } from 'polished';
+
 interface ICheck {
   checked: boolean;
   idCurrent: string;
   idChecked: string;
+}
+
+interface ICalendar {
+  openCalendar: boolean;
 }
 
 export const Container = styled.div`
@@ -45,6 +51,42 @@ export const Container = styled.div`
     min-height: 100px;
     padding: 35px;
     background: var(--color-theme-primary);
+  }
+  > span {
+    display: flex;
+    align-items: flex-end;
+    flex-direction: column;
+    min-width: 700px;
+
+    button {
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+
+      height: 40px;
+      width: 300px;
+      transition: max-height 1s;
+      background: var(--white-secondary);
+      box-shadow: 0 0 14px 0 rgba(0, 0, 0, 0.07);
+      border-bottom: 3px solid var(--white-secondary);
+      border: none;
+      border-radius: 4px;
+
+      transition: var(--transition-speed);
+
+      svg {
+        transition: var(--transition-speed);
+        color: var(--dark-secondary);
+      }
+
+      :hover {
+        background: ${shade(0.2, '#fff')};
+
+        svg {
+          color: var(--dark-quaternary);
+        }
+      }
+    }
   }
 `;
 export const CardContainer = styled.div<ICheck>`
@@ -122,4 +164,60 @@ export const CardLoading = styled.div`
     color: var(--text-primary);
     width: 80px;
   }
+`;
+
+export const Calendar = styled.aside`
+  width: 380px;
+
+  .DayPicker {
+    background: #28262e;
+    border-radius: 4px;
+    color: #fff;
+    /* height: 50px; */
+  }
+  .DayPicker-wrapper {
+    padding-bottom: 0;
+  }
+  .DayPicker,
+  .DayPicker-Month {
+    width: 100%;
+  }
+  .DayPicker-Month {
+    border-collapse: separate;
+    border-spacing: 8px;
+    margin: 16px;
+  }
+  .DayPicker-Day {
+    width: 40px;
+    height: 40px;
+  }
+  .DayPicker-Day--available:not(.DayPicker-Day--outside) {
+    background: #3e3b47;
+    border-radius: 4px;
+    color: #fff;
+  }
+  .DayPicker:not(.DayPicker--interactionDisabled)
+    .DayPicker-Day:not(.DayPicker-Day--disabled):not(.DayPicker-Day--selected):not(.DayPicker-Day--outside):hover {
+    background: ${shade(0.2, '#3e3b47')};
+  }
+  .DayPicker-Day--today {
+    font-weight: normal;
+  }
+  .DayPicker-Day--disabled {
+    color: #666360 !important;
+    background: transparent !important;
+  }
+  .DayPicker-Day--selected {
+    background: var(--color-theme-primary) !important;
+    border-radius: 10px;
+    color: #232129 !important;
+  }
+`;
+
+export const TogleCalendar = styled.div<ICalendar>`
+  position: absolute;
+  z-index: 1;
+
+  ${({ openCalendar }: ICalendar): string =>
+    openCalendar ? '' : 'display: none;'}
 `;

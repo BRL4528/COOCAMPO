@@ -112,7 +112,7 @@ const SelectorFolders: React.FC = () => {
                   />
                 </main>
                 <footer>
-                  {analyticModule.url !== 'off' ? (
+                  {analyticModule.url !== null ? (
                     <>
                       <FiLink size={18} color="#7159c1" />
                       <a href={analyticModule.url}>

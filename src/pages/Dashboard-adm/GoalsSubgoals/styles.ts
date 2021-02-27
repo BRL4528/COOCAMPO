@@ -52,21 +52,32 @@ export const ContainerInfo = styled.div`
   grid-template-rows: auto;
 
   grid-template-areas: 'Goals Composition';
+`;
 
+export const Search = styled.div`
+  text-align: center;
+  margin-top: 25px;
+  padding: 2.4px;
+  border-radius: 3px;
+  height: 35px;
   div {
-    span {
-      align-items: center;
-      padding: 0px 60px 0px 20px;
-      > input {
-        border: 1px solid #a0a4a8;
-        border-radius: 3px;
-        color: #433f59;
-        width: 200px;
+    display: flex;
+    align-items: center;
+    max-height: 35px;
+    > input {
+      border: 1px solid #a0a4a8;
+      border-radius: 3px;
+      color: #433f59;
+      width: 100%;
+      height: 30px;
 
-        &::placeholder {
-          color: #a0a4a8;
-        }
+      &::placeholder {
+        color: #a0a4a8;
       }
+    }
+
+    button {
+      height: 30px;
     }
   }
 `;
@@ -138,7 +149,7 @@ export const TableContainer = styled.div`
 `;
 
 export const TableInfo = styled.div`
-  margin: 80px 0px 0px 25px;
+  margin: 120px 0px 0px 25px;
 `;
 
 export const CadView = styled.div<IGoals>`

@@ -18,6 +18,7 @@ import {
   TableInfo,
   CadView,
   ViewSubGoals,
+  Search,
 } from './styles';
 
 interface IGoals {
@@ -60,6 +61,8 @@ const SelectorFolders: React.FC = () => {
   const [dataTemp, setDataTemp] = useState({});
 
   const [itemSelected, setItemSelected] = useState('');
+
+  const [textSearchGoal, setTextSerachGoal] = useState('');
 
   const toggleModalGoals = useCallback(() => {
     setDataEditGoal('');
@@ -112,6 +115,20 @@ const SelectorFolders: React.FC = () => {
     [itemSelected],
   );
 
+  const handleTextSeach = useCallback(element => {
+    setTextSerachGoal(element.target.value);
+  }, []);
+  const handleSeachGoal = useCallback(() => {
+    const goalFound = dataGoals.filter(goals => {
+      return (
+        goals.name.toLowerCase().indexOf(textSearchGoal.toLowerCase()) > -1
+      );
+    });
+
+    setDataGoals(goalFound);
+    console.log(goalFound);
+  }, [dataGoals, textSearchGoal]);
+
   return (
     <>
       <ModalAddGoals
@@ -141,11 +158,10 @@ const SelectorFolders: React.FC = () => {
           </div>
 
           <CardButton>
-            <div>
-              <Button onClick={toggleModalGoals} type="button">
-                Criar nova meta
-              </Button>
-            </div>
+            <Button onClick={toggleModalGoals} type="button">
+              Criar nova meta
+            </Button>
+
             <div>
               <Button onClick={toggleModalSubgoals} groud type="button">
                 Criar Submeta
@@ -156,9 +172,18 @@ const SelectorFolders: React.FC = () => {
 
         <ContainerInfo>
           <div>
-            <span>
-              <input name="seach" />
-            </span>
+            <Search>
+              <div>
+                <input
+                  placeholder="Comece digitando as iniciais de uma meta"
+                  name="seach"
+                  onChange={handleTextSeach}
+                />
+                <button type="button" onClick={() => handleSeachGoal()}>
+                  Pesquisar
+                </button>
+              </div>
+            </Search>
             <TableContainer>
               {dataGoals.map(dataGoal => (
                 <button
