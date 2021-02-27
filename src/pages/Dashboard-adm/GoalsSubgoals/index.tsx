@@ -158,9 +158,11 @@ const SelectorFolders: React.FC = () => {
           </div>
 
           <CardButton>
-            <Button onClick={toggleModalGoals} type="button">
-              Criar nova meta
-            </Button>
+            <div>
+              <Button onClick={toggleModalGoals} type="button">
+                Criar nova meta
+              </Button>
+            </div>
 
             <div>
               <Button onClick={toggleModalSubgoals} groud type="button">

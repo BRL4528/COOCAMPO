@@ -76,7 +76,7 @@ export const Search = styled.div`
       }
     }
 
-    button {
+    > button {
       height: 30px;
     }
   }
