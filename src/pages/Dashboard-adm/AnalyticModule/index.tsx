@@ -1,10 +1,13 @@
-/* eslint-disable jsx-a11y/control-has-associated-label */
 import React, { useCallback, useEffect, useState } from 'react';
 
-import { FiChevronRight } from 'react-icons/fi';
+import { FiEdit, FiLink } from 'react-icons/fi';
+
+import UseAnimations from 'react-useanimations';
+import alertCircle from 'react-useanimations/lib/alertCircle';
 
 import Button from '../../../components/Global/Button';
-import ModalAddGoals from '../../../components/Admin/Modal/ModalAddAnalyticModule';
+import ModalAddAnalyticModule from '../../../components/Admin/Modal/ModalAddAnalyticModule';
+import ModalEditAnalyticModule from '../../../components/Admin/Modal/ModalEditAnalyticModule';
 import api from '../../../services/api';
 
 import {
@@ -27,6 +30,9 @@ const SelectorFolders: React.FC = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [dataAnalytic, setDataAnalytic] = useState<IAnalyticModule>();
 
+  const [modalEditOpen, setModaEditOpen] = useState(false);
+  const [idAnalyticModule, setIdAnalyticModule] = useState('');
+
   const [dataAnalyticModule, setDataAnalyticModule] = useState<
     IAnalyticModule[]
   >([]);
@@ -34,6 +40,15 @@ const SelectorFolders: React.FC = () => {
   const toggleModal = useCallback(() => {
     setModalOpen(!modalOpen);
   }, [modalOpen]);
+
+  const toggleEditModal = useCallback(() => {
+    setModaEditOpen(!modalEditOpen);
+  }, [modalEditOpen]);
+
+  const handleEdit = useCallback(id => {
+    setModaEditOpen(true);
+    setIdAnalyticModule(id);
+  }, []);
 
   useEffect(() => {
     api.get('/analysis-module').then(response => {
@@ -55,10 +70,16 @@ const SelectorFolders: React.FC = () => {
 
   return (
     <>
-      <ModalAddGoals
+      <ModalAddAnalyticModule
         isOpen={modalOpen}
         setIsOpen={toggleModal}
         handleAnalytic={handleAnalytic}
+      />
+      <ModalEditAnalyticModule
+        isOpen={modalEditOpen}
+        setIsOpen={toggleEditModal}
+        handleAnalytic={handleAnalytic}
+        idAnalyticModule={idAnalyticModule}
       />
       <Container>
         <CardeHeader>
@@ -76,76 +97,51 @@ const SelectorFolders: React.FC = () => {
           </CardButton>
         </CardeHeader>
 
-        {/* <TableContainer>
-          <table>
-            <thead>
-              <tr>
-                <th />
-                <th>Peso</th>
-                <th>Resultado previsto</th>
-                <th>Prazo</th>
-                <th>Variação</th>
-                <th />
-              </tr>
-            </thead>
-
-            <tbody>
-              {dataAnalyticModule.map(analyticModule => (
-                <tr key={analyticModule.id}>
-                  <td>
-                    <h3>{analyticModule.name}</h3>
-                  </td>
-                  <td>10%</td>
-                  <td>Submetas</td>
-                  <td>Dezembro 2021</td>
-                  <td>On/Off</td>
-                  <td>...</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </TableContainer> */}
-
         <TableContainerList>
           {dataAnalyticModule.map(analyticModule => (
             <span key={analyticModule.id}>
               <div>
-                <strong>{analyticModule.name}</strong>
-                <p>{analyticModule.observations}</p>
-                <a href={analyticModule.url}>Painel módulo de ánalise</a>
-              </div>
+                <main>
+                  <div>
+                    <strong>{analyticModule.name}</strong>
+                    <p>{analyticModule.observations}</p>
+                  </div>
+                  <FiEdit
+                    onClick={() => handleEdit(analyticModule.id)}
+                    size={20}
+                  />
+                </main>
+                <footer>
+                  {analyticModule.url !== null ? (
+                    <>
+                      <FiLink size={18} color="#7159c1" />
+                      <a href={analyticModule.url}>
+                        Acessar painel módulo de ánalise
+                      </a>
+                    </>
+                  ) : (
+                    <>
+                      <div>
+                        <UseAnimations
+                          animation={alertCircle}
+                          size={30}
+                          strokeColor="#f2c811"
+                          style={{ padding: 50 }}
+                        />
+                        {/* <FiEdit size={20} /> */}
+                      </div>
 
-              <FiChevronRight size={20} />
+                      <p>
+                        Link de acesso ao painel de módulo de análise, ainda não
+                        disponivel!
+                      </p>
+                    </>
+                  )}
+                </footer>
+              </div>
             </span>
           ))}
         </TableContainerList>
-        {/* <TableInfo>
-            {dataGoals.map(subgoal => (
-              <CadView
-                key={subgoal.id}
-                item={subgoal.id}
-                selected={itemSelected}
-              >
-                <span key={subgoal.id}>
-                  <div>
-                    <strong>{subgoal.name}</strong>
-                    <p>{subgoal.observations}</p>
-                  </div>
-                </span>
-                <ViewSubGoals>
-                  <h3>Composição</h3>
-                  {subgoal.sub_goals_of_goals.map(sub => (
-                    <span key={sub.sub_goals.id}>
-                      <div>
-                        <strong>{sub.sub_goals.name}</strong>
-                        <p>{sub.sub_goals.observations}</p>
-                      </div>
-                    </span>
-                  ))}
-                </ViewSubGoals>
-              </CadView>
-            ))}
-          </TableInfo> */}
       </Container>
     </>
   );

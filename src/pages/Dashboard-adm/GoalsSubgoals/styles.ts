@@ -6,13 +6,9 @@ interface IGoals {
 }
 
 export const Container = styled.div`
-  /* display: flex; */
-  /* align-items: stretch; */
-
   margin-top: 12px;
   margin-left: 8%;
-
-  color: #433f59;
+  color: var(--text-quarterly);
 
   strong {
     color: var(--text-primary);
@@ -42,59 +38,72 @@ export const CardButton = styled.div`
   div {
     min-width: 200px;
     margin: 0 10px 0 10px;
-    /* transition: var(--transition-speed); */
 
     @media only screen and (max-width: 600px) {
-      /* transition: var(--transition-speed); */
       display: none;
     }
   }
 `;
 
-// export const TableContainer = styled.section`
-//   /* margin-top: 40px; */
-//   margin: 40px 30px 0 0;
-
-//   table {
-//     width: 100%;
-//     border-spacing: 0 8px;
-//     th {
-//       color: #969cb3;
-//       font-weight: normal;
-//       padding: 20px 32px;
-//       text-align: left;
-//       font-size: 14px;
-//       line-height: 24px;
-//     }
-
-//     td {
-//       /* cursor: pointer; */
-//       padding: 20px 32px;
-//       border: 0;
-//       background: #fff;
-//       font-size: 14px;
-//       font-weight: normal;
-//       color: #969cb3;
-//       border-radius: 5px;
-
-//       h3 {
-//         color: #433f59;
-//       }
-//     }
-//   }
-// `;
 export const ContainerInfo = styled.div`
-  display: flex;
-  width: 100%;
+  display: grid;
 
-  /* margin-left: 110px; */
+  grid-template-columns: 500px 500px;
+  grid-template-rows: auto;
+
+  grid-template-areas: 'Goals Composition';
+`;
+
+export const Search = styled.div`
+  text-align: center;
+  margin-top: 25px;
+  padding: 2.4px;
+  border-radius: 3px;
+  height: 35px;
+  div {
+    display: flex;
+    align-items: center;
+    max-height: 35px;
+    > input {
+      border: 1px solid #a0a4a8;
+      border-radius: 3px;
+      color: #433f59;
+      width: 100%;
+      height: 30px;
+
+      &::placeholder {
+        color: #a0a4a8;
+      }
+    }
+
+    button {
+      height: 30px;
+    }
+  }
 `;
 
 export const TableContainer = styled.div`
-  position: absolute;
-  margin-top: 80px;
-  max-width: 700px;
-  /* overflow: scroll; */
+  margin-top: 45px;
+  max-height: 500px;
+  padding: 15px;
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  ::-webkit-scrollbar {
+    width: 0.2rem;
+    height: 0.5rem;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: rgba(25, 25, 26, 0.23);
+    border-radius: 12px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #f2c811;
+    border-radius: 12px;
+  }
+
   button {
     background: #fff;
     border-radius: 5px;
@@ -140,65 +149,50 @@ export const TableContainer = styled.div`
 `;
 
 export const TableInfo = styled.div`
-  width: 100%;
-  /* background: red; */
-  margin-left: 750px;
-  margin-top: 80px;
-  /* transition: var(--transition-speed);
-  transform: rotate(0deg);
-
-  :hover {
-    transform: rotate(180deg);
-  } */
+  margin: 120px 0px 0px 25px;
 `;
 
 export const CadView = styled.div<IGoals>`
-  visibility: hidden;
   position: absolute;
-  /* overflow: auto; */
+  visibility: hidden;
   background: #fff;
   border-radius: 5px;
-  width: 700px;
-  height: 60%;
   padding: 24px;
-  display: block;
   text-decoration: none;
   display: flex;
   flex-direction: column;
-  /* align-items: center; */
   text-align: initial;
-
   transition: transform 0.2s;
   border: none;
-  /* width: 200px; */
 
   ${({ item, selected }: IGoals): string =>
     item === selected ? 'visibility: visible;' : ''}
 
   >span {
-    /* background: #fff; */
-    border-radius: 5px;
-    width: 100%;
-    padding: 24px;
-    display: block;
-    text-decoration: none;
     display: flex;
+    flex-direction: row;
     align-items: center;
     text-align: initial;
-
+    width: 100%;
+    padding: 24px;
+    border-radius: 5px;
+    text-decoration: none;
     transition: transform 0.2s;
-    border: none;
-    & + button {
-      margin-top: 16px;
-    }
+    border-bottom: 2px solid var(--text-tertiary);
 
-    img {
+    /* & + button {
+      margin-top: 16px;
+    } */
+    /* img {
       width: 64px;
       height: 64px;
       border-radius: 50%;
-    }
+    } */
     div {
-      margin: 0 16px;
+      display: flex;
+      flex-direction: column;
+      text-align: initial;
+      margin: 7px 0px 7px 0px;
       flex: 1;
       strong {
         font-size: 20px;
@@ -210,19 +204,35 @@ export const CadView = styled.div<IGoals>`
         margin-top: 4px;
       }
     }
+    svg {
+      color: var(--dark-tertiary);
+      width: 20px;
+      height: 20px;
+      margin: 10px;
+      transition: color 0.5s;
+
+      :hover {
+        cursor: pointer;
+        color: var(--color-theme-primary);
+      }
+    }
   }
 `;
 
 export const ViewSubGoals = styled.div`
+  margin-top: 20px;
   > span {
     padding: 24px;
 
-    div {
+    > div {
+      display: flex;
+      align-items: center;
+      flex-direction: row;
+      justify-content: space-between;
       margin: 0 16px;
       flex: 1;
       padding: 10px;
       border-radius: 4px;
-      cursor: pointer;
       strong {
         font-size: 17px;
         color: #3d3d4d;
@@ -235,6 +245,20 @@ export const ViewSubGoals = styled.div`
 
       :hover {
         background: #eee;
+      }
+
+      svg {
+        color: var(--dark-tertiary);
+        /* width: 15px;  */
+        /* height: 20px; */
+        margin: 0px 0px 0px 20px;
+        transition: color 0.5s;
+        /* background: red */
+
+        :hover {
+          cursor: pointer;
+          color: var(--color-theme-primary);
+        }
       }
     }
   }

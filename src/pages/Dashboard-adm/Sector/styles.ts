@@ -21,6 +21,25 @@ export const Container = styled.div`
     font-size: 14px;
   }
 
+  .selected {
+    max-height: 1000px;
+    transition: var(--transition-speed);
+
+    div {
+      max-height: 1000px;
+      transition: var(--transition-speed);
+    }
+    svg {
+      color: #1c9cd9;
+    }
+    /* transition: max-height 10s; */
+  }
+
+  .logo {
+    transform: rotate(180deg);
+    transition: var(--transition-speed);
+  }
+
   .fullscreen-enabled .fullscreen-item {
     width: 100%;
     height: 100%;
@@ -62,7 +81,9 @@ export const CardGraphic = styled.div`
   box-shadow: 0 0 14px 0 rgba(0, 0, 0, 0.02);
   border-radius: 2px;
   padding: 30px 10px 40px 30px;
+  max-height: 100px;
 
+  /* transition: max-height 10s; */
   /* margin-left: 80px; */
 
   display: flex;
@@ -80,6 +101,11 @@ export const CardGraphic = styled.div`
 
   /* height: 350px;
   width: 550px; */
+
+  div {
+    max-height: 0px;
+    transition: var(--transition-speed);
+  }
 
   :hover {
     transition: var(--transition-speed);
@@ -131,7 +157,7 @@ export const CardBodyGoals = styled.div`
   width: 100%;
 `;
 
-export const CardGraphicText = styled.div`
+export const CardGraphicText = styled.span`
   @media print {
     color: #433f59;
     span {
@@ -143,6 +169,7 @@ export const CardGraphicText = styled.div`
 
   display: flex;
   width: 100%;
+  margin-bottom: 15px;
 
   justify-content: space-between;
   border-bottom: solid 1px rgba(150, 156, 186, 0.2);
@@ -152,11 +179,12 @@ export const CardGraphicText = styled.div`
     flex-direction: row;
 
     svg {
-      color: #999591;
+      color: var(--dark-tertiary);
       width: 20px;
       height: 20px;
       margin: 10px;
       transition: color 0.5s;
+      transition: var(--transition-speed);
       :hover {
         cursor: pointer;
         color: #1c9cd9;

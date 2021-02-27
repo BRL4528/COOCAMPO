@@ -5,5 +5,5 @@ export const Container = styled.div`
   align-items: stretch;
   margin-left: 6rem;
 
-  color: #433f59;
+  color: var(--text-quarterly);
 `;

@@ -3,7 +3,7 @@ import styled, { css } from 'styled-components';
 import { Form as unform } from '@unform/web';
 
 interface PropsSub {
-  openGoals: boolean;
+  opengoals: boolean;
 }
 
 export const Form = styled(unform)<PropsSub>`
@@ -15,6 +15,12 @@ export const Form = styled(unform)<PropsSub>`
   padding: 30px 40px;
   display: flex;
   flex-direction: column;
+
+  p {
+    color: var(--text-quarterly);
+    font-size: 0.9rem;
+    margin-top: 7px;
+  }
 
   > span {
     display: flex;
@@ -33,9 +39,26 @@ export const Form = styled(unform)<PropsSub>`
       }
     }
 
-    h2 {
-      color: #433f59;
+    > div {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-direction: row;
       margin-bottom: 20px;
+
+      h2 {
+        color: #433f59;
+      }
+      svg {
+        color: #433f59;
+        margin: 0px 0px 0px 5px;
+        transition: var(--transition-speed);
+
+        :hover {
+          color: var(--green-primary);
+          transform: rotate(90deg);
+        }
+      }
     }
   }
 
@@ -78,7 +101,7 @@ export const Form = styled(unform)<PropsSub>`
     transition: height 600ms ease;
 
     ${props =>
-      props.openGoals &&
+      props.opengoals &&
       css`
         height: 20rem;
       `}
@@ -113,6 +136,22 @@ export const Form = styled(unform)<PropsSub>`
     }
   }
 `;
+
+export const DivLeft = styled.div`
+  text-align: right;
+  width: 100%;
+
+  button {
+    width: 200px;
+    div {
+      > svg {
+        color: #fff;
+        width: 20px;
+      }
+    }
+  }
+`;
+
 export const ContainerSub = styled.div`
   margin: 30px;
 `;
@@ -131,7 +170,7 @@ export const CardSub = styled.div<PropsSub>`
   cursor: pointer;
 
   ${props =>
-    props.openGoals &&
+    props.opengoals &&
     css`
       display: flex;
       filter: grayscale(0) opacity(0.7);

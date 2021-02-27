@@ -7,7 +7,7 @@ interface ContainerProps {
 export const Container = styled.div<ContainerProps>`
   background: #fff;
   padding: 8px 0;
-  border-bottom: 2px solid rgba(150, 156, 186, 0.2);
+  border-bottom: 2px solid var(--text-tertiary);
 `;
 export const HeaderContent = styled.div<ContainerProps>`
   width: 100%;
@@ -57,12 +57,12 @@ export const HeaderContent = styled.div<ContainerProps>`
     background: transparent;
     border: 0;
     svg {
-      color: #999591;
+      color: var(--dark-tertiary);
       width: 20px;
       height: 20px;
       transition: color 0.5s;
       :hover {
-        color: #ef4221;
+        color: var(--red-primary);
       }
     }
   }
@@ -79,7 +79,7 @@ export const HeaderContent = styled.div<ContainerProps>`
 
     :hover {
       transition: var(--transition-speed);
-      color: #f2c811;
+      color: var(--color-theme-primary);
     }
   }
 `;
@@ -94,9 +94,9 @@ export const Profile = styled.div`
 
   border-right: solid 2px rgba(150, 156, 186, 0.2);
   span {
-    color: #f4ede8;
+    color: var(--white-tertiary);
   }
   strong {
-    color: #f2c811;
+    color: var(--color-theme-primary);
   }
 `;

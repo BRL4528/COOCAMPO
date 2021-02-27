@@ -1,10 +1,11 @@
-/* eslint-disable jsx-a11y/control-has-associated-label */
+/* eslint-disable jsx-a11y/iframe-has-title */
 import React, { useCallback, useState, useEffect } from 'react';
-import { FiChevronRight } from 'react-icons/fi';
+import { FiChevronRight, FiEdit } from 'react-icons/fi';
 
 import Button from '../../../components/Global/Button';
 import ModalAddGoals from '../../../components/Admin/Modal/ModalAddGoals';
 import ModalAddSubGoals from '../../../components/Admin/Modal/ModalAddSubGoals';
+import ModalEditGoals from '../../../components/Admin/Modal/ModalEditGoal';
 
 import api from '../../../services/api';
 
@@ -17,6 +18,7 @@ import {
   TableInfo,
   CadView,
   ViewSubGoals,
+  Search,
 } from './styles';
 
 interface IGoals {
@@ -35,6 +37,7 @@ interface IDataGoals {
   observations: string;
   sub_goals_of_goals: [
     {
+      id: string;
       sub_goals: {
         id: string;
         name: string;
@@ -45,30 +48,46 @@ interface IDataGoals {
   ];
 }
 
-// interface ISubgoalsItem {
-//   sub_goals: {
-//     name: string;
-//     status: string;
-//     observations: string;
-//   };
-// }
-
 const SelectorFolders: React.FC = () => {
   const [modalOpenGoals, setModalGoalsOpen] = useState(false);
   const [modalOpenSubGoals, setModalOpen] = useState(false);
+
+  const [modalOpenEditGoals, setModalEditGoalsOpen] = useState(false);
+
+  const [dataEditGoal, setDataEditGoal] = useState('');
+  const [dataEditSubGoal, setDataEditSubGoal] = useState('');
 
   const [dataGoals, setDataGoals] = useState<IDataGoals[]>([]);
   const [dataTemp, setDataTemp] = useState({});
 
   const [itemSelected, setItemSelected] = useState('');
 
+  const [textSearchGoal, setTextSerachGoal] = useState('');
+
   const toggleModalGoals = useCallback(() => {
+    setDataEditGoal('');
     setModalGoalsOpen(!modalOpenGoals);
   }, [modalOpenGoals]);
 
+  const toggleModalEditGoals = useCallback(() => {
+    setDataEditGoal('');
+    setModalEditGoalsOpen(!modalOpenEditGoals);
+  }, [modalOpenEditGoals]);
+
   const toggleModalSubgoals = useCallback(() => {
+    setDataEditSubGoal('');
     setModalOpen(!modalOpenSubGoals);
   }, [modalOpenSubGoals]);
+
+  const handleEditGoal = useCallback((idEditGoal: string) => {
+    setModalEditGoalsOpen(true);
+    setDataEditGoal(idEditGoal);
+  }, []);
+
+  const handleEditSubGoal = useCallback((idEditGoal: string) => {
+    setModalOpen(true);
+    setDataEditSubGoal(idEditGoal);
+  }, []);
 
   useEffect(() => {
     api.get('/goals').then(response => {
@@ -96,19 +115,42 @@ const SelectorFolders: React.FC = () => {
     [itemSelected],
   );
 
+  const handleTextSeach = useCallback(element => {
+    setTextSerachGoal(element.target.value);
+  }, []);
+  const handleSeachGoal = useCallback(() => {
+    const goalFound = dataGoals.filter(goals => {
+      return (
+        goals.name.toLowerCase().indexOf(textSearchGoal.toLowerCase()) > -1
+      );
+    });
+
+    setDataGoals(goalFound);
+    console.log(goalFound);
+  }, [dataGoals, textSearchGoal]);
+
   return (
     <>
       <ModalAddGoals
         isOpen={modalOpenGoals}
         setIsOpen={toggleModalGoals}
         handleGoals={handleGoals}
+        dataEditGoal={dataEditGoal}
+      />
+      <ModalEditGoals
+        isOpen={modalOpenEditGoals}
+        setIsOpen={toggleModalEditGoals}
+        handleGoals={handleGoals}
+        dataEditGoal={dataEditGoal}
       />
       <ModalAddSubGoals
         isOpen={modalOpenSubGoals}
         setIsOpen={toggleModalSubgoals}
+        dataEditSubGoal={dataEditSubGoal}
       />
 
       <Container>
+        {/* Primeiro elemento */}
         <CardeHeader>
           <div>
             <h2>Metas e Submetas</h2>
@@ -116,11 +158,10 @@ const SelectorFolders: React.FC = () => {
           </div>
 
           <CardButton>
-            <div>
-              <Button onClick={toggleModalGoals} type="button">
-                Criar nova meta
-              </Button>
-            </div>
+            <Button onClick={toggleModalGoals} type="button">
+              Criar nova meta
+            </Button>
+
             <div>
               <Button onClick={toggleModalSubgoals} groud type="button">
                 Criar Submeta
@@ -129,78 +170,73 @@ const SelectorFolders: React.FC = () => {
           </CardButton>
         </CardeHeader>
 
-        {/* <TableContainer>
-          <table>
-            <thead>
-              <tr>
-                <th />
-                <th>Peso</th>
-                <th>Situação</th>
-                <th />
-                <th>Composição</th>
-              </tr>
-            </thead>
-
-            <tbody>
-              {dataSubGoals.map(subgoal => (
-                <tr key={subgoal.id}>
-                  <td>
-                    <h3>{subgoal.name}</h3>
-                  </td>
-                  <td>{subgoal.weight}</td>
-                  <td>{subgoal.status}</td>
-                  <td>...</td>
-                  <td>abrir</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </TableContainer> */}
         <ContainerInfo>
-          <TableContainer>
-            {dataGoals.map(subgoal => (
-              <button
-                type="button"
-                key={subgoal.id}
-                onClick={() => hanleSelectedItem(subgoal.id)}
-              >
-                <div>
-                  <strong>{subgoal.name}</strong>
-                  <p>{subgoal.observations}</p>
-                </div>
-
-                <FiChevronRight size={20} />
-              </button>
-            ))}
-          </TableContainer>
-
-          <TableInfo>
-            {dataGoals.map(subgoal => (
-              <CadView
-                key={subgoal.id}
-                item={subgoal.id}
-                selected={itemSelected}
-              >
-                <span key={subgoal.id}>
+          <div>
+            <Search>
+              <div>
+                <input
+                  placeholder="Comece digitando as iniciais de uma meta"
+                  name="seach"
+                  onChange={handleTextSeach}
+                />
+                <button type="button" onClick={() => handleSeachGoal()}>
+                  Pesquisar
+                </button>
+              </div>
+            </Search>
+            <TableContainer>
+              {dataGoals.map(dataGoal => (
+                <button
+                  type="button"
+                  key={dataGoal.id}
+                  onClick={() => hanleSelectedItem(dataGoal.id)}
+                >
                   <div>
-                    <strong>{subgoal.name}</strong>
-                    <p>{subgoal.observations}</p>
+                    <strong>{dataGoal.name}</strong>
+                    <p>{dataGoal.observations}</p>
                   </div>
-                </span>
-                <ViewSubGoals>
-                  <h3>Composição</h3>
-                  {subgoal.sub_goals_of_goals.map(sub => (
-                    <span key={sub.sub_goals.id}>
-                      <div>
-                        <strong>{sub.sub_goals.name}</strong>
-                        <p>{sub.sub_goals.observations}</p>
-                      </div>
-                    </span>
-                  ))}
-                </ViewSubGoals>
-              </CadView>
-            ))}
-          </TableInfo>
+
+                  <FiChevronRight size={20} />
+                </button>
+              ))}
+            </TableContainer>
+          </div>
+          <div>
+            <TableInfo>
+              {dataGoals.map(itemGoal => (
+                <CadView
+                  key={itemGoal.id}
+                  item={itemGoal.id}
+                  selected={itemSelected}
+                >
+                  <span key={itemGoal.id}>
+                    <div>
+                      <strong>{itemGoal.name}</strong>
+                      <p>{itemGoal.observations}</p>
+                    </div>
+                    <FiEdit onClick={() => handleEditGoal(itemGoal.id)} />
+                  </span>
+                  <ViewSubGoals>
+                    <h3>Composição</h3>
+                    {itemGoal.sub_goals_of_goals.map(sub => (
+                      <span key={sub.id}>
+                        <div>
+                          <div>
+                            <strong>{sub.sub_goals.name}</strong>
+                            <p>{sub.sub_goals.observations}</p>
+                          </div>
+                          <FiEdit
+                            size={20}
+                            onClick={() => handleEditSubGoal(sub.sub_goals.id)}
+                          />
+                        </div>
+                      </span>
+                    ))}
+                  </ViewSubGoals>
+                </CadView>
+              ))}
+            </TableInfo>
+          </div>
         </ContainerInfo>
       </Container>
     </>

@@ -12,12 +12,10 @@ export const Container = styled.div<ContainerProps>`
   /* padding: 10px; */
   width: 100%;
   color: #a0a4a8;
-
   display: flex;
   align-items: center;
   flex-direction: row;
   font-size: 14px;
-
   margin: 6px 0 6px 0;
   /* & + div {
   } */

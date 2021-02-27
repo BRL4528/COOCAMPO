@@ -1,4 +1,4 @@
-import React, { useCallback, useRef } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 
 import { FormHandles } from '@unform/core';
 
@@ -21,6 +21,7 @@ import api from '../../../../services/api';
 interface IAnalyticModule {
   id: string;
   name: string;
+  url: string;
   responsible: string;
   condition: string;
   observations: string;
@@ -28,18 +29,35 @@ interface IAnalyticModule {
 
 interface IModalProps {
   isOpen: boolean;
+  idAnalyticModule: string;
   setIsOpen: () => void;
   // eslint-disable-next-line no-unused-vars
   handleAnalytic: (analytic: Omit<IAnalyticModule, 'status'>) => void;
 }
 
-const ModalAddFood: React.FC<IModalProps> = ({
+const ModalEditAnalyticModule: React.FC<IModalProps> = ({
   isOpen,
   setIsOpen,
   handleAnalytic,
+  idAnalyticModule,
 }) => {
   const formRef = useRef<FormHandles>(null);
   const { addToast } = useToast();
+
+  const [
+    initialDataAnalyticModule,
+    setInitialDataAnalyticModule,
+  ] = useState<IAnalyticModule>();
+
+  useEffect(() => {
+    if (isOpen) {
+      if (idAnalyticModule !== '') {
+        api.get(`analysis-module/${idAnalyticModule}`).then(response => {
+          setInitialDataAnalyticModule(response.data);
+        });
+      }
+    }
+  }, [idAnalyticModule, isOpen]);
 
   const handleSubmit = useCallback(
     async (data: IAnalyticModule) => {
@@ -67,7 +85,10 @@ const ModalAddFood: React.FC<IModalProps> = ({
           observations,
         };
 
-        const response = await api.post('/analysis-module', formData);
+        const response = await api.put(
+          `/analysis-module?analyze_module_id=${idAnalyticModule}`,
+          formData,
+        );
         handleAnalytic(response.data);
 
         setIsOpen();
@@ -93,14 +114,18 @@ const ModalAddFood: React.FC<IModalProps> = ({
         });
       }
     },
-    [addToast, handleAnalytic, setIsOpen],
+    [addToast, handleAnalytic, idAnalyticModule, setIsOpen],
   );
 
   return (
     <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
-      <Form ref={formRef} onSubmit={handleSubmit}>
+      <Form
+        ref={formRef}
+        initialData={initialDataAnalyticModule}
+        onSubmit={handleSubmit}
+      >
         <span>
-          <h2>Novo Módulo de Análise</h2>
+          <h2>Editar módulo de análise</h2>
           <FiX size={20} onClick={() => setIsOpen()} />
         </span>
         <p>Nome do módulo de análise</p>
@@ -130,4 +155,4 @@ const ModalAddFood: React.FC<IModalProps> = ({
   );
 };
 
-export default ModalAddFood;
+export default ModalEditAnalyticModule;

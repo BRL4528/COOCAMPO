@@ -4,12 +4,12 @@ import { FullScreen, useFullScreenHandle } from 'react-full-screen';
 
 import { useReactToPrint } from 'react-to-print';
 
-import { FiEdit, FiPrinter, FiMaximize } from 'react-icons/fi';
-
-import GraphicSpeedometer from '../../../components/Global/GraphicModels/GraphicSpeedometer';
+import { FiEdit, FiPrinter, FiMaximize, FiChevronsDown } from 'react-icons/fi';
 
 import Button from '../../../components/Global/Button';
 import ModalAddGoals from '../../../components/Admin/Modal/ModalAddSector';
+import ModalEditGoals from '../../../components/Admin/Modal/ModalEditSector';
+import Table from '../../../components/Admin/Table';
 
 import {
   Container,
@@ -17,8 +17,8 @@ import {
   CardButton,
   CardGraphic,
   GraphicTitle,
-  GraphicSpeed,
-  CardBodyGoals,
+  // GraphicSpeed,
+  // CardBodyGoals,
   CardGraphicText,
 } from './styles';
 import api from '../../../services/api';
@@ -27,7 +27,7 @@ interface ISector {
   id: string;
   name: string;
   leader: string;
-  observations: string;
+  observations?: string;
 }
 
 const SelectorFolders: React.FC = () => {
@@ -35,17 +35,59 @@ const SelectorFolders: React.FC = () => {
 
   const componentRef = useRef<HTMLDivElement>(null);
 
+  const [modalEditSectorOpen, setModalEditSectorOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+
   const [modalOpen, setModalOpen] = useState(false);
+  const [dataEditSector, setDataEditSector] = useState('');
+
   const [dataSector, setDataSector] = useState<ISector>();
   const [dataUpdateSector, setDataUpdateSector] = useState<ISector[]>([]);
 
+  const [grupSectorsSelected, setGrupSectorsSelected] = useState<string[]>([]);
+
   const toggleModal = useCallback(() => {
+    setDataEditSector('');
     setModalOpen(!modalOpen);
   }, [modalOpen]);
+
+  const toggleModalEditSector = useCallback(() => {
+    setDataEditSector('');
+    setModalEditSectorOpen(!modalEditSectorOpen);
+  }, [modalEditSectorOpen]);
+
+  const handleEdit = useCallback((idSector: string) => {
+    setModalEditSectorOpen(true);
+    setDataEditSector(idSector);
+  }, []);
+
+  const togleOpenCard = useCallback(() => {
+    setIsOpen(true);
+  }, []);
 
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,
   });
+
+  const handleHepand = useCallback(
+    (id: string) => {
+      setIsOpen(!isOpen);
+      const alreadySelected = grupSectorsSelected.findIndex(
+        (item: string) => item === id,
+      );
+
+      if (alreadySelected >= 0) {
+        const filteredItems = grupSectorsSelected.filter(
+          (item: string) => item !== id,
+        );
+
+        setGrupSectorsSelected(filteredItems);
+      } else {
+        setGrupSectorsSelected([...grupSectorsSelected, id]);
+      }
+    },
+    [grupSectorsSelected, isOpen],
+  );
 
   useEffect(() => {
     api.get('/sectors').then(response => {
@@ -68,6 +110,15 @@ const SelectorFolders: React.FC = () => {
         isOpen={modalOpen}
         setIsOpen={toggleModal}
         handleSector={handleSector}
+        dataEditSector={dataEditSector}
+        // setDataEditSector={setHandleEdit}
+      />
+      <ModalEditGoals
+        isOpen={modalEditSectorOpen}
+        setIsOpen={toggleModalEditSector}
+        handleSector={handleSector}
+        dataEditSector={dataEditSector}
+        // setDataEditSector={setHandleEdit}
       />
       <Container>
         <CardeHeader>
@@ -87,35 +138,48 @@ const SelectorFolders: React.FC = () => {
 
         {dataUpdateSector.map(sector => (
           <FullScreen key={sector.id} handle={handle}>
-            <CardGraphic className="fullscreen-item" ref={componentRef}>
+            <CardGraphic
+              // className="fullscreen-item"
+              className={
+                grupSectorsSelected.includes(sector.id) ? 'selected' : ''
+              }
+              ref={componentRef}
+            >
+              {/* Header */}
               <CardGraphicText>
                 <GraphicTitle>{sector.name}</GraphicTitle>
                 <span>
-                  <FiEdit />
+                  <FiEdit onClick={() => handleEdit(sector.id)} />
                   <FiPrinter onClick={handlePrint} />
                   <FiMaximize onClick={handle.enter} />
+                  <FiChevronsDown
+                    className={
+                      grupSectorsSelected.includes(sector.id) ? 'logo' : ''
+                    }
+                    onClick={() => handleHepand(sector.id)}
+                  />
                 </span>
               </CardGraphicText>
-              <CardBodyGoals>
-                <GraphicSpeed>
-                  <CardGraphicText>
-                    <GraphicTitle>Meta 01</GraphicTitle>
-                  </CardGraphicText>
-                  <GraphicSpeedometer dataValue={150} />
-                </GraphicSpeed>
-                <GraphicSpeed>
-                  <CardGraphicText>
-                    <GraphicTitle>Meta 02</GraphicTitle>
-                  </CardGraphicText>
-                  <GraphicSpeedometer dataValue={250} />
-                </GraphicSpeed>
+
+              {/* <CardBodyGoals>
                 <GraphicSpeed>
                   <CardGraphicText>
                     <GraphicTitle>Meta 03</GraphicTitle>
                   </CardGraphicText>
                   <GraphicSpeedometer dataValue={450} />
                 </GraphicSpeed>
-              </CardBodyGoals>
+              </CardBodyGoals> */}
+              <div
+                className={
+                  grupSectorsSelected.includes(sector.id) ? 'selected' : ''
+                }
+              >
+                <Table
+                  idSector={sector.id}
+                  isOpen={isOpen}
+                  setIsOpen={togleOpenCard}
+                />
+              </div>
             </CardGraphic>
           </FullScreen>
         ))}

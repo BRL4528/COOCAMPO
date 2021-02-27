@@ -1,4 +1,6 @@
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
+
+import { shade } from 'polished';
 
 interface ICheck {
   checked: boolean;
@@ -6,12 +8,14 @@ interface ICheck {
   idChecked: string;
 }
 
-// transition: width 600ms ease;
+interface ICalendar {
+  openCalendar: boolean;
+}
 
 export const Container = styled.div`
   .selected {
-    background: rgba(194, 217, 211, 0.58);
-    border-bottom: 3px solid #4caf50;
+    background: var(--green-secundary);
+    border-bottom: 3px solid var(--green-primary);
     max-height: 80px;
 
     h2 {
@@ -21,8 +25,8 @@ export const Container = styled.div`
       > span {
         visibility: visible;
         svg {
-          color: #4caf50;
-          border-color: #f2c811;
+          color: var(--green-primary);
+          border-color: var(--color-theme-primary);
 
           cursor: pointer;
         }
@@ -34,9 +38,7 @@ export const Container = styled.div`
   align-items: center;
   flex-direction: column;
   color: #073b4c;
-  /* background: #f6eee7; */
   width: 100%;
-  /* height: 100vh; */
 
   > header {
     display: flex;
@@ -48,8 +50,43 @@ export const Container = styled.div`
     border-radius: 6px;
     min-height: 100px;
     padding: 35px;
-    /* border-bottom: 3px solid #f2c811; */
-    background: #f2c811;
+    background: var(--color-theme-primary);
+  }
+  > span {
+    display: flex;
+    align-items: flex-end;
+    flex-direction: column;
+    min-width: 700px;
+
+    button {
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+
+      height: 40px;
+      width: 300px;
+      transition: max-height 1s;
+      background: var(--white-secondary);
+      box-shadow: 0 0 14px 0 rgba(0, 0, 0, 0.07);
+      border-bottom: 3px solid var(--white-secondary);
+      border: none;
+      border-radius: 4px;
+
+      transition: var(--transition-speed);
+
+      svg {
+        transition: var(--transition-speed);
+        color: var(--dark-secondary);
+      }
+
+      :hover {
+        background: ${shade(0.2, '#fff')};
+
+        svg {
+          color: var(--dark-quaternary);
+        }
+      }
+    }
   }
 `;
 export const CardContainer = styled.div<ICheck>`
@@ -73,41 +110,29 @@ export const CardContainer = styled.div<ICheck>`
   }
 
   h3 {
-    border-bottom: solid 1px rgba(150, 156, 186, 0.2);
+    border-bottom: solid 1px var(--text-tertiary);
     margin: 14px 0 15px 5px;
     color: var(--text-primary);
   }
 
   > div {
     min-width: 700px;
-    /* background-color: rgba(194, 217, 211, 0.58); */
-
     transition: max-height 1s;
-    background: #fff;
+    background: var(--white-secondary);
     box-shadow: 0 0 14px 0 rgba(0, 0, 0, 0.07);
-    border-bottom: 3px solid #fff;
+    border-bottom: 3px solid var(--white-secondary);
     max-height: 600px;
-
-    /* ${props =>
-      props.checked &&
-      css`
-        transition: max-height 2s;
-        max-height: 600px;
-        background-color: #fff;
-        border-bottom: 3px solid #fff;
-      `}; */
 
     overflow: hidden;
     white-space: nowrap;
 
     padding: 25px;
-
     margin: 15px 0 15px 0;
     border-radius: 6px;
     transition: var(--transition-speed);
 
     :hover {
-      border-bottom: 3px solid #f2c811;
+      border-bottom: 3px solid var(--color-theme-primary);
     }
 
     div {
@@ -119,7 +144,6 @@ export const CardContainer = styled.div<ICheck>`
       }
 
       div {
-        /* background: red; */
         width: 200px;
 
         strong {
@@ -140,4 +164,60 @@ export const CardLoading = styled.div`
     color: var(--text-primary);
     width: 80px;
   }
+`;
+
+export const Calendar = styled.aside`
+  width: 380px;
+
+  .DayPicker {
+    background: #28262e;
+    border-radius: 4px;
+    color: #fff;
+    /* height: 50px; */
+  }
+  .DayPicker-wrapper {
+    padding-bottom: 0;
+  }
+  .DayPicker,
+  .DayPicker-Month {
+    width: 100%;
+  }
+  .DayPicker-Month {
+    border-collapse: separate;
+    border-spacing: 8px;
+    margin: 16px;
+  }
+  .DayPicker-Day {
+    width: 40px;
+    height: 40px;
+  }
+  .DayPicker-Day--available:not(.DayPicker-Day--outside) {
+    background: #3e3b47;
+    border-radius: 4px;
+    color: #fff;
+  }
+  .DayPicker:not(.DayPicker--interactionDisabled)
+    .DayPicker-Day:not(.DayPicker-Day--disabled):not(.DayPicker-Day--selected):not(.DayPicker-Day--outside):hover {
+    background: ${shade(0.2, '#3e3b47')};
+  }
+  .DayPicker-Day--today {
+    font-weight: normal;
+  }
+  .DayPicker-Day--disabled {
+    color: #666360 !important;
+    background: transparent !important;
+  }
+  .DayPicker-Day--selected {
+    background: var(--color-theme-primary) !important;
+    border-radius: 10px;
+    color: #232129 !important;
+  }
+`;
+
+export const TogleCalendar = styled.div<ICalendar>`
+  position: absolute;
+  z-index: 1;
+
+  ${({ openCalendar }: ICalendar): string =>
+    openCalendar ? '' : 'display: none;'}
 `;

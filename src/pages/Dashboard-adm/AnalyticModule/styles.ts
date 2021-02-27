@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { shade } from 'polished';
 
 export const Container = styled.div`
   /* display: flex; */
@@ -7,7 +8,7 @@ export const Container = styled.div`
   margin-top: 12px;
   margin-left: 8%;
 
-  color: #433f59;
+  color: var(--text-quarterly);
 
   strong {
     color: var(--text-primary);
@@ -37,47 +38,12 @@ export const CardButton = styled.div`
   div {
     min-width: 200px;
     margin: 0 10px 0 10px;
-    /* transition: var(--transition-speed); */
 
     @media only screen and (max-width: 600px) {
-      /* transition: var(--transition-speed); */
       display: none;
     }
   }
 `;
-
-// export const TableContainer = styled.section`
-//   /* margin-top: 40px; */
-//   margin: 40px 30px 0 0;
-
-//   table {
-//     width: 100%;
-//     border-spacing: 0 8px;
-//     th {
-//       color: #969cb3;
-//       font-weight: normal;
-//       padding: 20px 32px;
-//       text-align: left;
-//       font-size: 14px;
-//       line-height: 24px;
-//     }
-
-//     td {
-//       cursor: pointer;
-//       padding: 20px 32px;
-//       border: 0;
-//       background: #fff;
-//       font-size: 14px;
-//       font-weight: normal;
-//       color: #969cb3;
-//       border-radius: 5px;
-
-//       h3 {
-//         color: #433f59;
-//       }
-//     }
-//   }
-// `;
 
 export const TableContainerList = styled.div`
   margin-top: 80px;
@@ -87,11 +53,11 @@ export const TableContainerList = styled.div`
     margin-top: 50px;
     max-width: 500px;
   }
-  span {
+  > span {
     background: #fff;
     border-radius: 5px;
     width: 100%;
-    padding: 24px;
+    padding: 18px 18px 10px 18px;
     display: block;
     text-decoration: none;
     display: flex;
@@ -108,22 +74,80 @@ export const TableContainerList = styled.div`
       height: 64px;
       border-radius: 50%;
     }
-    div {
+    > div {
       margin: 0 16px;
       flex: 1;
-      strong {
-        font-size: 20px;
-        color: #3d3d4d;
-      }
-      p {
-        font-size: 18px;
-        color: #a8a8b3;
-        margin-top: 4px;
+      main {
+        display: flex;
+        align-items: center;
+        flex-direction: row;
+        justify-content: space-between;
+        margin: 0;
+        padding: 0;
+
+        div {
+          strong {
+            font-size: 20px;
+            color: #3d3d4d;
+          }
+          > p {
+            font-size: 18px;
+            color: #a8a8b3;
+            margin-top: 4px;
+          }
+        }
+
+        svg {
+          color: var(--dark-tertiary);
+          width: 20px;
+          height: 20px;
+          /* margin: 10px; */
+          transition: color 0.5s;
+          transition: var(--transition-speed);
+          :hover {
+            cursor: pointer;
+            color: var(--color-theme-primary);
+          }
+        }
       }
     }
-    svg {
-      margin-left: auto;
-      color: #cbcbd6;
+
+    footer {
+      display: flex;
+      align-items: center;
+      text-align: center;
+      height: 50px;
+      /* justify-content: space-between; */
+
+      flex-direction: row;
+
+      margin-top: 15px;
+      border-top: solid 1px rgba(150, 156, 186, 0.2);
+
+      div {
+        text-align: center;
+        svg {
+          margin: 0;
+        }
+      }
+
+      > p {
+        font-size: 14px;
+        color: #a8a8b3;
+      }
+
+      a {
+        outline: none;
+        text-decoration: none;
+        font-size: 14px;
+        color: #7159c1;
+        margin-left: 5px;
+        transition: var(--transition-speed);
+
+        :hover {
+          color: ${shade(0.2, '#7159c1')};
+        }
+      }
     }
   }
 `;

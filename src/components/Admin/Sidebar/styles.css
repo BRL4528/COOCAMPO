@@ -7,7 +7,7 @@ main {
 .navbar {
   z-index: 1;
   position: fixed;
-  background-color: var(--bg-primary);
+  background-color: var(--beige-primary);
   transition: width 600ms ease;
   overflow: hidden;
   border-right: solid 2px rgba(150, 156, 186, 0.2);
@@ -22,6 +22,7 @@ main {
   flex-direction: column;
   align-items: center;
   height: 100%;
+  background-color: var(--white-secondary);
 }
 
 .nav-item {
@@ -123,7 +124,7 @@ main {
   margin-bottom: 1rem;
   text-align: center;
   color: var(--text-secondary);
-  background: var(--bg-secondary);
+  background: var(--beige-secondary);
   /* font-size: 1.5rem; */
   letter-spacing: 0.3ch;
   width: 100%;

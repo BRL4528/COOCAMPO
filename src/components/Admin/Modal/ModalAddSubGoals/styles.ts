@@ -19,11 +19,50 @@ export const Form = styled(unform)`
   display: flex;
   flex-direction: column;
 
-  h2 {
-    color: #433f59;
-    margin-bottom: 20px;
+  p {
+    color: var(--text-quarterly);
+    font-size: 0.9rem;
+    margin-top: 15px;
   }
 
+  > span {
+    display: flex;
+    width: 100%;
+    margin: 0 auto;
+    justify-content: space-between;
+    /* align-items: center; */
+    > svg {
+      color: #433f59;
+      cursor: pointer;
+      transition: var(--transition-speed);
+
+      :hover {
+        color: var(--text-primary);
+      }
+    }
+
+    > div {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-direction: row;
+      margin-bottom: 5px;
+
+      h2 {
+        color: #433f59;
+      }
+      svg {
+        color: #433f59;
+        margin: 0px 0px 0px 5px;
+        transition: var(--transition-speed);
+
+        :hover {
+          color: var(--green-primary);
+          transform: rotate(90deg);
+        }
+      }
+    }
+  }
   button {
     margin: 0 0 20px 0;
     align-self: flex-end;
@@ -92,6 +131,23 @@ export const Form = styled(unform)`
     }
   }
 `;
+
+export const DivLeft = styled.div`
+  text-align: right;
+  width: 100%;
+
+  button {
+    margin-top: 25px;
+    width: 200px;
+    div {
+      > svg {
+        color: #fff;
+        width: 20px;
+      }
+    }
+  }
+`;
+
 export const ContainerSub = styled.div`
   margin: 30px;
 `;
