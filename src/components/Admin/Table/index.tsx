@@ -284,6 +284,7 @@ const Table: React.FC<ITableSector> = (idSector, isOpen) => {
     movableRows: true,
     groupStartOpen: false,
     groupHeader: [
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       function (value: any, count: any, data: ISectorFormated[], group: any) {
         // console.log(count);
 
