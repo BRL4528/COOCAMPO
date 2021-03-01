@@ -22,6 +22,7 @@ interface IAnalyticModule {
   id: string;
   name: string;
   responsible: string;
+  email: string;
   condition: string;
   observations: string;
 }
@@ -48,8 +49,9 @@ const ModalAddFood: React.FC<IModalProps> = ({
 
         const schema = Yup.object().shape({
           name: Yup.string().required('Nome obrigatório'),
-          responsible: Yup.string()
-            .required('Representante obrigátorio')
+          responsible: Yup.string().required('Representante obrigátorio'),
+          email: Yup.string()
+            .required('E-mail do representante obrigátorio')
             .email('Digite um e-mail válido'),
           condition: Yup.string(),
           observations: Yup.string(),
@@ -58,11 +60,12 @@ const ModalAddFood: React.FC<IModalProps> = ({
           abortEarly: false,
         });
 
-        const { name, responsible, condition, observations } = data;
+        const { name, responsible, email, condition, observations } = data;
 
         const formData = {
           name,
           responsible,
+          email,
           condition,
           observations,
         };
@@ -109,11 +112,17 @@ const ModalAddFood: React.FC<IModalProps> = ({
           name="name"
           placeholder="Ex: Limpeza e organização dos veículos e maquinas"
         />
+        <p>Nome do representante</p>
+        <Input
+          type="text"
+          name="responsible"
+          placeholder="Ex: Cristiano Mattei"
+        />
         <p>E-mail do representante</p>
         <Input
           type="email"
-          name="responsible"
-          placeholder="Ex: carlos.alto@empresa.com.br"
+          name="email"
+          placeholder="Ex: cristiano.mattei@cooasgo.com.br"
         />
         <p>Frequência(ocorrências no periodo de um mês)</p>
         <Input type="text" name="condition" placeholder="Ex: 4" />

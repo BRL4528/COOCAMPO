@@ -21,11 +21,10 @@ import api from '../../../../services/api';
 interface IAnalyticModule {
   id: string;
   name: string;
-  url: string;
-  responsible: string;
   email: string;
-  condition: string;
-  observations: string;
+  responsible: string;
+  subject: string;
+  body: string;
 }
 
 interface IModalProps {
@@ -33,13 +32,12 @@ interface IModalProps {
   idAnalyticModule: string;
   setIsOpen: () => void;
   // eslint-disable-next-line no-unused-vars
-  handleAnalytic: (analytic: Omit<IAnalyticModule, 'status'>) => void;
+  // handleAnalytic: (analytic: Omit<IAnalyticModule, 'status'>) => void;
 }
 
 const ModalEditAnalyticModule: React.FC<IModalProps> = ({
   isOpen,
   setIsOpen,
-  handleAnalytic,
   idAnalyticModule,
 }) => {
   const formRef = useRef<FormHandles>(null);
@@ -63,43 +61,38 @@ const ModalEditAnalyticModule: React.FC<IModalProps> = ({
   const handleSubmit = useCallback(
     async (data: IAnalyticModule) => {
       try {
-        formRef.current?.setErrors({});
+        // formRef.current?.setErrors({});
 
-        const schema = Yup.object().shape({
-          name: Yup.string().required('Nome obrigatório'),
-          responsible: Yup.string().required('Representante obrigátorio'),
-          email: Yup.string()
-            .required('Email do representante obrigátorio')
-            .email('Digite um e-mail válido'),
-          condition: Yup.string(),
-          observations: Yup.string(),
-        });
-        await schema.validate(data, {
-          abortEarly: false,
-        });
+        // const schema = Yup.object().shape({
+        //   name: Yup.string().required('Nome obrigatório'),
+        //   responsible: Yup.string().required('Representante obrigátorio'),
+        //   email: Yup.string()
+        //     .required('Email do representante obrigátorio')
+        //     .email('Digite um e-mail válido'),
+        //   condition: Yup.string(),
+        //   observations: Yup.string(),
+        // });
+        // await schema.validate(data, {
+        //   abortEarly: false,
+        // });
 
-        const { name, responsible, email, condition, observations } = data;
+        const { body, subject } = data;
 
         const formData = {
-          name,
-          responsible,
-          email,
-          condition,
-          observations,
+          id: idAnalyticModule,
+          body,
+          subject,
         };
 
-        const response = await api.put(
-          `/analysis-module?analyze_module_id=${idAnalyticModule}`,
-          formData,
-        );
-        handleAnalytic(response.data);
+        // await api.post('/send-email-analysis-module', formData);
+        console.log(formData);
 
         setIsOpen();
 
         addToast({
           type: 'success',
-          title: 'Módulo de analíse',
-          description: 'Criado sucesso com sucesso',
+          title: 'Email enviado!',
+          description: 'sucesso ao enviar email',
         });
       } catch (err) {
         if (err instanceof Yup.ValidationError) {
@@ -112,12 +105,12 @@ const ModalEditAnalyticModule: React.FC<IModalProps> = ({
 
         addToast({
           type: 'info',
-          title: 'Erro na atualização',
-          description: 'Ocorreu um erro ao atualizar perfil.',
+          title: 'Erro ao enviar email',
+          description: 'Ocorreu um erro ao enviar email.',
         });
       }
     },
-    [addToast, handleAnalytic, idAnalyticModule, setIsOpen],
+    [addToast, idAnalyticModule, setIsOpen],
   );
 
   return (
@@ -128,15 +121,9 @@ const ModalEditAnalyticModule: React.FC<IModalProps> = ({
         onSubmit={handleSubmit}
       >
         <span>
-          <h2>Editar módulo de análise</h2>
+          <h2>Enviar email</h2>
           <FiX size={20} onClick={() => setIsOpen()} />
         </span>
-        <p>Nome do módulo de análise</p>
-        <Input
-          type="text"
-          name="name"
-          placeholder="Ex: Limpeza e organização dos veículos e maquinas"
-        />
         <p>Nome do representante</p>
         <Input
           type="text"
@@ -149,10 +136,14 @@ const ModalEditAnalyticModule: React.FC<IModalProps> = ({
           name="email"
           placeholder="Ex: cristiano.mattei@cooasgo.com.br"
         />
-        <p>Frequência(ocorrências no periodo de um mês)</p>
-        <Input type="text" name="condition" placeholder="Ex: 4" />
-        <p>Observações</p>
-        <TextArea name="observations" placeholder="Observações" />
+        <p>Assunto</p>
+        <Input type="text" name="subject" placeholder="Ex: Módulo de análise" />
+
+        <p>Corpo do e-mail</p>
+        <TextArea
+          name="body"
+          placeholder="Ex: Email de acesso ao modulo de analise"
+        />
 
         <DivLeft>
           <Button type="submit" data-testid="add-food-button">

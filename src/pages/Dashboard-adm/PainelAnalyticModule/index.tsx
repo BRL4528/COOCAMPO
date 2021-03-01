@@ -114,6 +114,7 @@ const PainelAnalyticModule: React.FC = () => {
 
   const handleSubmit = useCallback(
     async (data: CheckboxOption) => {
+      console.log(navigator.onLine);
       const results_of_sub_goals: {
         sector_id: string;
         result: boolean;

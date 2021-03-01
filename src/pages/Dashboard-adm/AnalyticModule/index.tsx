@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 
-import { FiEdit, FiLink } from 'react-icons/fi';
+import { FiEdit, FiLink, FiSend } from 'react-icons/fi';
 
 import UseAnimations from 'react-useanimations';
 import alertCircle from 'react-useanimations/lib/alertCircle';
@@ -8,6 +8,7 @@ import alertCircle from 'react-useanimations/lib/alertCircle';
 import Button from '../../../components/Global/Button';
 import ModalAddAnalyticModule from '../../../components/Admin/Modal/ModalAddAnalyticModule';
 import ModalEditAnalyticModule from '../../../components/Admin/Modal/ModalEditAnalyticModule';
+import ModalSendEmailAnalyticModule from '../../../components/Admin/Modal/ModalSendEmailAnalyticModule';
 import api from '../../../services/api';
 
 import {
@@ -21,6 +22,7 @@ interface IAnalyticModule {
   id: string;
   url?: string;
   name: string;
+  email: string;
   responsible: string;
   condition: string;
   observations: string;
@@ -31,6 +33,7 @@ const SelectorFolders: React.FC = () => {
   const [dataAnalytic, setDataAnalytic] = useState<IAnalyticModule>();
 
   const [modalEditOpen, setModaEditOpen] = useState(false);
+  const [modalOpenSendEmail, setModaOpenSendEmail] = useState(false);
   const [idAnalyticModule, setIdAnalyticModule] = useState('');
 
   const [dataAnalyticModule, setDataAnalyticModule] = useState<
@@ -47,6 +50,15 @@ const SelectorFolders: React.FC = () => {
 
   const handleEdit = useCallback(id => {
     setModaEditOpen(true);
+    setIdAnalyticModule(id);
+  }, []);
+
+  const toggleSendEmailModal = useCallback(() => {
+    setModaOpenSendEmail(!modalOpenSendEmail);
+  }, [modalOpenSendEmail]);
+
+  const handleSendEmail = useCallback(id => {
+    setModaOpenSendEmail(true);
     setIdAnalyticModule(id);
   }, []);
 
@@ -81,6 +93,11 @@ const SelectorFolders: React.FC = () => {
         handleAnalytic={handleAnalytic}
         idAnalyticModule={idAnalyticModule}
       />
+      <ModalSendEmailAnalyticModule
+        isOpen={modalOpenSendEmail}
+        setIsOpen={toggleSendEmailModal}
+        idAnalyticModule={idAnalyticModule}
+      />
       <Container>
         <CardeHeader>
           <div>
@@ -106,10 +123,16 @@ const SelectorFolders: React.FC = () => {
                     <strong>{analyticModule.name}</strong>
                     <p>{analyticModule.observations}</p>
                   </div>
-                  <FiEdit
-                    onClick={() => handleEdit(analyticModule.id)}
-                    size={20}
-                  />
+                  <span>
+                    <FiSend
+                      size={20}
+                      onClick={() => handleSendEmail(analyticModule.id)}
+                    />
+                    <FiEdit
+                      onClick={() => handleEdit(analyticModule.id)}
+                      size={20}
+                    />
+                  </span>
                 </main>
                 <footer>
                   {analyticModule.url !== null ? (

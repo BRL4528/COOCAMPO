@@ -97,16 +97,19 @@ export const TableContainerList = styled.div`
           }
         }
 
-        svg {
-          color: var(--dark-tertiary);
-          width: 20px;
-          height: 20px;
-          /* margin: 10px; */
-          transition: color 0.5s;
-          transition: var(--transition-speed);
-          :hover {
-            cursor: pointer;
-            color: var(--color-theme-primary);
+        span {
+          svg {
+            color: var(--dark-tertiary);
+            width: 20px;
+            height: 20px;
+            margin-left: 20px;
+            /* margin: 10px; */
+            transition: color 0.5s;
+            transition: var(--transition-speed);
+            :hover {
+              cursor: pointer;
+              color: var(--color-theme-primary);
+            }
           }
         }
       }

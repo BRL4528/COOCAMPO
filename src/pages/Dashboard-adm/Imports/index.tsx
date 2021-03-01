@@ -25,6 +25,7 @@ import {
   CardHeader,
   DivLeft,
 } from './styles';
+import api from '../../../services/api';
 
 // import api from '../../services/api';
 
@@ -51,9 +52,10 @@ const Import: React.FC = () => {
   const handleUpload = useCallback(
     async (routeApi): Promise<void> => {
       const data = new FormData();
+
       setLoadDash(!loadDash);
 
-      if (!uploadedFiles.length || routeApi.name === '') {
+      if (!uploadedFiles.length || routeApi.model === '') {
         addToast({
           type: 'info',
           title: 'Informações ausentes',
@@ -69,9 +71,7 @@ const Import: React.FC = () => {
       data.append('file', file.file, file.name);
 
       try {
-        // await api.post(routeApi.name, data);
-        console.log(routeApi);
-        console.log(data);
+        await api.post(routeApi.model, data);
 
         addToast({
           type: 'success',
@@ -102,7 +102,7 @@ const Import: React.FC = () => {
   }, []);
 
   const options = [
-    { value: '/sage1', label: 'Colaborador-SQL1' },
+    { value: '/employees/import', label: 'Colaborador-SQL1' },
     { value: '/sage2', label: 'Colaborador-SQL2' },
     { value: '/sage3', label: 'Colaborador-SQL3' },
     { value: '/goals/import', label: 'Metas-Geinfo' },

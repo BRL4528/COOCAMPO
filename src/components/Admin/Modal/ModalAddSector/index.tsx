@@ -32,6 +32,7 @@ interface ISector {
   leader: string;
   email: string;
   branch: string;
+  idSector: number;
   // observations: string;
 }
 
@@ -103,6 +104,7 @@ const ModalAddSector: React.FC<IModalProps> = ({
         leader: '',
         branch: '',
         email: '',
+        idSector: 0,
       });
     }
   }, [isOpen]);
@@ -128,6 +130,7 @@ const ModalAddSector: React.FC<IModalProps> = ({
               leader: response.data[0].sector.leader,
               email: response.data[0].sector.email,
               branch: response.data[0].sector.branch,
+              idSector: response.data[0].sector.idSector,
               // observations: response.data[0].sector.observations,
             };
             const initialGoals:
@@ -162,7 +165,7 @@ const ModalAddSector: React.FC<IModalProps> = ({
           abortEarly: false,
         });
 
-        const { name, leader, branch, email } = data;
+        const { name, leader, branch, email, idSector } = data;
 
         const formData = {
           name,
@@ -170,6 +173,7 @@ const ModalAddSector: React.FC<IModalProps> = ({
           email,
           // observations,
           leader,
+          idSector,
         };
 
         // Cria novo item
@@ -216,6 +220,7 @@ const ModalAddSector: React.FC<IModalProps> = ({
             leader: '',
             branch: '',
             email: '',
+            idSector: 0,
           });
           // setDataEditSector();
 
@@ -292,8 +297,14 @@ const ModalAddSector: React.FC<IModalProps> = ({
 
           <FiX size={20} onClick={() => setIsOpen()} />
         </span>
-        <p>Nome do setor</p>
-        <Input name="name" placeholder="Ex: Contabilidade" />
+        <header>
+          <p>Nome do setor</p>
+          <Input name="name" placeholder="Ex: Contabilidade" />
+
+          <p>Código do setor</p>
+          <Input name="idSector" type="number" placeholder="Ex: 1000258" />
+        </header>
+
         <p>Nome do lider</p>
         <Input type="text" name="leader" placeholder="Ex: Antônio Fagundes" />
         <p>E-mail do lider</p>
