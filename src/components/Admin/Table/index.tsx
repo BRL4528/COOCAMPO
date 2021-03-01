@@ -1,3 +1,6 @@
+/* eslint-disable consistent-return */
+/* eslint-disable no-unused-vars */
+/* eslint-disable array-callback-return */
 /* eslint-disable import/no-duplicates */
 import React, { useEffect, useRef, useState } from 'react';
 import { React15Tabulator } from 'react-tabulator';
@@ -32,6 +35,7 @@ interface ISectorData {
         id: string;
         result: string;
         date: string;
+        sector_id: string;
       },
     ];
     // "sub_goals_of_goals": []
@@ -46,9 +50,29 @@ interface ISectorFormated {
   source: string;
   observations: string;
   type: string;
+  status_of_conclusion: boolean;
+  result: string;
+  date: string;
+  weightGoal: string;
   // resut: string;
   // "sub_goals_of_goals": []
 }
+
+// interface IGroup {
+//   group: {
+//     elementContents: string;
+//     key: string;
+//     component: {
+//       rows: [
+//         {
+//           data: {
+//             result: number;
+//           };
+//         },
+//       ];
+//     };
+//   };
+// }
 
 const Table: React.FC<ITableSector> = (idSector, isOpen) => {
   const tableRef = useRef(null);
@@ -70,11 +94,28 @@ const Table: React.FC<ITableSector> = (idSector, isOpen) => {
             observations: string;
             type: string;
             status_of_conclusion: boolean;
+            weightGoal: string;
             result: string;
             date: string;
           }[] = [];
 
           response.data.forEach(function (goaldata) {
+            // console.log(goaldata);
+
+            function filterResults() {
+              if (goaldata.goals.result_of_goal.length) {
+                const resultFiltered = goaldata.goals.result_of_goal.filter(
+                  searchResult => {
+                    return searchResult.sector_id === idSector.idSector;
+                  },
+                );
+
+                // console.log(resultFiltered);
+                return resultFiltered.length
+                  ? Number(resultFiltered[0].result).toFixed(0)
+                  : '0.';
+              }
+            }
             const goalUnit = {
               id: goaldata.goals.id,
               name: goaldata.goals.name,
@@ -84,21 +125,36 @@ const Table: React.FC<ITableSector> = (idSector, isOpen) => {
               observations: goaldata.goals.observations,
               type: goaldata.goals.type,
               status_of_conclusion: goaldata.status_of_conclusion,
-              result: `${Number(
-                goaldata.goals.result_of_goal[0].result,
-              ).toFixed(0)}%`,
-              date: format(
-                new Date(goaldata.goals.result_of_goal[0].date),
-                "MMMM 'de' yyy",
-                {
-                  locale: ptBR,
-                },
-              ),
+              weightGoal: goaldata.goals.type === 'Meta global' ? '80%' : '10%',
+              result: `${
+                filterResults() === undefined ? '0.' : filterResults()
+                // filterResults()
+                // Number(
+                //     goaldata.goals.result_of_goal.filter(
+                //       searchResult =>
+                //         searchResult.sector_id === idSector.idSector,
+                //     )[0].result,
+                //   ).toFixed(0)
+                // Number(goaldata.goals.result_of_goal[0].result).toFixed(0)
+              }%`,
+              date:
+                goaldata.goals.result_of_goal.length <= 0
+                  ? format(new Date(), "MMMM 'de' yyy", {
+                      locale: ptBR,
+                    })
+                  : format(
+                      new Date(goaldata.goals.result_of_goal[0].date),
+                      "MMMM 'de' yyy",
+                      {
+                        locale: ptBR,
+                      },
+                    ),
             };
 
             formatedInfoSector.push(goalUnit);
+            // console.log(response.data);
           });
-          console.log(formatedInfoSector);
+          // console.log(formatedInfoSector);
           setDataTableSector(formatedInfoSector);
         });
     }
@@ -228,9 +284,43 @@ const Table: React.FC<ITableSector> = (idSector, isOpen) => {
     movableRows: true,
     groupStartOpen: false,
     groupHeader: [
-      function (value: any) {
+      function (value: any, count: any, data: ISectorFormated[], group: any) {
+        // console.log(count);
+
+        // console.log('data', data);
+        // console.log('group', group);
+
+        const res = data.reduce((acumulador, corrente): any => {
+          // console.log('ver numero', Number(acumulador.result.substring(0, 1)));
+          return (
+            Number(acumulador.result.substring(0, 2)) +
+            Number(corrente.result.substring(0, 2))
+          );
+        });
+
+        if (res.result) {
+          // return `${value}, ${res.result}`;
+          return `${value}<span style=' color: var(--text-primary); margin-left:10px;'>(Em ${res.date} este setor atingiu ${res.result} de ${res.weightGoal})</span>`;
+        }
+
+        // if (value === 'Meta Global') {
+        // const result = group.group.component.rows.reduce(
+        //   (
+        //     acumulador: { data: { result: any } },
+        //     corrente: { data: { result: any } },
+        //   ) => {
+        //     corrente.data.result + acumulador.data.result;
+        //   },
+        // );
+        // console.log('teste', result);
+
+        return `${value}<span style=' color: var(--text-primary); margin-left:10px;'>(Em ${data[0].date} este setor atingiu ${res}% de ${data[0].weightGoal})</span>`;
+
+        // }
+
+        // return `${value}<span style=' color: var(--text-primary); margin-left:10px;'>(Em Janeiro atingiu 50% de 75%)</span>`;
+
         // generate header contents for gender groups
-        return `${value}<span style=' color: var(--text-primary); margin-left:10px;'>(Em Janeiro atingiu 50% de 75%)</span>`;
       },
     ],
   };
