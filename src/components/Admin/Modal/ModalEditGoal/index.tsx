@@ -284,7 +284,7 @@ const ModalAddFood: React.FC<IModalProps> = ({
             await api.put(
               `/analysis-module?analyze_module_id=${selectedAnalyticItems[0]}`,
               {
-                url: `https://digitalocean.samasc.site/painel-analytic-module?${dataEditGoal}`,
+                url: `https://www.samasc.cloud/painel-analytic-module?${dataEditGoal}`,
               },
             );
           } else if (
@@ -299,7 +299,7 @@ const ModalAddFood: React.FC<IModalProps> = ({
             await api.put(
               `/analysis-module?analyze_module_id=${selectedAnalyticItems[0]}`,
               {
-                url: `https://digitalocean.samasc.site/painel-analytic-module?${dataEditGoal}`,
+                url: `https://www.samasc.cloud/painel-analytic-module?${dataEditGoal}`,
               },
             );
           }
