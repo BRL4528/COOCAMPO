@@ -2,6 +2,8 @@ import styled from 'styled-components';
 
 import { shade } from 'polished';
 
+import Tooltip from '../../../components/Global/Tooltip';
+
 interface ICheck {
   checked: boolean;
   idCurrent: string;
@@ -18,17 +20,20 @@ export const Container = styled.div`
     border-bottom: 3px solid var(--green-primary);
     max-height: 80px;
 
-    h2 {
+    > div {
       display: flex;
       flex-direction: row;
       align-items: center;
-      > span {
-        visibility: visible;
-        svg {
-          color: var(--green-primary);
-          border-color: var(--color-theme-primary);
+      justify-content: space-between;
+      h2 {
+        > span {
+          visibility: visible;
+          svg {
+            color: var(--green-primary);
+            border-color: var(--color-theme-primary);
 
-          cursor: pointer;
+            cursor: pointer;
+          }
         }
       }
     }
@@ -100,10 +105,19 @@ export const CardContainer = styled.div<ICheck>`
       display: flex;
       flex-direction: row;
       align-items: center;
+      justify-content: space-between;
       > span {
         visibility: hidden;
         div {
           height: 11px;
+        }
+      }
+
+      > svg {
+        cursor: pointer;
+
+        :hover {
+          color: #333;
         }
       }
     }
@@ -220,4 +234,21 @@ export const TogleCalendar = styled.div<ICalendar>`
 
   ${({ openCalendar }: ICalendar): string =>
     openCalendar ? '' : 'display: none;'}
+`;
+
+export const Info = styled(Tooltip)`
+  height: 20px;
+  cursor: pointer;
+  margin-left: 16px;
+  z-index: 100;
+  svg {
+    margin: 0;
+  }
+  span {
+    background: #c53030;
+    color: #fff;
+    &::before {
+      border-color: #c53030 transparent;
+    }
+  }
 `;

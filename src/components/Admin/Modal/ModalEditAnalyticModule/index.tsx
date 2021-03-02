@@ -51,6 +51,20 @@ const ModalEditAnalyticModule: React.FC<IModalProps> = ({
   ] = useState<IAnalyticModule>();
 
   useEffect(() => {
+    if (isOpen === false) {
+      setInitialDataAnalyticModule({
+        id: '',
+        name: '',
+        url: '',
+        responsible: '',
+        email: '',
+        condition: '',
+        observations: '',
+      });
+    }
+  }, [isOpen]);
+
+  useEffect(() => {
     if (isOpen) {
       if (idAnalyticModule !== '') {
         api.get(`analysis-module/${idAnalyticModule}`).then(response => {
