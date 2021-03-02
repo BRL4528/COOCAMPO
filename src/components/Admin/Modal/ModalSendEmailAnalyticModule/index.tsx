@@ -84,8 +84,7 @@ const ModalEditAnalyticModule: React.FC<IModalProps> = ({
           subject,
         };
 
-        // await api.post('/send-email-analysis-module', formData);
-        console.log(formData);
+        await api.post('/send-email-analysis-module', formData);
 
         setIsOpen();
 
