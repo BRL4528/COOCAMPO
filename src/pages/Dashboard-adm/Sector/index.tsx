@@ -7,6 +7,7 @@ import { useReactToPrint } from 'react-to-print';
 import { FiEdit, FiPrinter, FiMaximize, FiChevronsDown } from 'react-icons/fi';
 
 import Button from '../../../components/Global/Button';
+import Select from '../../../components/Global/SelectRelease';
 import ModalAddGoals from '../../../components/Admin/Modal/ModalAddSector';
 import ModalEditGoals from '../../../components/Admin/Modal/ModalEditSector';
 import Table from '../../../components/Admin/Table';
@@ -35,6 +36,10 @@ const SelectorFolders: React.FC = () => {
 
   const componentRef = useRef<HTMLDivElement>(null);
 
+  const [loadingSectors, setLoadingSectors] = useState(true);
+
+  const [subject, setSubject] = useState('01/january/2021');
+
   const [modalEditSectorOpen, setModalEditSectorOpen] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
 
@@ -45,6 +50,18 @@ const SelectorFolders: React.FC = () => {
   const [dataUpdateSector, setDataUpdateSector] = useState<ISector[]>([]);
 
   const [grupSectorsSelected, setGrupSectorsSelected] = useState<string[]>([]);
+
+  const handleLoadingSectors = useCallback(() => {
+    setLoadingSectors(!loadingSectors);
+  }, [loadingSectors]);
+
+  const handleSubject = useCallback(
+    e => {
+      setLoadingSectors(false);
+      setSubject(e);
+    },
+    [setSubject],
+  );
 
   const toggleModal = useCallback(() => {
     setDataEditSector('');
@@ -93,7 +110,7 @@ const SelectorFolders: React.FC = () => {
     api.get('/sectors').then(response => {
       setDataUpdateSector(response.data);
     });
-  }, [dataSector]);
+  }, [dataSector, subject]);
 
   const handleSector = useCallback((sector: Omit<ISector, ''>) => {
     try {
@@ -135,6 +152,35 @@ const SelectorFolders: React.FC = () => {
             </div>
           </CardButton>
         </CardeHeader>
+        <span>
+          <fieldset>
+            <Select
+              name="subject"
+              label="Mês referência"
+              value={subject}
+              onChange={e => {
+                handleSubject(e.target.value);
+              }}
+              options={[
+                { value: '01/january/2021', label: 'Janeiro' },
+                { value: '01/february/2021', label: 'Fevereiro' },
+                { value: '01/march/2021', label: 'Março' },
+                { value: '01/april/2021', label: 'Abril' },
+                { value: '01/may/2021', label: 'Maio' },
+                { value: '01/june/2021', label: 'Junho' },
+                { value: '01/july/2021', label: 'Julho' },
+                { value: '01/august/2021', label: 'Agosto' },
+                { value: '01/september/2021', label: 'Setembro' },
+                { value: '01/october/2021', label: 'Outubro' },
+                { value: '01/november/2021', label: 'Novembro' },
+                { value: '01/december/2021', label: 'Dezembro' },
+              ]}
+            />
+          </fieldset>
+          <Button type="button" onClick={() => handleLoadingSectors()}>
+            {loadingSectors ? 'Limpar' : 'Carregar'}
+          </Button>
+        </span>
 
         {dataUpdateSector.map(sector => (
           <FullScreen key={sector.id} handle={handle}>
@@ -163,10 +209,10 @@ const SelectorFolders: React.FC = () => {
 
               {/* <CardBodyGoals>
                 <GraphicSpeed>
-                  <CardGraphicText>
-                    <GraphicTitle>Meta 03</GraphicTitle>
-                  </CardGraphicText>
-                  <GraphicSpeedometer dataValue={450} />
+                <CardGraphicText>
+                <GraphicTitle>Meta 03</GraphicTitle>
+                </CardGraphicText>
+                <GraphicSpeedometer dataValue={450} />
                 </GraphicSpeed>
               </CardBodyGoals> */}
               <div
@@ -174,11 +220,18 @@ const SelectorFolders: React.FC = () => {
                   grupSectorsSelected.includes(sector.id) ? 'selected' : ''
                 }
               >
-                <Table
-                  idSector={sector.id}
-                  isOpen={isOpen}
-                  setIsOpen={togleOpenCard}
-                />
+                {loadingSectors ? (
+                  <>
+                    <Table
+                      idSector={sector.id}
+                      isOpen={isOpen}
+                      setIsOpen={togleOpenCard}
+                      month={subject}
+                    />
+                  </>
+                ) : (
+                  <div>Aguardando carregar o filtro...</div>
+                )}
               </div>
             </CardGraphic>
           </FullScreen>

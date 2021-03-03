@@ -25,6 +25,7 @@ export const Container = styled.div`
       flex-direction: row;
       align-items: center;
       justify-content: space-between;
+
       h2 {
         > span {
           visibility: visible;
@@ -119,6 +120,13 @@ export const CardContainer = styled.div<ICheck>`
         :hover {
           color: #333;
         }
+      }
+    }
+    > svg {
+      cursor: pointer;
+
+      :hover {
+        color: #333;
       }
     }
   }

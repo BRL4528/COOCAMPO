@@ -1,3 +1,4 @@
+/* eslint-disable no-useless-return */
 /* eslint-disable consistent-return */
 /* eslint-disable no-unused-vars */
 /* eslint-disable array-callback-return */
@@ -15,6 +16,7 @@ import api from '../../../services/api';
 interface ITableSector {
   idSector: string;
   isOpen: boolean;
+  month: string;
   setIsOpen: () => void;
 }
 
@@ -36,6 +38,18 @@ interface ISectorData {
         result: string;
         date: string;
         sector_id: string;
+        january?: number;
+        february?: number;
+        march?: number;
+        april?: number;
+        may?: number;
+        june?: number;
+        july?: number;
+        august?: number;
+        september?: number;
+        october?: number;
+        november?: number;
+        december?: number;
       },
     ];
     // "sub_goals_of_goals": []
@@ -45,7 +59,7 @@ interface ISectorData {
 interface ISectorFormated {
   id: string;
   name: string;
-  status: string;
+  status: boolean;
   weight: string;
   source: string;
   observations: string;
@@ -58,37 +72,40 @@ interface ISectorFormated {
   // "sub_goals_of_goals": []
 }
 
-// interface IGroup {
-//   group: {
-//     elementContents: string;
-//     key: string;
-//     component: {
-//       rows: [
-//         {
-//           data: {
-//             result: number;
-//           };
-//         },
-//       ];
-//     };
-//   };
+// interface MonthData {
+//   january?: number;
+//   february?: number;
+//   march?: number;
+//   april?: number;
+//   may?: number;
+//   june?: number;
+//   july?: number;
+//   august?: number;
+//   september?: number;
+//   october?: number;
+//   november?: number;
+//   december?: number;
 // }
+interface ReturnFilterData {
+  status: boolean;
+  result: number;
+}
 
-const Table: React.FC<ITableSector> = (idSector, isOpen) => {
+const Table: React.FC<ITableSector> = ({ idSector, isOpen, month }) => {
   const tableRef = useRef(null);
   const [dataTableSector, setDataTableSector] = useState<ISectorFormated[]>([]);
 
   // const [dataSectorGoals, setDataSectorGoals] = useState<ISectorData[]>([]);
 
   useEffect(() => {
-    if (idSector.idSector && idSector.isOpen) {
+    if (idSector && idSector) {
       api
-        .get<ISectorData[]>(`/goals-of-sectors?sector_id=${idSector.idSector}`)
+        .get<ISectorData[]>(`/goals-of-sectors?sector_id=${idSector}`)
         .then(response => {
           const formatedInfoSector: {
             id: string;
             name: string;
-            status: string;
+            status: boolean;
             weight: string;
             source: string;
             observations: string;
@@ -99,73 +116,185 @@ const Table: React.FC<ITableSector> = (idSector, isOpen) => {
             date: string;
           }[] = [];
 
-          response.data.forEach(function (goaldata) {
-            // console.log(goaldata);
+          // const { januar } = month.split('/')[0];
 
+          response.data.forEach(function (goaldata) {
             function filterResults() {
               if (goaldata.goals.result_of_goal.length) {
                 const resultFiltered = goaldata.goals.result_of_goal.filter(
                   searchResult => {
-                    return searchResult.sector_id === idSector.idSector;
+                    return searchResult.sector_id === idSector;
                   },
                 );
+                // console.log(resultFiltered[0].april);
 
-                // console.log(resultFiltered);
-                return resultFiltered.length
-                  ? Number(resultFiltered[0].result).toFixed(0)
-                  : '0.';
+                switch (month.split('/')[1]) {
+                  case 'january': {
+                    const responseData = {
+                      status: !!resultFiltered[0].january,
+                      result:
+                        Number(resultFiltered[0].january) === null
+                          ? 0
+                          : Number(resultFiltered[0].january),
+                    };
+                    return { responseData };
+                  }
+                  case 'february': {
+                    const responseData = {
+                      status: !!resultFiltered[0].february,
+                      result:
+                        Number(resultFiltered[0].february) === null
+                          ? 0
+                          : Number(resultFiltered[0].february),
+                    };
+                    return { responseData };
+                  }
+                  case 'march': {
+                    const responseData = {
+                      status: !!resultFiltered[0].march,
+                      result:
+                        Number(resultFiltered[0].march) === null
+                          ? 0
+                          : Number(resultFiltered[0].march),
+                    };
+                    return { responseData };
+                  }
+                  case 'april': {
+                    const responseData = {
+                      status: !!resultFiltered[0].april,
+                      result:
+                        Number(resultFiltered[0].april) === null
+                          ? 0
+                          : Number(resultFiltered[0].april),
+                    };
+                    return { responseData };
+                  }
+                  case 'may': {
+                    const responseData = {
+                      status: !!resultFiltered[0].may,
+                      result:
+                        Number(resultFiltered[0].may) === null
+                          ? 0
+                          : Number(resultFiltered[0].may),
+                    };
+                    return { responseData };
+                  }
+                  case 'june': {
+                    const responseData = {
+                      status: !!resultFiltered[0].june,
+                      result:
+                        Number(resultFiltered[0].june) === null
+                          ? 0
+                          : Number(resultFiltered[0].june),
+                    };
+                    return { responseData };
+                  }
+                  case 'july': {
+                    const responseData = {
+                      status: !!resultFiltered[0].july,
+                      result:
+                        Number(resultFiltered[0].july) === null
+                          ? 0
+                          : Number(resultFiltered[0].july),
+                    };
+                    return { responseData };
+                  }
+                  case 'august': {
+                    const responseData = {
+                      status: !!resultFiltered[0].august,
+                      result:
+                        Number(resultFiltered[0].august) === null
+                          ? 0
+                          : Number(resultFiltered[0].august),
+                    };
+                    return { responseData };
+                  }
+                  case 'september': {
+                    const responseData = {
+                      status: !!resultFiltered[0].september,
+                      result:
+                        Number(resultFiltered[0].september) === null
+                          ? 0
+                          : Number(resultFiltered[0].september),
+                    };
+                    return { responseData };
+                  }
+                  case 'october': {
+                    const responseData = {
+                      status: !!resultFiltered[0].october,
+                      result:
+                        Number(resultFiltered[0].october) === null
+                          ? 0
+                          : Number(resultFiltered[0].october),
+                    };
+                    return { responseData };
+                  }
+                  case 'november': {
+                    const responseData = {
+                      status: !!resultFiltered[0].november,
+                      result:
+                        Number(resultFiltered[0].november) === null
+                          ? 0
+                          : Number(resultFiltered[0].november),
+                    };
+                    return { responseData };
+                  }
+                  case 'december': {
+                    const responseData = {
+                      status: !!resultFiltered[0].december,
+                      result:
+                        Number(resultFiltered[0].december) === null
+                          ? 0
+                          : Number(resultFiltered[0].december),
+                    };
+                    return { responseData };
+                  }
+                  default: {
+                    return;
+                  }
+                }
+                // return resultFiltered.length
+                //   ? Number(resultFiltered[0].result).toFixed(0)
+                //   : 0;
               }
             }
+            // eslint-disable-next-line no-undef
+
+            console.log();
             const goalUnit = {
               id: goaldata.goals.id,
               name: goaldata.goals.name,
-              status: goaldata.goals.status,
+              status: filterResults()?.responseData.status || false,
+
               weight: `${goaldata.goals.weight}%`,
               source: `${goaldata.goals.source}%`,
               observations: goaldata.goals.observations,
               type: goaldata.goals.type,
               status_of_conclusion: goaldata.status_of_conclusion,
               weightGoal: goaldata.goals.type === 'Meta global' ? '80%' : '10%',
-              result: `${
-                filterResults() === undefined ? '0.' : filterResults()
-                // filterResults()
-                // Number(
-                //     goaldata.goals.result_of_goal.filter(
-                //       searchResult =>
-                //         searchResult.sector_id === idSector.idSector,
-                //     )[0].result,
-                //   ).toFixed(0)
-                // Number(goaldata.goals.result_of_goal[0].result).toFixed(0)
-              }%`,
-              date:
-                goaldata.goals.result_of_goal.length <= 0
-                  ? format(new Date(), "MMMM 'de' yyy", {
-                      locale: ptBR,
-                    })
-                  : format(
-                      new Date(goaldata.goals.result_of_goal[0].date),
-                      "MMMM 'de' yyy",
-                      {
-                        locale: ptBR,
-                      },
-                    ),
+              age: goaldata.goals.weight,
+              rating: goaldata.goals.weight,
+              // result: `${filterResults() && 0}%`,
+              result: `${filterResults()?.responseData.result || 0}%`,
+              date: format(new Date(month), "MMMM 'de' yyy", {
+                locale: ptBR,
+              }),
             };
 
             formatedInfoSector.push(goalUnit);
-            // console.log(response.data);
+            // console.log(goalUnit);
           });
-          // console.log(formatedInfoSector);
           setDataTableSector(formatedInfoSector);
         });
     }
-  }, [idSector, isOpen]);
+  }, [idSector, isOpen, month]);
 
   const columns = [
     { title: 'Nome', field: 'name', width: 300 },
     { title: 'Peso', field: 'weight', hozAlign: 'center' },
     { title: 'Resultado', field: 'result', hozAlign: 'center' },
     {
-      title: 'Progresso',
+      title: 'Volume',
       field: 'age',
       hozAlign: 'left',
       formatter: 'progress',
@@ -179,7 +308,7 @@ const Table: React.FC<ITableSector> = (idSector, isOpen) => {
     },
     {
       title: 'Realizado',
-      field: 'status_of_conclusion',
+      field: 'status',
       hozAlign: 'center',
       formatter: 'tickCross',
     },
@@ -285,23 +414,31 @@ const Table: React.FC<ITableSector> = (idSector, isOpen) => {
     groupStartOpen: false,
     groupHeader: [
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      function (value: any, count: any, data: ISectorFormated[], group: any) {
+      function (value: any, count: any, data: any[], group: any) {
         // console.log(count);
 
         // console.log('data', data);
         // console.log('group', group);
 
         const res = data.reduce((acumulador, corrente): any => {
-          // console.log('ver numero', Number(acumulador.result.substring(0, 1)));
-          return (
-            Number(acumulador.result.substring(0, 2)) +
-            Number(corrente.result.substring(0, 2))
-          );
-        });
+          if (corrente.result) {
+            return (
+              Number(acumulador) + Number(corrente.result.replace('%', ''))
+            );
+          }
+        }, 0);
 
         if (res.result) {
           // return `${value}, ${res.result}`;
-          return `${value}<span style=' color: var(--text-primary); margin-left:10px;'>(Em ${res.date} este setor atingiu ${res.result} de ${res.weightGoal})</span>`;
+          return `${value}<span style=' color: var(--text-primary); margin-left:10px;'>(Em ${format(
+            new Date(month),
+            'MMMM',
+            {
+              locale: ptBR,
+            },
+          ).toLowerCase()} este setor atingiu ${res.result} de ${
+            res.weightGoal
+          })</span>`;
         }
 
         // if (value === 'Meta Global') {
@@ -315,7 +452,15 @@ const Table: React.FC<ITableSector> = (idSector, isOpen) => {
         // );
         // console.log('teste', result);
 
-        return `${value}<span style=' color: var(--text-primary); margin-left:10px;'>(Em ${data[0].date} este setor atingiu ${res}% de ${data[0].weightGoal})</span>`;
+        return `${value}<span style=' color: var(--text-primary); margin-left:10px;'>(Em ${format(
+          new Date(month),
+          'MMMM',
+          {
+            locale: ptBR,
+          },
+        ).toLowerCase()} este setor atingiu ${res}% de ${
+          data[0].weightGoal
+        })</span>`;
 
         // }
 

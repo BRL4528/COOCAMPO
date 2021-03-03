@@ -22,12 +22,15 @@ export const Container = styled.div`
   }
 
   .selected {
-    max-height: 1000px;
-    transition: var(--transition-speed);
+    max-height: 400px;
+
+    /* transition: var(--transition-speed); */
 
     div {
-      max-height: 1000px;
-      transition: var(--transition-speed);
+      max-height: 200px;
+      visibility: visible;
+      opacity: 1;
+      /* transition: var(--transition-speed); */
     }
     svg {
       color: #1c9cd9;
@@ -46,6 +49,27 @@ export const Container = styled.div`
     display: flex;
     flex-direction: column;
     overflow: scroll;
+  }
+  > span {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    > button {
+      z-index: 0;
+      margin: 29px 0px 0px 15px;
+      height: 39px;
+      max-width: 98px;
+    }
+  }
+
+  fieldset {
+    background: none;
+    border: 0;
+    cursor: pointer;
+    transition: color 0.2s;
+    max-width: 200px;
+    max-height: 80px;
   }
 `;
 
@@ -103,8 +127,11 @@ export const CardGraphic = styled.div`
   width: 550px; */
 
   div {
-    max-height: 0px;
-    transition: var(--transition-speed);
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0s, opacity 0.5s linear;
+
+    /* transition: var(--transition-speed); */
   }
 
   :hover {
