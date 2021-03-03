@@ -125,7 +125,6 @@ const ModalAddSector: React.FC<IModalProps> = ({
             `/goals-of-sectors?sector_id=${dataEditSector}`,
           )
           .then(response => {
-            console.log(response.data);
             const initialSector = {
               id: response.data[0].sector.id,
               name: response.data[0].sector.name,
@@ -205,7 +204,6 @@ const ModalAddSector: React.FC<IModalProps> = ({
             `/sectors?sector_id=${dataEditSector}`,
             formData,
           );
-          console.log(formData);
 
           if (selectedGoalsItems.length > 0) {
             await api.post('/goals-of-sectors/create-all', {

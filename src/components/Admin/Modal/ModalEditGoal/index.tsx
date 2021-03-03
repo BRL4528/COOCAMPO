@@ -254,7 +254,6 @@ const ModalAddFood: React.FC<IModalProps> = ({
 
         // Para atualizar o modulo de analise de uma meta, o usuario deve ter
         // selecionado um modulo de analise diferente que estiver ja cadastrado para a meta
-        console.log(analyticModule);
         if (!currentAnalyticItem.includes(selectedAnalyticItems[0])) {
           if (
             selectedAnalyticItems.length === 0 &&
@@ -262,8 +261,7 @@ const ModalAddFood: React.FC<IModalProps> = ({
           ) {
             // Se o modulo de analise for igual a [0] ele deve exluir o relacionamente que existir
             // no banco, entre a meta e o modulo de analise
-            console.log(selectedAnalyticItems.length, analyticModule.length);
-            console.log('deletar');
+
             await api.delete(
               `analysis-module-of-goals/${dataAnalitycModuleOfGoal?.id}`,
             );

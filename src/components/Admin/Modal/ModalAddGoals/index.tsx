@@ -122,7 +122,6 @@ const ModalAddFood: React.FC<IModalProps> = ({
 
   const handleSubmit = useCallback(
     async (data: AddGoalsModal) => {
-      console.log(data);
       try {
         formRef.current?.setErrors({});
 
