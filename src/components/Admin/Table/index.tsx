@@ -52,7 +52,6 @@ interface ISectorData {
         december?: number;
       },
     ];
-    // "sub_goals_of_goals": []
   };
 }
 
@@ -68,27 +67,6 @@ interface ISectorFormated {
   result: string;
   date: string;
   weightGoal: string;
-  // resut: string;
-  // "sub_goals_of_goals": []
-}
-
-// interface MonthData {
-//   january?: number;
-//   february?: number;
-//   march?: number;
-//   april?: number;
-//   may?: number;
-//   june?: number;
-//   july?: number;
-//   august?: number;
-//   september?: number;
-//   october?: number;
-//   november?: number;
-//   december?: number;
-// }
-interface ReturnFilterData {
-  status: boolean;
-  result: number;
 }
 
 const Table: React.FC<ITableSector> = ({ idSector, isOpen, month }) => {
