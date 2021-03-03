@@ -246,17 +246,17 @@ const ModalAddSector: React.FC<IModalProps> = ({
   );
 
   const options = [
-    { value: '0', label: '1-Matriz' },
-    { value: '1', label: '2-UPLI' },
-    { value: '2', label: '3-UPLII' },
-    { value: '3', label: '4-Granja P Alto' },
-    { value: '4', label: '5-Agropecuaria' },
-    { value: '5', label: '6-Confinamento' },
-    { value: '6', label: '7-U.D.G' },
-    { value: '7', label: '8-Super Cooasgo' },
-    { value: '8', label: '9-Rondonopolis' },
-    { value: '9', label: '10-Granja Rio Verde' },
-    { value: '10', label: '11-Cerealista' },
+    { value: '1', label: '1-Matriz' },
+    { value: '2', label: '2-UPLI' },
+    { value: '3', label: '3-UPLII' },
+    { value: '4', label: '4-Granja P Alto' },
+    { value: '5', label: '5-Agropecuaria' },
+    { value: '6', label: '6-Confinamento' },
+    { value: '7', label: '7-U.D.G' },
+    { value: '8', label: '8-Super Cooasgo' },
+    { value: '9', label: '9-Rondonopolis' },
+    { value: '10', label: '10-Granja Rio Verde' },
+    { value: '11', label: '11-Cerealista' },
   ];
 
   const handleSelectGoalsItem = useCallback(
