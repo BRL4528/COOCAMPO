@@ -33,7 +33,7 @@ interface ISector {
   email: string;
   branch: string;
   codccu: number;
-  // observations: string;
+  observations: string;
 }
 
 interface IGoals {
@@ -105,6 +105,7 @@ const ModalAddSector: React.FC<IModalProps> = ({
         branch: '',
         email: '',
         codccu: 0,
+        observations: '',
       });
     }
   }, [isOpen]);
@@ -131,7 +132,7 @@ const ModalAddSector: React.FC<IModalProps> = ({
               email: response.data[0].sector.email,
               branch: response.data[0].sector.branch,
               codccu: response.data[0].sector.codccu,
-              // observations: response.data[0].sector.observations,
+              observations: response.data[0].sector.observations,
             };
             const initialGoals:
               | IGoals
@@ -165,13 +166,13 @@ const ModalAddSector: React.FC<IModalProps> = ({
           abortEarly: false,
         });
 
-        const { name, leader, branch, email, codccu } = data;
+        const { name, leader, branch, email, codccu, observations } = data;
 
         const formData = {
           name,
           branch,
           email,
-          // observations,
+          observations,
           leader,
           codccu,
         };
@@ -221,6 +222,7 @@ const ModalAddSector: React.FC<IModalProps> = ({
             branch: '',
             email: '',
             codccu: 0,
+            observations: '',
           });
           // setDataEditSector();
 
