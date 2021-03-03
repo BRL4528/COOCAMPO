@@ -169,6 +169,16 @@ export const CardSub = styled.div<PropsSub>`
 
   cursor: pointer;
 
+  div {
+    display: flex;
+    align-items: initial;
+    flex-direction: column;
+
+    p {
+      font-size: 13px;
+    }
+  }
+
   ${props =>
     props.opengoals &&
     css`

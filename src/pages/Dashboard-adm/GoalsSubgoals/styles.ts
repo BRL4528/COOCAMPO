@@ -69,7 +69,8 @@ export const Search = styled.div`
       border-radius: 3px;
       color: #433f59;
       width: 100%;
-      height: 30px;
+      height: 2.5rem;
+      padding: 10px;
 
       &::placeholder {
         color: #a0a4a8;
@@ -77,7 +78,10 @@ export const Search = styled.div`
     }
 
     > button {
-      height: 30px;
+      z-index: 0;
+      margin: 0px 0px 0px 15px;
+      height: 39px;
+      width: 98px;
     }
   }
 `;

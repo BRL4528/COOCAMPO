@@ -42,6 +42,7 @@ interface IGoals {
   status: string;
   weight: string;
   observations: string;
+  codccu?: string;
 }
 
 interface IModalProps {
@@ -341,7 +342,13 @@ const ModalEditSector: React.FC<IModalProps> = ({
                   selectedGoalsItems.includes(sub.id) ? 'selected' : ''
                 }
               >
-                <h4>{sub.name}</h4>
+                <div>
+                  <h4>{sub.name}</h4>
+                  <p>
+                    Código centro de custo:
+                    {sub.codccu}
+                  </p>
+                </div>
               </CardSub>
             ))}
           </ContainerSub>

@@ -27,9 +27,11 @@ interface IGoals {
   status: string;
   weight: string;
   observations: string;
+  codccu?: string;
 }
 
 interface IDataGoals {
+  codccu: string;
   id: string;
   name: string;
   status: string;
@@ -91,6 +93,7 @@ const SelectorFolders: React.FC = () => {
 
   useEffect(() => {
     api.get('/goals').then(response => {
+      console.log(response.data);
       setDataGoals(response.data);
     });
   }, [dataTemp]);
@@ -181,9 +184,9 @@ const SelectorFolders: React.FC = () => {
                   name="seach"
                   onChange={handleTextSeach}
                 />
-                <button type="button" onClick={() => handleSeachGoal()}>
+                <Button type="button" onClick={() => handleSeachGoal()}>
                   Pesquisar
-                </button>
+                </Button>
               </div>
             </Search>
             <TableContainer>
@@ -195,7 +198,10 @@ const SelectorFolders: React.FC = () => {
                 >
                   <div>
                     <strong>{dataGoal.name}</strong>
-                    <p>{dataGoal.observations}</p>
+                    <p>
+                      Código centro de custo:
+                      {dataGoal.codccu}
+                    </p>
                   </div>
 
                   <FiChevronRight size={20} />

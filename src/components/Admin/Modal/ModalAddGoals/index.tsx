@@ -32,6 +32,7 @@ interface IGoals {
   status: string;
   weight: string;
   observations: string;
+  codccu?: string;
 }
 
 interface IModalProps {
