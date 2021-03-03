@@ -304,7 +304,7 @@ const ModalAddSector: React.FC<IModalProps> = ({
           <Input name="name" placeholder="Ex: Contabilidade" />
 
           <p>Código do setor</p>
-          <Input name="codcu" type="number" placeholder="Ex: 1000258" />
+          <Input name="codccu" type="number" placeholder="Ex: 1000258" />
         </header>
 
         <p>Nome do lider</p>
