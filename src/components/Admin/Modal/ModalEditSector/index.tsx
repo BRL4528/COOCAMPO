@@ -310,7 +310,7 @@ const ModalEditSector: React.FC<IModalProps> = ({
         <Input name="name" placeholder="Ex: Contabilidade" />
 
         <p>Código do setor</p>
-        <Input name="codccu" type="number" placeholder="Ex: 1000258" />
+        <Input name="codccu" type="text" placeholder="Ex: 1000258" />
 
         <p>Nome do lider</p>
         <Input type="text" name="leader" placeholder="Ex: Antônio Fagundes" />
