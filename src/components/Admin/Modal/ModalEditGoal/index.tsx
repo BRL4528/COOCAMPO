@@ -324,7 +324,6 @@ const ModalAddFood: React.FC<IModalProps> = ({
       handleGoals,
       selectedSubGoalsItems,
       currentSubGoals,
-      analyticModule,
       currentAnalyticItem,
       selectedAnalyticItems,
       setIsOpen,
