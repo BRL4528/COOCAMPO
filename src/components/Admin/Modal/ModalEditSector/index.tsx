@@ -31,7 +31,7 @@ interface ISector {
   name: string;
   leader: string;
   email: string;
-  codccu?: number;
+  codccu?: string;
   branch: string;
   observations: string;
 }

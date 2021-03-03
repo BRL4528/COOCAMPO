@@ -32,7 +32,7 @@ interface ISector {
   leader: string;
   email: string;
   branch: string;
-  codccu: number;
+  codccu?: string;
   observations: string;
 }
 
@@ -42,6 +42,7 @@ interface IGoals {
   status: string;
   weight: string;
   observations: string;
+  codccu?: string;
 }
 
 interface IModalProps {
@@ -104,7 +105,7 @@ const ModalAddSector: React.FC<IModalProps> = ({
         leader: '',
         branch: '',
         email: '',
-        codccu: 0,
+        codccu: '',
         observations: '',
       });
     }
@@ -221,7 +222,7 @@ const ModalAddSector: React.FC<IModalProps> = ({
             leader: '',
             branch: '',
             email: '',
-            codccu: 0,
+            codccu: '',
             observations: '',
           });
           // setDataEditSector();

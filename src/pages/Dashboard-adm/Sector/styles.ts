@@ -220,9 +220,18 @@ export const CardGraphicText = styled.span`
   }
 `;
 
-export const GraphicTitle = styled.h3`
-  width: 100%;
+export const GraphicTitle = styled.section`
+  /* width: 100%; */
+  display: flex;
+  align-items: initial;
+  flex-direction: column;
   padding-bottom: 15px;
+
+  p {
+    margin-top: 5px;
+    font-size: 14px;
+    color: var(--text-primary);
+  }
 `;
 
 export const CardGoalsTrends = styled.div`

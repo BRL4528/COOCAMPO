@@ -29,6 +29,7 @@ interface ISector {
   name: string;
   leader: string;
   observations?: string;
+  codccu?: string;
 }
 
 const SelectorFolders: React.FC = () => {
@@ -108,6 +109,7 @@ const SelectorFolders: React.FC = () => {
 
   useEffect(() => {
     api.get('/sectors').then(response => {
+      console.log(response.data);
       setDataUpdateSector(response.data);
     });
   }, [dataSector, subject]);
@@ -193,7 +195,14 @@ const SelectorFolders: React.FC = () => {
             >
               {/* Header */}
               <CardGraphicText>
-                <GraphicTitle>{sector.name}</GraphicTitle>
+                <GraphicTitle>
+                  <h3>{sector.name}</h3>
+
+                  <p>
+                    Centro de custo:
+                    {sector.codccu}
+                  </p>
+                </GraphicTitle>
                 <span>
                   <FiEdit onClick={() => handleEdit(sector.id)} />
                   <FiPrinter onClick={handlePrint} />
