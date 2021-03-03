@@ -31,6 +31,7 @@ interface ISector {
   name: string;
   leader: string;
   email: string;
+  codccu: number;
   branch: string;
   observations: string;
 }
@@ -106,6 +107,7 @@ const ModalEditSector: React.FC<IModalProps> = ({
         branch: '',
         email: '',
         observations: '',
+        codccu: 0,
       });
     }
   }, [isOpen]);
@@ -168,7 +170,7 @@ const ModalEditSector: React.FC<IModalProps> = ({
           abortEarly: false,
         });
 
-        const { name, leader, branch, email, id, observations } = data;
+        const { name, leader, branch, email, id, observations, codccu } = data;
 
         const formData = {
           id,
@@ -177,6 +179,7 @@ const ModalEditSector: React.FC<IModalProps> = ({
           email,
           observations,
           leader,
+          codccu,
         };
         // Atualiza informações do setor
         await api.put(`/sectors?sector_id=${dataEditSector}`, formData);
@@ -304,6 +307,10 @@ const ModalEditSector: React.FC<IModalProps> = ({
         </span>
         <p>Nome do setor</p>
         <Input name="name" placeholder="Ex: Contabilidade" />
+
+        <p>Código do setor</p>
+        <Input name="codcu" type="number" placeholder="Ex: 1000258" />
+
         <p>Nome do lider</p>
         <Input type="text" name="leader" placeholder="Ex: Antônio Fagundes" />
         <p>E-mail do lider</p>
