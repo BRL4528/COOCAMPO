@@ -66,7 +66,7 @@ const ModalEditAnalyticModule: React.FC<IModalProps> = ({
         });
       }
     },
-    [addToast, setIsOpen],
+    [addToast, handleOccurrence, setIsOpen],
   );
 
   return (
