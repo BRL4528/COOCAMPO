@@ -14,6 +14,7 @@ import Sector from '../pages/Dashboard-adm/Sector';
 import AnalyticModuloAdm from '../pages/Dashboard-adm/AnalyticModule';
 import PainelAnalyticModulo from '../pages/Dashboard-adm/PainelAnalyticModule';
 import Import from '../pages/Dashboard-adm/Imports';
+import Macros from '../pages/Dashboard-adm/Macros';
 
 // Routes user no ADM
 import DashboardUser from '../pages/Dashboard-user';
@@ -36,6 +37,7 @@ const Routes: React.FC = () => (
     <Route path="/report" component={Report} isPrivate isAdmin />
     <Route path="/sector" component={Sector} isPrivate isAdmin />
     <Route path="/import" component={Import} isPrivate isAdmin />
+    <Route path="/macros" component={Macros} isPrivate isAdmin />
     <Route
       path="/analyticModule"
       component={AnalyticModuloAdm}

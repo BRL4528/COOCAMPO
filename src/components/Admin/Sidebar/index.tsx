@@ -145,12 +145,8 @@ const Sidebar: React.FC<LayoutProps> = ({ pathname }) => {
             </Link>
           </OptionList>
 
-          <OptionList
-            pathname={pathname}
-            path="/error404-6"
-            className="nav-item"
-          >
-            <Link to="/error404-6" className="nav-link">
+          <OptionList pathname={pathname} path="/macros" className="nav-item">
+            <Link to="/macros" className="nav-link">
               <FiTerminal color="#f2c811" size={18} />
 
               <span className="link-text">Macros</span>
