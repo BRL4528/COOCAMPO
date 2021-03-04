@@ -49,6 +49,7 @@ interface AddGoalsModal {
   type: string;
   source: string;
   observations: string;
+  codccu?: string;
   sub_goals_of_goals?: [
     {
       id: string;
@@ -123,6 +124,7 @@ const ModalAddFood: React.FC<IModalProps> = ({
         type: '',
         source: '',
         observations: '',
+        codccu: '',
       });
     }
   }, [isOpen]);
@@ -152,6 +154,7 @@ const ModalAddFood: React.FC<IModalProps> = ({
             type: response.data.type,
             source: response.data.source,
             observations: response.data.observations,
+            codccu: response.data.codccu,
           };
 
           const initialSubGoals: React.SetStateAction<string[]> = [];
@@ -208,7 +211,7 @@ const ModalAddFood: React.FC<IModalProps> = ({
 
         const status = 'ativo';
 
-        const { name, observations, source, weight, type } = data;
+        const { name, observations, source, weight, type, codccu } = data;
 
         const formData = {
           name,
@@ -217,6 +220,7 @@ const ModalAddFood: React.FC<IModalProps> = ({
           weight,
           status,
           type,
+          codccu,
         };
 
         await api.put(`/goals?goal_id=${dataEditGoal}`, formData);
@@ -412,6 +416,10 @@ const ModalAddFood: React.FC<IModalProps> = ({
 
         <p>Resultado previsto</p>
         <Input step="0.010" name="source" type="number" placeholder="Ex: 5" />
+
+        <p>Código do setor</p>
+        <Input name="codccu" placeholder="Ex: 1000258" />
+
         <p>Modalidade da meta</p>
         <Select name="type" options={options} />
         <p>Prazo da meta</p>

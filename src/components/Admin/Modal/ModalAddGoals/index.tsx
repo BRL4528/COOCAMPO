@@ -49,6 +49,7 @@ interface AddGoalsModal {
   type: string;
   source: string;
   observations: string;
+  codccu?: string;
   sub_goals_of_goals?: [
     {
       id: string;
@@ -73,6 +74,7 @@ interface IAnalyticModule {
   responsible: string;
   condition: string;
   observations: string;
+  codccu?: string;
 }
 
 const ModalAddFood: React.FC<IModalProps> = ({
@@ -137,7 +139,7 @@ const ModalAddFood: React.FC<IModalProps> = ({
 
         const status = 'ativo';
 
-        const { name, observations, source, weight, type } = data;
+        const { name, observations, source, weight, type, codccu } = data;
 
         const formData = {
           name,
@@ -146,6 +148,7 @@ const ModalAddFood: React.FC<IModalProps> = ({
           weight,
           status,
           type,
+          codccu,
         };
 
         const response = await api.post('/goals', formData);
@@ -280,6 +283,10 @@ const ModalAddFood: React.FC<IModalProps> = ({
 
         <p>Resultado previsto</p>
         <Input name="source" step="0.010" placeholder="Ex: 5" />
+
+        <p>Código do setor</p>
+        <Input name="codccu" placeholder="Ex: 1000258" />
+
         <p>Modalidade da meta</p>
         <Select name="type" options={options} />
         <p>Prazo da meta</p>
