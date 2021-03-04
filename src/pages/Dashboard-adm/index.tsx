@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState } from 'react';
+import React, { useRef } from 'react';
 
 // import { useLoading, Oval } from '@agney/react-loading';
 
@@ -25,8 +25,6 @@ import {
 
 const Dashboard: React.FC = () => {
   const componentRef = useRef<HTMLDivElement>(null);
-
-  const [colorize, setcolorize] = useState('#240dac');
 
   const array = [];
   const temp1 = {
@@ -75,10 +73,6 @@ const Dashboard: React.FC = () => {
   array.push(temp4);
   array.push(temp5);
 
-  const handleColor = useCallback(() => {
-    setcolorize('#a70dac');
-  }, []);
-
   return (
     <>
       <Conatiner ref={componentRef}>
@@ -101,7 +95,7 @@ const Dashboard: React.FC = () => {
 
         <CardBodyGoals>
           <CardGraphicItem>
-            <GraphicBar color={colorize} />
+            <GraphicBar color="#240dac" />
           </CardGraphicItem>
 
           <CardGraphicItem>
@@ -109,25 +103,21 @@ const Dashboard: React.FC = () => {
           </CardGraphicItem>
 
           <CardGraphicItem>
-            <GraphicLine color={colorize} />
+            <GraphicLine color="#240dac" />
           </CardGraphicItem>
         </CardBodyGoals>
         <CardBodyGoals>
           <CardGraphicItem>
-            <GraphicBar color={colorize} />
+            <GraphicBar color="#240dac" />
           </CardGraphicItem>
 
           <CardGraphicItem>
             <GraphicPie />
           </CardGraphicItem>
           <CardGraphicItem>
-            <GraphicLine color={colorize} />
+            <GraphicLine color="#240dac" />
           </CardGraphicItem>
         </CardBodyGoals>
-
-        <button type="button" onClick={() => handleColor()}>
-          Mudar
-        </button>
       </Conatiner>
     </>
   );

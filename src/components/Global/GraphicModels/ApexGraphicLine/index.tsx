@@ -18,15 +18,15 @@ const GraphicBarApex: React.FC<ColorStyles> = ({ color }) => {
     ],
     xaxis: {
       categories: [
-        'Matriz',
+        'Adm Cent.',
         'Vet.',
         'Confi.',
-        1994,
-        1995,
-        1996,
-        1997,
-        1998,
-        1999,
+        'Contab.',
+        'Fab. 01',
+        'Fab. 02',
+        'Fat.',
+        'Control.',
+        'RH',
       ],
     },
   };
@@ -35,7 +35,7 @@ const GraphicBarApex: React.FC<ColorStyles> = ({ color }) => {
   // console.log(Chart);
   return (
     <div>
-      <h2>Grafico de barra</h2>
+      <h2>Resultado por setor</h2>
       <Chart
         options={options}
         series={options.series}
