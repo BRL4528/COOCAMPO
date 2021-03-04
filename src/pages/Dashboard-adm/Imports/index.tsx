@@ -106,7 +106,7 @@ const Import: React.FC = () => {
     { value: '/sage2', label: 'Colaborador-SQL2' },
     { value: '/sage3', label: 'Colaborador-SQL3' },
     { value: '/goals/import', label: 'Metas-Geinfo' },
-    { value: '/sage5', label: 'Realizados-Geinfo' },
+    { value: '/result-of-goals/import', label: 'Realizados-Geinfo' },
   ];
 
   return (
