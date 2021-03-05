@@ -121,7 +121,7 @@ const PainelAnalyticModule: React.FC = () => {
           if (item.status_of_conclusion) {
             status_of_conclusion.push(item.id);
           }
-          });
+        });
         setLoading(false);
         setGrupChecked(status_of_conclusion);
         setDataGoalsAnalytic(response.data);
