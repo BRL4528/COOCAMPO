@@ -173,9 +173,11 @@ const ModalAddFood: React.FC<IModalProps> = ({
           .get(`/analysis-module-of-goals?goal_id=${dataEditGoal}`)
           .then(response => {
             if (response.data.length > 0) {
+              console.log('teste', response.data);
               setDataAnalitycModuleOfGoal(response.data[0]);
               setcurrentAnalyticItem([response.data[0].analyze_module_id]);
               setSelectedAnalyticItems([response.data[0].analyze_module_id]);
+              // setIdSector([response.data[0].goal])
             } else {
               setSelectedAnalyticItems([]);
             }
@@ -287,7 +289,7 @@ const ModalAddFood: React.FC<IModalProps> = ({
             await api.put(
               `/analysis-module?analyze_module_id=${selectedAnalyticItems[0]}`,
               {
-                url: `https://www.samasc.cloud/painel-analytic-module?${dataEditGoal}`,
+                url: `https://www.samasc.cloud/painel-analytic-module?${selectedAnalyticItems[0]}`,
               },
             );
           } else if (
@@ -302,7 +304,7 @@ const ModalAddFood: React.FC<IModalProps> = ({
             await api.put(
               `/analysis-module?analyze_module_id=${selectedAnalyticItems[0]}`,
               {
-                url: `https://www.samasc.cloud/painel-analytic-module?${dataEditGoal}`,
+                url: `https://www.samasc.cloud/painel-analytic-module?${selectedAnalyticItems[0]}`,
               },
             );
           }

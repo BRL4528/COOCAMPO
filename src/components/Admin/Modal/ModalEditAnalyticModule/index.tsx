@@ -82,9 +82,8 @@ const ModalEditAnalyticModule: React.FC<IModalProps> = ({
         const schema = Yup.object().shape({
           name: Yup.string().required('Nome obrigatório'),
           responsible: Yup.string().required('Representante obrigátorio'),
-          email: Yup.string()
-            .required('Email do representante obrigátorio')
-            .email('Digite um e-mail válido'),
+          email: Yup.string().required('Email do representante obrigátorio'),
+          // .email('Digite um e-mail válido'),
           condition: Yup.string(),
           observations: Yup.string(),
         });
@@ -159,7 +158,7 @@ const ModalEditAnalyticModule: React.FC<IModalProps> = ({
         />
         <p>E-mail do representante</p>
         <Input
-          type="email"
+          // type="email"
           name="email"
           placeholder="Ex: cristiano.mattei@cooasgo.com.br"
         />

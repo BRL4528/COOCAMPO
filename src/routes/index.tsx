@@ -13,6 +13,7 @@ import Report from '../pages/Dashboard-adm/Report';
 import Sector from '../pages/Dashboard-adm/Sector';
 import AnalyticModuloAdm from '../pages/Dashboard-adm/AnalyticModule';
 import PainelAnalyticModulo from '../pages/Dashboard-adm/PainelAnalyticModule';
+import PainelSatisfactionSurvey from '../pages/AcessGlobal/PainelSatisfactionSurvey';
 import Import from '../pages/Dashboard-adm/Imports';
 import Macros from '../pages/Dashboard-adm/Macros';
 
@@ -45,11 +46,15 @@ const Routes: React.FC = () => (
       isAdmin
     />
     <Route
-      path="/painel-analytic-module/:goalId?"
+      path="/painel-analytic-module-pesquisa_de_satisfação/:goalId?"
       component={PainelAnalyticModulo}
       isPrivate
       isUser
       isAdmin
+    />
+    <Route
+      path="/painel-analytic-module-modulo_analitico/:goalId?"
+      component={PainelSatisfactionSurvey}
     />
 
     <Route path="/user" component={DashboardUser} isPrivate isUser />

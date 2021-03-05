@@ -266,7 +266,7 @@ const PainelAnalyticModule: React.FC = () => {
       />
       <Container>
         <header>
-          <h1>Painel módulo de análise</h1>
+          <h1>Pesquisa de satisfação</h1>
         </header>
         <span>
           <button type="button" onClick={() => handleopenCalendar()}>

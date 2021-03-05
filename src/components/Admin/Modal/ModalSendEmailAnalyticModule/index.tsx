@@ -18,6 +18,10 @@ import getValidationErrors from '../../../../utils/getValidationErrors';
 import Modal from '../index';
 import api from '../../../../services/api';
 
+interface ISendEmail {
+  name: string;
+  address: string;
+}
 interface IAnalyticModule {
   id: string;
   name: string;
@@ -25,6 +29,7 @@ interface IAnalyticModule {
   responsible: string;
   subject: string;
   body: string;
+  to?: ISendEmail[];
 }
 
 interface IModalProps {
@@ -78,16 +83,156 @@ const ModalEditAnalyticModule: React.FC<IModalProps> = ({
 
         const { body, subject } = data;
 
+        if (data.name === 'global') {
+          const emailsGlobal = [
+            {
+              name: 'Cristiano Mattei',
+              address: 'cristiano.mattei@cooasgo.com.br',
+            },
+            {
+              name: 'Marcos Angelo Piaia',
+              address: 'marcos.piaia@cooasgo.com.br',
+            },
+            {
+              name: 'Carlos Alexandre',
+              address: 'carlos.gobetti@cooasgo.com.br',
+            },
+            {
+              name: 'Fernando Yukio Yoshida',
+              address: 'fernando.yoshida@cooasgo.com.br',
+            },
+            {
+              name: 'Amanda Ami ',
+              address: 'udg@cooasgo.com.br',
+            },
+            {
+              name: 'José Martini',
+              address: 'financeiro@cooasgo.com.br',
+            },
+            {
+              name: 'Ivonei Scotton',
+              address: 'ivonei.scotton@cooasgo.com.br',
+            },
+            {
+              name: 'Sueli Cristina',
+              address: 'coordenacao.rh@cooasgo.com.br',
+            },
+            {
+              name: 'Katiele Fernanda',
+              address: 'katiele.silva@cooasgo.com.br',
+            },
+            {
+              name: 'Davi Correa da Silva',
+              address: 'davi.silva@cooasgo.com.br',
+            },
+            {
+              name: 'Greice Suelen Ceolin',
+              address: 'sesmt@cooasgo.com.br',
+            },
+            {
+              name: 'Jean Carlos',
+              address: 'manutencao@cooasgo.com.br',
+            },
+            {
+              name: 'Anderson Paranzini',
+              address: 'comercial.agricola@cooasgo.com.br',
+            },
+            {
+              name: 'Ricardo Antonio',
+              address: 'ricardo.antonio@cooasgo.com.br',
+            },
+            {
+              name: 'Cesário Teixeira',
+              address: 'cesario.pereira@cooasgo.com.br',
+            },
+            {
+              name: 'Lisiane Strelow Barela',
+              address: 'lisiane.barela@cooasgo.com.br',
+            },
+          ];
+
+          const formData = {
+            id: idAnalyticModule,
+            body,
+            subject,
+            to: emailsGlobal,
+          };
+
+          await api.post('/send-email-analysis-module', formData);
+        }
+
+        if (data.name === 'global-gooasgo-test') {
+          const emailsGlobal = [
+            {
+              name: 'Cristiano Mattei',
+              address: 'cristiano.mattei@cooasgo.com.br',
+            },
+            {
+              name: 'Sueli Cristina',
+              address: 'coordenacao.rh@cooasgo.com.br',
+            },
+            {
+              name: 'Bruno Luiz',
+              address: 'bruno.carvalhoa@cooasgo.com.br',
+            },
+            {
+              name: 'Lisiane Strelow Barela',
+              address: 'lisiane.barela@cooasgo.com.br',
+            },
+          ];
+
+          const formData = {
+            id: idAnalyticModule,
+            body,
+            subject,
+            to: emailsGlobal,
+          };
+
+          await api.post('/send-email-analysis-module', formData);
+        }
+
+        if (data.name === 'midas') {
+          const emailsGlobal = [
+            {
+              name: 'Bruno Luiz',
+              address: 'blgc.sgo@hotmail.com',
+            },
+            {
+              name: 'Alessandro Silva',
+              address: 'alessandro@midascorp.dev',
+            },
+            {
+              name: 'Bruno Luiz',
+              address: 'bruno@midascorp.dev',
+            },
+            {
+              name: 'KronaMesin',
+              address: 'kronamesin@gmail.com',
+            },
+          ];
+
+          const formData = {
+            id: idAnalyticModule,
+            body,
+            subject,
+            to: emailsGlobal,
+          };
+
+          await api.post('/send-email-analysis-module', formData);
+        }
+
+        const emailUnit = [{ name: data.name, address: data.email }];
+
         const formData = {
           id: idAnalyticModule,
           body,
           subject,
+          to: emailUnit,
         };
 
         await api.post('/send-email-analysis-module', formData);
 
         setIsOpen();
-
         addToast({
           type: 'success',
           title: 'Email enviado!',
@@ -131,7 +276,7 @@ const ModalEditAnalyticModule: React.FC<IModalProps> = ({
         />
         <p>E-mail do representante</p>
         <Input
-          type="email"
+          // type="email"
           name="email"
           placeholder="Ex: cristiano.mattei@cooasgo.com.br"
         />

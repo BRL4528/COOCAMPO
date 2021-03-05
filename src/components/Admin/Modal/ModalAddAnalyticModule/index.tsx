@@ -1,4 +1,4 @@
-import React, { useCallback, useRef } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 
 import { FormHandles } from '@unform/core';
 
@@ -17,6 +17,7 @@ import getValidationErrors from '../../../../utils/getValidationErrors';
 
 import Modal from '../index';
 import api from '../../../../services/api';
+import Select from '../../../Global/SelectRelease';
 
 interface IAnalyticModule {
   id: string;
@@ -25,6 +26,7 @@ interface IAnalyticModule {
   email: string;
   condition: string;
   observations: string;
+  model: string;
 }
 
 interface IModalProps {
@@ -41,6 +43,7 @@ const ModalAddFood: React.FC<IModalProps> = ({
 }) => {
   const formRef = useRef<FormHandles>(null);
   const { addToast } = useToast();
+  const [subject, setSubject] = useState('');
 
   const handleSubmit = useCallback(
     async (data: IAnalyticModule) => {
@@ -60,7 +63,14 @@ const ModalAddFood: React.FC<IModalProps> = ({
           abortEarly: false,
         });
 
-        const { name, responsible, email, condition, observations } = data;
+        const {
+          name,
+          responsible,
+          email,
+          condition,
+          observations,
+          model,
+        } = data;
 
         const formData = {
           name,
@@ -68,6 +78,7 @@ const ModalAddFood: React.FC<IModalProps> = ({
           email,
           condition,
           observations,
+          model,
         };
 
         const response = await api.post('/analysis-module', formData);
@@ -99,6 +110,13 @@ const ModalAddFood: React.FC<IModalProps> = ({
     [addToast, handleAnalytic, setIsOpen],
   );
 
+  const handleSubject = useCallback(
+    e => {
+      setSubject(e);
+    },
+    [setSubject],
+  );
+
   return (
     <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
       <Form ref={formRef} onSubmit={handleSubmit}>
@@ -111,6 +129,21 @@ const ModalAddFood: React.FC<IModalProps> = ({
           type="text"
           name="name"
           placeholder="Ex: Limpeza e organização dos veículos e maquinas"
+        />
+        <Select
+          name="model"
+          label="Modelo do módulo de análise"
+          value={subject}
+          onChange={e => {
+            handleSubject(e.target.value);
+          }}
+          options={[
+            {
+              value: 'pesquisa_de_satisfação',
+              label: 'Pesquisa de satisfação',
+            },
+            { value: 'modulo_analitico', label: 'Módulo análitico' },
+          ]}
         />
         <p>Nome do representante</p>
         <Input

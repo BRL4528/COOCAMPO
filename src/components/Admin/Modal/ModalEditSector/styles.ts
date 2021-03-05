@@ -3,7 +3,8 @@ import styled, { css } from 'styled-components';
 import { Form as unform } from '@unform/web';
 
 interface PropsSub {
-  opengoals: boolean;
+  opengoals?: boolean;
+  openAnalytic?: boolean;
 }
 
 export const Form = styled(unform)<PropsSub>`
@@ -91,6 +92,9 @@ export const Form = styled(unform)<PropsSub>`
           transition: var(--transition-speed);
           color: #1c9cd9;
         }
+        p {
+          font-size: 12px;
+        }
 
         & + button {
           margin-left: 20px;
@@ -102,6 +106,12 @@ export const Form = styled(unform)<PropsSub>`
 
     ${props =>
       props.opengoals &&
+      css`
+        height: 20rem;
+      `}
+
+    ${props =>
+      props.openAnalytic &&
       css`
         height: 20rem;
       `}
@@ -181,6 +191,37 @@ export const CardSub = styled.div<PropsSub>`
 
   ${props =>
     props.opengoals &&
+    css`
+      display: flex;
+      filter: grayscale(0) opacity(0.7);
+    `}
+
+  :hover {
+    transition: var(--transition-speed);
+    background: rgba(28, 156, 217, 0.1);
+    border: 2px solid rgba(28, 156, 217, 0);
+  }
+`;
+
+export const ContainerAnalytic = styled.div`
+  margin: 30px;
+`;
+
+export const CardAnalytic = styled.div<PropsSub>`
+  margin: 10px;
+  background: #fff;
+  border-radius: 6px;
+  padding: 20px;
+  color: #433f59;
+  filter: grayscale(100%) opacity(0);
+  transition: var(--transition-speed);
+  display: none;
+  border: 2px solid #fff;
+
+  cursor: pointer;
+
+  ${props =>
+    props.openAnalytic &&
     css`
       display: flex;
       filter: grayscale(0) opacity(0.7);
