@@ -240,7 +240,7 @@ const ModalEditSector: React.FC<IModalProps> = ({
           await api.put(
             `/analysis-module?analyze_module_id=${selectedAnalyticItems[0]}`,
             {
-              url: `https://www.samasc.cloud//painel-analytic-module?${dataEditGoal}`,
+              url: `https://www.samasc.cloud/painel-analytic-module?${dataEditGoal}`,
             },
           );
           // Atualiza se houve alterações
@@ -256,7 +256,7 @@ const ModalEditSector: React.FC<IModalProps> = ({
           await api.put(
             `/analysis-module?analyze_module_id=${selectedAnalyticItems[0]}`,
             {
-              url: `https://www.samasc.cloud//painel-analytic-module?${dataEditGoal}`,
+              url: `https://www.samasc.cloud/painel-analytic-module?${dataEditGoal}`,
             },
           );
           // Atualiza se houve alterações
@@ -305,6 +305,7 @@ const ModalEditSector: React.FC<IModalProps> = ({
     [
       dataEditSector,
       handleSector,
+      dataEditGoal,
       selectedGoalsItems,
       analyticModule,
       currentGoals,
