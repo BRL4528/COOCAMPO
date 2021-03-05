@@ -226,7 +226,7 @@ const ModalEditSector: React.FC<IModalProps> = ({
         const route = analyticModule.find(
           analytic => analytic.id === selectedAnalyticItems[0],
         );
-
+        console.log(route);
         // Cria novo relacionamento entre a meta selecionanda e o setor
         if (currentGoals.length === 0 && selectedGoalsItems.length !== 0) {
           console.log('cria novo relacionamento');
