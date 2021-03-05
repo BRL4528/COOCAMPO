@@ -240,7 +240,7 @@ const ModalEditSector: React.FC<IModalProps> = ({
           await api.put(
             `/analysis-module?analyze_module_id=${selectedAnalyticItems[0]}`,
             {
-              url: `https://www.samasc.cloud/painel-analytic-module-${route?.module}?${selectedAnalyticItems[0]}`,
+              url: `https://www.samasc.cloud/painel-analytic-module?${selectedAnalyticItems[0]}`,
             },
           );
           // Atualiza se houve alterações
@@ -256,7 +256,7 @@ const ModalEditSector: React.FC<IModalProps> = ({
           await api.put(
             `/analysis-module?analyze_module_id=${selectedAnalyticItems[0]}`,
             {
-              url: `https://www.samasc.cloud/painel-analytic-module-${route?.module}?${selectedAnalyticItems[0]}`,
+              url: `https://www.samasc.cloud/painel-analytic-module?${selectedAnalyticItems[0]}`,
             },
           );
           // Atualiza se houve alterações
@@ -271,7 +271,7 @@ const ModalEditSector: React.FC<IModalProps> = ({
           await api.put(
             `/analysis-module?analyze_module_id=${selectedAnalyticItems[0]}`,
             {
-              url: `https://www.samasc.cloud/painel-analytic-module-${route?.module}?${selectedAnalyticItems[0]}`,
+              url: `https://www.samasc.cloud/painel-analytic-module?${selectedAnalyticItems[0]}`,
             },
           );
         }
