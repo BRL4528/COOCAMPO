@@ -127,7 +127,7 @@ const PainelAnalyticModule: React.FC = () => {
           setLoading(false);
           setGrupChecked(status_of_conclusion);
           setDataGoalsAnalytic(response.data);
-      });
+        });
     } catch (err) {
       console.log(err);
     }
