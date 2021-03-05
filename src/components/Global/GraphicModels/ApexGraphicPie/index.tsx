@@ -5,7 +5,6 @@ import Chart from 'react-apexcharts';
 const GraphicBarApex: React.FC = () => {
   const option = {
     options: {},
-  // colors: ['#240dac'],
     series: [44, 55, 41, 17, 15],
     labels: [
       'Adm Central',
