@@ -115,7 +115,7 @@ const PainelAnalyticModule: React.FC = () => {
   useEffect(() => {
     try {
       api
-        .get(`goals-of-sectors?goal_id=${parsed.slice(1)}`)
+        .get(`/goals-of-sectors?goal_id=${parsed.slice(1)}`)
         .then(response => {
           const status_of_conclusion: React.SetStateAction<string[]> = [];
 
