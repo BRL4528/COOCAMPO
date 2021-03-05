@@ -13,7 +13,7 @@ import Report from '../pages/Dashboard-adm/Report';
 import Sector from '../pages/Dashboard-adm/Sector';
 import AnalyticModuloAdm from '../pages/Dashboard-adm/AnalyticModule';
 import PainelAnalyticModulo from '../pages/Dashboard-adm/PainelAnalyticModule';
-import PainelSatisfactionSurvey from '../pages/AcessGlobal/PainelSatisfactionSurvey';
+//import PainelSatisfactionSurvey from '../pages/AcessGlobal/PainelSatisfactionSurvey';
 import Import from '../pages/Dashboard-adm/Imports';
 import Macros from '../pages/Dashboard-adm/Macros';
 
