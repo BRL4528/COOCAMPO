@@ -1,6 +1,7 @@
 import styled, { css } from 'styled-components';
 
 import { Form as unform } from '@unform/web';
+import Tooltip from '../../../Global/Tooltip';
 
 interface PropsSub {
   opengoals?: boolean;
@@ -8,9 +9,42 @@ interface PropsSub {
 }
 
 export const Form = styled(unform)<PropsSub>`
+  @keyframes open-analyticModule {
+    from {
+      transform: translate3d(0px, -50px, 0px);
+      opacity: 0;
+    }
+
+    to {
+      transform: translate3d(0px, 0px, 0px);
+      opacity: 0.9;
+    }
+  }
+
+  @keyframes close-analyticModule {
+    from {
+      transform: translate3d(0px, 0px, 0px);
+      opacity: 0.9;
+    }
+
+    to {
+      transform: translate3d(0px, -50px, 0px);
+    }
+  }
   .selected {
     background: rgba(28, 156, 217, 0.2);
     border: 2px solid #1c9cd9;
+  }
+
+  .openModelAnlalytc {
+    animation: open-analyticModule 1s;
+    display: flex;
+    filter: grayscale(0) opacity(1);
+  }
+  .closedModelAnalytic {
+    animation: close-analyticModule 1s;
+    display: none;
+    filter: grayscale(0) opacity(0);
   }
 
   padding: 30px 40px;
@@ -166,15 +200,16 @@ export const ContainerSub = styled.div`
   margin: 30px;
 `;
 
-export const CardSub = styled.div<PropsSub>`
+export const CardSub = styled.div`
+  width: 100%;
   margin: 10px;
   background: #fff;
   border-radius: 6px;
   padding: 20px;
   color: #433f59;
-  filter: grayscale(100%) opacity(0);
+
   transition: var(--transition-speed);
-  display: none;
+  display: flex;
   border: 2px solid #fff;
 
   cursor: pointer;
@@ -189,13 +224,6 @@ export const CardSub = styled.div<PropsSub>`
     }
   }
 
-  ${props =>
-    props.opengoals &&
-    css`
-      display: flex;
-      filter: grayscale(0) opacity(0.7);
-    `}
-
   :hover {
     transition: var(--transition-speed);
     background: rgba(28, 156, 217, 0.1);
@@ -204,7 +232,58 @@ export const CardSub = styled.div<PropsSub>`
 `;
 
 export const ContainerAnalytic = styled.div`
-  margin: 30px;
+  display: flex;
+  flex-direction: column;
+  padding: 15px 30px 15px 15px;
+  z-index: 1;
+  /* margin: 10px; */
+  /* margin-left: -20px; */
+  width: 80%;
+  max-height: 500px;
+  position: absolute;
+  background: #eee;
+  border: 2px solid #eee;
+  border-radius: 4px;
+  overflow: auto;
+  /* display: none; */
+
+  header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top: 20px;
+    margin-bottom: 30px;
+    margin-left: 10px;
+
+    svg {
+      cursor: pointer;
+      color: #433f59;
+      transition: var(--transition-speed);
+
+      :hover {
+        color: var(--text-primary);
+      }
+    }
+    strong {
+      color: var(--text-quarterly);
+      /* font-size: 0.9rem; */
+    }
+  }
+
+  ::-webkit-scrollbar {
+    width: 0.2rem;
+    height: 0.5rem;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: rgba(25, 25, 26, 0.23);
+    border-radius: 12px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #f2c811;
+    border-radius: 12px;
+  }
 `;
 
 export const CardAnalytic = styled.div<PropsSub>`
@@ -213,23 +292,75 @@ export const CardAnalytic = styled.div<PropsSub>`
   border-radius: 6px;
   padding: 20px;
   color: #433f59;
-  filter: grayscale(100%) opacity(0);
+  width: 100%;
+  /* filter: grayscale(100%) opacity(0); */
   transition: var(--transition-speed);
-  display: none;
+  /* display: none; */
   border: 2px solid #fff;
 
   cursor: pointer;
+  display: flex;
 
-  ${props =>
+  /* ${props =>
     props.openAnalytic &&
     css`
-      display: flex;
       filter: grayscale(0) opacity(0.7);
-    `}
+    `} */
 
   :hover {
     transition: var(--transition-speed);
     background: rgba(28, 156, 217, 0.1);
     border: 2px solid rgba(28, 156, 217, 0);
+  }
+`;
+
+export const ContainerGoal = styled.div<PropsSub>`
+  display: none;
+  align-items: center;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+  filter: grayscale(100%) opacity(0);
+  ${props =>
+    props.opengoals &&
+    css`
+      display: flex;
+      filter: grayscale(0) opacity(0.7);
+    `}
+`;
+
+export const CircleAdd = styled.div`
+  display: flex;
+  align-items: center;
+  padding: 7px;
+  margin-left: 16px;
+  /* width: 10%; */
+  /* height: 15%; */
+  border-radius: 50%;
+  border: 2px solid #eee;
+  color: var(--text-quarterly);
+  transition: var(--transition-speed);
+
+  :hover {
+    background: rgba(28, 156, 217, 0.2);
+    border: 2px solid #1c9cd9;
+  }
+
+  svg {
+    cursor: pointer;
+  }
+`;
+
+export const Info = styled(Tooltip)`
+  height: 20px;
+
+  span {
+    background: var(--color-theme-primary);
+    color: #fff;
+    font-weight: 600;
+
+    &::before {
+      border-color: var(--color-theme-primary) transparent;
+    }
   }
 `;

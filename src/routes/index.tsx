@@ -13,7 +13,7 @@ import Report from '../pages/Dashboard-adm/Report';
 import Sector from '../pages/Dashboard-adm/Sector';
 import AnalyticModuloAdm from '../pages/Dashboard-adm/AnalyticModule';
 import PainelAnalyticModulo from '../pages/Dashboard-adm/PainelAnalyticModule';
-// import PainelSatisfactionSurvey from '../pages/AcessGlobal/PainelSatisfactionSurvey';
+import PainelSatisfactionSurvey from '../pages/AcessGlobal/PainelSatisfactionSurvey';
 import Import from '../pages/Dashboard-adm/Imports';
 import Macros from '../pages/Dashboard-adm/Macros';
 
@@ -26,6 +26,11 @@ import Error404 from '../pages/error/404';
 const Routes: React.FC = () => (
   <Switch>
     <Route path="/" exact component={SignIn} />
+    <Route
+      path="/painel-satisfaction-survey/:analyticId?"
+      component={PainelSatisfactionSurvey}
+      isGlobal
+    />
 
     <Route path="/admin" component={DashboardAdm} isPrivate isAdmin />
     <Route
@@ -46,7 +51,7 @@ const Routes: React.FC = () => (
       isAdmin
     />
     <Route
-      path="/painel-analytic-module/:goalId?"
+      path="/painel-analytic-module-analytical/:analyticId?"
       component={PainelAnalyticModulo}
       isPrivate
       isUser
@@ -59,6 +64,7 @@ const Routes: React.FC = () => (
       component={AnalyticModuloUser}
       isPrivate
       isUser
+      isAdmin
     />
 
     <Route path="/error404-1" component={Error404} isPrivate isUser isAdmin />

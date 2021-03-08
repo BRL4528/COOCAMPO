@@ -7,6 +7,7 @@ import {
 
 import { useAuth } from '../hooks/auth';
 import SignIn from '../pages/SignIn';
+import PainelSatisfactionSurvey from '../pages/AcessGlobal/PainelSatisfactionSurvey';
 
 import LayoutAdm from '../pages/_Layouts/admin';
 import LayoutUser from '../pages/_Layouts/user';
@@ -15,6 +16,7 @@ interface RouteProps extends ReactDOMRouteProps {
   isPrivate?: boolean;
   isAdmin?: boolean;
   isUser?: boolean;
+  isGlobal?: boolean;
   component: React.ComponentType;
 }
 
@@ -22,6 +24,7 @@ const Route: React.FC<RouteProps> = ({
   isPrivate = false,
   isUser = false,
   isAdmin = false,
+  isGlobal = false,
   component: Component,
   ...rest
 }) => {
@@ -72,11 +75,28 @@ const Route: React.FC<RouteProps> = ({
           />
         );
       }
+
       default:
-        return <ReactDOMRoute {...rest} path="/" exact component={SignIn} />;
+        return isGlobal ? (
+          <ReactDOMRoute
+            {...rest}
+            path="/painel-satisfaction-survey/:analyticId?"
+            component={PainelSatisfactionSurvey}
+          />
+        ) : (
+          <ReactDOMRoute {...rest} path="/" exact component={SignIn} />
+        );
     }
   }
-  return <ReactDOMRoute {...rest} path="/" exact component={SignIn} />;
+  return isGlobal ? (
+    <ReactDOMRoute
+      {...rest}
+      path="/painel-satisfaction-survey/:analyticId?"
+      component={PainelSatisfactionSurvey}
+    />
+  ) : (
+    <ReactDOMRoute {...rest} path="/" exact component={SignIn} />
+  );
 };
 
 export default Route;

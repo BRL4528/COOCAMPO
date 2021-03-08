@@ -1,10 +1,11 @@
+/* eslint-disable no-unreachable */
 /* eslint-disable no-unused-vars */
 
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 
 import { FormHandles } from '@unform/core';
 
-import { FiX, FiLink2, FiEdit2 } from 'react-icons/fi';
+import { FiX, FiLink2, FiEdit2, FiPlus } from 'react-icons/fi';
 
 import * as Yup from 'yup';
 
@@ -17,6 +18,9 @@ import {
   DivLeft,
   ContainerAnalytic,
   CardAnalytic,
+  ContainerGoal,
+  CircleAdd,
+  Info,
 } from './styles';
 
 import Input from '../../../Global/Input';
@@ -26,12 +30,6 @@ import Button from '../../../Global/Button';
 
 import Modal from '../index';
 import api from '../../../../services/api';
-
-// interface AddSectorModal {
-//   name: string;
-//   leader: string;
-//   observations: string;
-// }
 
 interface ISector {
   id: string;
@@ -90,7 +88,7 @@ interface IAnalyticModule {
   responsible: string;
   condition: string;
   observations: string;
-  module?: string;
+  model?: string;
   codccu?: string;
 }
 
@@ -106,6 +104,9 @@ const ModalEditSector: React.FC<IModalProps> = ({
   const { addToast } = useToast();
 
   const [selectedGoalsItems, setSelectedGoalsItems] = useState<string[]>([]);
+  const [selectedGoalsIdConst, setSelectedGoalsIdConst] = useState<string[]>(
+    [],
+  );
   const [currentGoals, setCurrentGoals] = useState<string[]>([]);
 
   const [opengoals, setOpenGoals] = useState<boolean>(false);
@@ -120,20 +121,29 @@ const ModalEditSector: React.FC<IModalProps> = ({
     [],
   );
 
+  const [selectedIdGoal, setSelectedIdGoal] = useState('');
+  const [arrayAnalyticModuleAndGoal, setArrayAnalyticModuleAndGoal] = useState<
+    any[]
+  >([]);
+
   useEffect(() => {
-    try {
-      api.get('/analysis-module').then(response => {
-        setAnalyticModule(response.data);
-      });
-    } catch (err) {
-      console.log(err);
+    if (openAnalyticModule) {
+      try {
+        api.get('/analysis-module').then(response => {
+          setAnalyticModule(response.data);
+        });
+      } catch (err) {
+        console.log(err);
+      }
     }
-  }, []);
+  }, [openAnalyticModule]);
 
   useEffect(() => {
     if (isOpen === false) {
       setSelectedGoalsItems([]);
+      setSelectedGoalsIdConst([]);
       setCurrentGoals([]);
+      setAnalyticModule([]);
       setDataInitialSector({
         id: '',
         name: '',
@@ -178,6 +188,7 @@ const ModalEditSector: React.FC<IModalProps> = ({
                 initialGoals.push(goals.goals.id);
               });
               setSelectedGoalsItems(initialGoals);
+              setSelectedGoalsIdConst(initialGoals);
               setCurrentGoals(initialGoals);
             }
           });
@@ -218,15 +229,28 @@ const ModalEditSector: React.FC<IModalProps> = ({
         await api.put(`/sectors?sector_id=${dataEditSector}`, formData);
         handleSector(formData);
 
+        // formata os id, apagando o id selecionado do estado de selectedGoalsItems
+        if (arrayAnalyticModuleAndGoal.length > 0) {
+          selectedGoalsItems.splice(
+            selectedGoalsItems.indexOf(arrayAnalyticModuleAndGoal[0].goal_id),
+            1,
+          );
+        }
+
         // verifica se houve alterações nas metas
-        const checked = selectedGoalsItems.filter(a =>
-          currentGoals.includes(a),
+        const checked = selectedGoalsItems.filter(element =>
+          currentGoals.includes(element),
         );
 
-        const route = analyticModule.find(
-          analytic => analytic.id === selectedAnalyticItems[0],
-        );
-        console.log(route);
+        // Encontra qual foi o módulo de analise selecionado, para add o modelo na url
+        const analyticModuleFiltred = analyticModule.find(element => {
+          return element.id === selectedAnalyticItems[0];
+        });
+        console.log('resultado que voltou', analyticModuleFiltred);
+        console.log('id que voltou', selectedAnalyticItems[0]);
+        // const route = analyticModule.find(
+        //   analytic => analytic.id === selectedAnalyticItems[0],
+        // );
         // Cria novo relacionamento entre a meta selecionanda e o setor
         if (currentGoals.length === 0 && selectedGoalsItems.length !== 0) {
           console.log('cria novo relacionamento');
@@ -234,15 +258,18 @@ const ModalEditSector: React.FC<IModalProps> = ({
           await api.post('/goals-of-sectors/create-all', {
             goals_ids: selectedGoalsItems,
             sector_id: dataEditSector,
-            analyze_module_id: selectedAnalyticItems[0],
+            analysis_module: arrayAnalyticModuleAndGoal,
           });
 
-          await api.put(
-            `/analysis-module?analyze_module_id=${selectedAnalyticItems[0]}`,
-            {
-              url: `https://www.samasc.cloud/painel-analytic-module?${selectedAnalyticItems[0]}`,
-            },
-          );
+          if (selectedAnalyticItems.length !== 0) {
+            await api.put(
+              `/analysis-module?analyze_module_id=${selectedAnalyticItems[0]}`,
+              {
+                // url: `https://www.samasc.cloud/painel-analytic-module?${selectedAnalyticItems[0]}`,
+                url: `http://localhost:3000/painel-${analyticModuleFiltred?.model}?${selectedAnalyticItems[0]}`,
+              },
+            );
+          }
           // Atualiza se houve alterações
         } else if (!(checked.length === currentGoals.length)) {
           await api.delete(`/goals-of-sectors/${dataEditSector}`);
@@ -250,30 +277,36 @@ const ModalEditSector: React.FC<IModalProps> = ({
           await api.post('/goals-of-sectors/create-all', {
             goals_ids: selectedGoalsItems,
             sector_id: dataEditSector,
-            analyze_module_id: selectedAnalyticItems[0],
+            analysis_module: arrayAnalyticModuleAndGoal,
           });
 
-          await api.put(
-            `/analysis-module?analyze_module_id=${selectedAnalyticItems[0]}`,
-            {
-              url: `https://www.samasc.cloud/painel-analytic-module?${selectedAnalyticItems[0]}`,
-            },
-          );
+          if (selectedAnalyticItems.length !== 0) {
+            await api.put(
+              `/analysis-module?analyze_module_id=${selectedAnalyticItems[0]}`,
+              {
+                // url: `https://www.samasc.cloud/painel-analytic-module?${selectedAnalyticItems[0]}`,
+                url: `http://localhost:3000/painel-${analyticModuleFiltred?.model}?${selectedAnalyticItems[0]}`,
+              },
+            );
+          }
           // Atualiza se houve alterações
         } else if (!(checked.length === selectedGoalsItems.length)) {
           await api.delete(`/goals-of-sectors/${dataEditSector}`);
           await api.post('/goals-of-sectors/create-all', {
             goals_ids: selectedGoalsItems,
             sector_id: dataEditSector,
-            analyze_module_id: selectedAnalyticItems[0],
+            analysis_module: arrayAnalyticModuleAndGoal,
           });
 
-          await api.put(
-            `/analysis-module?analyze_module_id=${selectedAnalyticItems[0]}`,
-            {
-              url: `https://www.samasc.cloud/painel-analytic-module?${selectedAnalyticItems[0]}`,
-            },
-          );
+          if (selectedAnalyticItems.length !== 0) {
+            await api.put(
+              `/analysis-module?analyze_module_id=${selectedAnalyticItems[0]}`,
+              {
+                // url: `https://www.samasc.cloud/painel-analytic-module?${selectedAnalyticItems[0]}`,
+                url: `http://localhost:3000/painel-${analyticModuleFiltred?.model}?${selectedAnalyticItems[0]}`,
+              },
+            );
+          }
         }
 
         setIsOpen();
@@ -305,6 +338,7 @@ const ModalEditSector: React.FC<IModalProps> = ({
     [
       dataEditSector,
       handleSector,
+      arrayAnalyticModuleAndGoal,
       selectedGoalsItems,
       analyticModule,
       currentGoals,
@@ -348,21 +382,23 @@ const ModalEditSector: React.FC<IModalProps> = ({
 
   const handleSelectGoalsItem = useCallback(
     (id: string) => {
-      const alreadySelected = selectedGoalsItems.findIndex(
+      const alreadySelected = selectedGoalsIdConst.findIndex(
         (item: string) => item === id,
       );
 
       if (alreadySelected >= 0) {
-        const filteredItems = selectedGoalsItems.filter(
+        const filteredItems = selectedGoalsIdConst.filter(
           (item: string) => item !== id,
         );
 
         setSelectedGoalsItems(filteredItems);
+        setSelectedGoalsIdConst(filteredItems);
       } else {
-        setSelectedGoalsItems([...selectedGoalsItems, id]);
+        setSelectedGoalsItems([...selectedGoalsIdConst, id]);
+        setSelectedGoalsIdConst([...selectedGoalsIdConst, id]);
       }
     },
-    [selectedGoalsItems],
+    [selectedGoalsIdConst],
   );
 
   const hanleOpenGoals = useCallback(() => {
@@ -370,14 +406,31 @@ const ModalEditSector: React.FC<IModalProps> = ({
     setAnlalyticModule(false);
   }, [opengoals]);
 
-  const handleOpenAnalyticModule = useCallback(() => {
+  const handleOpenAnalyticModule = useCallback(
+    id => {
+      setAnlalyticModule(!openAnalyticModule);
+
+      if (id) {
+        setSelectedIdGoal(id);
+      }
+      // setOpenGoals(false);
+    },
+    [openAnalyticModule],
+  );
+  const handleCloseAnalyticModule = useCallback(() => {
+    const moduleIds = {
+      analyze_module_id: selectedAnalyticItems[0],
+      goal_id: selectedIdGoal,
+    };
+
+    setArrayAnalyticModuleAndGoal([moduleIds]);
+
     setAnlalyticModule(!openAnalyticModule);
-    setOpenGoals(false);
-  }, [openAnalyticModule]);
+    // setOpenGoals(false);
+  }, [openAnalyticModule, selectedAnalyticItems, selectedIdGoal]);
 
   return (
     <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
-      {/* {console.log(dataInitialSector)} */}
       <Form
         ref={formRef}
         opengoals={opengoals}
@@ -416,54 +469,66 @@ const ModalEditSector: React.FC<IModalProps> = ({
           <span>
             <button name="subGoals" onClick={hanleOpenGoals} type="button">
               Atribuir metas
-              <FiLink2 size={20} />
-            </button>
-
-            <button
-              name="analyticModule"
-              onClick={handleOpenAnalyticModule}
-              type="button"
-            >
-              Atribuir módulo de análise
-              <FiLink2 size={20} />
+              <FiLink2 size={20} onClick={handleOpenAnalyticModule} />
             </button>
           </span>
 
           <ContainerSub>
+            <ContainerAnalytic
+              className={
+                openAnalyticModule ? 'openModelAnlalytc' : 'closedModelAnalytic'
+              }
+            >
+              <header>
+                <strong>Vincular novo módulo de análise</strong>
+
+                <FiX size={20} onClick={handleOpenAnalyticModule} />
+              </header>
+              {analyticModule.map(analytic => (
+                <CardAnalytic
+                  onClick={() => handleSelectItem(analytic.id)}
+                  key={analytic.id}
+                  className={
+                    selectedAnalyticItems.includes(analytic.id)
+                      ? 'selected'
+                      : ''
+                  }
+                >
+                  <h4>{analytic.name}</h4>
+                </CardAnalytic>
+              ))}
+              <DivLeft>
+                <Button onClick={handleCloseAnalyticModule}>salvar</Button>
+              </DivLeft>
+            </ContainerAnalytic>
             {dataGoals.map(sub => (
-              <CardSub
-                onClick={() => handleSelectGoalsItem(sub.id)}
-                key={sub.id}
-                opengoals={opengoals}
-                className={
-                  selectedGoalsItems.includes(sub.id) ? 'selected' : ''
-                }
-              >
-                <div>
-                  <h4>{sub.name}</h4>
-                  <p>
-                    Código centro de custo:
-                    {sub.codccu}
-                  </p>
-                </div>
-              </CardSub>
+              <ContainerGoal key={sub.id} opengoals={opengoals}>
+                <CardSub
+                  onClick={() => handleSelectGoalsItem(sub.id)}
+                  className={
+                    selectedGoalsIdConst.includes(sub.id) ? 'selected' : ''
+                  }
+                >
+                  <div>
+                    <h4>{sub.name}</h4>
+
+                    <p>
+                      Código centro de custo:
+                      {sub.codccu}
+                    </p>
+                  </div>
+                </CardSub>
+                <Info title="Vincular módulo de análise">
+                  <CircleAdd>
+                    <FiPlus
+                      size={20}
+                      onClick={() => handleOpenAnalyticModule(sub.id)}
+                    />
+                  </CircleAdd>
+                </Info>
+              </ContainerGoal>
             ))}
           </ContainerSub>
-
-          <ContainerAnalytic>
-            {analyticModule.map(analytic => (
-              <CardAnalytic
-                onClick={() => handleSelectItem(analytic.id)}
-                key={analytic.id}
-                openAnalytic={openAnalyticModule}
-                className={
-                  selectedAnalyticItems.includes(analytic.id) ? 'selected' : ''
-                }
-              >
-                <h4>{analytic.name}</h4>
-              </CardAnalytic>
-            ))}
-          </ContainerAnalytic>
 
           <DivLeft>
             <Button type="submit" data-testid="add-food-button">

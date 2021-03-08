@@ -143,8 +143,9 @@ const Table: React.FC<ITableSector> = ({ idSector, isOpen, month }) => {
                 );
 
                 // console.log(resultFiltered[0].april);
-
-                switch (month.split('/')[1]) {
+                console.log(resultFiltered[0].january);
+                const monthFormated = month.split('/')[1];
+                switch (monthFormated) {
                   case 'january': {
                     const responseData = {
                       status: String(resultFiltered[0].january) !== 'NaN',
