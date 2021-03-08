@@ -31,15 +31,6 @@ import Button from '../../../Global/Button';
 import Modal from '../index';
 import api from '../../../../services/api';
 
-interface AnalyticAndGoal {
-  analizes_mode: [
-    {
-      goal_id: string;
-      alanize_module_id: string;
-    },
-  ];
-}
-
 interface ISector {
   id: string;
   name: string;
@@ -97,7 +88,7 @@ interface IAnalyticModule {
   responsible: string;
   condition: string;
   observations: string;
-  module?: string;
+  model?: string;
   codccu?: string;
 }
 
@@ -136,20 +127,23 @@ const ModalEditSector: React.FC<IModalProps> = ({
   >([]);
 
   useEffect(() => {
-    try {
-      api.get('/analysis-module').then(response => {
-        setAnalyticModule(response.data);
-      });
-    } catch (err) {
-      console.log(err);
+    if (openAnalyticModule) {
+      try {
+        api.get('/analysis-module').then(response => {
+          setAnalyticModule(response.data);
+        });
+      } catch (err) {
+        console.log(err);
+      }
     }
-  }, []);
+  }, [openAnalyticModule]);
 
   useEffect(() => {
     if (isOpen === false) {
       setSelectedGoalsItems([]);
       setSelectedGoalsIdConst([]);
       setCurrentGoals([]);
+      setAnalyticModule([]);
       setDataInitialSector({
         id: '',
         name: '',
@@ -244,10 +238,16 @@ const ModalEditSector: React.FC<IModalProps> = ({
         }
 
         // verifica se houve alterações nas metas
-        const checked = selectedGoalsItems.filter(a =>
-          currentGoals.includes(a),
+        const checked = selectedGoalsItems.filter(element =>
+          currentGoals.includes(element),
         );
 
+        // Encontra qual foi o módulo de analise selecionado, para add o modelo na url
+        const analyticModuleFiltred = analyticModule.find(element => {
+          return element.id === selectedAnalyticItems[0];
+        });
+        console.log('resultado que voltou', analyticModuleFiltred);
+        console.log('id que voltou', selectedAnalyticItems[0]);
         // const route = analyticModule.find(
         //   analytic => analytic.id === selectedAnalyticItems[0],
         // );
@@ -266,7 +266,7 @@ const ModalEditSector: React.FC<IModalProps> = ({
               `/analysis-module?analyze_module_id=${selectedAnalyticItems[0]}`,
               {
                 // url: `https://www.samasc.cloud/painel-analytic-module?${selectedAnalyticItems[0]}`,
-                url: `http://localhost:3000/painel-analytic-module?${selectedAnalyticItems[0]}`,
+                url: `http://localhost:3000/painel-${analyticModuleFiltred?.model}?${selectedAnalyticItems[0]}`,
               },
             );
           }
@@ -285,7 +285,7 @@ const ModalEditSector: React.FC<IModalProps> = ({
               `/analysis-module?analyze_module_id=${selectedAnalyticItems[0]}`,
               {
                 // url: `https://www.samasc.cloud/painel-analytic-module?${selectedAnalyticItems[0]}`,
-                url: `http://localhost:3000/painel-analytic-module?${selectedAnalyticItems[0]}`,
+                url: `http://localhost:3000/painel-${analyticModuleFiltred?.model}?${selectedAnalyticItems[0]}`,
               },
             );
           }
@@ -303,7 +303,7 @@ const ModalEditSector: React.FC<IModalProps> = ({
               `/analysis-module?analyze_module_id=${selectedAnalyticItems[0]}`,
               {
                 // url: `https://www.samasc.cloud/painel-analytic-module?${selectedAnalyticItems[0]}`,
-                url: `http://localhost:3000/painel-analytic-module?${selectedAnalyticItems[0]}`,
+                url: `http://localhost:3000/painel-${analyticModuleFiltred?.model}?${selectedAnalyticItems[0]}`,
               },
             );
           }
@@ -338,8 +338,9 @@ const ModalEditSector: React.FC<IModalProps> = ({
     [
       dataEditSector,
       handleSector,
-      selectedGoalsItems,
       arrayAnalyticModuleAndGoal,
+      selectedGoalsItems,
+      analyticModule,
       currentGoals,
       setIsOpen,
       addToast,
