@@ -85,10 +85,8 @@ const SelectorFolders: React.FC = () => {
       <Container>
         <CardeHeader>
           <div>
-            <h2>Macros</h2>
-            <strong>
-              Soluções pré programadas utilizadas para a coleta de informações.
-            </strong>
+            <h2>Agenda</h2>
+            <strong>sua agenda de emails.</strong>
           </div>
 
           <CardButton>
