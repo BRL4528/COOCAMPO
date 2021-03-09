@@ -111,7 +111,7 @@ const ModalAddFood: React.FC<IModalProps> = ({
         <Input
           type="text"
           name="name"
-          placeholder="Ex: Limpeza e organização dos veículos e maquinas"
+          placeholder="Ex: Cristiano Mattei"
         />
         <Select
           name="name_schedule"
