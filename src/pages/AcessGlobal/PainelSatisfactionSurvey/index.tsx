@@ -1,3 +1,5 @@
+/* eslint-disable react/jsx-one-expression-per-line */
+/* eslint-disable no-unreachable */
 /* eslint-disable react/jsx-curly-newline */
 /* eslint-disable array-callback-return */
 /* eslint-disable import/no-duplicates */
@@ -52,7 +54,8 @@ import 'swiper/components/scrollbar/scrollbar.scss';
 // import RadioInput from '../../../components/Global/Radio';
 import Button from '../../../components/Global/Button';
 
-import ModalAddOccurrenceModule from '../../../components/Admin/Modal/ModalObservationPainelSatisfaction';
+import ModalAddOccurrenceModuleLow from '../../../components/Admin/Modal/ModalObservationPainelSatisfaction';
+import ModalAddOccurrenceModuleHigh from '../../../components/Admin/Modal/ModalObservationPainelSatisfaction2';
 import Input from '../../../components/Global/Input';
 
 interface IGoalsAnalytics {
@@ -107,7 +110,8 @@ const PainelAnalyticModule: React.FC = () => {
 
   const parsed = window.location.search;
 
-  const [modalOpen, setModalOpen] = useState(false);
+  const [modalOpenLow, setModalOpenLow] = useState(false);
+  const [modalOpenHigh, setModalOpenHigh] = useState(false);
 
   const [dataOccurrence, setOoccurrence] = useState<any[]>([]);
   const [idOcurrence, setIdOcurrence] = useState('');
@@ -131,9 +135,12 @@ const PainelAnalyticModule: React.FC = () => {
     indicator: <Oval />,
   });
 
-  const toggleModal = useCallback(() => {
-    setModalOpen(!modalOpen);
-  }, [modalOpen]);
+  const toggleModalLow = useCallback(() => {
+    setModalOpenLow(!modalOpenLow);
+  }, [modalOpenLow]);
+  const toggleModalHigh = useCallback(() => {
+    setModalOpenHigh(!modalOpenHigh);
+  }, [modalOpenHigh]);
 
   useEffect(() => {
     try {
@@ -202,17 +209,19 @@ const PainelAnalyticModule: React.FC = () => {
           const separ = resultUnit.split('!');
 
           const arrayFormat = {
-            id: separ[0],
-            result: separ[1],
+            result: separ[0] === '&' ? '10' : separ[0],
+            id: separ[1],
           };
 
           returnFormated.push(arrayFormat);
         });
+
         const result =
           returnFormated.reduce((acum, current) => {
-            return acum + Number(current.id);
+            return acum + Number(current.result);
           }, 0) / returnFormated.length;
-
+        console.log(result);
+        return;
         // console.log(String(result));
 
         await api.post('/satisfaction-survey-response', {
@@ -245,14 +254,14 @@ const PainelAnalyticModule: React.FC = () => {
         addToast({
           type: 'success',
           title: 'Pesquisa de satisfação finalizada com sucesso',
-          description: 'com sucesso',
+          description: 'sucesso ao finalizar a pesquisa de satisfação',
         });
       } catch (err) {
         addToast({
           type: 'error',
           title: 'Erro na ação',
           description:
-            'ocorreu um erro ao finalizar a pesquisa, comunique o adiministrador do sistema.',
+            'ocorreu um erro ao finalizar a pesquisa, verifique se foi adicionado o email.',
         });
       }
     },
@@ -294,7 +303,7 @@ const PainelAnalyticModule: React.FC = () => {
     (data: Omit<Occurrence, 'status'>) => {
       try {
         const temp = data;
-        console.log(temp);
+
         setOoccurrence([
           ...dataOccurrence,
           `${temp.observations}#${idOcurrence}`,
@@ -314,12 +323,10 @@ const PainelAnalyticModule: React.FC = () => {
         result: dataItem[1],
         id: dataItem[0],
       };
-      console.log('eeee', Number(itemObject.result));
+      const itemSelected = optionSelected.findIndex((item: string) => {
+        return item.substring(1) === itemObject.id.substring(1);
+      });
 
-      const itemSelected = optionSelected.findIndex(
-        (item: string) => item.substring(1) === itemObject.id.substring(1),
-      );
-      // console.log('index', alreadySelected);
       if (itemSelected >= 0) {
         const filteredItems = optionSelected.filter(
           (item: string) => item !== itemObject.id,
@@ -328,7 +335,9 @@ const PainelAnalyticModule: React.FC = () => {
       } else {
         if (Number(itemObject.result) <= 6) {
           setIdOcurrence(itemObject.id);
-          setModalOpen(true);
+          setModalOpenLow(true);
+        } else {
+          setModalOpenHigh(true);
         }
         setOptionSelected([...optionSelected, itemObject.id]);
       }
@@ -338,7 +347,7 @@ const PainelAnalyticModule: React.FC = () => {
 
   return (
     <>
-      <ContainerMaster display={!modalOpen}>
+      <ContainerMaster displayLow={!modalOpenLow} displayHigh={!modalOpenHigh}>
         <Swiper
           // spaceBetween={50}
           // slidesPerView={3}
@@ -362,7 +371,7 @@ const PainelAnalyticModule: React.FC = () => {
                     Visando a melhoria contínua de nossos serviços e
                     atendimento, gostaríamos de sua colaboração no preenchimento
                     desta pesquisa de satisfação. Em caso de dúvidas quanto aos
-                    tópicos desta pesquisa, por favor, faça contato com a aréa
+                    tópicos desta pesquisa, por favor, faça contato com a áraa
                     de Recursos Humanos. A pesquisa é confidencial e suas
                     respostas serão mantidas em sigilo. Contamos e agradecemos a
                     sua participação!
@@ -385,7 +394,7 @@ const PainelAnalyticModule: React.FC = () => {
                   <span>
                     <p>
                       - Pontue com notas de 1 a 10 o seu nível de satisfação com
-                      relação aos tópicos abaixo, quanto mais próximo de 10 é
+                      relação aos tópicos a seguir, quanto mais próximo de 10 é
                       maior o seu nível de satisfação e quanto mais próximo de 1
                       é menor este nível.
                     </p>
@@ -394,14 +403,23 @@ const PainelAnalyticModule: React.FC = () => {
                     <p>
                       - Quando a sua avaliação for inferior a 7 , solicitamos
                       que faça uma breve justificativa, para que possamos
-                      entender e direcionar as ações corretivas.
+                      entender e direcionar as ações corretivas, caso seja maior
+                      ou igual a 7, fique a vontade para adicionar uma sugestão
+                      ou elogio
                     </p>
                   </span>
                   <span>
                     <p>
                       - Caso não consiga responder alguma questão por entender
                       que não houve a prestação do serviço, por favor, opte por
-                      NA (Não aplicável).
+                      *NA* (Não aplicável).
+                    </p>
+                  </span>
+                  <span>
+                    <p>
+                      - Fique atento quanto ao período vigente da pesquisa, pois
+                      a mesma tera inicio hoje dia <strong>09/03/2021</strong> e
+                      será fechada no dia <strong>16/03/2021</strong>.
                     </p>
                   </span>
                 </div>
@@ -460,9 +478,14 @@ const PainelAnalyticModule: React.FC = () => {
                 </CardLoading>
               ) : (
                 <>
-                  <ModalAddOccurrenceModule
-                    isOpen={modalOpen}
-                    setIsOpen={toggleModal}
+                  <ModalAddOccurrenceModuleLow
+                    isOpen={modalOpenLow}
+                    setIsOpen={toggleModalLow}
+                    handleOccurrence={handleOccurrence}
+                  />
+                  <ModalAddOccurrenceModuleHigh
+                    isOpen={modalOpenHigh}
+                    setIsOpen={toggleModalHigh}
                     handleOccurrence={handleOccurrence}
                   />
                   {dataGoalsAnalytic.length ? (
@@ -699,7 +722,7 @@ const PainelAnalyticModule: React.FC = () => {
                                         <button
                                           onClick={() =>
                                             handleSelectItem(
-                                              `10!${
+                                              `&!${
                                                 dataSubGoal.sub_goals.id
                                               }#${10}`,
                                             )
@@ -707,7 +730,7 @@ const PainelAnalyticModule: React.FC = () => {
                                           type="button"
                                           className={
                                             optionSelected.includes(
-                                              `10!${dataSubGoal.sub_goals.id}`,
+                                              `&!${dataSubGoal.sub_goals.id}`,
                                             )
                                               ? 'selectedValue'
                                               : ''

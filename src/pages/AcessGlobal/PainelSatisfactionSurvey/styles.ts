@@ -11,7 +11,8 @@ interface ICheck {
 }
 
 interface Idisplay {
-  display?: boolean;
+  displayLow?: boolean;
+  displayHigh?: boolean;
 }
 
 interface ICalendar {
@@ -19,7 +20,8 @@ interface ICalendar {
 }
 
 export const ContainerMaster = styled.div<Idisplay>`
-  ${({ display }: Idisplay) => (display ? 'display: flex' : 'display: none;')}
+  ${({ displayLow }: Idisplay) => (displayLow ? '' : 'display: none;')}
+  ${({ displayHigh }: Idisplay) => (displayHigh ? '' : 'display: none;')}
   color: #433f59;
   align-items: center;
   flex-direction: column;

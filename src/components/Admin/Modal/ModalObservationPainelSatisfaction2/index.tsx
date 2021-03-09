@@ -2,6 +2,8 @@ import React, { useCallback, useRef } from 'react';
 
 import { FormHandles } from '@unform/core';
 
+import { FiX } from 'react-icons/fi';
+
 import * as Yup from 'yup';
 import { Form, DivLeft } from './styles';
 
@@ -11,7 +13,7 @@ import Button from '../../../Global/Button';
 import { useToast } from '../../../../hooks/toast';
 import getValidationErrors from '../../../../utils/getValidationErrors';
 
-import Modal from '../ModalDisplayBlock';
+import Modal from '../index';
 
 interface Occurrence {
   observations?: string;
@@ -39,23 +41,15 @@ const ModalEditAnalyticModule: React.FC<IModalProps> = ({
         const formData = {
           observations,
         };
+        handleOccurrence(formData);
 
-        if (formData.observations !== '') {
-          handleOccurrence(formData);
-          setIsOpen();
+        setIsOpen();
 
-          addToast({
-            type: 'success',
-            title: 'Justificativa salva!',
-            description: 'sucesso ao adicionar justificativa',
-          });
-        } else {
-          addToast({
-            type: 'info',
-            title: 'Erro ao adicionar justificativa',
-            description: 'Justificativa obrigatória.',
-          });
-        }
+        addToast({
+          type: 'success',
+          title: 'Justificativa salva!',
+          description: 'sucesso ao adicionar justificativa',
+        });
       } catch (err) {
         if (err instanceof Yup.ValidationError) {
           const errors = getValidationErrors(err);
@@ -79,15 +73,13 @@ const ModalEditAnalyticModule: React.FC<IModalProps> = ({
     <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
       <Form ref={formRef} onSubmit={handleSubmit}>
         <span>
-          <h2>Adicionar uma justificativa</h2>
+          <h2>Adicionar uma sugestão ou elogio</h2>
+          <FiX size={20} onClick={() => setIsOpen()} />
         </span>
-        <p>
-          Sua avaliação foi inferior a 7, pedimos que adicione uma justificativa
-          para que possamos entender e direcionar as ações:
-        </p>
+        <p>Fique a vontade para adicionar uma sugestão ou um elogio :</p>
         <TextArea
           name="observations"
-          placeholder="Descreva aqui sua justificativa."
+          placeholder="Descreva aqui sua sugestão ou elogio."
         />
 
         <DivLeft>
