@@ -220,9 +220,6 @@ const PainelAnalyticModule: React.FC = () => {
           returnFormated.reduce((acum, current) => {
             return acum + Number(current.result);
           }, 0) / returnFormated.length;
-        console.log(result);
-        return;
-        // console.log(String(result));
 
         await api.post('/satisfaction-survey-response', {
           goal_id: dataGoalsAnalytic[0].goals.id,

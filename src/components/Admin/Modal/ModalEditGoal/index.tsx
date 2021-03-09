@@ -173,7 +173,6 @@ const ModalAddFood: React.FC<IModalProps> = ({
           .get(`/analysis-module-of-goals?goal_id=${dataEditGoal}`)
           .then(response => {
             if (response.data.length > 0) {
-              console.log('teste', response.data);
               setDataAnalitycModuleOfGoal(response.data[0]);
               setcurrentAnalyticItem([response.data[0].analyze_module_id]);
               setSelectedAnalyticItems([response.data[0].analyze_module_id]);

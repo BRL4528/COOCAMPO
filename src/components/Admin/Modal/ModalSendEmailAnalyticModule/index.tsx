@@ -11,6 +11,7 @@ import { Form, DivLeft } from './styles';
 import Input from '../../../Global/Input';
 import TextArea from '../../../Global/TextArea';
 import Button from '../../../Global/Button';
+import Select from '../../../Global/SelectRelease';
 
 import { useToast } from '../../../../hooks/toast';
 import getValidationErrors from '../../../../utils/getValidationErrors';
@@ -32,6 +33,13 @@ interface IAnalyticModule {
   to?: ISendEmail[];
 }
 
+interface IToFormated {
+  id?: string;
+  name: string;
+  address: string;
+  name_schedule?: string;
+}
+
 interface IModalProps {
   isOpen: boolean;
   idAnalyticModule: string;
@@ -47,6 +55,7 @@ const ModalEditAnalyticModule: React.FC<IModalProps> = ({
 }) => {
   const formRef = useRef<FormHandles>(null);
   const { addToast } = useToast();
+  const [subjectSchedules, setSubject] = useState('');
 
   const [
     initialDataAnalyticModule,
@@ -63,6 +72,21 @@ const ModalEditAnalyticModule: React.FC<IModalProps> = ({
     }
   }, [idAnalyticModule, isOpen]);
 
+  // async function handleEmail(
+  //   subject: string,
+  //   body: string,
+  //   formatedTo: { name: string; address: string }[],
+  // ) {
+  //   if (subjectSchedules !== '') {
+  //     await api.post('/send-email-analysis-module', {
+  //       id: idAnalyticModule,
+  //       body,
+  //       subject,
+  //       to: formatedTo,
+  //     });
+  //   }
+  // }
+
   const handleSubmit = useCallback(
     async (data: IAnalyticModule) => {
       try {
@@ -70,156 +94,15 @@ const ModalEditAnalyticModule: React.FC<IModalProps> = ({
 
         // const schema = Yup.object().shape({
         //   name: Yup.string().required('Nome obrigatório'),
-        //   responsible: Yup.string().required('Representante obrigátorio'),
-        //   email: Yup.string()
+        //   address: Yup.string()
         //     .required('Email do representante obrigátorio')
         //     .email('Digite um e-mail válido'),
-        //   condition: Yup.string(),
-        //   observations: Yup.string(),
         // });
         // await schema.validate(data, {
         //   abortEarly: false,
         // });
 
         const { body, subject } = data;
-
-        if (data.name === 'global') {
-          const emailsGlobal = [
-            {
-              name: 'Cristiano Mattei',
-              address: 'cristiano.mattei@cooasgo.com.br',
-            },
-            {
-              name: 'Marcos Angelo Piaia',
-              address: 'marcos.piaia@cooasgo.com.br',
-            },
-            {
-              name: 'Carlos Alexandre',
-              address: 'carlos.gobetti@cooasgo.com.br',
-            },
-            {
-              name: 'Fernando Yukio Yoshida',
-              address: 'fernando.yoshida@cooasgo.com.br',
-            },
-            {
-              name: 'Amanda Ami ',
-              address: 'udg@cooasgo.com.br',
-            },
-            {
-              name: 'José Martini',
-              address: 'financeiro@cooasgo.com.br',
-            },
-            {
-              name: 'Ivonei Scotton',
-              address: 'ivonei.scotton@cooasgo.com.br',
-            },
-            {
-              name: 'Sueli Cristina',
-              address: 'coordenacao.rh@cooasgo.com.br',
-            },
-            {
-              name: 'Katiele Fernanda',
-              address: 'katiele.silva@cooasgo.com.br',
-            },
-            {
-              name: 'Davi Correa da Silva',
-              address: 'davi.silva@cooasgo.com.br',
-            },
-            {
-              name: 'Greice Suelen Ceolin',
-              address: 'sesmt@cooasgo.com.br',
-            },
-            {
-              name: 'Jean Carlos',
-              address: 'manutencao@cooasgo.com.br',
-            },
-            {
-              name: 'Anderson Paranzini',
-              address: 'comercial.agricola@cooasgo.com.br',
-            },
-            {
-              name: 'Ricardo Antonio',
-              address: 'ricardo.antonio@cooasgo.com.br',
-            },
-            {
-              name: 'Cesário Teixeira',
-              address: 'cesario.pereira@cooasgo.com.br',
-            },
-            {
-              name: 'Lisiane Strelow Barela',
-              address: 'lisiane.barela@cooasgo.com.br',
-            },
-          ];
-
-          const formData = {
-            id: idAnalyticModule,
-            body,
-            subject,
-            to: emailsGlobal,
-          };
-
-          await api.post('/send-email-analysis-module', formData);
-        }
-
-        if (data.name === 'global-gooasgo-test') {
-          const emailsGlobal = [
-            {
-              name: 'Cristiano Mattei',
-              address: 'cristiano.mattei@cooasgo.com.br',
-            },
-            {
-              name: 'Sueli Cristina',
-              address: 'coordenacao.rh@cooasgo.com.br',
-            },
-            {
-              name: 'Bruno Luiz',
-              address: 'bruno.carvalhoa@cooasgo.com.br',
-            },
-            {
-              name: 'Lisiane Strelow Barela',
-              address: 'lisiane.barela@cooasgo.com.br',
-            },
-          ];
-
-          const formData = {
-            id: idAnalyticModule,
-            body,
-            subject,
-            to: emailsGlobal,
-          };
-
-          await api.post('/send-email-analysis-module', formData);
-        }
-
-        if (data.name === 'midas') {
-          const emailsGlobal = [
-            {
-              name: 'Bruno Luiz',
-              address: 'blgc.sgo@hotmail.com',
-            },
-            {
-              name: 'Alessandro Silva',
-              address: 'alessandro@midascorp.dev',
-            },
-            {
-              name: 'Bruno Luiz',
-              address: 'bruno@midascorp.dev',
-            },
-            {
-              name: 'KronaMesin',
-              address: 'kronamesin@gmail.com',
-            },
-          ];
-
-          const formData = {
-            id: idAnalyticModule,
-            body,
-            subject,
-            to: emailsGlobal,
-          };
-
-          await api.post('/send-email-analysis-module', formData);
-        }
 
         const emailUnit = [{ name: data.name, address: data.email }];
 
@@ -229,8 +112,36 @@ const ModalEditAnalyticModule: React.FC<IModalProps> = ({
           subject,
           to: emailUnit,
         };
+        if (subjectSchedules !== '') {
+          api
+            .get<IToFormated[]>(
+              `schedules/show?name_schedule=${subjectSchedules}`,
+            )
+            .then(async response => {
+              const formatedTo: { name: string; address: string }[] = [];
 
-        await api.post('/send-email-analysis-module', formData);
+              response.data.forEach(item => {
+                const arrayObj = {
+                  name: item.name,
+                  address: item.address,
+                };
+                formatedTo.push(arrayObj);
+              });
+
+              // setToFormated(formatedTo);
+              // handleEmail(subject, body, formatedTo);
+              // setsubjectTo(subject);
+              // setbody(body);
+              await api.post('/send-email-analysis-module', {
+                id: idAnalyticModule,
+                body,
+                subject,
+                to: formatedTo,
+              });
+            });
+        } else {
+          await api.post('/send-email-analysis-module', formData);
+        }
 
         setIsOpen();
         addToast({
@@ -254,7 +165,14 @@ const ModalEditAnalyticModule: React.FC<IModalProps> = ({
         });
       }
     },
-    [addToast, idAnalyticModule, setIsOpen],
+    [addToast, idAnalyticModule, setIsOpen, subjectSchedules],
+  );
+
+  const handleSubject = useCallback(
+    e => {
+      setSubject(e);
+    },
+    [setSubject],
   );
 
   return (
@@ -279,6 +197,25 @@ const ModalEditAnalyticModule: React.FC<IModalProps> = ({
           // type="email"
           name="email"
           placeholder="Ex: cristiano.mattei@cooasgo.com.br"
+        />
+
+        <Select
+          name="name_schedule"
+          label="Nome da agenda"
+          value={subjectSchedules}
+          onChange={e => {
+            handleSubject(e.target.value);
+          }}
+          options={[
+            {
+              value: 'lider-group',
+              label: 'Grupo de lideres',
+            },
+            {
+              value: 'analytical-group',
+              label: 'Grupo de modulo de análise',
+            },
+          ]}
         />
         <p>Assunto</p>
         <Input type="text" name="subject" placeholder="Ex: Módulo de análise" />

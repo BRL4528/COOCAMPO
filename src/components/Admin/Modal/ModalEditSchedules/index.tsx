@@ -10,7 +10,6 @@ import { Form, DivLeft } from './styles';
 
 // import { FormContainer } from './styles';
 import Input from '../../../Global/Input';
-import TextArea from '../../../Global/TextArea';
 import Button from '../../../Global/Button';
 
 import { useToast } from '../../../../hooks/toast';
@@ -23,12 +22,8 @@ import Select from '../../../Global/SelectRelease';
 interface IAnalyticModule {
   id: string;
   name: string;
-  url: string;
-  responsible: string;
-  email: string;
-  condition: string;
-  observations: string;
-  model: string;
+  address: string;
+  name_schedule: string;
 }
 
 interface IModalProps {
@@ -61,12 +56,8 @@ const ModalEditAnalyticModule: React.FC<IModalProps> = ({
       setInitialDataAnalyticModule({
         id: '',
         name: '',
-        url: '',
-        responsible: '',
-        email: '',
-        condition: '',
-        observations: '',
-        model: '',
+        address: '',
+        name_schedule: '',
       });
       setSubject('');
     }
@@ -77,10 +68,12 @@ const ModalEditAnalyticModule: React.FC<IModalProps> = ({
     if (isOpen) {
       if (idAnalyticModule !== '') {
         api
-          .get<IAnalyticModule>(`analysis-module/${idAnalyticModule}`)
+          .get<IAnalyticModule>(
+            `schedules/show?schedule_id=${idAnalyticModule}`,
+          )
           .then(response => {
             setInitialDataAnalyticModule(response.data);
-            setSubject(response.data.model);
+
             setLoading(false);
           });
       }
@@ -96,25 +89,20 @@ const ModalEditAnalyticModule: React.FC<IModalProps> = ({
           name: Yup.string().required('Nome obrigatório'),
           responsible: Yup.string().required('Representante obrigátorio'),
           email: Yup.string().required('Email do representante obrigátorio'),
-          condition: Yup.string(),
-          observations: Yup.string(),
         });
         await schema.validate(data, {
           abortEarly: false,
         });
 
-        const { name, responsible, email, condition, observations } = data;
+        const { name, address, name_schedule } = data;
 
         const formData = {
           name,
-          responsible,
-          email,
-          condition,
-          observations,
-          model: subject,
+          address,
+          name_schedule,
         };
         const response = await api.put(
-          `/analysis-module?analyze_module_id=${idAnalyticModule}`,
+          `/schedules?schedule_id=${idAnalyticModule}`,
           formData,
         );
         handleAnalytic(response.data);
@@ -123,8 +111,8 @@ const ModalEditAnalyticModule: React.FC<IModalProps> = ({
 
         addToast({
           type: 'success',
-          title: 'Módulo de analíse',
-          description: 'Criado sucesso com sucesso',
+          title: 'Email atualizado',
+          description: 'Informações atualizadas com sucesso com sucesso',
         });
       } catch (err) {
         if (err instanceof Yup.ValidationError) {
@@ -138,11 +126,11 @@ const ModalEditAnalyticModule: React.FC<IModalProps> = ({
         addToast({
           type: 'info',
           title: 'Erro na atualização',
-          description: 'Ocorreu um erro ao atualizar perfil.',
+          description: 'Ocorreu um erro ao atualizar informações.',
         });
       }
     },
-    [addToast, handleAnalytic, idAnalyticModule, setIsOpen, subject],
+    [addToast, handleAnalytic, idAnalyticModule, setIsOpen],
   );
 
   const handleSubject = useCallback(
@@ -165,62 +153,52 @@ const ModalEditAnalyticModule: React.FC<IModalProps> = ({
         onSubmit={handleSubmit}
       >
         <span>
-          <h2>Editar módulo de análise</h2>
+          <h2>Editar informações da agenda</h2>
           <FiX size={20} onClick={() => setIsOpen()} />
         </span>
 
+        {console.log(loading)}
         {loading ? (
           <>
-            <p>Nome do módulo de análise</p>
+            <p>Nome representante</p>
             <SkeletonLoader style={opt} />
-            <p>Modelo do módulo de análise</p>
-            <SkeletonLoader style={opt} />
-            <p>Nome do representante</p>
+            <p>Nome da agenda</p>
             <SkeletonLoader style={opt} />
             <p>E-mail do representante</p>
-            <SkeletonLoader style={opt} />
-            <p> Frequência(ocorrências no periodo de um mês)</p>
             <SkeletonLoader style={opt} />
           </>
         ) : (
           <>
-            <p>Nome do módulo de análise</p>
+            <p>Nome representante</p>
             <Input
               type="text"
               name="name"
               placeholder="Ex: Limpeza e organização dos veículos e maquinas"
             />
             <Select
-              name="model"
-              label="Modelo do módulo de análise"
+              name="name_schedule"
+              label="Nome da agenda"
               value={subject}
               onChange={e => {
                 handleSubject(e.target.value);
               }}
               options={[
                 {
-                  value: 'satisfaction-survey',
-                  label: 'Pesquisa de satisfação',
+                  value: 'lider-group',
+                  label: 'Grupo de lideres',
                 },
-                { value: 'analytical', label: 'Módulo análitico' },
+                {
+                  value: 'analytical-group',
+                  label: 'Grupo de modulo de análise',
+                },
               ]}
-            />
-            <p>Nome do representante</p>
-            <Input
-              type="text"
-              name="responsible"
-              placeholder="Ex: Cristiano Mattei"
             />
             <p>E-mail do representante</p>
             <Input
-              // type="email"
-              name="email"
+              type="email"
+              name="address"
               placeholder="Ex: cristiano.mattei@cooasgo.com.br"
             />
-            <p>Frequência(ocorrências no periodo de um mês)</p>
-            <Input type="text" name="condition" placeholder="Ex: 4" />
-            <p>Observações</p>
-            <TextArea name="observations" placeholder="Observações" />
 
             <DivLeft>
               <Button type="submit" data-testid="add-food-button">

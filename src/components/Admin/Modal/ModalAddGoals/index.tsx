@@ -156,12 +156,12 @@ const ModalAddFood: React.FC<IModalProps> = ({
         handleGoals(formData);
 
         if (selectedAnalyticItems.length > 0) {
-          await api.put(
-            `/analysis-module?analyze_module_id=${selectedAnalyticItems[0]}`,
-            {
-              url: `http://localhost:3000/painel-analytic-module?${response.data.id}`,
-            },
-          );
+          // await api.put(
+          //   `/analysis-module?analyze_module_id=${selectedAnalyticItems[0]}`,
+          //   {
+          //     url: `http://localhost:3000/painel-analytic-module?${response.data.id}`,
+          //   },
+          // );
 
           await api.post('analysis-module-of-goals', {
             analyze_module_id: selectedAnalyticItems[0],
