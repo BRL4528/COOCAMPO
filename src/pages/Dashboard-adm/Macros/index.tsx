@@ -92,7 +92,7 @@ const SelectorFolders: React.FC = () => {
           <CardButton>
             <div>
               <Button onClick={toggleModal} type="button">
-                Criar nova condição
+                Adicionar novo email
               </Button>
             </div>
           </CardButton>
