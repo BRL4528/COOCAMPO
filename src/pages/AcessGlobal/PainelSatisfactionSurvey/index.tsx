@@ -229,7 +229,7 @@ const PainelAnalyticModule: React.FC = () => {
           result,
           observations: String(dataOccurrence),
           email,
-          model: 'satisfaction-survey',
+          model: email,
         });
 
         const status = {
