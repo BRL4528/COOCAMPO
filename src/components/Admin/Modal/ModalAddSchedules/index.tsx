@@ -108,11 +108,7 @@ const ModalAddFood: React.FC<IModalProps> = ({
           <FiX size={20} onClick={() => setIsOpen()} />
         </span>
         <p>Nome representante</p>
-        <Input
-          type="text"
-          name="name"
-          placeholder="Ex: Cristiano Mattei"
-        />
+        <Input type="text" name="name" placeholder="Ex: Cristiano Mattei" />
         <Select
           name="name_schedule"
           label="Nome da agenda"
