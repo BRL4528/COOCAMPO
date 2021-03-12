@@ -229,7 +229,7 @@ const PainelAnalyticModule: React.FC = () => {
           result,
           observations: String(dataOccurrence),
           email,
-          model: 'satisfaction-survey',
+          model: email,
         });
 
         const status = {
@@ -368,7 +368,7 @@ const PainelAnalyticModule: React.FC = () => {
                     Visando a melhoria contínua de nossos serviços e
                     atendimento, gostaríamos de sua colaboração no preenchimento
                     desta pesquisa de satisfação. Em caso de dúvidas quanto aos
-                    tópicos desta pesquisa, por favor, faça contato com a áraa
+                    tópicos desta pesquisa, por favor, faça contato com a área
                     de Recursos Humanos. A pesquisa é confidencial e suas
                     respostas serão mantidas em sigilo. Contamos e agradecemos a
                     sua participação!
