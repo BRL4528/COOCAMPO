@@ -1,10 +1,18 @@
 import React, { useCallback, useState, useRef, useEffect } from 'react';
 
+import { Link } from 'react-router-dom';
+
 import { FullScreen, useFullScreenHandle } from 'react-full-screen';
 
 import { useReactToPrint } from 'react-to-print';
 
-import { FiEdit, FiPrinter, FiMaximize, FiChevronsDown } from 'react-icons/fi';
+import {
+  FiEdit,
+  FiPrinter,
+  FiMaximize,
+  FiChevronsDown,
+  FiGrid,
+} from 'react-icons/fi';
 
 import Button from '../../../components/Global/Button';
 import Select from '../../../components/Global/SelectRelease';
@@ -207,6 +215,9 @@ const SelectorFolders: React.FC = () => {
                   <FiEdit onClick={() => handleEdit(sector.id)} />
                   <FiPrinter onClick={handlePrint} />
                   <FiMaximize onClick={handle.enter} />
+                  <Link to={`sector-selected?${sector.id}`}>
+                    <FiGrid />
+                  </Link>
                   <FiChevronsDown
                     className={
                       grupSectorsSelected.includes(sector.id) ? 'logo' : ''

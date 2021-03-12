@@ -3,17 +3,21 @@ import React from 'react';
 import Chart from 'react-apexcharts';
 
 interface ColorStyles {
-  color: string;
+  color?: string;
 }
 
-const GraphicBarApex: React.FC<ColorStyles> = ({ color }) => {
+const GraphicBarApex: React.FC<ColorStyles> = () => {
   const options = {
-    colors: [color],
     series: [
       {
         name: 'sales',
-
+        type: 'column',
         data: [30, 40, 35, 50, 49, 60, 70, 91, 125],
+      },
+      {
+        name: 'Social Media',
+        type: 'line',
+        data: [23, 42, 35, 27, 43, 22, 17, 31, 22],
       },
     ],
     xaxis: {
@@ -29,6 +33,20 @@ const GraphicBarApex: React.FC<ColorStyles> = ({ color }) => {
         'RH',
       ],
     },
+    chart: {
+      height: 350,
+      type: 'line',
+    },
+    stroke: {
+      width: [0, 4],
+    },
+    title: {
+      text: 'setores',
+    },
+    dataLabels: {
+      enabled: true,
+      enabledOnSeries: [1],
+    },
   };
 
   // const Item = chart.render();
@@ -39,7 +57,7 @@ const GraphicBarApex: React.FC<ColorStyles> = ({ color }) => {
       <Chart
         options={options}
         series={options.series}
-        type="bar"
+        type="line"
         width={500}
         height={320}
       />

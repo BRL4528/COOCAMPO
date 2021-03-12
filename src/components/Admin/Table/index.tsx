@@ -143,7 +143,6 @@ const Table: React.FC<ITableSector> = ({ idSector, isOpen, month }) => {
                 );
 
                 // console.log(resultFiltered[0].april);
-                console.log(resultFiltered[0].january);
                 const monthFormated = month.split('/')[1];
                 switch (monthFormated) {
                   case 'january': {
