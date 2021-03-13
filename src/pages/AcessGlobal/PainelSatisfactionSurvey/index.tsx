@@ -144,10 +144,10 @@ const PainelAnalyticModule: React.FC = () => {
 
   useEffect(() => {
     try {
+      console.log('ver', parsed.slice(1));
       api
         .get(`goals-of-sectors?analyze_module_id=${parsed.slice(1)}`)
         .then(response => {
-          console.log('rerer', response.data);
           const status_of_conclusion = localStorage.getItem(
             '@Samasc:statusSuvey',
           );
