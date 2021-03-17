@@ -173,7 +173,6 @@ const PainelAnalyticModule: React.FC = () => {
 
   const handleDateChange = useCallback((day: Date, modifiers: DayModifiers) => {
     if (modifiers.available && !modifiers.disabled) {
-      console.log(day);
       setSelectedDate(day);
       setOpenCalendar(false);
     }

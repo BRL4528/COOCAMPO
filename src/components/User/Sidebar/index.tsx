@@ -22,7 +22,6 @@ interface LayoutProps {
 }
 
 const Sidebar: React.FC<LayoutProps> = ({ pathname }) => {
-  console.log(pathname);
   return (
     <>
       <nav className="navbar">

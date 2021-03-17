@@ -106,9 +106,12 @@ const SelectedSector: React.FC = () => {
 
   useEffect(() => {
     try {
-      api.get(`sectors/${parsed.substring(1)}`).then(response => {
-        setSectorSelected(response.data);
-      });
+      api
+        .get(`sectors/show?sector_id=${parsed.substring(1)}`)
+        .then(response => {
+          console.log('setor', response.data);
+          setSectorSelected(response.data);
+        });
     } catch (err) {
       console.log(err);
     }
@@ -164,7 +167,6 @@ const SelectedSector: React.FC = () => {
               );
 
               // console.log(resultFiltered[0].april);
-              console.log(resultFiltered[0].january);
               const month = format(new Date(), 'MMMM', {
                 locale: ptBR,
               });
@@ -379,7 +381,6 @@ const SelectedSector: React.FC = () => {
         <div>
           <h2>{sectorSelected?.name}</h2>
           <strong>{sectorSelected?.observations}</strong>
-          {console.log(test)}
           {console.log(dataSector)}
         </div>
         <button type="button" onClick={() => handleTest()}>
@@ -402,7 +403,7 @@ const SelectedSector: React.FC = () => {
           </CardGraphicBox>
         </fieldset>
         <CardGraphic>
-          <GraphicBar />
+          <GraphicBar title="Metas x Resultados" />
         </CardGraphic>
       </CardCenter>
     </Container>

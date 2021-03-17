@@ -246,8 +246,7 @@ const ModalEditSector: React.FC<IModalProps> = ({
         const analyticModuleFiltred = analyticModule.find(element => {
           return element.id === selectedAnalyticItems[0];
         });
-        console.log('resultado que voltou', analyticModuleFiltred);
-        console.log('id que voltou', selectedAnalyticItems[0]);
+
         // const route = analyticModule.find(
         //   analytic => analytic.id === selectedAnalyticItems[0],
         // );

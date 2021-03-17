@@ -16,7 +16,8 @@ import AnalyticModuloAdm from '../pages/Dashboard-adm/AnalyticModule';
 import PainelAnalyticModulo from '../pages/Dashboard-adm/PainelAnalyticModule';
 import PainelSatisfactionSurvey from '../pages/AcessGlobal/PainelSatisfactionSurvey';
 import Import from '../pages/Dashboard-adm/Imports';
-import Macros from '../pages/Dashboard-adm/Macros';
+import Schedule from '../pages/Dashboard-adm/Schedule';
+import ScheduleOnly from '../pages/Dashboard-adm/Schedule/ScheduleUnic';
 
 // Routes user no ADM
 import DashboardUser from '../pages/Dashboard-user';
@@ -50,7 +51,13 @@ const Routes: React.FC = () => (
       isAdmin
     />
     <Route path="/import" component={Import} isPrivate isAdmin />
-    <Route path="/agenda" component={Macros} isPrivate isAdmin />
+    <Route path="/schedule" component={Schedule} isPrivate isAdmin />
+    <Route
+      path="/chedule-only:name_schedule?"
+      component={ScheduleOnly}
+      isPrivate
+      isAdmin
+    />
     <Route
       path="/analyticModule"
       component={AnalyticModuloAdm}

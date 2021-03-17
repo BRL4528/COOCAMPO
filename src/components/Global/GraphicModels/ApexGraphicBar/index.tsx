@@ -4,18 +4,19 @@ import Chart from 'react-apexcharts';
 
 interface ColorStyles {
   color?: string;
+  title: string;
 }
 
-const GraphicBarApex: React.FC<ColorStyles> = () => {
+const GraphicBarApex: React.FC<ColorStyles> = ({ title }) => {
   const options = {
     series: [
       {
-        name: 'sales',
+        name: 'Resultado',
         type: 'column',
         data: [30, 40, 35, 50, 49, 60, 70, 91, 125],
       },
       {
-        name: 'Social Media',
+        name: 'Meta',
         type: 'line',
         data: [23, 42, 35, 27, 43, 22, 17, 31, 22],
       },
@@ -40,9 +41,7 @@ const GraphicBarApex: React.FC<ColorStyles> = () => {
     stroke: {
       width: [0, 4],
     },
-    title: {
-      text: 'setores',
-    },
+
     dataLabels: {
       enabled: true,
       enabledOnSeries: [1],
@@ -53,7 +52,7 @@ const GraphicBarApex: React.FC<ColorStyles> = () => {
   // console.log(Chart);
   return (
     <div>
-      <h2>Resultado por setor</h2>
+      <h2>{title}</h2>
       <Chart
         options={options}
         series={options.series}

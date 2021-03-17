@@ -117,7 +117,6 @@ const SelectorFolders: React.FC = () => {
 
   useEffect(() => {
     api.get('/sectors').then(response => {
-      console.log(response.data);
       setDataUpdateSector(response.data);
     });
   }, [dataSector, subject]);

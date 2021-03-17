@@ -145,8 +145,8 @@ const Sidebar: React.FC<LayoutProps> = ({ pathname }) => {
             </Link>
           </OptionList>
 
-          <OptionList pathname={pathname} path="/agenda" className="nav-item">
-            <Link to="/agenda" className="nav-link">
+          <OptionList pathname={pathname} path="/schedule" className="nav-item">
+            <Link to="/schedule" className="nav-link">
               <FiTerminal color="#f2c811" size={18} />
 
               <span className="link-text">Agenda</span>

@@ -140,7 +140,6 @@ const PainelAnalyticModule: React.FC = () => {
   const handleDateChange = useCallback(
     (day: Date, modifiers: DayModifiers) => {
       if (modifiers.available && !modifiers.disabled) {
-        console.log(day);
         setSelectedDate(day);
         setOpenCalendar(!openCalendar);
       }
@@ -250,7 +249,6 @@ const PainelAnalyticModule: React.FC = () => {
   const handleOccurrence = useCallback((data: Omit<Occurrence, 'status'>) => {
     try {
       const temp = data;
-      console.log(temp);
       setOoccurrence(temp);
     } catch (err) {
       console.log(err);

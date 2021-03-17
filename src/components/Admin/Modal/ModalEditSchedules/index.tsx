@@ -28,7 +28,7 @@ interface IAnalyticModule {
 
 interface IModalProps {
   isOpen: boolean;
-  idAnalyticModule: string;
+  idSchedule: string;
   setIsOpen: () => void;
   // eslint-disable-next-line no-unused-vars
   handleAnalytic: (analytic: Omit<IAnalyticModule, 'status'>) => void;
@@ -38,7 +38,7 @@ const ModalEditAnalyticModule: React.FC<IModalProps> = ({
   isOpen,
   setIsOpen,
   handleAnalytic,
-  idAnalyticModule,
+  idSchedule,
 }) => {
   const formRef = useRef<FormHandles>(null);
   const { addToast } = useToast();
@@ -66,19 +66,17 @@ const ModalEditAnalyticModule: React.FC<IModalProps> = ({
   useEffect(() => {
     setLoading(true);
     if (isOpen) {
-      if (idAnalyticModule !== '') {
+      if (idSchedule !== '') {
         api
-          .get<IAnalyticModule>(
-            `schedules/show?schedule_id=${idAnalyticModule}`,
-          )
+          .get<IAnalyticModule>(`schedules/show?schedule_id=${idSchedule}`)
           .then(response => {
             setInitialDataAnalyticModule(response.data);
-
+            setSubject(response.data.name_schedule);
             setLoading(false);
           });
       }
     }
-  }, [idAnalyticModule, isOpen]);
+  }, [idSchedule, isOpen]);
 
   const handleSubmit = useCallback(
     async (data: IAnalyticModule) => {
@@ -87,22 +85,21 @@ const ModalEditAnalyticModule: React.FC<IModalProps> = ({
 
         const schema = Yup.object().shape({
           name: Yup.string().required('Nome obrigatório'),
-          responsible: Yup.string().required('Representante obrigátorio'),
-          email: Yup.string().required('Email do representante obrigátorio'),
+          address: Yup.string().required('Email do representante obrigátorio'),
         });
         await schema.validate(data, {
           abortEarly: false,
         });
 
-        const { name, address, name_schedule } = data;
+        const { name, address } = data;
 
         const formData = {
           name,
           address,
-          name_schedule,
+          name_schedule: subject,
         };
         const response = await api.put(
-          `/schedules?schedule_id=${idAnalyticModule}`,
+          `/schedules?schedule_id=${idSchedule}`,
           formData,
         );
         handleAnalytic(response.data);
@@ -130,7 +127,7 @@ const ModalEditAnalyticModule: React.FC<IModalProps> = ({
         });
       }
     },
-    [addToast, handleAnalytic, idAnalyticModule, setIsOpen],
+    [addToast, handleAnalytic, idSchedule, setIsOpen, subject],
   );
 
   const handleSubject = useCallback(
@@ -157,7 +154,6 @@ const ModalEditAnalyticModule: React.FC<IModalProps> = ({
           <FiX size={20} onClick={() => setIsOpen()} />
         </span>
 
-        {console.log(loading)}
         {loading ? (
           <>
             <p>Nome representante</p>
@@ -190,6 +186,14 @@ const ModalEditAnalyticModule: React.FC<IModalProps> = ({
                 {
                   value: 'analytical-group',
                   label: 'Grupo de modulo de análise',
+                },
+                {
+                  value: 'test1-group',
+                  label: 'teste1',
+                },
+                {
+                  value: 'test2-group',
+                  label: 'teste2',
                 },
               ]}
             />

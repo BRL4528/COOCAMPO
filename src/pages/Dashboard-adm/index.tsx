@@ -95,7 +95,7 @@ const Dashboard: React.FC = () => {
 
         <CardBodyGoals>
           <CardGraphicItem>
-            <GraphicBar color="#240dac" />
+            <GraphicBar title="Resulatdo Global" color="#240dac" />
           </CardGraphicItem>
 
           <CardGraphicItem>
@@ -108,7 +108,7 @@ const Dashboard: React.FC = () => {
         </CardBodyGoals>
         <CardBodyGoals>
           <CardGraphicItem>
-            <GraphicBar color="#240dac" />
+            <GraphicBar title="Resulatdo Global" color="#240dac" />
           </CardGraphicItem>
 
           <CardGraphicItem>

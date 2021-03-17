@@ -20,10 +20,11 @@ const GraphicSpeedometer: React.FC<PropsSpeed> = dataValue => {
         currentValueText={`${dataValue.dataValue}%`}
         segmentColors={[
           '#f1605b',
+          'hsl(26.06741573033706, 100%, 65.09803921568627%)',
           'hsl(58.98305084745763, 100%, 65.29411764705883%)',
           'hsl(96.06741573033706, 100%, 65.09803921568627%)',
         ]}
-        customSegmentStops={[0, 250, 750, 1000]}
+        customSegmentStops={[0, 250, 500, 750, 1000]}
         customSegmentLabels={[
           {
             text: 'Ruim',
@@ -40,9 +41,14 @@ const GraphicSpeedometer: React.FC<PropsSpeed> = dataValue => {
             // position: 'OUTSIDE',
             color: '#6d6a81',
           },
+          {
+            text: 'só vai!',
+            // position: 'OUTSIDE',
+            color: '#6d6a81',
+          },
         ]}
         ringWidth={47}
-        needleTransitionDuration={3333}
+        needleTransitionDuration={45}
         // needleTransition="easeElastic"
         needleColor="#6d6a81"
         // needleHeightRatio={20}

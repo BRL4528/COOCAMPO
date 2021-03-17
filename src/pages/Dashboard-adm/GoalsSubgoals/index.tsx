@@ -93,7 +93,6 @@ const SelectorFolders: React.FC = () => {
 
   useEffect(() => {
     api.get('/goals').then(response => {
-      console.log(response.data);
       setDataGoals(response.data);
     });
   }, [dataTemp]);
@@ -129,7 +128,6 @@ const SelectorFolders: React.FC = () => {
     });
 
     setDataGoals(goalFound);
-    console.log(goalFound);
   }, [dataGoals, textSearchGoal]);
 
   return (
