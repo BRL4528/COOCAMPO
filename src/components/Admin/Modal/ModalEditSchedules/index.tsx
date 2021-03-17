@@ -187,14 +187,6 @@ const ModalEditAnalyticModule: React.FC<IModalProps> = ({
                   value: 'analytical-group',
                   label: 'Grupo de modulo de análise',
                 },
-                {
-                  value: 'test1-group',
-                  label: 'teste1',
-                },
-                {
-                  value: 'test2-group',
-                  label: 'teste2',
-                },
               ]}
             />
             <p>E-mail do representante</p>

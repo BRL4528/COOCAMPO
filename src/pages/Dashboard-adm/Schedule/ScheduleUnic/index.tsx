@@ -55,7 +55,6 @@ const SelectorFolders: React.FC = () => {
     api
       .get(`/schedules/show?name_schedule=${parsed.slice(1)}`)
       .then(response => {
-        console.log('teste', response.data);
         setDataschedulesModule(response.data);
       });
   }, [dataAnalytic, parsed]);
