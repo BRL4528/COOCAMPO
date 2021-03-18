@@ -100,7 +100,7 @@ const ModalAddFood: React.FC<IModalProps> = ({
         });
       }
     },
-    [addToast, handleAnalytic, setIsOpen],
+    [addToast, handleAnalytic, setIsOpen, subject],
   );
 
   const handleSubject = useCallback(
