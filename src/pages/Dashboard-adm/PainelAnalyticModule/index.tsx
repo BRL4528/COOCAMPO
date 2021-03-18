@@ -114,6 +114,7 @@ const PainelAnalyticModule: React.FC = () => {
 
   useEffect(() => {
     try {
+      console.log(parsed.slice(1));
       api
         .get(`goals-of-sectors?analyze_module_id=${parsed.slice(1)}`)
         .then(response => {
@@ -353,35 +354,36 @@ const PainelAnalyticModule: React.FC = () => {
                               <div>
                                 <strong>{dataSubGoal.sub_goals.name}</strong>
                               </div>
-
-                              <CheckboxInput
-                                name={`yes-${dataSubGoal.id}`}
-                                options={[
-                                  {
-                                    id: `yes-${dataAnalytic.sector.id}-${dataSubGoal.id}`,
-                                    value: `${dataAnalytic.sector.id}#${true}#${
-                                      dataAnalytic.goals.id
-                                    }#${dataSubGoal.sub_goals.id}#${
-                                      dataSubGoal.sub_goals.weight
-                                    }`,
-                                    label: 'Conforme',
-                                  },
-                                ]}
-                              />
-                              <CheckboxInput
-                                name={`no-${dataSubGoal.id}`}
-                                options={[
-                                  {
-                                    id: `no-${dataAnalytic.sector.id}-${dataSubGoal.id}`,
-                                    value: `${
-                                      dataAnalytic.sector.id
-                                    }#${false}#${dataAnalytic.goals.id}#${
-                                      dataSubGoal.sub_goals.id
-                                    }#0`,
-                                    label: 'Não conforme',
-                                  },
-                                ]}
-                              />
+                              <span>
+                                <CheckboxInput
+                                  name={`yes-${dataSubGoal.id}`}
+                                  options={[
+                                    {
+                                      id: `yes-${dataAnalytic.sector.id}-${dataSubGoal.id}`,
+                                      value: `${
+                                        dataAnalytic.sector.id
+                                      }#${true}#${dataAnalytic.goals.id}#${
+                                        dataSubGoal.sub_goals.id
+                                      }#${dataSubGoal.sub_goals.weight}`,
+                                      label: 'Conforme',
+                                    },
+                                  ]}
+                                />
+                                <CheckboxInput
+                                  name={`no-${dataSubGoal.id}`}
+                                  options={[
+                                    {
+                                      id: `no-${dataAnalytic.sector.id}-${dataSubGoal.id}`,
+                                      value: `${
+                                        dataAnalytic.sector.id
+                                      }#${false}#${dataAnalytic.goals.id}#${
+                                        dataSubGoal.sub_goals.id
+                                      }#0`,
+                                      label: 'Não conforme',
+                                    },
+                                  ]}
+                                />
+                              </span>
                             </div>
                           ),
                         )}

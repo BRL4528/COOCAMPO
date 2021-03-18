@@ -63,14 +63,7 @@ const ModalAddFood: React.FC<IModalProps> = ({
           abortEarly: false,
         });
 
-        const {
-          name,
-          responsible,
-          email,
-          condition,
-          observations,
-          model,
-        } = data;
+        const { name, responsible, email, condition, observations } = data;
 
         const formData = {
           name,
@@ -78,7 +71,7 @@ const ModalAddFood: React.FC<IModalProps> = ({
           email,
           condition,
           observations,
-          model,
+          model: subject,
         };
 
         const response = await api.post('/analysis-module', formData);
@@ -142,7 +135,7 @@ const ModalAddFood: React.FC<IModalProps> = ({
               value: 'satisfaction-survey',
               label: 'Pesquisa de satisfação',
             },
-            { value: 'analytical', label: 'Módulo análitico' },
+            { value: 'analytic-module-analytical', label: 'Módulo análitico' },
           ]}
         />
         <p>Nome do representante</p>
