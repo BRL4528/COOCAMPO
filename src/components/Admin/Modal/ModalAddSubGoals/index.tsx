@@ -148,7 +148,7 @@ const ModalAddFood: React.FC<IModalProps> = ({
         <p>Nome da submeta</p>
         <Input name="name" placeholder="Ex: Medidas SST" />
         <p>Peso da submeta</p>
-        <Input type="number" name="weight" placeholder="Ex: 10" />
+        <Input name="weight" placeholder="Ex: 10" />
         <p>Observações</p>
         <TextArea
           name="observations"
