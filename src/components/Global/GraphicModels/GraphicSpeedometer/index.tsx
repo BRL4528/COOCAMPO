@@ -4,20 +4,32 @@ import ReactSpeedometer from 'react-d3-speedometer';
 
 interface PropsSpeed {
   dataValue: number;
+  width: number;
+  title: {
+    text1: string;
+    text2: string;
+    text3: string;
+    text4: string;
+  };
 }
 
-const GraphicSpeedometer: React.FC<PropsSpeed> = dataValue => {
+const GraphicSpeedometer: React.FC<PropsSpeed> = ({
+  dataValue,
+  width,
+  title,
+}) => {
   return (
     <>
       <ReactSpeedometer
-        value={dataValue.dataValue}
+        value={dataValue}
         // maxSegmentLabels={2}
         // segments={10}
-        width={220}
+        width={width}
+        height={200}
         paddingHorizontal={5}
         paddingVertical={5}
         // startColor="#1c9cd9"
-        currentValueText={`${dataValue.dataValue}%`}
+        currentValueText="3,14%"
         segmentColors={[
           '#f1605b',
           'hsl(26.06741573033706, 100%, 65.09803921568627%)',
@@ -27,28 +39,28 @@ const GraphicSpeedometer: React.FC<PropsSpeed> = dataValue => {
         customSegmentStops={[0, 250, 500, 750, 1000]}
         customSegmentLabels={[
           {
-            text: 'Ruim',
+            text: `${title.text1}`,
             // position: 'OUTSIDE',
             color: '#6d6a81',
           },
           {
-            text: 'Bom',
+            text: `${title.text2}`,
             // position: 'OUTSIDE',
             color: '#6d6a81',
           },
           {
-            text: 'Otimo!',
+            text: `${title.text3}`,
             // position: 'OUTSIDE',
             color: '#6d6a81',
           },
           {
-            text: 'só vai!',
+            text: `${title.text4}`,
             // position: 'OUTSIDE',
             color: '#6d6a81',
           },
         ]}
         ringWidth={47}
-        needleTransitionDuration={45}
+        needleTransitionDuration={3333}
         // needleTransition="easeElastic"
         needleColor="#6d6a81"
         // needleHeightRatio={20}

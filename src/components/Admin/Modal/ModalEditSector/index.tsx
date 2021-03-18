@@ -169,6 +169,7 @@ const ModalEditSector: React.FC<IModalProps> = ({
             `/goals-of-sectors?sector_id=${dataEditSector}`,
           )
           .then(response => {
+            console.log(response.data);
             if (response.data) {
               // const initialSector = {
               //   id: response.data[0].sector.id,
@@ -192,9 +193,12 @@ const ModalEditSector: React.FC<IModalProps> = ({
               setCurrentGoals(initialGoals);
             }
           });
-        api.get<ISector>(`sectors/${dataEditSector}`).then(res => {
-          setDataInitialSector(res.data);
-        });
+        api
+          .get<ISector>(`sectors/show?sector_id=${dataEditSector}`)
+          .then(res => {
+            setDataInitialSector(res.data);
+            console.log(res.data);
+          });
         setOpenGoals(true);
       }
     }
@@ -271,7 +275,15 @@ const ModalEditSector: React.FC<IModalProps> = ({
           }
           // Atualiza se houve alterações
         } else if (!(checked.length === currentGoals.length)) {
+          console.log('Atualiza 01');
           await api.delete(`/goals-of-sectors/${dataEditSector}`);
+
+          const res = {
+            goals_ids: selectedGoalsItems,
+            sector_id: dataEditSector,
+            analysis_module: arrayAnalyticModuleAndGoal,
+          };
+          console.log(res);
 
           await api.post('/goals-of-sectors/create-all', {
             goals_ids: selectedGoalsItems,
@@ -290,6 +302,7 @@ const ModalEditSector: React.FC<IModalProps> = ({
           }
           // Atualiza se houve alterações
         } else if (!(checked.length === selectedGoalsItems.length)) {
+          console.log('Atualiza 02');
           await api.delete(`/goals-of-sectors/${dataEditSector}`);
           await api.post('/goals-of-sectors/create-all', {
             goals_ids: selectedGoalsItems,
