@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 import { FullScreen, useFullScreenHandle } from 'react-full-screen';
 
-import { useReactToPrint } from 'react-to-print';
+import ReactToPrint from 'react-to-print';
 
 import {
   FiEdit,
@@ -91,9 +91,13 @@ const SelectorFolders: React.FC = () => {
     setIsOpen(true);
   }, []);
 
-  const handlePrint = useReactToPrint({
-    content: () => componentRef.current,
-  });
+  // const handlePrint = useReactToPrint({
+  //   content: () => componentRef.current,
+  // });
+  const handlePrint = useCallback(id => {
+    const el = document.getElementById(id);
+    return el;
+  }, []);
 
   const handleHepand = useCallback(
     (id: string) => {
@@ -198,6 +202,7 @@ const SelectorFolders: React.FC = () => {
               className={
                 grupSectorsSelected.includes(sector.id) ? 'selected' : ''
               }
+              id={sector.id}
               ref={componentRef}
             >
               {/* Header */}
@@ -212,7 +217,10 @@ const SelectorFolders: React.FC = () => {
                 </GraphicTitle>
                 <span>
                   <FiEdit onClick={() => handleEdit(sector.id)} />
-                  <FiPrinter onClick={handlePrint} />
+                  <ReactToPrint
+                    trigger={() => <FiPrinter />}
+                    content={() => handlePrint(sector.id)}
+                  />
                   <FiMaximize onClick={handle.enter} />
                   <Link to={`sector-selected?${sector.id}`}>
                     <FiGrid />
