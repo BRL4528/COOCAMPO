@@ -168,10 +168,14 @@ const ModalAddFood: React.FC<IModalProps> = ({
             goal_id: response.data.id,
           });
         }
-
+        console.log(
+          'balance',
+          response.data.weight / selectedSubGoalsItems.length,
+        );
         if (selectedSubGoalsItems.length > 0) {
           await api.post('/sub-goals-of-goals/create-all', {
             sub_goals_ids: selectedSubGoalsItems,
+            weight: response.data.weight / selectedSubGoalsItems.length,
             goal_id: response.data.id,
           });
         }
