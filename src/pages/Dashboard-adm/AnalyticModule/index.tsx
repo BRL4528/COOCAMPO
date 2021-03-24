@@ -9,7 +9,7 @@ import Button from '../../../components/Global/Button';
 import ModalAddAnalyticModule from '../../../components/Admin/Modal/ModalAddAnalyticModule';
 import ModalEditAnalyticModule from '../../../components/Admin/Modal/ModalEditAnalyticModule';
 import ModalSendEmailAnalyticModule from '../../../components/Admin/Modal/ModalSendEmailAnalyticModule';
-import api from '../../../services/api';
+import { api } from '../../../services/api';
 
 import {
   Container,

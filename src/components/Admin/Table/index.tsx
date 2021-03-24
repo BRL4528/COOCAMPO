@@ -12,7 +12,7 @@ import { format } from 'date-fns';
 import ptBR from 'date-fns/locale/pt-BR';
 
 import 'react-tabulator/lib/css/bootstrap/tabulator_bootstrap.min.css';
-import api from '../../../services/api';
+import { api } from '../../../services/api';
 
 interface ITableSector {
   idSector: string;

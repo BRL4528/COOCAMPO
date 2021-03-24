@@ -18,7 +18,7 @@ import TextArea from '../../../Global/TextArea';
 import Button from '../../../Global/Button';
 
 import Modal from '../index';
-import api from '../../../../services/api';
+import { api } from '../../../../services/api';
 
 // interface AddSectorModal {
 //   name: string;

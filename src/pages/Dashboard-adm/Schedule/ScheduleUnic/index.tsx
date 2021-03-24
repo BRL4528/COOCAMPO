@@ -5,7 +5,7 @@ import { FiEdit, FiSend } from 'react-icons/fi';
 import Button from '../../../../components/Global/Button';
 import ModalAddSchedules from '../../../../components/Admin/Modal/ModalAddSchedules';
 import ModalEditSchedules from '../../../../components/Admin/Modal/ModalEditSchedules';
-import api from '../../../../services/api';
+import { api } from '../../../../services/api';
 
 import {
   Container,

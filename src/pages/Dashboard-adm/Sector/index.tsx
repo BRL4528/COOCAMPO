@@ -30,7 +30,7 @@ import {
   // CardBodyGoals,
   CardGraphicText,
 } from './styles';
-import api from '../../../services/api';
+import { api } from '../../../services/api';
 
 interface ISector {
   id: string;
@@ -118,6 +118,10 @@ const SelectorFolders: React.FC = () => {
     },
     [grupSectorsSelected, isOpen],
   );
+
+  // useEfect(() => {
+  //   apiGeninfo.
+  // })
 
   useEffect(() => {
     api.get('/sectors').then(response => {

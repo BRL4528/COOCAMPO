@@ -24,7 +24,7 @@ import Button from '../../../Global/Button';
 import Select from '../../../Global/Select';
 
 import Modal from '../index';
-import api from '../../../../services/api';
+import { api } from '../../../../services/api';
 
 interface IGoals {
   id: string;
@@ -406,11 +406,7 @@ const ModalAddFood: React.FC<IModalProps> = ({
           </div>
           <div>
             <p>Peso da meta</p>
-            <Input
-              step="0.010"
-              name="weight"
-              placeholder="Ex: 10"
-            />
+            <Input step="0.010" name="weight" placeholder="Ex: 10" />
           </div>
         </header>
 

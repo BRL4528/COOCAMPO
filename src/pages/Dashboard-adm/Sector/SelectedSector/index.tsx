@@ -12,7 +12,7 @@ import ReactToPrint from 'react-to-print';
 import GraphicSpeed from '../../../../components/Global/GraphicModels/GraphicSpeedometer';
 import TableGoalsGlobal from '../../../../components/Admin/TableGoalsGlobal';
 
-import api from '../../../../services/api';
+import { api } from '../../../../services/api';
 import {
   Container,
   CardeHeader,
@@ -144,9 +144,6 @@ const SelectedSector: React.FC = () => {
           result: string;
           date: string;
         }[] = [];
-
-        // console.log(response.data);
-        // const { januar } = month.split('/')[0];
 
         response.data.forEach(function (goaldata) {
           function calcResult(result: number, budgeted: number) {
@@ -378,10 +375,6 @@ const SelectedSector: React.FC = () => {
       });
   }, [parsed]);
 
-  // const handlePrint = useReactToPrint({
-  //   content: () => componentRef.current,
-  // });
-
   const handlePrint = useCallback(id => {
     return document.getElementById(id);
   }, []);
@@ -408,71 +401,46 @@ const SelectedSector: React.FC = () => {
 
   return (
     <>
-      <Container id="print" ref={componentRef}>
+      <CardeHeader className="iconPrint">
         <div>
-          <CardeHeader className="iconPrint">
-            <div>
-              <h2>{sectorSelected?.name}</h2>
-              {console.log(dataSector)}
-            </div>
-          </CardeHeader>
-
-          <CardCenter>
-            <CardGraphicHeader>
-              <h2>
-                02-Demosnstrativo do resultado - Fevereiro 2021 e Acomulado 2021
-              </h2>
-
-              <ReactToPrint
-                trigger={() => <FiPrinter className="iconPrint" />}
-                content={() => handlePrint('print')}
-                documentTitle="NomeSetor"
-              />
-              <FiChevronsDown
-                className={grupGoalSelected.includes('123') ? 'logo' : ''}
-                onClick={() => handleExpand('123')}
-              />
-            </CardGraphicHeader>
-            <fieldset
-              className={grupGoalSelected.includes('123') ? 'selected' : ''}
-            >
-              <CardGraphic>
-                <TableGoalsGlobal />
-                <GraphicSpeed title={title} width={320} dataValue={600} />
-              </CardGraphic>
-            </fieldset>
-          </CardCenter>
+          <h2>{sectorSelected?.name}</h2>
         </div>
-      </Container>
+      </CardeHeader>
+      {console.log(dataSector)}
+      {dataSector.map(infoSector => (
+        <Container id="print" ref={componentRef}>
+          <div>
+            <CardCenter>
+              <CardGraphicHeader>
+                <div>
+                  <h2>{infoSector.name}</h2>
+                  <span>{infoSector.type}</span>
+                </div>
 
-      <Container id="print1" ref={componentRef}>
-        <div>
-          <CardCenter>
-            <CardGraphicHeader>
-              <h2>
-                01-Demosnstrativo do resultado - Fevereiro 2021 e Acomulado 2021
-              </h2>
-
-              <ReactToPrint
-                trigger={() => <FiPrinter className="iconPrint" />}
-                content={() => handlePrint('print1')}
-              />
-              <FiChevronsDown
-                className={grupGoalSelected.includes('1231') ? 'logo' : ''}
-                onClick={() => handleExpand('1231')}
-              />
-            </CardGraphicHeader>
-            <fieldset
-              className={grupGoalSelected.includes('123') ? 'selected' : ''}
-            >
-              <CardGraphic>
-                <TableGoalsGlobal />
-                <GraphicSpeed title={title} width={320} dataValue={600} />
-              </CardGraphic>
-            </fieldset>
-          </CardCenter>
-        </div>
-      </Container>
+                <div>
+                  <ReactToPrint
+                    trigger={() => <FiPrinter className="iconPrint" />}
+                    content={() => handlePrint('print')}
+                    documentTitle="NomeSetor"
+                  />
+                  <FiChevronsDown
+                    className={grupGoalSelected.includes('123') ? 'logo' : ''}
+                    onClick={() => handleExpand('123')}
+                  />
+                </div>
+              </CardGraphicHeader>
+              <fieldset
+                className={grupGoalSelected.includes('123') ? 'selected' : ''}
+              >
+                <CardGraphic>
+                  <TableGoalsGlobal />
+                  <GraphicSpeed title={title} width={320} dataValue={600} />
+                </CardGraphic>
+              </fieldset>
+            </CardCenter>
+          </div>
+        </Container>
+      ))}
     </>
   );
 };

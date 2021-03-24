@@ -24,7 +24,7 @@ import Button from '../../../Global/Button';
 import Select from '../../../Global/Select';
 
 import Modal from '../index';
-import api from '../../../../services/api';
+import { api } from '../../../../services/api';
 
 interface IGoals {
   id: string;

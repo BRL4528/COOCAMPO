@@ -4,7 +4,7 @@ export const Container = styled.div`
   /* display: flex; */
   /* align-items: stretch; */
 
-  margin-top: 12px;
+  /* margin-top: 4px; */
   margin-left: 8%;
 
   color: #433f59;
@@ -30,7 +30,10 @@ export const Container = styled.div`
 `;
 
 export const CardeHeader = styled.div`
-  width: 100%;
+  margin-top: 12px;
+  margin-left: 8%;
+  color: #433f59;
+  /* width: 100%; */
 
   display: flex;
   align-items: center;
@@ -74,7 +77,7 @@ export const CardGraphicHeader = styled.div`
   transition: var(--transition-speed);
   border-bottom: solid 3px rgba(28, 156, 217, 0.12);
 
-  margin: 10px 20px 20px 0;
+  margin: 10px 20px 0px 0;
 
   :hover {
     transition: var(--transition-speed);
@@ -106,6 +109,13 @@ export const CardGraphicHeader = styled.div`
       margin: 0px;
       display: none;
     }
+  }
+
+  div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    min-width: 80px;
   }
 `;
 export const CardGraphic = styled.div`

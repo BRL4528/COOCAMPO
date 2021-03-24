@@ -7,7 +7,7 @@ import ModalAddGoals from '../../../components/Admin/Modal/ModalAddGoals';
 import ModalAddSubGoals from '../../../components/Admin/Modal/ModalAddSubGoals';
 import ModalEditGoals from '../../../components/Admin/Modal/ModalEditGoal';
 
-import api from '../../../services/api';
+import { api } from '../../../services/api';
 
 import {
   Container,

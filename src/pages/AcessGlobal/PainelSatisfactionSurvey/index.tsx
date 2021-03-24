@@ -35,7 +35,7 @@ import search from '../../../assets/chart.svg';
 import notion from '../../../assets/notion.svg';
 import logo from '../../../assets/logo.svg';
 
-import api from '../../../services/api';
+import { api } from '../../../services/api';
 
 import {
   Container,

@@ -15,7 +15,7 @@ import { useToast } from '../../../../hooks/toast';
 import getValidationErrors from '../../../../utils/getValidationErrors';
 
 import Modal from '../index';
-import api from '../../../../services/api';
+import { api } from '../../../../services/api';
 import Select from '../../../Global/SelectRelease';
 
 interface IAnalyticModule {

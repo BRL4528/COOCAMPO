@@ -23,7 +23,7 @@ import { useLoading, Oval } from '@agney/react-loading';
 import { Form } from '@unform/web';
 import { FormHandles } from '@unform/core';
 
-import api from '../../../services/api';
+import { api } from '../../../services/api';
 
 import {
   Container,
