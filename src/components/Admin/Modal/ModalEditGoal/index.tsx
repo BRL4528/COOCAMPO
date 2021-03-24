@@ -408,7 +408,6 @@ const ModalAddFood: React.FC<IModalProps> = ({
             <p>Peso da meta</p>
             <Input
               step="0.010"
-              type="number"
               name="weight"
               placeholder="Ex: 10"
             />
