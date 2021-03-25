@@ -5,7 +5,7 @@ export const Container = styled.div`
   /* align-items: stretch; */
 
   margin-top: 4px;
-  margin-left: 8%;
+  margin-left: 7%;
 
   color: #433f59;
 

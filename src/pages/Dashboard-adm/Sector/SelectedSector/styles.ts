@@ -18,7 +18,7 @@ export const Navigation = styled.nav`
   align-items: center;
   flex-direction: column;
   /* width: 100%; */
-  margin-left: 80px;
+  margin-left: 70px;
 
   color: #433f59;
 

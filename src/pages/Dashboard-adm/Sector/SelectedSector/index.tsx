@@ -7,7 +7,7 @@ import ptBR from 'date-fns/locale/pt-BR';
 
 import ListGoalsOfSector from '../ListGoalsOfSector';
 
-import { api } from '../../../../services/api';
+import { api, apiGeninfo } from '../../../../services/api';
 import { CardeHeader, Navigation } from './styles';
 
 interface SectorSelected {
@@ -89,6 +89,16 @@ const SelectedSector: React.FC = () => {
 
   const [sectorSelected, setSectorSelected] = useState<SectorSelected>();
   const [dataSector, setDataTableSector] = useState<ISectorFormated[]>([]);
+
+  useEffect(() => {
+    try {
+      apiGeninfo.get('/paineis').then(response => {
+        console.log('Geninfo', response.data);
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  }, []);
 
   useEffect(() => {
     try {
