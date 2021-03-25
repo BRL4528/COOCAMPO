@@ -1,25 +1,14 @@
 /* eslint-disable import/no-duplicates */
 /* eslint-disable consistent-return */
-import React, { useEffect, useState, useRef, useCallback } from 'react';
-
-import { FiPrinter, FiChevronsDown } from 'react-icons/fi';
+import React, { useEffect, useState } from 'react';
 
 import { format } from 'date-fns';
 import ptBR from 'date-fns/locale/pt-BR';
 
-import ReactToPrint from 'react-to-print';
-
-import GraphicSpeed from '../../../../components/Global/GraphicModels/GraphicSpeedometer';
-import TableGoalsGlobal from '../../../../components/Admin/TableGoalsGlobal';
+import ListGoalsOfSector from '../ListGoalsOfSector';
 
 import { api } from '../../../../services/api';
-import {
-  Container,
-  CardeHeader,
-  CardGraphic,
-  CardGraphicHeader,
-  CardCenter,
-} from './styles';
+import { CardeHeader, Navigation } from './styles';
 
 interface SectorSelected {
   branch: string;
@@ -100,18 +89,6 @@ const SelectedSector: React.FC = () => {
 
   const [sectorSelected, setSectorSelected] = useState<SectorSelected>();
   const [dataSector, setDataTableSector] = useState<ISectorFormated[]>([]);
-
-  const [grupGoalSelected, setGrupGoalSelected] = useState<string[]>([]);
-  const [isOpen, setIsOpen] = useState(false);
-
-  const componentRef = useRef<HTMLDivElement>(null);
-
-  const title = {
-    text1: '0',
-    text2: '1 Sal.Base',
-    text3: '1,5 Sal.Base',
-    text4: '2 Sal.Base',
-  };
 
   useEffect(() => {
     try {
@@ -375,30 +352,6 @@ const SelectedSector: React.FC = () => {
       });
   }, [parsed]);
 
-  const handlePrint = useCallback(id => {
-    return document.getElementById(id);
-  }, []);
-
-  const handleExpand = useCallback(
-    (id: string) => {
-      setIsOpen(!isOpen);
-      const alreadySelected = grupGoalSelected.findIndex(
-        (item: string) => item === id,
-      );
-
-      if (alreadySelected >= 0) {
-        const filteredItems = grupGoalSelected.filter(
-          (item: string) => item !== id,
-        );
-
-        setGrupGoalSelected(filteredItems);
-      } else {
-        setGrupGoalSelected([...grupGoalSelected, id]);
-      }
-    },
-    [grupGoalSelected, isOpen],
-  );
-
   return (
     <>
       <CardeHeader className="iconPrint">
@@ -406,40 +359,20 @@ const SelectedSector: React.FC = () => {
           <h2>{sectorSelected?.name}</h2>
         </div>
       </CardeHeader>
-      {console.log(dataSector)}
-      {dataSector.map(infoSector => (
-        <Container id="print" ref={componentRef}>
-          <div>
-            <CardCenter>
-              <CardGraphicHeader>
-                <div>
-                  <h2>{infoSector.name}</h2>
-                  <span>{infoSector.type}</span>
-                </div>
+      <Navigation>
+        <div>
+          <p>Metas</p>
 
-                <div>
-                  <ReactToPrint
-                    trigger={() => <FiPrinter className="iconPrint" />}
-                    content={() => handlePrint('print')}
-                    documentTitle="NomeSetor"
-                  />
-                  <FiChevronsDown
-                    className={grupGoalSelected.includes('123') ? 'logo' : ''}
-                    onClick={() => handleExpand('123')}
-                  />
-                </div>
-              </CardGraphicHeader>
-              <fieldset
-                className={grupGoalSelected.includes('123') ? 'selected' : ''}
-              >
-                <CardGraphic>
-                  <TableGoalsGlobal />
-                  <GraphicSpeed title={title} width={320} dataValue={600} />
-                </CardGraphic>
-              </fieldset>
-            </CardCenter>
-          </div>
-        </Container>
+          <p>Resultado</p>
+        </div>
+      </Navigation>
+
+      {dataSector.map(infoSector => (
+        <ListGoalsOfSector
+          key={infoSector.id}
+          titleText={infoSector.name}
+          subtitle={infoSector.type}
+        />
       ))}
     </>
   );
