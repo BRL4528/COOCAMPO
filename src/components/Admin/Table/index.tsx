@@ -95,6 +95,22 @@ interface ISectorInfo {
   observations: string;
 }
 
+interface IGeninfo {
+  status: boolean;
+  response: [
+    {
+      painel: string;
+      indicador: string;
+      ano: number;
+      mes: number;
+      orcado: number;
+      realizado: number;
+      variacao: number;
+      percentual: number;
+    },
+  ];
+}
+
 const Table: React.FC<ITableSector> = ({
   idSector,
   isOpen,
@@ -352,28 +368,77 @@ const Table: React.FC<ITableSector> = ({
 
   useEffect(() => {
     try {
-      apiGeninfo
-        .post('/paineis', {
-          ano: format(new Date(month), 'M', {
-            locale: ptBR,
-          }),
-          mesFinal: format(new Date(month), 'M', {
-            locale: ptBR,
-          }),
-          mesInicial: format(new Date(month), 'M', {
-            locale: ptBR,
-          }),
-          painel: infoSector?.observations,
-        })
-        .then(response => {
-          console.log('resposta Geinfo', response.data);
-        });
+      if (infoSector) {
+        console.log(infoSector);
+        apiGeninfo
+          .post<IGeninfo>('/paineis', {
+            ano: Number(
+              format(new Date(month), 'Y', {
+                locale: ptBR,
+              }),
+            ),
+            mesFinal: Number(
+              format(new Date(month), 'M', {
+                locale: ptBR,
+              }),
+            ),
+            mesInicial: Number(
+              format(new Date(month), 'M', {
+                locale: ptBR,
+              }),
+            ),
+            painel: infoSector?.observations,
+          })
+          .then(res => {
+            console.log('resposta Geinfo', res.data);
+            const { response } = res.data;
+            const formatedInfoSector: {
+              id: string;
+              name: string;
+              status: boolean;
+              weight: string;
+              source: string;
+              observations: string;
+              type: string;
+              status_of_conclusion: boolean;
+              weightGoal: string;
+              result: string;
+              goal: string;
+              // date: string;
+            }[] = [];
+            response.forEach(function (dataGoal) {
+              const goalUnit = {
+                id: dataGoal.painel,
+                name: dataGoal.indicador,
+                status: false,
 
+                weight: '1%',
+                source: '2%',
+                observations: 'nada',
+                type:
+                  dataGoal.indicador === '(PPR) % RESULTADO FINANCEIRO'
+                    ? 'Meta global'
+                    : 'Meta do setor',
+                status_of_conclusion: false,
+                weightGoal:
+                  dataGoal.indicador === '(PPR) % RESULTADO FINANCEIRO'
+                    ? '80%'
+                    : '10%',
+
+                goal: String(dataGoal.orcado),
+                result: String(dataGoal.realizado),
+              };
+              formatedInfoSector.push(goalUnit);
+            });
+            setDataTableSector(formatedInfoSector);
+            // setDataTableSector([...dataTableSector, formatedInfoSector]);
+          });
+      }
       // });
     } catch (err) {
       console.log(err);
     }
-  }, [dataTableSector, infoSector, month]);
+  }, [infoSector, month]);
   // }, [dataTableSector, infoSector]);
 
   const columns = [
