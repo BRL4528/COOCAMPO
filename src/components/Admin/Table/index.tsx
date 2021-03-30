@@ -12,19 +12,23 @@ import { format } from 'date-fns';
 import ptBR from 'date-fns/locale/pt-BR';
 
 import 'react-tabulator/lib/css/bootstrap/tabulator_bootstrap.min.css';
-import { api } from '../../../services/api';
+import { api, apiGeninfo } from '../../../services/api';
 
 interface ITableSector {
   idSector: string;
-  isOpen: boolean;
+  isOpen?: boolean;
+  startOpen: boolean;
   month: string;
-  setIsOpen: () => void;
+  setIsOpen?: () => void;
 }
 
 interface ISectorData {
   id: string;
   status_of_conclusion: boolean;
-
+  sector: {
+    name: string;
+    observations: string;
+  };
   goals: {
     id: string;
     name: string;
@@ -82,13 +86,25 @@ interface ISectorFormated {
   type: string;
   status_of_conclusion: boolean;
   result: string;
-  date: string;
+  // date: string;
   weightGoal: string;
 }
 
-const Table: React.FC<ITableSector> = ({ idSector, isOpen, month }) => {
+interface ISectorInfo {
+  name: string;
+  observations: string;
+}
+
+const Table: React.FC<ITableSector> = ({
+  idSector,
+  isOpen,
+  month,
+  startOpen,
+}) => {
   const tableRef = useRef(null);
   const [dataTableSector, setDataTableSector] = useState<ISectorFormated[]>([]);
+
+  const [infoSector, setInfoSector] = useState<ISectorInfo>();
 
   // const [dataSectorGoals, setDataSectorGoals] = useState<ISectorData[]>([]);
 
@@ -108,11 +124,13 @@ const Table: React.FC<ITableSector> = ({ idSector, isOpen, month }) => {
             status_of_conclusion: boolean;
             weightGoal: string;
             result: string;
-            date: string;
+            goal: string;
+            // date: string;
           }[] = [];
 
-          // console.log(response.data);
-          // const { januar } = month.split('/')[0];
+          if (response.data.length >= 0) {
+            setInfoSector(response.data[0].sector);
+          }
 
           response.data.forEach(function (goaldata) {
             function calcResult(result: number, budgeted: number) {
@@ -142,7 +160,6 @@ const Table: React.FC<ITableSector> = ({ idSector, isOpen, month }) => {
                   },
                 );
 
-                // console.log(resultFiltered[0].april);
                 const monthFormated = month.split('/')[1];
                 switch (monthFormated) {
                   case 'january': {
@@ -305,12 +322,8 @@ const Table: React.FC<ITableSector> = ({ idSector, isOpen, month }) => {
                     return;
                   }
                 }
-                // return resultFiltered.length
-                //   ? Number(resultFiltered[0].result).toFixed(0)
-                //   : 0;
               }
             }
-            // eslint-disable-next-line no-undef
 
             const goalUnit = {
               id: goaldata.goals.id,
@@ -323,45 +336,72 @@ const Table: React.FC<ITableSector> = ({ idSector, isOpen, month }) => {
               type: goaldata.goals.type,
               status_of_conclusion: goaldata.status_of_conclusion,
               weightGoal: goaldata.goals.type === 'Meta global' ? '80%' : '10%',
-              age: goaldata.goals.weight,
-              rating: goaldata.goals.weight,
-              // result: `${filterResults() && 0}%`,
+
+              goal: `${goaldata.goals.source}`,
               result: `${filterResults()?.responseData.result || 0}%`,
-              date: format(new Date(month), "MMMM 'de' yyy", {
-                locale: ptBR,
-              }),
             };
 
-            formatedInfoSector.push(goalUnit);
-            // console.log(goalUnit);
+            if (goaldata.goals.status === '2') {
+              formatedInfoSector.push(goalUnit);
+            }
           });
           setDataTableSector(formatedInfoSector);
         });
     }
   }, [idSector, isOpen, month]);
 
+  useEffect(() => {
+    try {
+      apiGeninfo
+        .post('/paineis', {
+          ano: format(new Date(month), 'M', {
+            locale: ptBR,
+          }),
+          mesFinal: format(new Date(month), 'M', {
+            locale: ptBR,
+          }),
+          mesInicial: format(new Date(month), 'M', {
+            locale: ptBR,
+          }),
+          painel: infoSector?.observations,
+        })
+        .then(response => {
+          console.log('resposta Geinfo', response.data);
+        });
+
+      // });
+    } catch (err) {
+      console.log(err);
+    }
+  }, [dataTableSector, infoSector, month]);
+  // }, [dataTableSector, infoSector]);
+
   const columns = [
-    { title: 'Nome', field: 'name', width: 300 },
-    { title: 'Peso', field: 'weight', hozAlign: 'center' },
-    { title: 'Resultado', field: 'result', hozAlign: 'center' },
-    {
-      title: 'Volume',
-      field: 'age',
-      hozAlign: 'left',
-      formatter: 'progress',
-    },
-    { title: 'Periodo', field: 'date', hozAlign: 'center' },
-    {
-      title: 'Avaliação',
-      field: 'rating',
-      hozAlign: 'center',
-      formatter: 'star',
-    },
+    { title: 'Nome', field: 'name' },
+    { title: 'Peso', field: 'weight', hozAlign: 'center', width: 100 },
+    { title: 'Meta', field: 'goal', hozAlign: 'center', width: 150 },
+    { title: 'Resultado', field: 'result', hozAlign: 'center', width: 150 },
+    // {
+    //   title: 'Volume',
+    //   field: 'age',
+    //   hozAlign: 'left',
+    //   formatter: 'progress',
+    //   width: 100,
+    // },
+    // { title: 'Periodo', field: 'date', hozAlign: 'center', width: 120 },
+    // {
+    //   title: 'Avaliação',
+    //   field: 'rating',
+    //   hozAlign: 'center',
+    //   formatter: 'star',
+    //   width: 120,
+    // },
     {
       title: 'Realizado',
       field: 'status',
       hozAlign: 'center',
       formatter: 'tickCross',
+      width: 120,
     },
   ];
 
@@ -462,7 +502,7 @@ const Table: React.FC<ITableSector> = ({ idSector, isOpen, month }) => {
     groupBy: ['type'],
     layout: 'fitColumns',
     movableRows: true,
-    groupStartOpen: false,
+    groupStartOpen: startOpen,
     groupHeader: [
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       function (value: any, count: any, data: any[], group: any) {

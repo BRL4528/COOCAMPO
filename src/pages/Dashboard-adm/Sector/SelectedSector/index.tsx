@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable import/no-duplicates */
 /* eslint-disable consistent-return */
 import React, { useEffect, useState } from 'react';
@@ -5,9 +6,10 @@ import React, { useEffect, useState } from 'react';
 import { format } from 'date-fns';
 import ptBR from 'date-fns/locale/pt-BR';
 
+import { Link } from 'react-router-dom';
 import ListGoalsOfSector from '../ListGoalsOfSector';
 
-import { api, apiGeninfo } from '../../../../services/api';
+import { api } from '../../../../services/api';
 import { CardeHeader, Navigation } from './styles';
 
 interface SectorSelected {
@@ -86,26 +88,16 @@ interface ISectorFormated {
 
 const SelectedSector: React.FC = () => {
   const parsed = window.location.search;
+  const path = window.location.pathname;
 
   const [sectorSelected, setSectorSelected] = useState<SectorSelected>();
   const [dataSector, setDataTableSector] = useState<ISectorFormated[]>([]);
 
   useEffect(() => {
     try {
-      apiGeninfo.get('/paineis').then(response => {
-        console.log('Geninfo', response.data);
-      });
-    } catch (err) {
-      console.log(err);
-    }
-  }, []);
-
-  useEffect(() => {
-    try {
       api
         .get(`sectors/show?sector_id=${parsed.substring(1)}`)
         .then(response => {
-          console.log('setor', response.data);
           setSectorSelected(response.data);
         });
     } catch (err) {
@@ -332,7 +324,6 @@ const SelectedSector: React.FC = () => {
               //   : 0;
             }
           }
-          // eslint-disable-next-line no-undef
 
           const goalUnit = {
             id: goaldata.goals.id,
@@ -367,13 +358,20 @@ const SelectedSector: React.FC = () => {
       <CardeHeader className="iconPrint">
         <div>
           <h2>{sectorSelected?.name}</h2>
+          <strong>{sectorSelected?.observations}</strong>
         </div>
       </CardeHeader>
       <Navigation>
         <div>
-          <p>Metas</p>
+          <Link to={`/sector-resume?${parsed.substring(1)}`}>
+            <p>Resumo</p>
+          </Link>
 
-          <p>Resultado</p>
+          <a href="#">
+            <p className={path === '/sector-selected' ? 'sublime' : ''}>
+              Detalhado
+            </p>
+          </a>
         </div>
       </Navigation>
 

@@ -12,6 +12,7 @@ import Email from '../pages/Dashboard-adm/Email';
 import Report from '../pages/Dashboard-adm/Report';
 import Sector from '../pages/Dashboard-adm/Sector';
 import SectorSelected from '../pages/Dashboard-adm/Sector/SelectedSector';
+import SectorResume from '../pages/Dashboard-adm/Sector/SectorResume';
 import AnalyticModuloAdm from '../pages/Dashboard-adm/AnalyticModule';
 import PainelAnalyticModulo from '../pages/Dashboard-adm/PainelAnalyticModule';
 import PainelSatisfactionSurvey from '../pages/AcessGlobal/PainelSatisfactionSurvey';
@@ -44,6 +45,12 @@ const Routes: React.FC = () => (
     <Route path="/e-mail" component={Email} isPrivate isAdmin />
     <Route path="/report" component={Report} isPrivate isAdmin />
     <Route path="/sector" component={Sector} isPrivate isAdmin />
+    <Route
+      path="/sector-resume/:sectorId?"
+      component={SectorResume}
+      isPrivate
+      isAdmin
+    />
     <Route
       path="/sector-selected/:sectorId?"
       component={SectorSelected}

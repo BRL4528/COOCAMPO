@@ -50,27 +50,6 @@ export const Container = styled.div`
     flex-direction: column;
     overflow: scroll;
   }
-  > span {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-
-    > button {
-      z-index: 0;
-      margin: 29px 0px 0px 15px;
-      height: 39px;
-      max-width: 98px;
-    }
-  }
-
-  fieldset {
-    background: none;
-    border: 0;
-    cursor: pointer;
-    transition: color 0.2s;
-    max-width: 200px;
-    max-height: 80px;
-  }
 `;
 
 export const CardeHeader = styled.div`
