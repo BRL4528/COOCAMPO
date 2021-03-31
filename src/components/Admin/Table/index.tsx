@@ -11,6 +11,9 @@ import { React15Tabulator } from 'react-tabulator';
 import { format } from 'date-fns';
 import ptBR from 'date-fns/locale/pt-BR';
 
+import { formatPrice } from '../../../utils/format';
+import typesTable from '../../../utils/types';
+
 import 'react-tabulator/lib/css/bootstrap/tabulator_bootstrap.min.css';
 import { api, apiGeninfo } from '../../../services/api';
 
@@ -412,18 +415,19 @@ const Table: React.FC<ITableSector> = ({
                         weight: '1%',
                         source: '2%',
                         observations: 'nada',
-                        type:
-                          dataGoal.indicador === '(PPR) % RESULTADO FINANCEIRO'
-                            ? 'Meta global'
-                            : 'Meta do setor',
+                        type: typesTable(dataGoal.indicador),
+                        // type:
+                        //   dataGoal.indicador === '(PPR) % RESULTADO FINANCEIRO'
+                        //     ? 'Meta global'
+                        //     : 'Meta do setor',
                         status_of_conclusion: false,
                         weightGoal:
                           dataGoal.indicador === '(PPR) % RESULTADO FINANCEIRO'
                             ? '80%'
                             : '10%',
 
-                        goal: String(dataGoal.orcado),
-                        result: String(dataGoal.realizado),
+                        goal: String(formatPrice(dataGoal.orcado)),
+                        result: String(formatPrice(dataGoal.realizado)),
                       };
                       formatedInfoSector.push(goalUnit);
                     });
