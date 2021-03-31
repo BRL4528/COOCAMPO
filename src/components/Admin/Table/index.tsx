@@ -371,7 +371,7 @@ const Table: React.FC<ITableSector> = ({
       if (infoSector) {
         console.log(infoSector);
         apiGeninfo
-          .post<IGeninfo>('/paineis', {
+          .post<IGeninfo>('/metas', {
             ano: Number(
               format(new Date(month), 'Y', {
                 locale: ptBR,
@@ -430,7 +430,14 @@ const Table: React.FC<ITableSector> = ({
               };
               formatedInfoSector.push(goalUnit);
             });
-            setDataTableSector(formatedInfoSector);
+
+            const tableFormated = [...dataTableSector];
+
+            const newTableFormated = tableFormated.map(dataTable => ({
+              ...dataTable,
+              formatedInfoSector,
+            }));
+            setDataTableSector(newTableFormated);
             // setDataTableSector([...dataTableSector, formatedInfoSector]);
           });
       }
@@ -438,7 +445,7 @@ const Table: React.FC<ITableSector> = ({
     } catch (err) {
       console.log(err);
     }
-  }, [infoSector, month]);
+  }, [dataTableSector, infoSector, month]);
   // }, [dataTableSector, infoSector]);
 
   const columns = [
