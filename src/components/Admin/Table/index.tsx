@@ -447,7 +447,8 @@ const Table: React.FC<ITableSector> = ({
     } catch (err) {
       console.log(err);
     }
-  }, [dataTableSector, infoSector, month]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [infoSector, month]);
   // }, [dataTableSector, infoSector]);
 
   const columns = [
