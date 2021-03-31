@@ -371,23 +371,25 @@ const Table: React.FC<ITableSector> = ({
       if (infoSector) {
         console.log(infoSector);
         apiGeninfo
-          .post<IGeninfo>('/metas', {
-            ano: Number(
-              format(new Date(month), 'Y', {
-                locale: ptBR,
-              }),
-            ),
-            mesFinal: Number(
-              format(new Date(month), 'M', {
-                locale: ptBR,
-              }),
-            ),
-            mesInicial: Number(
-              format(new Date(month), 'M', {
-                locale: ptBR,
-              }),
-            ),
-            painel: infoSector?.observations,
+          .get<IGeninfo>('/metas', {
+            params: {
+              ano: Number(
+                format(new Date(month), 'Y', {
+                  locale: ptBR,
+                }),
+              ),
+              mesFinal: Number(
+                format(new Date(month), 'M', {
+                  locale: ptBR,
+                }),
+              ),
+              mesInicial: Number(
+                format(new Date(month), 'M', {
+                  locale: ptBR,
+                }),
+              ),
+              painel: infoSector?.observations,
+            },
           })
           .then(res => {
             console.log('resposta Geinfo', res.data);
