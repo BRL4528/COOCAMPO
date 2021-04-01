@@ -426,8 +426,14 @@ const Table: React.FC<ITableSector> = ({
                             ? '80%'
                             : '10%',
 
-                        goal: String(formatPrice(dataGoal.orcado)),
-                        result: String(formatPrice(dataGoal.realizado)),
+                        goal:
+                          dataGoal.indicador === '(PPR) % RESULTADO FINANCEIRO'
+                            ? `${dataGoal.orcado}%`
+                            : String(formatPrice(dataGoal.orcado)),
+                        result:
+                          dataGoal.indicador === '(PPR) % RESULTADO FINANCEIRO'
+                            ? `${dataGoal.orcado}%`
+                            : String(formatPrice(dataGoal.realizado)),
                       };
                       formatedInfoSector.push(goalUnit);
                     });
@@ -452,8 +458,8 @@ const Table: React.FC<ITableSector> = ({
 
   const columns = [
     { title: 'Nome', field: 'name' },
-    { title: 'Peso', field: 'weight', hozAlign: 'center', width: 100 },
-    { title: 'Meta', field: 'goal', hozAlign: 'center', width: 150 },
+    { title: 'Peso', field: 'weight', width: 100 },
+    { title: 'Meta', field: 'goal', width: 150 },
     { title: 'Resultado', field: 'result', hozAlign: 'center', width: 150 },
     // {
     //   title: 'Volume',

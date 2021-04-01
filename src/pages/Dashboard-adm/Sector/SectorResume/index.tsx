@@ -121,7 +121,7 @@ const SelectedSector: React.FC = () => {
               idSector={parsed.substring(1)}
               isOpen
               startOpen
-              month="01/january/2021"
+              month={subject}
             />
           </>
         ) : (
