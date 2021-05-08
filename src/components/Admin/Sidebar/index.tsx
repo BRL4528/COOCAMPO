@@ -96,7 +96,7 @@ const Sidebar: React.FC<LayoutProps> = ({ pathname }) => {
             path="/error404-1"
             className="nav-item"
           >
-            <Link to="/error404-1" className="nav-link">
+            <Link to="/employers" className="nav-link">
               <FiUsers color="#f2c811" size={18} />
 
               <span className="link-text">Colaboradores</span>

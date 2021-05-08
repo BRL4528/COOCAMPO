@@ -19,6 +19,7 @@ import PainelSatisfactionSurvey from '../pages/AcessGlobal/PainelSatisfactionSur
 import Import from '../pages/Dashboard-adm/Imports';
 import Schedule from '../pages/Dashboard-adm/Schedule';
 import ScheduleOnly from '../pages/Dashboard-adm/Schedule/ScheduleUnic';
+import Employers from '../pages/Dashboard-adm/Employers';
 
 // Routes user no ADM
 import DashboardUser from '../pages/Dashboard-user';
@@ -71,6 +72,8 @@ const Routes: React.FC = () => (
       isPrivate
       isAdmin
     />
+    <Route path="/employers" component={Employers} isPrivate isAdmin />
+
     <Route
       path="/painel-module-analytical/:analyticId?"
       component={PainelAnalyticModulo}
