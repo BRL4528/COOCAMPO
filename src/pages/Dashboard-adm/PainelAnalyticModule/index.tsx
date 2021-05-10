@@ -206,7 +206,7 @@ const PainelAnalyticModule: React.FC = () => {
       setChecked(!checked);
 
       const status = {
-        status_of_conclusion: true,
+        status_of_conclusion: false,
       };
       // VERIFICAR COM DEV API SE PODE USAR ESTA ROTA
 
