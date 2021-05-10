@@ -47,8 +47,8 @@ const ModalEditAnalyticModule: React.FC<IModalProps> = ({
 
         addToast({
           type: 'success',
-          title: 'Email enviado!',
-          description: 'sucesso ao enviar email',
+          title: 'Ocorrência adicionada!',
+          description: 'sucesso ao ao adicionar a ocorrência',
         });
       } catch (err) {
         if (err instanceof Yup.ValidationError) {
@@ -61,8 +61,8 @@ const ModalEditAnalyticModule: React.FC<IModalProps> = ({
 
         addToast({
           type: 'info',
-          title: 'Erro ao enviar email',
-          description: 'Ocorreu um erro ao enviar email.',
+          title: 'Erro ao adicionar ocorrência',
+          description: 'Ocorreu um erro ao adicionar a ocorrência.',
         });
       }
     },
