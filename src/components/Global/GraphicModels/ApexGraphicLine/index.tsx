@@ -3,31 +3,34 @@ import React from 'react';
 import Chart from 'react-apexcharts';
 
 interface ColorStyles {
-  color: string;
+  color?: string;
+  width: number;
+  height: number;
+  resultData: number;
 }
 
-const GraphicBarApex: React.FC<ColorStyles> = ({ color }) => {
+const GraphicBarApex: React.FC<ColorStyles> = ({
+  width,
+  height,
+  resultData,
+}) => {
   const options = {
-    colors: [color],
+    colors: ['#77B6EA', '#545454'],
     series: [
       {
-        name: 'sales',
-
-        data: [30, 40, 35, 50, 49, 60, 70, 91, 125],
+        name: 'Metas',
+        data: [5.61, 5.43, 4.75, 4.77],
+      },
+      {
+        name: 'Resulatdos',
+        data: [4.85, 3.14, 2.86, resultData],
       },
     ],
+    dataLabels: {
+      enabled: true,
+    },
     xaxis: {
-      categories: [
-        'Adm Cent.',
-        'Vet.',
-        'Confi.',
-        'Contab.',
-        'Fab. 01',
-        'Fab. 02',
-        'Fat.',
-        'Control.',
-        'RH',
-      ],
+      categories: ['Janeiro', 'Fevereiro', 'Março', 'Abril'],
     },
   };
 
@@ -35,13 +38,12 @@ const GraphicBarApex: React.FC<ColorStyles> = ({ color }) => {
   // console.log(Chart);
   return (
     <div>
-      <h2>Resultado por setor</h2>
       <Chart
         options={options}
         series={options.series}
         type="line"
-        width={500}
-        height={320}
+        width={width}
+        height={height}
       />
     </div>
   );
