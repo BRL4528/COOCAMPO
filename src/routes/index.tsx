@@ -49,6 +49,7 @@ const Routes: React.FC = () => (
       path="/report"
       component={Report}
       isPrivate
+      isUser
       isAdmin
     />
     <Route
