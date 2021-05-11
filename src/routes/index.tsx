@@ -50,6 +50,7 @@ const Routes: React.FC = () => (
       path="/report-income-statement"
       component={IcomeStatement}
       isPrivate
+      isUser
       isAdmin
     />
     <Route path="/sector" component={Sector} isPrivate isAdmin />
