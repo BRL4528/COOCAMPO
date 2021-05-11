@@ -16,6 +16,8 @@ import {
   FiTerminal,
 } from 'react-icons/fi';
 
+import { useAuth } from '../../../hooks/auth';
+
 import logoImg from '../../../assets/logo.svg';
 
 import { OptionList } from './styles';
@@ -26,6 +28,8 @@ interface LayoutProps {
 }
 
 const Sidebar: React.FC<LayoutProps> = ({ pathname }) => {
+  const { user } = useAuth();
+  console.log(user);
   return (
     <>
       <nav className="navbar">
@@ -126,7 +130,7 @@ const Sidebar: React.FC<LayoutProps> = ({ pathname }) => {
             path="/error404-3"
             className="nav-item"
           >
-            <Link to="/error404-3" className="nav-link">
+            <Link to="/report" className="nav-link">
               <FiFileText color="#f2c811" size={18} />
 
               <span className="link-text">Relatório</span>
