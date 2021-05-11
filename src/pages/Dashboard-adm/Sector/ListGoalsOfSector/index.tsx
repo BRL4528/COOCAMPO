@@ -83,7 +83,12 @@ const ListGoalsOfSector: React.FC<ListGoalsOfSectorProps> = ({
           >
             <CardGraphic>
               <TableGoalsGlobal />
-              <GraphicSpeed title={title} width={320} dataValue={600} />
+              <GraphicSpeed
+                textValue="3.14%"
+                title={title}
+                width={320}
+                dataValue={600}
+              />
             </CardGraphic>
           </fieldset>
         </CardCenter>

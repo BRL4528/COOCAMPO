@@ -9,7 +9,7 @@ import '@brainhubeu/react-carousel/lib/style.css';
 import CardGraphic from '../../components/Global/GraphicModels/CardGraphic';
 
 import GraphicBar from '../../components/Global/GraphicModels/ApexGraphicBar';
-import GraphicLine from '../../components/Global/GraphicModels/ApexGraphicLine';
+// import GraphicLine from '../../components/Global/GraphicModels/ApexGraphicLine';
 import GraphicPie from '../../components/Global/GraphicModels/ApexGraphicPie';
 
 // import GraphicPie from '../../components/Global/GraphicModels/GraphicChartPie';
@@ -95,27 +95,32 @@ const Dashboard: React.FC = () => {
 
         <CardBodyGoals>
           <CardGraphicItem>
-            <GraphicBar title="Resulatdo Global" color="#240dac" />
+            <GraphicBar
+              result={30}
+              width={500}
+              height={300}
+              title="Resulatdo Global"
+              color="#240dac"
+            />
           </CardGraphicItem>
 
           <CardGraphicItem>
             <GraphicPie />
-          </CardGraphicItem>
-
-          <CardGraphicItem>
-            <GraphicLine color="#240dac" />
           </CardGraphicItem>
         </CardBodyGoals>
         <CardBodyGoals>
           <CardGraphicItem>
-            <GraphicBar title="Resulatdo Global" color="#240dac" />
+            <GraphicBar
+              result={30}
+              width={500}
+              height={300}
+              title="Resulatdo Global"
+              color="#240dac"
+            />
           </CardGraphicItem>
 
           <CardGraphicItem>
             <GraphicPie />
-          </CardGraphicItem>
-          <CardGraphicItem>
-            <GraphicLine color="#240dac" />
           </CardGraphicItem>
         </CardBodyGoals>
       </Conatiner>

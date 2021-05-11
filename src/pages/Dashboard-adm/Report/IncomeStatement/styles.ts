@@ -1,5 +1,9 @@
 import styled from 'styled-components';
 
+interface Colors {
+  color: string;
+}
+
 export const Container = styled.div`
   /* display: flex; */
   /* align-items: stretch; */
@@ -15,7 +19,7 @@ export const Container = styled.div`
   }
 
   .selected {
-    max-height: 400px;
+    max-height: 300px;
 
     /* transition: var(--transition-speed); */
 
@@ -45,6 +49,12 @@ export const Container = styled.div`
   }
 `;
 
+export const Header = styled.header`
+  text-align: center;
+  margin: 40px 0px 45px 0;
+  color: #433f59;
+`;
+
 export const CardeHeader = styled.div`
   width: 100%;
 
@@ -72,43 +82,23 @@ export const CardButton = styled.div`
     }
   }
 `;
-
-export const CardGraphic = styled.div`
+export const CardHeader = styled.div<Colors>`
   box-shadow: 0 0 14px 0 rgba(0, 0, 0, 0.02);
   border-radius: 2px;
   padding: 30px 10px 40px 30px;
-  max-height: 100px;
-
-  /* transition: max-height 10s; */
-  /* margin-left: 80px; */
-
+  min-height: 100px;
   display: flex;
-  /* align-items: center; */
-  flex-direction: column;
-
-  background: #fff;
-  border-radius: 6px;
+  flex-direction: row;
+  justify-content: space-between;
 
   transition: var(--transition-speed);
-  border-bottom: solid 3px rgba(28, 156, 217, 0.12);
 
-  /* padding: 20px; */
-  margin: 10px 20px 20px 0;
+  margin: 5px 37px 2px 0;
 
-  /* height: 350px;
-  width: 550px; */
-
-  div {
-    visibility: hidden;
-    opacity: 0;
-    transition: visibility 0s, opacity 0.5s linear;
-
-    /* transition: var(--transition-speed); */
-  }
+  ${({ color }: Colors): string => `background: ${color};`}
 
   :hover {
     transition: var(--transition-speed);
-    border-bottom: solid 3px #1c9cd9;
 
     box-shadow: 0px 5px 8px rgba(0, 0, 0, 0.15);
   }
@@ -128,19 +118,21 @@ export const CardGraphic = styled.div`
       overflow: initial !important;
       -webkit-print-color-adjust: exact;
     }
-    width: 100%;
+
+    /* width: 100%;
     height: 800px;
     display: flex;
     align-items: center;
     padding: 30px 20px 0px 10px;
-    border-bottom: solid 3px #1c9cd9;
+    border-bottom: solid 3px #1c9cd9; */
   }
 
   @media print {
-    .page-break {
-      margin-top: 1rem;
-      display: block;
-      page-break-before: auto;
+    margin-right: 0px;
+  }
+  @media print {
+    header {
+      color: #433f59;
     }
   }
 
@@ -148,6 +140,37 @@ export const CardGraphic = styled.div`
     size: auto;
     margin: 20mm;
   } */
+  span {
+    /* height: ; */
+    /* position: absolute; */
+    /* display: flex;
+    height: 200px; */
+    border-right: 3px solid #fff;
+  }
+`;
+
+export const Revenues = styled.div`
+  text-align: center;
+  color: #fff;
+  margin: 0 auto;
+  /* margin-left: 15px; */
+  max-width: 300px;
+  min-width: 300px;
+`;
+export const Result = styled.div`
+  text-align: center;
+  color: #fff;
+  margin: 0 auto;
+  max-width: 300px;
+  min-width: 300px;
+`;
+export const Finances = styled.div`
+  text-align: center;
+  color: #fff;
+  margin: 0 auto;
+  max-width: 300px;
+  min-width: 300px;
+  /* margin-right: 25px; */
 `;
 
 export const CardGraphicText = styled.span`
@@ -197,5 +220,40 @@ export const GraphicTitle = styled.section`
     margin-top: 5px;
     font-size: 14px;
     color: var(--text-primary);
+  }
+`;
+
+export const ContainerGraphics = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  /* max-width: 400px; */
+  margin-top: 40px;
+  margin-right: 45px;
+`;
+
+export const CardGraphicSpeed = styled.div`
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  margin-top: 40px;
+
+  .speedometer {
+    margin-top: 60px;
+  }
+
+  h3 {
+    color: #433f59;
+  }
+`;
+
+export const Footer = styled.footer`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-right: 80px;
+
+  img {
+    width: 220px;
   }
 `;

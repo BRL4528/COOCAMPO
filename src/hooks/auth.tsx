@@ -6,7 +6,18 @@ interface User {
   name: string;
   nickname: string;
   tag: string;
+  email: string;
+  dashboard?: string;
+  goals_and_sub_goals?: string;
+  sector?: string;
+  employers?: string;
+  module_analyze?: string;
+  imports?: string;
+  report?: string;
+  service_send_email?: string;
+  schedule?: string;
 }
+
 interface AuthState {
   token: string;
   user: User;

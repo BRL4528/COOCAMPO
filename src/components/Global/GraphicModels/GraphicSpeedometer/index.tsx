@@ -5,6 +5,7 @@ import ReactSpeedometer from 'react-d3-speedometer';
 interface PropsSpeed {
   dataValue: number;
   width: number;
+  textValue: string;
   title: {
     text1: string;
     text2: string;
@@ -17,6 +18,7 @@ const GraphicSpeedometer: React.FC<PropsSpeed> = ({
   dataValue,
   width,
   title,
+  textValue,
 }) => {
   return (
     <>
@@ -25,11 +27,11 @@ const GraphicSpeedometer: React.FC<PropsSpeed> = ({
         // maxSegmentLabels={2}
         // segments={10}
         width={width}
-        height={200}
+        height={300}
         paddingHorizontal={5}
         paddingVertical={5}
         // startColor="#1c9cd9"
-        currentValueText="3,14%"
+        currentValueText={textValue}
         segmentColors={[
           '#f1605b',
           'hsl(26.06741573033706, 100%, 65.09803921568627%)',

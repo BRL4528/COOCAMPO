@@ -1,17 +1,34 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 
 import Button from '../../../components/Global/Button';
 import { api } from '../../../services/api';
 import ModalCreateUser from './ModalCreateUser';
 
-import { CardButton, Container, CardeHeader } from './styles';
+import {
+  CardButton,
+  Container,
+  CardeHeader,
+  CardGraphic,
+  GraphicTitle,
+  CardGraphicText,
+} from './styles';
 
 interface IUser {
+  id?: string;
   name: string;
   nickname: string;
   password: string;
   tag: string;
   email: string;
+  dashboard?: string;
+  goals_and_sub_goals?: string;
+  sector?: string;
+  employers?: string;
+  module_analyze?: string;
+  imports?: string;
+  report?: string;
+  service_send_email?: string;
+  schedule?: string;
 }
 
 interface IOptions {
@@ -27,11 +44,17 @@ interface IHandleUser {
 
 const UserManagement: React.FC = () => {
   const [modalOpen, setModalOpen] = useState(false);
-  // const [dataUser, setDataUser] = useState<IHandleUser>();
+  const [dataAccess, setDataAccess] = useState<IUser[]>([]);
 
   const toggleModal = useCallback(() => {
     setModalOpen(!modalOpen);
   }, [modalOpen]);
+
+  useEffect(() => {
+    api.get('/accesses').then(response => {
+      setDataAccess(response.data);
+    });
+  }, []);
 
   const handleUser = useCallback((user: Omit<IHandleUser, ''>) => {
     try {
@@ -92,6 +115,21 @@ const UserManagement: React.FC = () => {
             </div>
           </CardButton>
         </CardeHeader>
+
+        {dataAccess.map(users => (
+          <CardGraphic>
+            <CardGraphicText>
+              <GraphicTitle>
+                <h3>{users.name}</h3>
+
+                <p>
+                  E-mail:
+                  {users.email}
+                </p>
+              </GraphicTitle>
+            </CardGraphicText>
+          </CardGraphic>
+        ))}
       </Container>
     </>
   );

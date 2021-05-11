@@ -10,6 +10,7 @@ import DashboardAdm from '../pages/Dashboard-adm';
 import SelectorFolders from '../pages/Dashboard-adm/GoalsSubgoals';
 import Email from '../pages/Dashboard-adm/Email';
 import Report from '../pages/Dashboard-adm/Report';
+import IcomeStatement from '../pages/Dashboard-adm/Report/IncomeStatement';
 import Sector from '../pages/Dashboard-adm/Sector';
 import SectorSelected from '../pages/Dashboard-adm/Sector/SelectedSector';
 import SectorResume from '../pages/Dashboard-adm/Sector/SectorResume';
@@ -45,6 +46,12 @@ const Routes: React.FC = () => (
     />
     <Route path="/e-mail" component={Email} isPrivate isAdmin />
     <Route path="/report" component={Report} isPrivate isAdmin />
+    <Route
+      path="/report-income-statement"
+      component={IcomeStatement}
+      isPrivate
+      isAdmin
+    />
     <Route path="/sector" component={Sector} isPrivate isAdmin />
     <Route
       path="/sector-resume/:sectorId?"
