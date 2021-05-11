@@ -5,47 +5,47 @@ import Chart from 'react-apexcharts';
 interface ColorStyles {
   color?: string;
   title: string;
+  width: number;
+  height: number;
+  result: number;
 }
 
-const GraphicBarApex: React.FC<ColorStyles> = ({ title }) => {
+const GraphicBarApex: React.FC<ColorStyles> = ({
+  title,
+  width,
+  height,
+  result,
+}) => {
   const options = {
     series: [
       {
         name: 'Resultado',
-        type: 'column',
-        data: [30, 40, 35, 50, 49, 60, 70, 91, 125],
-      },
-      {
-        name: 'Meta',
-        type: 'line',
-        data: [23, 42, 35, 27, 43, 22, 17, 31, 22],
+        data: [4.85, 3.14, 2.86, result],
       },
     ],
-    xaxis: {
-      categories: [
-        'Adm Cent.',
-        'Vet.',
-        'Confi.',
-        'Contab.',
-        'Fab. 01',
-        'Fab. 02',
-        'Fat.',
-        'Control.',
-        'RH',
-      ],
-    },
-    chart: {
-      height: 350,
-      type: 'line',
-    },
-    stroke: {
-      width: [0, 4],
+    plotOptions: {
+      bar: {
+        dataLabels: {
+          position: 'top', // top, center, bottom
+        },
+      },
     },
 
-    dataLabels: {
-      enabled: true,
-      enabledOnSeries: [1],
+    xaxis: {
+      categories: ['Janeiro', 'Fevereiro', 'Março', 'Abril'],
     },
+    // chart: {
+    //   height: 350,
+    //   type: 'line',
+    // },
+    // stroke: {
+    //   width: [0, 4],
+    // },
+
+    // dataLabels: {
+    //   enabled: true,
+    //   enabledOnSeries: [1],
+    // },
   };
 
   // const Item = chart.render();
@@ -56,9 +56,9 @@ const GraphicBarApex: React.FC<ColorStyles> = ({ title }) => {
       <Chart
         options={options}
         series={options.series}
-        type="line"
-        width={500}
-        height={320}
+        type="bar"
+        width={width}
+        height={height}
       />
     </div>
   );
