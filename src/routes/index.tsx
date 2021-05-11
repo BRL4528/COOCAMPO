@@ -45,7 +45,12 @@ const Routes: React.FC = () => (
       isAdmin
     />
     <Route path="/e-mail" component={Email} isPrivate isAdmin />
-    <Route path="/report" component={Report} isPrivate isAdmin />
+	<Route
+      path="/report"
+      component={Report}
+      isPrivate
+      isAdmin
+    />
     <Route
       path="/report-income-statement"
       component={IcomeStatement}
