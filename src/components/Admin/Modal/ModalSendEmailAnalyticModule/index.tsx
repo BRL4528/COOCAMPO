@@ -57,10 +57,8 @@ const ModalEditAnalyticModule: React.FC<IModalProps> = ({
   const { addToast } = useToast();
   const [subjectSchedules, setSubject] = useState('');
 
-  const [
-    initialDataAnalyticModule,
-    setInitialDataAnalyticModule,
-  ] = useState<IAnalyticModule>();
+  const [initialDataAnalyticModule, setInitialDataAnalyticModule] =
+    useState<IAnalyticModule>();
 
   useEffect(() => {
     if (isOpen) {

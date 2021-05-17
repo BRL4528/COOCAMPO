@@ -51,10 +51,8 @@ const ModalEditAnalyticModule: React.FC<IModalProps> = ({
   const [subject, setSubject] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const [
-    initialDataAnalyticModule,
-    setInitialDataAnalyticModule,
-  ] = useState<IAnalyticModule>();
+  const [initialDataAnalyticModule, setInitialDataAnalyticModule] =
+    useState<IAnalyticModule>();
 
   useEffect(() => {
     if (isOpen === false) {

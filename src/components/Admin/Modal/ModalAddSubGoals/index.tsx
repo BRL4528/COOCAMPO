@@ -37,10 +37,8 @@ const ModalAddFood: React.FC<IModalProps> = ({
   const formRef = useRef<FormHandles>(null);
   const { addToast } = useToast();
 
-  const [
-    dataInitialSubGoal,
-    setDataInitialSubGoal,
-  ] = useState<AddSubGoalsModal>();
+  const [dataInitialSubGoal, setDataInitialSubGoal] =
+    useState<AddSubGoalsModal>();
 
   useEffect(() => {
     if (isOpen === false) {

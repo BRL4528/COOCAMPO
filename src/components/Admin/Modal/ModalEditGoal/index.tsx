@@ -99,10 +99,8 @@ const ModalAddFood: React.FC<IModalProps> = ({
   const [currentSubGoals, setCurrentSubGoals] = useState<string[]>([]);
   const [dataSubGoals, setDataSubGoals] = useState<DataSubGoals[]>([]);
 
-  const [
-    dataAnalitycModuleOfGoal,
-    setDataAnalitycModuleOfGoal,
-  ] = useState<AnalitycOfGoals>();
+  const [dataAnalitycModuleOfGoal, setDataAnalitycModuleOfGoal] =
+    useState<AnalitycOfGoals>();
   const [selectedAnalyticItems, setSelectedAnalyticItems] = useState<string[]>(
     [],
   );
