@@ -29,6 +29,7 @@ import {
   CardGraphicText,
 } from './styles';
 import { api } from '../../../services/api';
+import { useAuth } from '../../../hooks/auth';
 
 interface ISector {
   id: string;
@@ -38,8 +39,22 @@ interface ISector {
   codccu?: string;
 }
 
+interface IDataSectorToUser {
+  access_id: string;
+  sector_id: string;
+  sector: {
+    id: string;
+    name: string;
+    leader: string;
+    branch: string;
+    observations?: string;
+    codccu?: string;
+  };
+}
+
 const SelectorFolders: React.FC = () => {
   const handle = useFullScreenHandle();
+  const { user } = useAuth();
 
   const componentRef = useRef<HTMLDivElement>(null);
 
@@ -99,9 +114,21 @@ const SelectorFolders: React.FC = () => {
   // );
 
   useEffect(() => {
-    api.get('/sectors').then(response => {
-      setDataUpdateSector(response.data);
-    });
+    if (user.tag !== 'admin') {
+      api
+        .get<IDataSectorToUser[]>(`/accesses-of-sectors/${user.id}`)
+        .then(response => {
+          const dataFormated = response.data.map(data => {
+            return data.sector;
+          });
+
+          setDataUpdateSector(dataFormated);
+        });
+    } else {
+      api.get('/sectors').then(response => {
+        setDataUpdateSector(response.data);
+      });
+    }
   }, [dataSector]);
 
   const handleSector = useCallback((sector: Omit<ISector, ''>) => {

@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 
 import Button from '../../../components/Global/Button';
+import { useAuth } from '../../../hooks/auth';
 import { api } from '../../../services/api';
 import ModalCreateUser from './ModalCreateUser';
 
@@ -43,6 +44,7 @@ interface IHandleUser {
 }
 
 const UserManagement: React.FC = () => {
+  const { user } = useAuth();
   const [modalOpen, setModalOpen] = useState(false);
   const [dataAccess, setDataAccess] = useState<IUser[]>([]);
 
@@ -56,9 +58,9 @@ const UserManagement: React.FC = () => {
     });
   }, []);
 
-  const handleUser = useCallback((user: Omit<IHandleUser, ''>) => {
+  const handleUser = useCallback((userInfo: Omit<IHandleUser, ''>) => {
     try {
-      const { userData, infoModules } = user;
+      const { userData, infoModules, infoSectors } = userInfo;
 
       api
         .post('/accesses', {
@@ -83,8 +85,16 @@ const UserManagement: React.FC = () => {
           ),
           schedule: Boolean(infoModules.find(el => el.value === 'schedule')),
         })
-        .then(response => {
-          console.log(response.data);
+        .then(res => {
+          console.log(res.data);
+          api
+            .post('/accesses-of-sectors/create-all', {
+              sectors: infoSectors,
+              access_id: user.id,
+            })
+            .then(response => {
+              console.log('resposta vinculo setor e usuario', response.data);
+            });
         });
     } catch (err) {
       console.log(err.message);

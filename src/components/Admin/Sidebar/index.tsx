@@ -67,8 +67,13 @@ const Sidebar: React.FC<LayoutProps> = ({ pathname }) => {
             </a>
           </li>
 
-          <OptionList pathname={pathname} path="/admin" className="nav-item">
-            <Link to="admin" className="nav-link">
+          <OptionList
+            pathname={pathname}
+            path="/dashboard"
+            className="nav-item"
+            visible={user.dashboard}
+          >
+            <Link to="dashboard" className="nav-link">
               <FiBarChart color="#f2c811" size={18} />
 
               <span className="link-text">Dashboard</span>
@@ -79,6 +84,7 @@ const Sidebar: React.FC<LayoutProps> = ({ pathname }) => {
             pathname={pathname}
             path="/goals-subgoals"
             className="nav-item"
+            visible={user.goals_and_sub_goals}
           >
             <Link to="goals-subgoals" className="nav-link">
               <FiLayers color="#f2c811" size={18} />
@@ -87,7 +93,12 @@ const Sidebar: React.FC<LayoutProps> = ({ pathname }) => {
             </Link>
           </OptionList>
 
-          <OptionList pathname={pathname} path="/sector" className="nav-item">
+          <OptionList
+            pathname={pathname}
+            path="/sector"
+            className="nav-item"
+            visible={user.sector}
+          >
             <Link to="sector" className="nav-link">
               <FiMapPin color="#f2c811" size={18} />
 
@@ -99,6 +110,7 @@ const Sidebar: React.FC<LayoutProps> = ({ pathname }) => {
             pathname={pathname}
             path="/error404-1"
             className="nav-item"
+            visible={user.employers}
           >
             <Link to="/employers" className="nav-link">
               <FiUsers color="#f2c811" size={18} />
@@ -111,6 +123,7 @@ const Sidebar: React.FC<LayoutProps> = ({ pathname }) => {
             pathname={pathname}
             path="/analyticModule"
             className="nav-item"
+            visible={user.module_analyze}
           >
             <Link to="analyticModule" className="nav-link">
               <FiSliders color="#f2c811" size={18} />
@@ -118,7 +131,12 @@ const Sidebar: React.FC<LayoutProps> = ({ pathname }) => {
             </Link>
           </OptionList>
 
-          <OptionList pathname={pathname} path="/import" className="nav-item">
+          <OptionList
+            pathname={pathname}
+            path="/import"
+            className="nav-item"
+            visible={user.imports}
+          >
             <Link to="/import" className="nav-link">
               <FiFilePlus color="#f2c811" size={18} />
               <span className="link-text">Importações</span>
@@ -129,6 +147,7 @@ const Sidebar: React.FC<LayoutProps> = ({ pathname }) => {
             pathname={pathname}
             path="/error404-3"
             className="nav-item"
+            visible={user.report}
           >
             <Link to="/report" className="nav-link">
               <FiFileText color="#f2c811" size={18} />
@@ -141,6 +160,7 @@ const Sidebar: React.FC<LayoutProps> = ({ pathname }) => {
             pathname={pathname}
             path="/error404-5"
             className="nav-item"
+            visible
           >
             <Link to="/error404-5" className="nav-link">
               <FiPieChart color="#f2c811" size={18} />
@@ -149,7 +169,12 @@ const Sidebar: React.FC<LayoutProps> = ({ pathname }) => {
             </Link>
           </OptionList>
 
-          <OptionList pathname={pathname} path="/schedule" className="nav-item">
+          <OptionList
+            pathname={pathname}
+            path="/schedule"
+            className="nav-item"
+            visible={user.schedule}
+          >
             <Link to="/schedule" className="nav-link">
               <FiTerminal color="#f2c811" size={18} />
 
@@ -157,7 +182,12 @@ const Sidebar: React.FC<LayoutProps> = ({ pathname }) => {
             </Link>
           </OptionList>
 
-          <OptionList pathname={pathname} path="/import" className="nav-item">
+          <OptionList
+            pathname={pathname}
+            path="/import"
+            className="nav-item"
+            visible
+          >
             <Link to="#" className="nav-link">
               <FiSettings color="#f2c811" size={18} />
 

@@ -7,15 +7,15 @@ interface User {
   nickname: string;
   tag: string;
   email: string;
-  dashboard?: string;
-  goals_and_sub_goals?: string;
-  sector?: string;
-  employers?: string;
-  module_analyze?: string;
-  imports?: string;
-  report?: string;
-  service_send_email?: string;
-  schedule?: string;
+  dashboard: boolean;
+  goals_and_sub_goals: boolean;
+  sector: boolean;
+  employers: boolean;
+  module_analyze: boolean;
+  imports: boolean;
+  report: boolean;
+  service_send_email: boolean;
+  schedule: boolean;
 }
 
 interface AuthState {

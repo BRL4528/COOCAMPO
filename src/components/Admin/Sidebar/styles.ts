@@ -3,6 +3,7 @@ import styled from 'styled-components';
 interface LayoutProps {
   pathname: string;
   path: string;
+  visible: boolean;
 }
 
 export const OptionList = styled.li<LayoutProps>`
@@ -14,11 +15,13 @@ export const OptionList = styled.li<LayoutProps>`
     background: var(--white-secondary);
   }
 
+  ${({ visible }: LayoutProps): string => (visible ? '' : 'display: none;')}
+
   ${({ path, pathname }: LayoutProps): string =>
     path === pathname ? 'border-left: solid 4px #f2c811;' : ''}
 
   ${({ path, pathname }: LayoutProps): string =>
-    path === pathname ? ' background: var(--white-primary);' : ''}
+    path === pathname ? 'background: var(--white-primary);' : ''}
 
   svg {
     ${({ path, pathname }: LayoutProps): string =>

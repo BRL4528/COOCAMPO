@@ -10,7 +10,7 @@ import SignIn from '../pages/SignIn';
 import PainelSatisfactionSurvey from '../pages/AcessGlobal/PainelSatisfactionSurvey';
 
 import LayoutAdm from '../pages/_Layouts/admin';
-import LayoutUser from '../pages/_Layouts/user';
+// import LayoutUser from '../pages/_Layouts/user';
 
 interface RouteProps extends ReactDOMRouteProps {
   isPrivate?: boolean;
@@ -22,7 +22,7 @@ interface RouteProps extends ReactDOMRouteProps {
 
 const Route: React.FC<RouteProps> = ({
   isPrivate = false,
-  isUser = false,
+  // isUser = false,
   isAdmin = false,
   isGlobal = false,
   component: Component,
@@ -31,62 +31,25 @@ const Route: React.FC<RouteProps> = ({
   const { user } = useAuth();
 
   if (user) {
-    switch (user.tag) {
-      case 'admin': {
-        return (
-          <ReactDOMRoute
-            {...rest}
-            render={({ location }) => {
-              return isPrivate === !!user && isAdmin ? (
-                <LayoutAdm path={location.pathname}>
-                  <Component />
-                </LayoutAdm>
-              ) : (
-                <Redirect
-                  to={{
-                    pathname: isPrivate ? '/' : '/admin',
-                    state: { from: location },
-                  }}
-                />
-              );
-            }}
-          />
-        );
-      }
-
-      case 'user': {
-        return (
-          <ReactDOMRoute
-            {...rest}
-            render={({ location }) => {
-              return isPrivate === !!user && isUser ? (
-                <LayoutUser path={location.pathname}>
-                  <Component />
-                </LayoutUser>
-              ) : (
-                <Redirect
-                  to={{
-                    pathname: isPrivate ? '/' : '/user',
-                    state: { from: location },
-                  }}
-                />
-              );
-            }}
-          />
-        );
-      }
-
-      default:
-        return isGlobal ? (
-          <ReactDOMRoute
-            {...rest}
-            path="/painel-satisfaction-survey/:analyticId?"
-            component={PainelSatisfactionSurvey}
-          />
-        ) : (
-          <ReactDOMRoute {...rest} path="/" exact component={SignIn} />
-        );
-    }
+    return (
+      <ReactDOMRoute
+        {...rest}
+        render={({ location }) => {
+          return isPrivate === !!user && isAdmin ? (
+            <LayoutAdm path={location.pathname}>
+              <Component />
+            </LayoutAdm>
+          ) : (
+            <Redirect
+              to={{
+                pathname: isPrivate ? '/' : '/dashboard',
+                state: { from: location },
+              }}
+            />
+          );
+        }}
+      />
+    );
   }
   return isGlobal ? (
     <ReactDOMRoute
@@ -97,6 +60,74 @@ const Route: React.FC<RouteProps> = ({
   ) : (
     <ReactDOMRoute {...rest} path="/" exact component={SignIn} />
   );
+
+  // if (user) {
+  //   switch (user.tag) {
+  //     case 'admin': {
+  //       return (
+  //         <ReactDOMRoute
+  //           {...rest}
+  //           render={({ location }) => {
+  //             return isPrivate === !!user && isAdmin ? (
+  //               <LayoutAdm path={location.pathname}>
+  //                 <Component />
+  //               </LayoutAdm>
+  //             ) : (
+  //               <Redirect
+  //                 to={{
+  //                   pathname: isPrivate ? '/' : '/admin',
+  //                   state: { from: location },
+  //                 }}
+  //               />
+  //             );
+  //           }}
+  //         />
+  //       );
+  //     }
+
+  //     case 'user': {
+  //       return (
+  //         <ReactDOMRoute
+  //           {...rest}
+  //           render={({ location }) => {
+  //             return isPrivate === !!user && isUser ? (
+  //               <LayoutUser path={location.pathname}>
+  //                 <Component />
+  //               </LayoutUser>
+  //             ) : (
+  //               <Redirect
+  //                 to={{
+  //                   pathname: isPrivate ? '/' : '/user',
+  //                   state: { from: location },
+  //                 }}
+  //               />
+  //             );
+  //           }}
+  //         />
+  //       );
+  //     }
+
+  //     default:
+  //       return isGlobal ? (
+  //         <ReactDOMRoute
+  //           {...rest}
+  //           path="/painel-satisfaction-survey/:analyticId?"
+  //           component={PainelSatisfactionSurvey}
+  //         />
+  //       ) : (
+  //         <ReactDOMRoute {...rest} path="/" exact component={SignIn} />
+  //       );
+  //   }
+  // }
+  // return isGlobal ? (
+  //   <ReactDOMRoute
+  //     {...rest}
+  //     path="/painel-satisfaction-survey/:analyticId?"
+  //     component={PainelSatisfactionSurvey}
+  //   />
+  // ) : (
+  //   <ReactDOMRoute {...rest} path="/" exact component={SignIn} />
+  // );
 };
 
 export default Route;

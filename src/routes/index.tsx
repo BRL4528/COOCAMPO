@@ -37,7 +37,7 @@ const Routes: React.FC = () => (
       isGlobal
     />
 
-    <Route path="/admin" component={DashboardAdm} isPrivate isAdmin />
+    <Route path="/dashboard" component={DashboardAdm} isPrivate isAdmin />
     <Route
       path="/goals-subgoals"
       component={SelectorFolders}
