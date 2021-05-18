@@ -1,8 +1,10 @@
-import React, { useCallback, useRef } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import { FiUser, FiLock } from 'react-icons/fi';
 import { FormHandles } from '@unform/core';
 import { Form } from '@unform/web';
 import * as Yup from 'yup';
+
+import { useLoading, Oval } from '@agney/react-loading';
 
 import { useAuth } from '../../hooks/auth';
 import { useToast } from '../../hooks/toast';
@@ -22,6 +24,9 @@ interface SignInFormData {
 
 const SignIn: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
+  const componentRef = useRef<HTMLDivElement>(null);
+
+  const [loadSignInUser, setloadSignInUser] = useState(false);
 
   const { signIn } = useAuth();
   const { addToast } = useToast();
@@ -29,6 +34,7 @@ const SignIn: React.FC = () => {
   const handleSubmit = useCallback(
     async (data: SignInFormData) => {
       try {
+        setloadSignInUser(true);
         formRef.current?.setErrors({});
 
         const schema = Yup.object().shape({
@@ -43,8 +49,10 @@ const SignIn: React.FC = () => {
           nickname: data.nickname,
           password: data.password,
         });
+        setloadSignInUser(false);
       } catch (err) {
         if (err instanceof Yup.ValidationError) {
+          setloadSignInUser(false);
           const errors = getValidationErrors(err);
 
           formRef.current?.setErrors(errors);
@@ -61,6 +69,11 @@ const SignIn: React.FC = () => {
     },
     [signIn, addToast],
   );
+
+  const { containerProps, indicatorEl } = useLoading({
+    loading: loadSignInUser,
+    indicator: <Oval />,
+  });
 
   return (
     <Container>
@@ -79,7 +92,15 @@ const SignIn: React.FC = () => {
             placeholder="Senha"
           />
 
-          <Button type="submit">Entrar</Button>
+          <Button type="submit" disabled={loadSignInUser}>
+            {loadSignInUser ? (
+              <div {...containerProps} ref={componentRef}>
+                {indicatorEl}
+              </div>
+            ) : (
+              'Entrar'
+            )}
+          </Button>
 
           <a href="forgot">Recuperar senha</a>
         </Form>

@@ -9,6 +9,10 @@ export const Container = styled.div`
 
   color: #433f59;
 
+  a {
+    text-decoration: none;
+  }
+
   strong {
     color: var(--text-primary);
     font-size: 14px;

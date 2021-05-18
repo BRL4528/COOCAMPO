@@ -3,6 +3,8 @@ import { shade } from 'polished';
 
 interface ContainerProps {
   groud?: boolean;
+  visible: boolean;
+  disabled?: boolean;
 }
 
 export const Container = styled.button<ContainerProps>`
@@ -17,6 +19,20 @@ export const Container = styled.button<ContainerProps>`
   font-weight: 500;
   margin-top: 16px;
   transition: background-color 0.2s;
+
+  svg {
+    width: 30px;
+  }
+
+  ${({ visible }: ContainerProps): string => (visible ? '' : 'display: none;')}
+
+  ${props =>
+    props.disabled &&
+    css`
+      cursor: not-allowed;
+      background: ${shade(0.2, '#f2c811')};
+      border: ${shade(0.2, '#f2c811')};
+    `}
 
   ${props =>
     props.groud &&
@@ -35,3 +51,21 @@ export const Container = styled.button<ContainerProps>`
     cursor: wait;
   }
 `;
+
+// export const CardButton = styled.div<ContainerProps>`
+//   display: ;
+//   align-items: center;
+//   justify-content: space-between;
+//   margin: 0 30px;
+
+//   div {
+//     min-width: 200px;
+//     margin: 0 10px 0 10px;
+//     /* transition: var(--transition-speed); */
+
+//     @media only screen and (max-width: 600px) {
+//       /* transition: var(--transition-speed); */
+//       display: none;
+//     }
+//   }
+// `;

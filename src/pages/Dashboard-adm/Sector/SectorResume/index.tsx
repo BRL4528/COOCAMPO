@@ -108,7 +108,7 @@ const SelectedSector: React.FC = () => {
               ]}
             />
           </fieldset>
-          <Button type="button" onClick={() => handleLoadingSectors()}>
+          <Button isUsed type="button" onClick={() => handleLoadingSectors()}>
             {loadingSectors ? 'Limpar' : 'Carregar'}
           </Button>
         </span>

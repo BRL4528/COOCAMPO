@@ -129,7 +129,7 @@ const SelectorFolders: React.FC = () => {
         setDataUpdateSector(response.data);
       });
     }
-  }, [dataSector]);
+  }, [dataSector, user.id, user.tag]);
 
   const handleSector = useCallback((sector: Omit<ISector, ''>) => {
     try {
@@ -156,6 +156,7 @@ const SelectorFolders: React.FC = () => {
         dataEditSector={dataEditSector}
         // setDataEditSector={setHandleEdit}
       />
+
       <Container>
         <CardeHeader>
           <div>

@@ -17,6 +17,7 @@ import {
   CardButton,
   TableContainerList,
 } from './styles';
+import { useAuth } from '../../../hooks/auth';
 
 interface IAnalyticModule {
   id: string;
@@ -29,6 +30,7 @@ interface IAnalyticModule {
 }
 
 const SelectorFolders: React.FC = () => {
+  const { user } = useAuth();
   const [modalOpen, setModalOpen] = useState(false);
   const [dataAnalytic, setDataAnalytic] = useState<IAnalyticModule>();
 
@@ -63,10 +65,16 @@ const SelectorFolders: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    api.get('/analysis-module').then(response => {
-      setDataAnalyticModule(response.data);
-    });
-  }, [dataAnalytic]);
+    if (user.tag !== 'admin') {
+      api.get(`/analysis-module/show?email=${user.email}`).then(response => {
+        setDataAnalyticModule(response.data);
+      });
+    } else {
+      api.get('/analysis-module').then(response => {
+        setDataAnalyticModule(response.data);
+      });
+    }
+  }, [dataAnalytic, user.email, user.tag]);
 
   const handleAnalytic = useCallback(
     (analytic: Omit<IAnalyticModule, 'status'>) => {

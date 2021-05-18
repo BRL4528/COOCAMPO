@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 
 import Button from '../../../components/Global/Button';
-import { useAuth } from '../../../hooks/auth';
 import { api } from '../../../services/api';
 import ModalCreateUser from './ModalCreateUser';
 
@@ -44,7 +43,6 @@ interface IHandleUser {
 }
 
 const UserManagement: React.FC = () => {
-  const { user } = useAuth();
   const [modalOpen, setModalOpen] = useState(false);
   const [dataAccess, setDataAccess] = useState<IUser[]>([]);
 
@@ -90,7 +88,7 @@ const UserManagement: React.FC = () => {
           api
             .post('/accesses-of-sectors/create-all', {
               sectors: infoSectors,
-              access_id: user.id,
+              access_id: res.data.id,
             })
             .then(response => {
               console.log('resposta vinculo setor e usuario', response.data);

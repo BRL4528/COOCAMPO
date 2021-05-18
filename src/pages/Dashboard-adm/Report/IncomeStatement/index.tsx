@@ -170,7 +170,7 @@ const SelectorFolders: React.FC = () => {
             <div>
               <ReactToPrint
                 trigger={() => (
-                  <Button className="iconPrint" type="button">
+                  <Button isUsed className="iconPrint" type="button">
                     Imprimir
                   </Button>
                 )}

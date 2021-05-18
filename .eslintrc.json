@@ -26,7 +26,6 @@
     ],
     "rules": {
       "prettier/prettier": ["error", { "usePrettierrc": true }], 
-      "end-of-line": "auto",
       "react-hooks/rules-of-hooks": "error",
       "react/jsx-props-no-spreading": "off",
       "react/prop-types": "off",

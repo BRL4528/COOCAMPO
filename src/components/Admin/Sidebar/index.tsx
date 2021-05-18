@@ -160,7 +160,7 @@ const Sidebar: React.FC<LayoutProps> = ({ pathname }) => {
             pathname={pathname}
             path="/error404-5"
             className="nav-item"
-            visible
+            visible={false}
           >
             <Link to="/error404-5" className="nav-link">
               <FiPieChart color="#f2c811" size={18} />
