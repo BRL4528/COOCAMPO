@@ -18,6 +18,8 @@ import enUS from 'date-fns/locale/en-US';
 import DayPicker, { DayModifiers } from 'react-day-picker';
 import 'react-day-picker/lib/style.css';
 
+// import Piker from 'react-month-picker';
+
 import { useLoading, Oval } from '@agney/react-loading';
 
 import { Form } from '@unform/web';
@@ -390,6 +392,7 @@ const PainelAnalyticModule: React.FC = () => {
                         <Button
                           onClick={() => handleChecked(dataAnalytic.id)}
                           type="submit"
+                          isUsed
                         >
                           Salvar
                         </Button>
