@@ -250,6 +250,7 @@ const ModalEditSector: React.FC<IModalProps> = ({
         const analyticModuleFiltred = analyticModule.find(element => {
           return element.id === selectedAnalyticItems[0];
         });
+        console.log('encontra módulo de analise', analyticModuleFiltred);
 
         // const route = analyticModule.find(
         //   analytic => analytic.id === selectedAnalyticItems[0],
@@ -276,7 +277,7 @@ const ModalEditSector: React.FC<IModalProps> = ({
           // Atualiza se houve alterações
         } else if (!(checked.length === currentGoals.length)) {
           console.log('Atualiza 01');
-          await api.delete(`/goals-of-sectors/${dataEditSector}`);
+          // await api.delete(`/goals-of-sectors/${dataEditSector}`);
 
           const res = {
             goals_ids: selectedGoalsItems,
@@ -304,6 +305,7 @@ const ModalEditSector: React.FC<IModalProps> = ({
         } else if (!(checked.length === selectedGoalsItems.length)) {
           console.log('Atualiza 02');
           await api.delete(`/goals-of-sectors/${dataEditSector}`);
+
           await api.post('/goals-of-sectors/create-all', {
             goals_ids: selectedGoalsItems,
             sector_id: dataEditSector,

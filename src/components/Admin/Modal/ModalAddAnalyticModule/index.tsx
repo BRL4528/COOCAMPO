@@ -132,10 +132,10 @@ const ModalAddFood: React.FC<IModalProps> = ({
           }}
           options={[
             {
-              value: 'satisfaction-survey',
+              value: 'satisfaction',
               label: 'Pesquisa de satisfação',
             },
-            { value: 'analytic-module-analytical', label: 'Módulo análitico' },
+            { value: 'analytical', label: 'Módulo análitico' },
           ]}
         />
         <p>Nome do representante</p>

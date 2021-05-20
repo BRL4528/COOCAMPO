@@ -29,7 +29,7 @@ interface LayoutProps {
 
 const Sidebar: React.FC<LayoutProps> = ({ pathname }) => {
   const { user } = useAuth();
-  console.log(user);
+
   return (
     <>
       <nav className="navbar">

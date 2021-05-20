@@ -56,6 +56,20 @@ interface IGoalsAnalytics {
     source: string;
     observations: string;
     type: string;
+
+    january?: number;
+    february?: number;
+    march?: number;
+    april?: number;
+    may?: number;
+    june?: number;
+    july?: number;
+    august?: number;
+    september?: number;
+    october?: number;
+    november?: number;
+    december?: number;
+
     sub_goals_of_goals: [
       {
         id: string;
@@ -85,6 +99,38 @@ interface ResultFormated {
   observations: string | undefined;
 }
 
+interface AnalyticModule {
+  name: string;
+}
+
+interface GoalSector {
+  id: string;
+  name: string;
+  status: string;
+  weight: string;
+  source: string;
+  observations: string;
+  type: string;
+
+  january?: number;
+  february?: number;
+  march?: number;
+  april?: number;
+  may?: number;
+  june?: number;
+  july?: number;
+  august?: number;
+  september?: number;
+  october?: number;
+  november?: number;
+  december?: number;
+}
+
+// interface DataVerifiqued {
+//   value: number;
+//   status: string;
+// }
+
 const PainelAnalyticModule: React.FC = () => {
   const componentRef = useRef<HTMLDivElement>(null);
   const formRef = useRef<FormHandles>(null);
@@ -97,8 +143,12 @@ const PainelAnalyticModule: React.FC = () => {
   const [selectedDate, setSelectedDate] = useState(new Date());
   // const [currentMonth, setCurrentMonth] = useState(new Date());
 
+  const [dataModuleAnalytic, setDataModuleAnalytic] = useState<AnalyticModule>({
+    name: 'Painel módulo de análise',
+  });
+
   const [loadingItens, setLoading] = useState(true);
-  const [idRelationSector, seIdRelationSector] = useState('');
+  // const [idRelationSector, seIdRelationSector] = useState('');
   const [checked, setChecked] = useState(true);
   const [grupChecked, setGrupChecked] = useState<string[]>([]);
   const [dataGoalsAnalytic, setDataGoalsAnalytic] = useState<IGoalsAnalytics[]>(
@@ -116,7 +166,6 @@ const PainelAnalyticModule: React.FC = () => {
 
   useEffect(() => {
     try {
-      console.log(parsed.slice(1));
       api
         .get(`goals-of-sectors?analyze_module_id=${parsed.slice(1)}`)
         .then(response => {
@@ -127,14 +176,20 @@ const PainelAnalyticModule: React.FC = () => {
               status_of_conclusion.push(item.id);
             }
           });
+
+          console.log('GET/goals-of-sectors?analyze_module_id=', response.data);
           setLoading(false);
           setGrupChecked(status_of_conclusion);
           setDataGoalsAnalytic(response.data);
         });
+
+      api.get(`analysis-module/show?id=${parsed.slice(1)}`).then(response => {
+        setDataModuleAnalytic(response.data);
+      });
     } catch (err) {
       console.log(err);
     }
-  }, [parsed]);
+  }, [parsed, selectedDate]);
 
   const handleopenCalendar = useCallback(() => {
     setOpenCalendar(!openCalendar);
@@ -207,27 +262,41 @@ const PainelAnalyticModule: React.FC = () => {
 
       setChecked(!checked);
 
-      const status = {
-        status_of_conclusion: false,
-      };
-      // VERIFICAR COM DEV API SE PODE USAR ESTA ROTA
+      // const status = {
+      //   status_of_conclusion: false,
+      // };
 
       await api.post('/results-of-sub-goals/create-all', resultFormated);
 
-      await api.put(
-        `/goals-of-sectors?goal_of_sector_id=${idRelationSector}`,
-        status,
-      );
+      // Utilizar para testes.
+      // console.log('POST/results-of-sub-goals/create-all', resultFormated);
+      // console.log(
+      //   `PUT/goals-of-sectors?goal_of_sector_id=${idRelationSector}`,
+      //   status,
+      // );
+      // console.log('data Selecionada', selectedDate);
+
+      // await api.put(
+      //   `/goals-of-sectors?goal_of_sector_id=${idRelationSector}`,
+      //   status,
+      // );
       // .then(response => {
       //   console.log(response.data);
       // });
+      // Atualiza o resultado do mes refente aos dados
+      await api.put(`goals/month?goal_id=${resultFormated.goal_id}`, {
+        month: resultFormated.month,
+        value: resultFormated.results_of_sub_goals.reduce((res, val) => {
+          return Number(val.weight) + Number(res);
+        }, 0),
+      });
     },
-    [checked, dataOccurrence?.observations, idRelationSector, selectedDate],
+    [checked, dataOccurrence?.observations, selectedDate],
   );
 
   const handleChecked = useCallback(
     (id: string) => {
-      seIdRelationSector(id);
+      // seIdRelationSector(id);
       const alreadySelected = grupChecked.findIndex(
         (item: string) => item === id,
       );
@@ -258,6 +327,93 @@ const PainelAnalyticModule: React.FC = () => {
     }
   }, []);
 
+  const handleVerifyMonthSelected = useCallback(
+    (goal: GoalSector) => {
+      const dateFormated = format(selectedDate, 'MMMM', {
+        locale: enUS,
+      }).toLowerCase();
+
+      switch (dateFormated) {
+        case 'january': {
+          if (goal.january) {
+            return 'selected';
+          }
+          return '0';
+        }
+        case 'february': {
+          if (goal.february) {
+            return 'selected';
+          }
+          return '0';
+        }
+        case 'march': {
+          if (goal.march) {
+            return 'selected';
+          }
+          return '0';
+        }
+        case 'april': {
+          if (goal.april) {
+            return 'selected';
+          }
+          return '0';
+        }
+        case 'may': {
+          if (goal.may) {
+            return 'selected';
+          }
+          return '0';
+        }
+        case 'june': {
+          if (goal.june) {
+            return 'selected';
+          }
+          return '0';
+        }
+        case 'july': {
+          if (goal.july) {
+            return 'selected';
+          }
+          return '0';
+        }
+        case 'august': {
+          if (goal.august) {
+            return 'selected';
+          }
+          return '0';
+        }
+        case 'september': {
+          if (goal.september) {
+            return 'selected';
+          }
+          return '0';
+        }
+        case 'october': {
+          if (goal.october) {
+            return 'selected';
+          }
+          return '0';
+        }
+        case 'november': {
+          if (goal.november) {
+            return 'selected';
+          }
+          return '0';
+        }
+        case 'december': {
+          if (goal.december) {
+            return 'selected';
+          }
+          return '0';
+        }
+        default: {
+          return '0';
+        }
+      }
+    },
+    [selectedDate],
+  );
+
   return (
     <>
       <ModalAddOccurrenceModule
@@ -267,7 +423,7 @@ const PainelAnalyticModule: React.FC = () => {
       />
       <Container>
         <header>
-          <h1>Painel módulo de análise</h1>
+          <h1>{dataModuleAnalytic.name}</h1>
         </header>
         <span>
           <button type="button" onClick={() => handleopenCalendar()}>
@@ -323,12 +479,21 @@ const PainelAnalyticModule: React.FC = () => {
                   >
                     <div
                       className={
-                        grupChecked.includes(dataAnalytic.id) ? 'selected' : ''
+                        grupChecked.includes(dataAnalytic.id)
+                          ? 'selected'
+                          : handleVerifyMonthSelected(dataAnalytic.goals)
                       }
                     >
                       <div>
                         <h2>
                           {dataAnalytic.sector.name}
+                          {handleVerifyMonthSelected(dataAnalytic.goals) ===
+                          '0' ? (
+                            ''
+                          ) : (
+                            <p>. (finalizado)</p>
+                          )}
+
                           <span>
                             {grupChecked.includes(dataAnalytic.id) ? (
                               <UseAnimations

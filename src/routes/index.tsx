@@ -32,7 +32,7 @@ const Routes: React.FC = () => (
   <Switch>
     <Route path="/" exact component={SignIn} />
     <Route
-      path="/painel-satisfaction-survey/:analyticId?"
+      path="/painel-module-satisfaction/:analyticId?"
       component={PainelSatisfactionSurvey}
       isGlobal
     />
