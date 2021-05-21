@@ -83,7 +83,7 @@ const ModalEditAnalyticModule: React.FC<IModalProps> = ({
         />
 
         <DivLeft>
-          <Button type="submit" data-testid="add-food-button">
+          <Button isUsed type="submit" data-testid="add-food-button">
             Salvar
           </Button>
         </DivLeft>
