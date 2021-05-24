@@ -8,6 +8,25 @@ export const Conatiner = styled.div`
   padding-left: 80px;
   z-index: 0;
   overflow-x: visible;
+
+  .cards {
+    display: flex;
+    background: red;
+
+    /* Put a card in the next row when previous cards take all width */
+    flex-wrap: wrap;
+
+    margin-left: -8px;
+    margin-right: -8px;
+  }
+
+  .cards__item {
+    /* There will be 4 cards per row */
+    flex-basis: 25%;
+
+    padding-left: 8px;
+    padding-right: 8px;
+  }
 `;
 export const CardItem = styled.div`
   display: flex;
