@@ -51,15 +51,24 @@ const Route: React.FC<RouteProps> = ({
       />
     );
   }
-  return isGlobal ? (
-    <ReactDOMRoute
-      {...rest}
-      path="/painel-satisfaction-survey/:analyticId?"
-      component={PainelSatisfactionSurvey}
-    />
-  ) : (
-    <ReactDOMRoute {...rest} path="/" exact component={SignIn} />
-  );
+  if (isGlobal) {
+    return (
+      <ReactDOMRoute
+        {...rest}
+        path="/painel-satisfaction-survey/:analyticId?"
+        component={PainelSatisfactionSurvey}
+      />
+    );
+  }
+  // return isGlobal ? (
+  //   <ReactDOMRoute
+  //     {...rest}
+  //     path="/painel-satisfaction-survey/:analyticId?"
+  //     component={PainelSatisfactionSurvey}
+  //   />
+  // ) : (
+  return <ReactDOMRoute {...rest} path="/" exact component={SignIn} />;
+  // );
 
   // if (user) {
   //   switch (user.tag) {

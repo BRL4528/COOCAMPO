@@ -1,11 +1,27 @@
 import styled from 'styled-components';
 import { shade } from 'polished';
 
-export const Container = styled.div`
-  height: 100vh;
-
+export const ContainerCard = styled.div`
   display: flex;
+  align-items: center;
+  justify-content: center;
+
+  height: 100vh;
+`;
+
+export const Container = styled.div`
+  background: #ffff;
+  width: 400px;
+  height: 500px;
+  padding: 25px;
+  display: flex;
+  border-radius: 6px;
   align-items: stretch;
+  transition: box-shadow 0.5s;
+
+  :hover {
+    box-shadow: 8px 5px 5px rgba(0, 0, 0, 0.07);
+  }
 `;
 
 export const Content = styled.div`
@@ -19,7 +35,7 @@ export const Content = styled.div`
   /* max-width: 700px; */
 
   img {
-    width: 30%;
+    width: 250px;
   }
 
   form {
@@ -27,7 +43,7 @@ export const Content = styled.div`
     width: 340px;
     text-align: center;
 
-    h1 {
+    h2 {
       margin-bottom: 24px;
       color: #433f59;
     }

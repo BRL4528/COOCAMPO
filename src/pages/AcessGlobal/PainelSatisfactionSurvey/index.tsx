@@ -102,6 +102,11 @@ interface Occurrence {
   observations?: string;
 }
 
+interface IObservations {
+  id: string;
+  observation: string;
+}
+
 const PainelAnalyticModule: React.FC = () => {
   const componentRef = useRef<HTMLDivElement>(null);
   SwiperCore.use([Navigation, Pagination, Scrollbar, A11y]);
@@ -113,7 +118,7 @@ const PainelAnalyticModule: React.FC = () => {
   const [modalOpenLow, setModalOpenLow] = useState(false);
   const [modalOpenHigh, setModalOpenHigh] = useState(false);
 
-  const [dataOccurrence, setOoccurrence] = useState<any[]>([]);
+  const [dataOccurrence, setOoccurrence] = useState<IObservations[]>([]);
   const [idOcurrence, setIdOcurrence] = useState('');
 
   const [openCalendar, setOpenCalendar] = useState(false);
@@ -211,11 +216,11 @@ const PainelAnalyticModule: React.FC = () => {
             result: separ[0] === '&' ? '10' : separ[0],
             id: separ[1],
           };
-
+          console.log('resultadoss', arrayFormat);
           returnFormated.push(arrayFormat);
         });
 
-        const result =
+        const resultMonth =
           returnFormated.reduce((acum, current) => {
             return acum + Number(current.result);
           }, 0) / returnFormated.length;
@@ -225,10 +230,12 @@ const PainelAnalyticModule: React.FC = () => {
           sector_id: dataGoalsAnalytic[0].sector.id,
           analyze_module_id: parsed.slice(1),
           date: selectedDate,
-          result,
-          observations: String(dataOccurrence),
+          result: JSON.stringify(returnFormated),
+          observations: JSON.stringify(dataOccurrence),
           email,
           model: email,
+          month: format(new Date(selectedDate), 'MMMM').toLowerCase(),
+          value: resultMonth,
         });
 
         const status = {
@@ -300,10 +307,14 @@ const PainelAnalyticModule: React.FC = () => {
       try {
         const temp = data;
 
-        setOoccurrence([
-          ...dataOccurrence,
-          `${temp.observations}#${idOcurrence}`,
-        ]);
+        const dataObservations = {
+          id: idOcurrence.substr(2),
+          observation: `${temp.observations}`,
+        };
+
+        console.log('veeerr', dataObservations);
+
+        setOoccurrence([...dataOccurrence, dataObservations]);
       } catch (err) {
         console.log(err);
       }
@@ -414,8 +425,8 @@ const PainelAnalyticModule: React.FC = () => {
                   <span>
                     <p>
                       - Fique atento quanto ao período vigente da pesquisa, pois
-                      a mesma tera inicio hoje dia <strong>09/03/2021</strong> e
-                      será fechada no dia <strong>16/03/2021</strong>.
+                      a mesma tera inicio hoje dia <strong>28/05/2021</strong> e
+                      será fechada no dia <strong>04/06/2021</strong>.
                     </p>
                   </span>
                 </div>
@@ -1007,6 +1018,8 @@ const PainelAnalyticModule: React.FC = () => {
               )}
               <footer>
                 <img src={logo} alt="Samasc" />
+
+                <p>Developed by Midas tech-corp</p>
               </footer>
             </Container>
           </SwiperSlide>

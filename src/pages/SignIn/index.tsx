@@ -15,7 +15,7 @@ import logoImg from '../../assets/logo.svg';
 import Input from '../../components/Global/Input';
 import Button from '../../components/Global/Button';
 
-import { Container, Content } from './styles';
+import { Container, Content, ContainerCard } from './styles';
 
 interface SignInFormData {
   nickname: string;
@@ -65,6 +65,7 @@ const SignIn: React.FC = () => {
           title: 'Erro na autenticação',
           description: 'Ocorreu um erro ao fazer login, cheque as credenciais.',
         });
+        setloadSignInUser(false);
       }
     },
     [signIn, addToast],
@@ -76,36 +77,38 @@ const SignIn: React.FC = () => {
   });
 
   return (
-    <Container>
-      <Content>
-        <img src={logoImg} alt="Samasc" />
+    <ContainerCard>
+      <Container>
+        <Content>
+          <img src={logoImg} alt="Samasc" />
 
-        <Form ref={formRef} onSubmit={handleSubmit}>
-          <h1>Realize seu login</h1>
+          <Form ref={formRef} onSubmit={handleSubmit}>
+            <h2>Realize seu login</h2>
 
-          <Input name="nickname" icon={FiUser} placeholder="Usuário" />
+            <Input name="nickname" icon={FiUser} placeholder="Usuário" />
 
-          <Input
-            name="password"
-            icon={FiLock}
-            type="password"
-            placeholder="Senha"
-          />
+            <Input
+              name="password"
+              icon={FiLock}
+              type="password"
+              placeholder="Senha"
+            />
 
-          <Button type="submit" disabled={loadSignInUser}>
-            {loadSignInUser ? (
-              <div {...containerProps} ref={componentRef}>
-                {indicatorEl}
-              </div>
-            ) : (
-              'Entrar'
-            )}
-          </Button>
+            <Button type="submit" disabled={loadSignInUser}>
+              {loadSignInUser ? (
+                <div {...containerProps} ref={componentRef}>
+                  {indicatorEl}
+                </div>
+              ) : (
+                'Entrar'
+              )}
+            </Button>
 
-          <a href="forgot">Recuperar senha</a>
-        </Form>
-      </Content>
-    </Container>
+            <a href="forgot">Recuperar senha</a>
+          </Form>
+        </Content>
+      </Container>
+    </ContainerCard>
   );
 };
 

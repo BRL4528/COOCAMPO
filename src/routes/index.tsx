@@ -34,8 +34,7 @@ const Routes: React.FC = () => (
     <Route
       path="/painel-module-satisfaction/:analyticId?"
       component={PainelSatisfactionSurvey}
-      isPrivate
-      isAdmin
+      isGlobal
     />
 
     <Route path="/dashboard" component={DashboardAdm} isPrivate isAdmin />

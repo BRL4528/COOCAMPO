@@ -144,10 +144,13 @@ export const Container = styled.div`
   }
 
   footer {
+    display: flex;
+    justify-content: space-between;
+    padding: 17px;
     margin: auto;
     width: 100%;
     bottom: 0;
-    position: fixed;
+    /* position: fixed; */
 
     img {
       width: 180px;
