@@ -425,8 +425,8 @@ const PainelAnalyticModule: React.FC = () => {
                   <span>
                     <p>
                       - Fique atento quanto ao período vigente da pesquisa, pois
-                      a mesma tera inicio hoje dia <strong>28/05/2021</strong> e
-                      será fechada no dia <strong>04/06/2021</strong>.
+                      a mesma tera inicio dia <strong>28/05/2021</strong> e
+                      será fechada no dia <strong>07/06/2021</strong>.
                     </p>
                   </span>
                 </div>
