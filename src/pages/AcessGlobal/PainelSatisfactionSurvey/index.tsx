@@ -153,9 +153,9 @@ const PainelAnalyticModule: React.FC = () => {
       api
         .get(`goals-of-sectors?analyze_module_id=${parsed.slice(1)}`)
         .then(response => {
-          const status_of_conclusion = localStorage.getItem(
-            '@Samasc:statusSuvey',
-          );
+          // const status_of_conclusion = localStorage.getItem(
+          //   '@Samasc:statusSuvey',
+          // );
           // const status_of_conclusion: React.SetStateAction<string[]> = [];
 
           // response.data.forEach(function (item: IGoalsAnalytics) {
@@ -164,7 +164,7 @@ const PainelAnalyticModule: React.FC = () => {
           //   }
           // });
           setLoading(false);
-          setGrupChecked(Boolean(status_of_conclusion));
+          setGrupChecked(false);
           setDataGoalsAnalytic(response.data);
         });
     } catch (err) {
