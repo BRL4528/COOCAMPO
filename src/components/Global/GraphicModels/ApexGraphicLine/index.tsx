@@ -19,18 +19,18 @@ const GraphicBarApex: React.FC<ColorStyles> = ({
     series: [
       {
         name: 'Metas',
-        data: [5.61, 5.43, 4.75, 4.77],
+        data: [5.61, 5.43, 4.75, 4.77, 4.45],
       },
       {
         name: 'Resulatdos',
-        data: [4.85, 3.14, 2.86, resultData],
+        data: [4.85, 3.14, 2.86, 2.97, resultData],
       },
     ],
     dataLabels: {
       enabled: true,
     },
     xaxis: {
-      categories: ['Janeiro', 'Fevereiro', 'Março', 'Abril'],
+      categories: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio'],
     },
   };
 

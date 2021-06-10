@@ -7,7 +7,8 @@ import GraphicLine from '../../../../components/Global/GraphicModels/ApexGraphic
 
 import { formatPrice } from '../../../../utils/format';
 
-import logo from '../../../../assets/logo.svg';
+import logo from '../../../../assets/logo.png';
+import logo2 from '../../../../assets/logo2.png';
 
 // import Header from '../../../components/Header';
 // import Sidebard from '../../../components/Sidebar';
@@ -52,6 +53,9 @@ interface IDataHeader {
   percentageLiquid: number;
   goalLiquid: number;
   resultLiquid: number;
+  resultMonth: number;
+  liquidMonth: number;
+  percentageLiquidMonth: number;
 }
 
 const title = {
@@ -68,6 +72,9 @@ const SelectorFolders: React.FC = () => {
     percentageLiquid: 0,
     goalLiquid: 0,
     resultLiquid: 0,
+    resultMonth: 0,
+    liquidMonth: 0,
+    percentageLiquidMonth: 0,
   });
 
   useEffect(() => {
@@ -81,6 +88,7 @@ const SelectorFolders: React.FC = () => {
         },
       })
       .then(res => {
+        console.log(res);
         // Calculando o faturamento líquido
         const resultRevenues = res.data.response.filter(
           el => el.indicador === '(PPR) FATURAMENTO LÍQUIDO',
@@ -93,6 +101,11 @@ const SelectorFolders: React.FC = () => {
         const resultRevenuesFormated = resultRevenues.reduce(
           (total, number) => total + number.realizado,
           0,
+        );
+
+        // Calculando o faturamento líquido do mês
+        const resultRevenuesMonth = res.data.response.filter(
+          el => el.indicador === '(PPR) FATURAMENTO LÍQUIDO' && el.mes === 5,
         );
 
         // Calculando do resultado liquido
@@ -109,11 +122,26 @@ const SelectorFolders: React.FC = () => {
           0,
         );
 
+        // Calculando do resultado liquido
+        const resultLiquidMonth = res.data.response.filter(
+          el => el.indicador === '(PPR) RESULTADO LÍQUIDO' && el.mes === 5,
+        );
+
         const resultFinances = {
           goalRevenues: goaltRevenuesFormated,
           resultRevenues: resultRevenuesFormated,
+
+          resultMonth: resultRevenuesMonth[0].realizado,
+
           percentageRevenues: (goaltFormated / goaltRevenuesFormated) * 100,
           percentageLiquid: (resultFormated / resultRevenuesFormated) * 100,
+          percentageLiquidMonth:
+            (resultLiquidMonth[0].realizado /
+              resultRevenuesMonth[0].realizado) *
+            100,
+
+          liquidMonth: resultLiquidMonth[0].realizado,
+
           goalLiquid: goaltFormated,
           resultLiquid: resultFormated,
         };
@@ -175,14 +203,14 @@ const SelectorFolders: React.FC = () => {
                   </Button>
                 )}
                 content={() => handlePrint('print')}
-                documentTitle="Demontrativo-março/2021"
+                documentTitle="Demontrativo-maio-2021"
               />
             </div>
           </CardButton>
         </CardeHeader>
         <div id="print">
           <Header>
-            <h1>Demonstrativo do Resultado - Abril 2021</h1>
+            <h1>Demonstrativo do Resultado - Maio 2021</h1>
           </Header>
           <CardHeader color="#0B85BD">
             <Revenues>
@@ -243,6 +271,36 @@ const SelectorFolders: React.FC = () => {
             </Finances>
           </CardHeader>
 
+          <CardHeader color="#e2c90a">
+            <Revenues>
+              <h3>Result. de fat. líquido - Maio</h3>
+              <h1>
+                {formatPrice(
+                  dataHeader?.resultMonth ? dataHeader?.resultMonth : 0,
+                )}
+              </h1>
+            </Revenues>
+            <span />
+            <Result>
+              <h3>Resultado líquido - Maio</h3>
+              <h1>
+                {formatPrice(
+                  dataHeader?.liquidMonth ? dataHeader?.liquidMonth : 0,
+                )}
+              </h1>
+            </Result>
+            <span />
+            <Finances>
+              <h3>Resultado financeiro - Maio</h3>
+              <h1>
+                {dataHeader?.percentageLiquidMonth
+                  ? dataHeader?.percentageLiquidMonth.toFixed(2)
+                  : 0}
+                %
+              </h1>
+            </Finances>
+          </CardHeader>
+
           <ContainerGraphics>
             <CardGraphicSpeed>
               <h3>Alcance PPRS</h3>
@@ -278,6 +336,7 @@ const SelectorFolders: React.FC = () => {
             <p>MCorp</p>
             <div>
               <img src={logo} alt="Samasc" />
+              <img src={logo2} alt="Samasc" />
             </div>
           </Footer>
         </div>

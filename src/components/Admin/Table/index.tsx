@@ -180,6 +180,7 @@ const Table: React.FC<ITableSector> = ({
                     );
 
                     const monthFormated = month.split('/')[1];
+                    console.log('RESULTADO', resultFiltered);
                     switch (monthFormated) {
                       case 'january': {
                         const responseData = {

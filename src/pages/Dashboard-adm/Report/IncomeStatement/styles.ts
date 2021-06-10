@@ -8,7 +8,7 @@ export const Container = styled.div`
   /* display: flex; */
   /* align-items: stretch; */
 
-  margin-top: 12px;
+  margin-top: 2px;
   margin-left: 8%;
 
   color: #433f59;
@@ -62,7 +62,7 @@ export const CardeHeader = styled.div`
   align-items: center;
   justify-content: space-between;
 
-  margin-bottom: 40px;
+  margin-bottom: 30px;
 `;
 
 export const CardButton = styled.div`
@@ -85,8 +85,9 @@ export const CardButton = styled.div`
 export const CardHeader = styled.div<Colors>`
   box-shadow: 0 0 14px 0 rgba(0, 0, 0, 0.02);
   border-radius: 2px;
-  padding: 30px 10px 40px 30px;
-  min-height: 100px;
+  padding: 20px 10px 20px 30px;
+  min-height: 80px;
+  max-height: 120px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -102,6 +103,7 @@ export const CardHeader = styled.div<Colors>`
 
     box-shadow: 0px 5px 8px rgba(0, 0, 0, 0.15);
   }
+  box-shadow: 0px 5px 8px rgba(0, 0, 0, 0.15);
 
   @media all {
     color: #433f59;
@@ -228,7 +230,7 @@ export const ContainerGraphics = styled.div`
   flex-direction: row;
   justify-content: space-between;
   /* max-width: 400px; */
-  margin-top: 40px;
+  margin-top: 5px;
   margin-right: 45px;
 `;
 
@@ -251,9 +253,14 @@ export const Footer = styled.footer`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-right: 80px;
+  margin-right: 5px;
+  color: #fff;
 
-  img {
-    width: 220px;
+  div {
+    display: flex;
+    align-items: center;
+    img {
+      width: 220px;
+    }
   }
 `;
