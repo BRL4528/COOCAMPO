@@ -209,7 +209,7 @@ const SelectorFolders: React.FC = () => {
           </CardButton>
         </CardeHeader>
         <div id="print">
-          <Header>
+          <Header className="headerPrint">
             <h1>Demonstrativo do Resultado - Maio 2021</h1>
           </Header>
           <CardHeader color="#0B85BD">
@@ -243,7 +243,7 @@ const SelectorFolders: React.FC = () => {
           </CardHeader>
           <CardHeader color="#0BBD60">
             <Revenues>
-              <h3>Resultado de faturamento líquido</h3>
+              <h3>Faturamento líquido - Acumulado</h3>
               <h1>
                 {formatPrice(
                   dataHeader?.resultRevenues ? dataHeader?.resultRevenues : 0,
@@ -252,7 +252,7 @@ const SelectorFolders: React.FC = () => {
             </Revenues>
             <span />
             <Result>
-              <h3>Resultado líquido</h3>
+              <h3>Resultado líquido - Acumulado</h3>
               <h1>
                 {formatPrice(
                   dataHeader?.resultLiquid ? dataHeader?.resultLiquid : 0,
@@ -273,7 +273,7 @@ const SelectorFolders: React.FC = () => {
 
           <CardHeader color="#e2c90a">
             <Revenues>
-              <h3>Result. de fat. líquido - Maio</h3>
+              <h3>Faturamento líquido - Maio</h3>
               <h1>
                 {formatPrice(
                   dataHeader?.resultMonth ? dataHeader?.resultMonth : 0,

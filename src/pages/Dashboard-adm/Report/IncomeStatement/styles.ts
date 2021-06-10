@@ -51,7 +51,7 @@ export const Container = styled.div`
 
 export const Header = styled.header`
   text-align: center;
-  margin: 40px 0px 45px 0;
+  margin: 20px 0px 25px 0;
   color: #433f59;
 `;
 
@@ -62,7 +62,7 @@ export const CardeHeader = styled.div`
   align-items: center;
   justify-content: space-between;
 
-  margin-bottom: 30px;
+  margin-bottom: 50px;
 `;
 
 export const CardButton = styled.div`
@@ -254,6 +254,7 @@ export const Footer = styled.footer`
   align-items: center;
   justify-content: space-between;
   margin-right: 5px;
+  margin-top: -30px;
   color: #fff;
 
   div {
