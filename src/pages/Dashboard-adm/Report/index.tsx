@@ -50,6 +50,18 @@ const SelectorFolders: React.FC = () => {
             </CardGraphicText>
           </CardGraphic>
         </Link>
+
+        <Link to="/report-satisfaction-result">
+          <CardGraphic>
+            <CardGraphicText>
+              <GraphicTitle>
+                <h3>Pesquisa de satisfação</h3>
+
+                <p>Setor - Tecnologia da informação</p>
+              </GraphicTitle>
+            </CardGraphicText>
+          </CardGraphic>
+        </Link>
       </Container>
     </>
   );

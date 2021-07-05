@@ -105,6 +105,18 @@ export default createGlobalStyle`
   }
 }
 
+@media print {
+    #noPrint {
+      display: none;
+    }
+    #print {
+      width: 100%;
+      height: 100vh;
+    }
+  }
+
+
+
 .select-react {
   font-size: 10;
 }

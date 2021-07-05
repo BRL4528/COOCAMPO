@@ -1,163 +1,66 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import ReactToPrint from 'react-to-print';
+import React, { useCallback, useRef, useState } from 'react';
+import { Report } from 'powerbi-report-component';
+import { useLoading, Oval } from '@agney/react-loading';
 import Button from '../../../../components/Global/Button';
-import GraphicSpeed from '../../../../components/Global/GraphicModels/GraphicSpeedometer';
-import GraphicBar from '../../../../components/Global/GraphicModels/ApexGraphicBar';
-import GraphicLine from '../../../../components/Global/GraphicModels/ApexGraphicLine';
 
-import { formatPrice } from '../../../../utils/format';
+import { CardButton, CardeHeader, Container } from './styles';
 
-// import logo from '../../../../assets/logo.svg';
-
-// import Header from '../../../components/Header';
-// import Sidebard from '../../../components/Sidebar';
-
-import { apiGeninfo } from '../../../../services/api';
-
-import {
-  CardButton,
-  CardeHeader,
-  CardHeader,
-  // CardGraphicText,
-  Container,
-  // GraphicTitle,
-  Revenues,
-  Result,
-  Finances,
-  CardGraphicSpeed,
-  ContainerGraphics,
-  Header,
-  Footer,
-} from './styles';
-
-interface IDataGeinfo {
-  response: [
-    {
-      painel: string;
-      indicador: string;
-      ano: number;
-      mes: number;
-      orcado: number;
-      percentual: 0;
-      realizado: number;
-      variacao: number;
-    },
-  ];
-}
-
-interface IDataHeader {
-  goalRevenues: number;
-  resultRevenues: number;
-  percentageRevenues: number;
-  percentageLiquid: number;
-  goalLiquid: number;
-  resultLiquid: number;
-}
-
-const title = {
-  text1: '0',
-  text2: '1 Sal.Base',
-  text3: '1,5 Sal.Base',
-  text4: '2 Sal.Base',
-};
 const SelectorFolders: React.FC = () => {
-  const [dataHeader, setDataHeader] = useState<IDataHeader>({
-    goalRevenues: 0,
-    resultRevenues: 0,
-    percentageRevenues: 0,
-    percentageLiquid: 0,
-    goalLiquid: 0,
-    resultLiquid: 0,
+  const [loadSignInUser, setloadSignInUser] = useState(true);
+
+  const componentRef = useRef<HTMLDivElement>(null);
+  // const [report, embed] = useReport();
+
+  const handleLoaded = useCallback(() => {
+    setloadSignInUser(false);
+  }, []);
+
+  const { containerProps, indicatorEl } = useLoading({
+    loading: loadSignInUser,
+    indicator: <Oval />,
   });
 
-  useEffect(() => {
-    apiGeninfo
-      .get<IDataGeinfo>('/metas', {
-        params: {
-          ano: 2021,
-          mesInicial: 1,
-          mesFinal: 4,
-          painel: 'PPR Adm Central',
-        },
-      })
-      .then(res => {
-        // Calculando o faturamento líquido
-        const resultRevenues = res.data.response.filter(
-          el => el.indicador === '(PPR) FATURAMENTO LÍQUIDO',
-        );
+  const layoutSettings = {
+    width: '100%',
+    border: 'none',
+    height: '100vh',
+    margin: '0',
+  };
 
-        const goaltRevenuesFormated = resultRevenues.reduce(
-          (total, number) => total + number.orcado,
-          0,
-        );
-        const resultRevenuesFormated = resultRevenues.reduce(
-          (total, number) => total + number.realizado,
-          0,
-        );
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  // const myReportConfig: any = {
+  //   embedType: 'report',
+  //   tokenType: 'Aad',
+  //   accessToken:
+  //     'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6Im5PbzNaRHJPRFhFSzFqS1doWHNsSFJfS1hFZyIsImtpZCI6Im5PbzNaRHJPRFhFSzFqS1doWHNsSFJfS1hFZyJ9.eyJhdWQiOiJodHRwczovL2FuYWx5c2lzLndpbmRvd3MubmV0L3Bvd2VyYmkvYXBpIiwiaXNzIjoiaHR0cHM6Ly9zdHMud2luZG93cy5uZXQvY2Y1ZDI0YTMtNGU3ZS00ZjgzLWIzY2QtYTk2MzkwYjE2MGFmLyIsImlhdCI6MTYyNTUwMzk2MywibmJmIjoxNjI1NTAzOTYzLCJleHAiOjE2MjU1MDc4NjMsImFjY3QiOjAsImFjciI6IjEiLCJhaW8iOiJBVlFBcS84VEFBQUFtUE5qNkJPdjY2ekFSOXVDNW40cXpsMThNdERPWTdCSThuNXlUQXp5SVJxd2svL295MlBsdjRhNnN3M3NON0J2TWF6RU90UGkwdXRmOGVBUnJqVG5uMzJQeTdzYnBLdFFmdk1wL1VEc2x4MD0iLCJhbXIiOlsicHdkIiwibWZhIl0sImFwcGlkIjoiODcxYzAxMGYtNWU2MS00ZmIxLTgzYWMtOTg2MTBhN2U5MTEwIiwiYXBwaWRhY3IiOiIyIiwiaXBhZGRyIjoiMTc3LjIwMS42Ny4xNzgiLCJuYW1lIjoiUEJJIEVtYmVkIiwib2lkIjoiYTAyZDQ0MWUtYjAzNy00OGM0LTk3ZDctNTQyZWZhNWFhZTRiIiwicHVpZCI6IjEwMDMyMDAxMTA4NjYyREUiLCJyaCI6IjAuQVZvQW95UmR6MzVPZzAtenphbGprTEZncnc4QkhJZGhYckZQZzZ5WVlRcC1rUkJhQVBZLiIsInNjcCI6InVzZXJfaW1wZXJzb25hdGlvbiIsInN1YiI6IjUwSDR0TlQ5ZU1qSDhRMGw1aEQ0SVVEdi1McERHYTI0ZnBjTndqcnpWakEiLCJ0aWQiOiJjZjVkMjRhMy00ZTdlLTRmODMtYjNjZC1hOTYzOTBiMTYwYWYiLCJ1bmlxdWVfbmFtZSI6InBiaWVtYmVkQGJydW5vZ3VpbWFyYWVzY2FydmFsaG9zZ29oby5vbm1pY3Jvc29mdC5jb20iLCJ1cG4iOiJwYmllbWJlZEBicnVub2d1aW1hcmFlc2NhcnZhbGhvc2dvaG8ub25taWNyb3NvZnQuY29tIiwidXRpIjoiMy1HYTJtNm5fVVdBRlBJa05BeldBZyIsInZlciI6IjEuMCIsIndpZHMiOlsiYjc5ZmJmNGQtM2VmOS00Njg5LTgxNDMtNzZiMTk0ZTg1NTA5Il19.V-2q4h-JkPzQDX_dpQx6petQKngP7UlVb0xReTvtrqsPPPYlJhXX-OfgnRTMzfYcZuKLZdiIz9bh0rRATXes6LzRSl69lFam-AGNkr5npW_Sf24AGDqURbvxN-C-rq0QbjdJWVMWvRepO_D3t4PlimOe1iWCo7BV9TWkqXBhYGx9YIy49hnHTkPyPaHBW7jxiyyGmNowODJx8anleojl8VKmK2QsvSaNqszg9935T3Kpq2Vdh6aS4kzkAQgIP2EsXrMfivqsxchqvjb_ln7ujHscPhrW5KUyPDu7outphWvd4PyHL5QP9sev7R1GmVoeKp9vRKtDQo0sU3LZkotXxA',
+  //   embedUrl:
+  //     'https://app.powerbi.com/reportEmbed?reportId=49601ede-66ec-4fe2-88c0-299c21f1b1af&groupId=9ab7f913-45e8-4e73-abf4-33ff01c21f9f&w=2&config=eyJjbHVzdGVyVXJsIjoiaHR0cHM6Ly9XQUJJLUJSQVpJTC1TT1VUSC1CLVBSSU1BUlktcmVkaXJlY3QuYW5hbHlzaXMud2luZG93cy5uZXQiLCJlbWJlZEZlYXR1cmVzIjp7Im1vZGVybkVtYmVkIjp0cnVlLCJjZXJ0aWZpZWRUZWxlbWV0cnlFbWJlZCI6dHJ1ZSwidXNhZ2VNZXRyaWNzVk5leHQiOnRydWV9fQ%3d%3d',
+  //   embedId: '49601ede-66ec-4fe2-88c0-299c21f1b1af',
+  //   reportMode: 'View', // "Edit"
+  //   permissions: 'View', // "All" (when using "Edit" mode)
+  //   style: { layoutSettings },
+  //   extraSettings: {
+  //     filterPaneEnabled: false,
+  //     navContentPaneEnabled: false,
+  //   },
+  // };
 
-        // Calculando do resultado liquido
-        const result = res.data.response.filter(
-          el => el.indicador === '(PPR) RESULTADO LÍQUIDO',
-        );
+  // useEffect(
+  //   () =>
+  //     // call inside useEffect so the we have the reportRef (reference available)
+  //     embed(reportRef, myReportConfig),
+  //   [embed, myReportConfig],
+  // );
 
-        const goaltFormated = result.reduce(
-          (total, number) => total + number.orcado,
-          0,
-        );
-        const resultFormated = result.reduce(
-          (total, number) => total + number.realizado,
-          0,
-        );
-
-        const resultFinances = {
-          goalRevenues: goaltRevenuesFormated,
-          resultRevenues: resultRevenuesFormated,
-          percentageRevenues: (goaltFormated / goaltRevenuesFormated) * 100,
-          percentageLiquid: (resultFormated / resultRevenuesFormated) * 100,
-          goalLiquid: goaltFormated,
-          resultLiquid: resultFormated,
-        };
-
-        setDataHeader(resultFinances);
-      });
-  }, []);
-
-  const handlePrint = useCallback(id => {
-    return document.getElementById(id);
-  }, []);
-
-  const dataGraphicspeed = useMemo(() => {
-    if (dataHeader.percentageLiquid <= 1.49) {
-      return 125;
-    }
-    if (
-      dataHeader.percentageLiquid >= 1.5 &&
-      dataHeader.percentageLiquid <= 2.5
-    ) {
-      return 375;
-    }
-    if (
-      dataHeader.percentageLiquid >= 2.51 &&
-      dataHeader.percentageLiquid <= 3.5
-    ) {
-      return 625;
-    }
-    if (dataHeader.percentageLiquid >= 3.51) {
-      return 875;
-    }
-    return 0;
-  }, [dataHeader]);
+  // const handleClick = () => {
+  //   // you can use "report" from useReport like]
+  //   console.log(report);
+  //   if (report) report.print();
+  // };
 
   return (
     <>
-      {/* <ModalCreateUser
-      isOpen={modalOpen}
-      setIsOpen={toggleModal}
-      handleUser={handleUser}
-      // dataEditUser={dataEditUser}
-    /> */}
-
-      <Container>
+      <Container load={loadSignInUser}>
         <CardeHeader>
           <div>
             <h2>Relatórios e painéis infograficos</h2>
@@ -168,116 +71,46 @@ const SelectorFolders: React.FC = () => {
 
           <CardButton>
             <div>
-              <ReactToPrint
-                trigger={() => (
-                  <Button isUsed className="iconPrint" type="button">
-                    Imprimir
-                  </Button>
-                )}
-                content={() => handlePrint('print')}
-                documentTitle="Demontrativo-março/2021"
-              />
+              <Button
+                id="noPrint"
+                isUsed
+                className="iconPrint"
+                type="button"
+                onClick={() => window.print()}
+              >
+                Imprimir
+              </Button>
             </div>
           </CardButton>
         </CardeHeader>
+
+        {loadSignInUser ? (
+          <>
+            <div className="loading" {...containerProps} ref={componentRef}>
+              {indicatorEl}
+            </div>
+          </>
+        ) : (
+          ''
+        )}
         <div id="print">
-          <Header>
-            <h1>Demonstrativo do Resultado - Abril 2021</h1>
-          </Header>
-          <CardHeader color="#0B85BD">
-            <Revenues>
-              <h3>Meta de faturamento líquido</h3>
-              <h1>
-                {formatPrice(
-                  dataHeader?.goalRevenues ? dataHeader?.goalRevenues : 0,
-                )}
-              </h1>
-            </Revenues>
-            <span />
-            <Result>
-              <h3>Meta de resultado líquido</h3>
-              <h1>
-                {formatPrice(
-                  dataHeader?.goalLiquid ? dataHeader?.goalLiquid : 0,
-                )}
-              </h1>
-            </Result>
-            <span />
-            <Finances>
-              <h3>Meta de resultado financeiro</h3>
-              <h1>
-                {dataHeader?.percentageRevenues
-                  ? dataHeader?.percentageRevenues.toFixed(2)
-                  : 0}
-                %
-              </h1>
-            </Finances>
-          </CardHeader>
-          <CardHeader color="#0BBD60">
-            <Revenues>
-              <h3>Resultado de faturamento líquido</h3>
-              <h1>
-                {formatPrice(
-                  dataHeader?.resultRevenues ? dataHeader?.resultRevenues : 0,
-                )}
-              </h1>
-            </Revenues>
-            <span />
-            <Result>
-              <h3>Resultado líquido</h3>
-              <h1>
-                {formatPrice(
-                  dataHeader?.resultLiquid ? dataHeader?.resultLiquid : 0,
-                )}
-              </h1>
-            </Result>
-            <span />
-            <Finances>
-              <h3>Resultado financeiro</h3>
-              <h1>
-                {dataHeader?.percentageLiquid
-                  ? dataHeader?.percentageLiquid.toFixed(2)
-                  : 0}
-                %
-              </h1>
-            </Finances>
-          </CardHeader>
-
-          <ContainerGraphics>
-            <CardGraphicSpeed>
-              <h3>Alcance PPRS</h3>
-              <GraphicSpeed
-                title={title}
-                textValue={`${dataHeader.percentageLiquid.toFixed(2)}%`}
-                width={420}
-                dataValue={dataGraphicspeed}
-              />
-            </CardGraphicSpeed>
-            <CardGraphicSpeed>
-              <h3>Resultado Mês a Mês (%)</h3>
-              <GraphicBar
-                result={Number(dataHeader?.percentageLiquid.toFixed(2))}
-                width={390}
-                height={300}
-                title=""
-                color="#240dac"
-              />
-            </CardGraphicSpeed>
-            <CardGraphicSpeed>
-              <h3>Metas x Resultados (%)</h3>
-              <GraphicLine
-                resultData={Number(dataHeader?.percentageLiquid.toFixed(2))}
-                width={390}
-                height={300}
-                color="#240dac"
-              />
-            </CardGraphicSpeed>
-          </ContainerGraphics>
-
-          <Footer>
-            <p>MCorp</p>
-            <div>{/* <img src={logo} alt="Samasc" /> */}</div>
-          </Footer>
+          <Report
+            tokenType="Aad" // "Aad"
+            accessToken="eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6Im5PbzNaRHJPRFhFSzFqS1doWHNsSFJfS1hFZyIsImtpZCI6Im5PbzNaRHJPRFhFSzFqS1doWHNsSFJfS1hFZyJ9.eyJhdWQiOiJodHRwczovL2FuYWx5c2lzLndpbmRvd3MubmV0L3Bvd2VyYmkvYXBpIiwiaXNzIjoiaHR0cHM6Ly9zdHMud2luZG93cy5uZXQvY2Y1ZDI0YTMtNGU3ZS00ZjgzLWIzY2QtYTk2MzkwYjE2MGFmLyIsImlhdCI6MTYyNTUxMjExMiwibmJmIjoxNjI1NTEyMTEyLCJleHAiOjE2MjU1MTYwMTIsImFjY3QiOjAsImFjciI6IjEiLCJhaW8iOiJBVlFBcS84VEFBQUFiam1KRk9KZ0VpOGJhSlpRT3NDNk1FMUtlRFNPUWRySDBrTlgxTXRYaGgwT1VlWGFhQVBOOTdRRkZMTW1YcXUrcXhoNm5tVitwQ1pjekg2WGVXUUtTRlBWQlNxeG9IQnhwYzBkaWZWSzNJOD0iLCJhbXIiOlsicHdkIiwibWZhIl0sImFwcGlkIjoiODcxYzAxMGYtNWU2MS00ZmIxLTgzYWMtOTg2MTBhN2U5MTEwIiwiYXBwaWRhY3IiOiIyIiwiaXBhZGRyIjoiMTc3LjIwMS42Ny4xNzgiLCJuYW1lIjoiUEJJIEVtYmVkIiwib2lkIjoiYTAyZDQ0MWUtYjAzNy00OGM0LTk3ZDctNTQyZWZhNWFhZTRiIiwicHVpZCI6IjEwMDMyMDAxMTA4NjYyREUiLCJyaCI6IjAuQVZvQW95UmR6MzVPZzAtenphbGprTEZncnc4QkhJZGhYckZQZzZ5WVlRcC1rUkJhQVBZLiIsInNjcCI6InVzZXJfaW1wZXJzb25hdGlvbiIsInN1YiI6IjUwSDR0TlQ5ZU1qSDhRMGw1aEQ0SVVEdi1McERHYTI0ZnBjTndqcnpWakEiLCJ0aWQiOiJjZjVkMjRhMy00ZTdlLTRmODMtYjNjZC1hOTYzOTBiMTYwYWYiLCJ1bmlxdWVfbmFtZSI6InBiaWVtYmVkQGJydW5vZ3VpbWFyYWVzY2FydmFsaG9zZ29oby5vbm1pY3Jvc29mdC5jb20iLCJ1cG4iOiJwYmllbWJlZEBicnVub2d1aW1hcmFlc2NhcnZhbGhvc2dvaG8ub25taWNyb3NvZnQuY29tIiwidXRpIjoiazNGZmZudXYyMFd2TFNLb2Z5LUNBZyIsInZlciI6IjEuMCIsIndpZHMiOlsiYjc5ZmJmNGQtM2VmOS00Njg5LTgxNDMtNzZiMTk0ZTg1NTA5Il19.EpeINaJ89xhjqjiNTEeJ7HUN7umF85TInINX1TIMK8kIcTq_ceJ0dTnK5q2J96JaRiObmGgfFJ_ua_k7lt-n2bAXJbiztyUzu6QW9AuNQdPItzSVUiTp4qieQcFccG973uRHTCaoyUOw90_BAX5s75EqoyrTfTOIwL32InJxtsYyg5zfB0R7yw8kr8bmyfCxMsf27s90gzKcuJ6ZL634gENlqPX7FFS7GZ6XOE41oTyB3sOarwUIasJNfe5NIoEXQaLJl6n8XeoS2eN3kSA_SfrogRSWV_Htxt_XHRREMLC3UZtdfoYWU0z8MLzfRyH6X2fXdm3pe79Ci0Xr_RD3MA" // accessToken goes here
+            embedUrl="https://app.powerbi.com/reportEmbed?reportId=49601ede-66ec-4fe2-88c0-299c21f1b1af&groupId=9ab7f913-45e8-4e73-abf4-33ff01c21f9f&w=2&config=eyJjbHVzdGVyVXJsIjoiaHR0cHM6Ly9XQUJJLUJSQVpJTC1TT1VUSC1CLVBSSU1BUlktcmVkaXJlY3QuYW5hbHlzaXMud2luZG93cy5uZXQiLCJlbWJlZEZlYXR1cmVzIjp7Im1vZGVybkVtYmVkIjp0cnVlLCJjZXJ0aWZpZWRUZWxlbWV0cnlFbWJlZCI6dHJ1ZSwidXNhZ2VNZXRyaWNzVk5leHQiOnRydWV9fQ%3d%3d" // embedUrl goes here
+            embedId="49601ede-66ec-4fe2-88c0-299c21f1b1af" // report or dashboard Id goes here
+            // pageName="Sentiment" // set as current page of the report
+            reportMode="View" // open report in a particular mode View/Edit/Create
+            // datasetId={datasetId} // required for reportMode = "Create" and optional for dynamic databinding in `report` on `View` mode
+            // groupId={groupId} // optional. Used when reportMode = "Create" and to chose the target workspace when the dataset is shared.
+            // extraSettings={extraSettings}
+            style={layoutSettings}
+            permissions="Read"
+            onRender={handleLoaded}
+            extraSettings={{
+              filterPaneEnabled: false,
+            }}
+          />
         </div>
       </Container>
     </>

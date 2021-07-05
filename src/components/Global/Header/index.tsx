@@ -21,7 +21,7 @@ const Header: React.FC<HeaderProps> = ({
   const { signOut, user } = useAuth();
 
   return (
-    <Container>
+    <Container id="noPrint">
       <HeaderContent size={size}>
         <strong>{children}</strong>
         <div>

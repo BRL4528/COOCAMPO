@@ -3,19 +3,38 @@ import styled from 'styled-components';
 interface Colors {
   color: string;
 }
+interface Props {
+  load: boolean;
+}
 
-export const Container = styled.div`
-  /* display: flex; */
-  /* align-items: stretch; */
-
-  margin-top: 12px;
-  margin-left: 8%;
-
+export const Container = styled.div<Props>`
+  margin-top: 2px;
+  margin-left: 100px;
+  /* width: 100%; */
+  height: 100vh;
   color: #433f59;
 
-  strong {
-    color: var(--text-primary);
-    font-size: 14px;
+  iframe {
+    border: none;
+  }
+  svg {
+    width: 100px;
+  }
+
+  #print {
+    width: 100%;
+    height: 100%;
+    margin-left: -15px;
+    ${({ load }: Props): string => (load ? 'display: none' : 'display: flex')}
+  }
+
+  .loading {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
   }
 
   .selected {
@@ -23,12 +42,6 @@ export const Container = styled.div`
 
     /* transition: var(--transition-speed); */
 
-    div {
-      max-height: 200px;
-      visibility: visible;
-      opacity: 1;
-      /* transition: var(--transition-speed); */
-    }
     svg {
       color: #1c9cd9;
     }
@@ -127,15 +140,6 @@ export const CardHeader = styled.div<Colors>`
     border-bottom: solid 3px #1c9cd9; */
   }
 
-  @media print {
-    margin-right: 0px;
-  }
-  @media print {
-    header {
-      color: #433f59;
-    }
-  }
-
   /* @page {
     size: auto;
     margin: 20mm;
@@ -146,114 +150,5 @@ export const CardHeader = styled.div<Colors>`
     /* display: flex;
     height: 200px; */
     border-right: 3px solid #fff;
-  }
-`;
-
-export const Revenues = styled.div`
-  text-align: center;
-  color: #fff;
-  margin: 0 auto;
-  /* margin-left: 15px; */
-  max-width: 300px;
-  min-width: 300px;
-`;
-export const Result = styled.div`
-  text-align: center;
-  color: #fff;
-  margin: 0 auto;
-  max-width: 300px;
-  min-width: 300px;
-`;
-export const Finances = styled.div`
-  text-align: center;
-  color: #fff;
-  margin: 0 auto;
-  max-width: 300px;
-  min-width: 300px;
-  /* margin-right: 25px; */
-`;
-
-export const CardGraphicText = styled.span`
-  @media print {
-    color: #433f59;
-    span {
-      svg {
-        display: none;
-      }
-    }
-  }
-
-  display: flex;
-  width: 100%;
-  margin-bottom: 15px;
-
-  justify-content: space-between;
-  border-bottom: solid 1px rgba(150, 156, 186, 0.2);
-
-  > span {
-    display: flex;
-    flex-direction: row;
-
-    svg {
-      color: var(--dark-tertiary);
-      width: 20px;
-      height: 20px;
-      margin: 10px;
-      transition: color 0.5s;
-      transition: var(--transition-speed);
-      :hover {
-        cursor: pointer;
-        color: #1c9cd9;
-      }
-    }
-  }
-`;
-
-export const GraphicTitle = styled.section`
-  /* width: 100%; */
-  display: flex;
-  align-items: initial;
-  flex-direction: column;
-  padding-bottom: 15px;
-
-  p {
-    margin-top: 5px;
-    font-size: 14px;
-    color: var(--text-primary);
-  }
-`;
-
-export const ContainerGraphics = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  /* max-width: 400px; */
-  margin-top: 40px;
-  margin-right: 45px;
-`;
-
-export const CardGraphicSpeed = styled.div`
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  margin-top: 40px;
-
-  .speedometer {
-    margin-top: 60px;
-  }
-
-  h3 {
-    color: #433f59;
-  }
-`;
-
-export const Footer = styled.footer`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-right: 80px;
-
-  img {
-    width: 220px;
   }
 `;

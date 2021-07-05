@@ -32,7 +32,7 @@ const Sidebar: React.FC<LayoutProps> = ({ pathname }) => {
 
   return (
     <>
-      <nav className="navbar">
+      <nav id="noPrint" className="navbar">
         <ul className="navbar-nav">
           <li className="logo">
             <a href="#" className="nav-header">

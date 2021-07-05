@@ -3,7 +3,7 @@ import styled from 'styled-components';
 export const Conatiner = styled.div`
   color: #333;
   width: 100%;
-  height: 100vh;
+  height: 93vh;
 
   padding-left: 80px;
   z-index: 0;
