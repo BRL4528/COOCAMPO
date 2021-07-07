@@ -1,15 +1,30 @@
-import React, { useCallback, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Report } from 'powerbi-report-component';
 import { useLoading, Oval } from '@agney/react-loading';
 import Button from '../../../../components/Global/Button';
 
 import { CardButton, CardeHeader, Container } from './styles';
+import { apiPowerBI } from '../../../../services/api';
+import { useToast } from '../../../../hooks/toast';
+
+interface PropsPowerBI {
+  accessToken: string;
+  embedUrl: [
+    {
+      reportId: string;
+      reportName: string;
+      embedUrl: string;
+    },
+  ];
+}
 
 const SelectorFolders: React.FC = () => {
   const [loadSignInUser, setloadSignInUser] = useState(true);
-
   const componentRef = useRef<HTMLDivElement>(null);
   // const [report, embed] = useReport();
+
+  const { addToast } = useToast();
+  const [dataBI, setDataBI] = useState<PropsPowerBI>();
 
   const handleLoaded = useCallback(() => {
     setloadSignInUser(false);
@@ -19,6 +34,27 @@ const SelectorFolders: React.FC = () => {
     loading: loadSignInUser,
     indicator: <Oval />,
   });
+
+  useEffect(() => {
+    async function loadTokenBI(): Promise<void> {
+      try {
+        const response = await apiPowerBI.get(
+          '/get-embed-token?reportId=49601ede-66ec-4fe2-88c0-299c21f1b1af',
+        );
+        setDataBI(response.data);
+        // console.log(response.data.embedUrl[0].reportId);
+      } catch (err) {
+        console.log(err);
+
+        addToast({
+          type: 'error',
+          title: 'Gráficos de analíse',
+          description: 'Não foi posivel carregar os gráficos de analíse',
+        });
+      }
+    }
+    loadTokenBI();
+  }, [addToast]);
 
   const layoutSettings = {
     width: '100%',
@@ -96,9 +132,9 @@ const SelectorFolders: React.FC = () => {
         <div id="print">
           <Report
             tokenType="Aad" // "Aad"
-            accessToken="eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6Im5PbzNaRHJPRFhFSzFqS1doWHNsSFJfS1hFZyIsImtpZCI6Im5PbzNaRHJPRFhFSzFqS1doWHNsSFJfS1hFZyJ9.eyJhdWQiOiJodHRwczovL2FuYWx5c2lzLndpbmRvd3MubmV0L3Bvd2VyYmkvYXBpIiwiaXNzIjoiaHR0cHM6Ly9zdHMud2luZG93cy5uZXQvZTAwYjliZDMtYTA5ZS00YmRiLWI3ODYtNjc5YmExMTMwYTE3LyIsImlhdCI6MTYyNTU5NjgxOSwibmJmIjoxNjI1NTk2ODE5LCJleHAiOjE2MjU2MDA3MTksImFjY3QiOjAsImFjciI6IjEiLCJhaW8iOiJBVFFBeS84VEFBQUF0cTcxdWdxWjFXeW1hZEM5Q0p5b096dU1sS2h6aTRQcUxHTG5rM1NRLy92N1NqNTR6R0hNZWs2NTBPRGRNOWsyIiwiYW1yIjpbInB3ZCJdLCJhcHBpZCI6Ijg3MWMwMTBmLTVlNjEtNGZiMS04M2FjLTk4NjEwYTdlOTExMCIsImFwcGlkYWNyIjoiMiIsImlwYWRkciI6IjE3Ny4yMDEuNjcuMTc4IiwibmFtZSI6IlBCSSBFbWJlZCIsIm9pZCI6ImY3OTcwODdiLTQ3M2MtNGRjYS1hYmI3LTU2N2Q4ZjRhMGIzNCIsInB1aWQiOiIxMDAzMjAwMTVCMzkxMkEwIiwicmgiOiIwLkFYd0EwNXNMNEo2ZzIwdTNobWVib1JNS0Z3OEJISWRoWHJGUGc2eVlZUXAta1JCOEFFUS4iLCJzY3AiOiJ1c2VyX2ltcGVyc29uYXRpb24iLCJzdWIiOiJEeXRrVmtGSnZxZmhnY21XMG4xSWVxS3A2NDdjWEhUMGIwNVVJVUgyTW13IiwidGlkIjoiZTAwYjliZDMtYTA5ZS00YmRiLWI3ODYtNjc5YmExMTMwYTE3IiwidW5pcXVlX25hbWUiOiJwYmllbWJlZEBtaWRhc2NvcnBkZXYub25taWNyb3NvZnQuY29tIiwidXBuIjoicGJpZW1iZWRAbWlkYXNjb3JwZGV2Lm9ubWljcm9zb2Z0LmNvbSIsInV0aSI6Im00VjB5U3FVTFVDdS1DNTNHSjVSQUEiLCJ2ZXIiOiIxLjAiLCJ3aWRzIjpbImI3OWZiZjRkLTNlZjktNDY4OS04MTQzLTc2YjE5NGU4NTUwOSJdfQ.WupDY7LgNHuWqvdB7zA_FlFCI9o9hMwxHAWOhfNSoDmTnfToR6vvJGD4GbcVfSRsZr7zu3am-lKjTf6S-_BFqA7RIh7ZFNh-tkHEStwTM5Vti_OpS1ACTY5z1H-DqLtDKBBIwBMavTAX1iotNiONy1nF68BMURPhg23oevP93WDBta0EPrJ5RVi-VIkK1EClesVk_P98dmBVAH0Oax6Gu6X2rUf_8fRMKV9suN9i1mvbkZbh9SGX8M6x7eXM0ozQk8SRgScsPnEsvExqGAMMnd_QIjnqgYIar_2K9DORbwioplcLsj8dCBEnqqQc-hol2Acg7szeyNyXPKC_XVT-Fw" // accessToken goes here
-            embedUrl="https://app.powerbi.com/reportEmbed?reportId=28d30525-270a-495c-8fb6-52af3af7284b&groupId=ab0fdec1-13c4-4058-a63e-b4d74b092a53&w=2&config=eyJjbHVzdGVyVXJsIjoiaHR0cHM6Ly9XQUJJLVVTLUNFTlRSQUwtQS1QUklNQVJZLXJlZGlyZWN0LmFuYWx5c2lzLndpbmRvd3MubmV0IiwiZW1iZWRGZWF0dXJlcyI6eyJtb2Rlcm5FbWJlZCI6dHJ1ZSwiY2VydGlmaWVkVGVsZW1ldHJ5RW1iZWQiOnRydWUsInVzYWdlTWV0cmljc1ZOZXh0Ijp0cnVlfX0%3d" // embedUrl goes here
-            embedId="28d30525-270a-495c-8fb6-52af3af7284b" // report or dashboard Id goes here
+            accessToken={dataBI ? dataBI.accessToken : 'sem token'}
+            embedUrl={dataBI ? dataBI.embedUrl[0].embedUrl : 'sem token'}
+            embedId={dataBI ? dataBI.embedUrl[0].reportId : 'sem token'}
             // pageName="Sentiment" // set as current page of the report
             reportMode="View" // open report in a particular mode View/Edit/Create
             // datasetId={datasetId} // required for reportMode = "Create" and optional for dynamic databinding in `report` on `View` mode
