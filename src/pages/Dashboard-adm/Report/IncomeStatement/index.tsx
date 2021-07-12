@@ -273,7 +273,7 @@ const SelectorFolders: React.FC = () => {
 
           <CardHeader color="#e2c90a">
             <Revenues>
-              <h3>Faturamento líquido - Maio</h3>
+              <h3>Faturamento líquido - Junho</h3>
               <h1>
                 {formatPrice(
                   dataHeader?.resultMonth ? dataHeader?.resultMonth : 0,
@@ -282,7 +282,7 @@ const SelectorFolders: React.FC = () => {
             </Revenues>
             <span />
             <Result>
-              <h3>Resultado líquido - Maio</h3>
+              <h3>Resultado líquido - Junho</h3>
               <h1>
                 {formatPrice(
                   dataHeader?.liquidMonth ? dataHeader?.liquidMonth : 0,
@@ -291,7 +291,7 @@ const SelectorFolders: React.FC = () => {
             </Result>
             <span />
             <Finances>
-              <h3>Resultado financeiro - Maio</h3>
+              <h3>Resultado financeiro - Junho</h3>
               <h1>
                 {dataHeader?.percentageLiquidMonth
                   ? dataHeader?.percentageLiquidMonth.toFixed(2)
