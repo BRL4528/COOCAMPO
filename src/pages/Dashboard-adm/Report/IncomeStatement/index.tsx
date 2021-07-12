@@ -83,7 +83,7 @@ const SelectorFolders: React.FC = () => {
         params: {
           ano: 2021,
           mesInicial: 1,
-          mesFinal: 5,
+          mesFinal: 6,
           painel: 'PPR Adm Central',
         },
       })
@@ -105,7 +105,7 @@ const SelectorFolders: React.FC = () => {
 
         // Calculando o faturamento líquido do mês
         const resultRevenuesMonth = res.data.response.filter(
-          el => el.indicador === '(PPR) FATURAMENTO LÍQUIDO' && el.mes === 5,
+          el => el.indicador === '(PPR) FATURAMENTO LÍQUIDO' && el.mes === 6,
         );
 
         // Calculando do resultado liquido
@@ -124,7 +124,7 @@ const SelectorFolders: React.FC = () => {
 
         // Calculando do resultado liquido
         const resultLiquidMonth = res.data.response.filter(
-          el => el.indicador === '(PPR) RESULTADO LÍQUIDO' && el.mes === 5,
+          el => el.indicador === '(PPR) RESULTADO LÍQUIDO' && el.mes === 6,
         );
 
         const resultFinances = {
@@ -203,14 +203,14 @@ const SelectorFolders: React.FC = () => {
                   </Button>
                 )}
                 content={() => handlePrint('print')}
-                documentTitle="Demontrativo-maio-2021"
+                documentTitle="Demontrativo-junho-2021"
               />
             </div>
           </CardButton>
         </CardeHeader>
         <div id="print">
           <Header className="headerPrint">
-            <h1>Demonstrativo do Resultado - Maio 2021</h1>
+            <h1>Demonstrativo do Resultado - Junho 2021</h1>
           </Header>
           <CardHeader color="#0B85BD">
             <Revenues>

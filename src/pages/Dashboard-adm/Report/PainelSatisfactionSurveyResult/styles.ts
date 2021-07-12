@@ -18,7 +18,16 @@ export const Container = styled.div<Props>`
     border: none;
   }
   svg {
-    width: 100px;
+    width: 20px;
+    margin-left: 5px;
+  }
+
+  @media print {
+    #print {
+      min-width: 100%;
+      height: 100vh;
+      padding: 0;
+    }
   }
 
   #print {
@@ -29,12 +38,14 @@ export const Container = styled.div<Props>`
   }
 
   .loading {
-    width: 100%;
-    height: 100vh;
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
+
+    width: 100%;
+    height: 100vh;
+    margin-top: -190px;
   }
 
   .selected {

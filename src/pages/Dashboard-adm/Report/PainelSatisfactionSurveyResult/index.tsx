@@ -9,6 +9,7 @@ import { useToast } from '../../../../hooks/toast';
 
 interface PropsPowerBI {
   accessToken: string;
+  expiry: string;
   embedUrl: [
     {
       reportId: string;
@@ -38,11 +39,43 @@ const SelectorFolders: React.FC = () => {
   useEffect(() => {
     async function loadTokenBI(): Promise<void> {
       try {
-        const response = await apiPowerBI.get(
+        if (localStorage.getItem('@SamascBI:dataAccess')) {
+          const dataAccessBI = localStorage.getItem('@SamascBI:dataAccess');
+          console.log('ver', dataAccessBI);
+          if (dataAccessBI) {
+            const formatedDataAccesBI: PropsPowerBI = JSON.parse(dataAccessBI);
+
+            if (new Date(formatedDataAccesBI.expiry) > new Date()) {
+              // Data ainda esta valida
+              console.log('Data ainda valida');
+              setDataBI(formatedDataAccesBI);
+            } else if (new Date(formatedDataAccesBI.expiry) < new Date()) {
+              // Data expirou, carrega novos dados
+              console.log('data expirou, carregou novos dados');
+              const response = await apiPowerBI.get<PropsPowerBI>(
+                '/get-embed-token?reportId=49601ede-66ec-4fe2-88c0-299c21f1b1af',
+              );
+
+              localStorage.setItem(
+                '@SamascBI:dataAccess',
+                JSON.stringify(response.data),
+              );
+              setDataBI(response.data);
+            }
+          }
+          return;
+        }
+        console.log('não existe dados do power BI, carrou tudo novo');
+        // Dados inexistes, primeiro carregamento
+        const response = await apiPowerBI.get<PropsPowerBI>(
           '/get-embed-token?reportId=49601ede-66ec-4fe2-88c0-299c21f1b1af',
         );
+
+        localStorage.setItem(
+          '@SamascBI:dataAccess',
+          JSON.stringify(response.data),
+        );
         setDataBI(response.data);
-        // console.log(response.data.embedUrl[0].reportId);
       } catch (err) {
         console.log(err);
 
@@ -123,31 +156,36 @@ const SelectorFolders: React.FC = () => {
         {loadSignInUser ? (
           <>
             <div className="loading" {...containerProps} ref={componentRef}>
+              <p>Carregando relatório</p>
               {indicatorEl}
             </div>
           </>
         ) : (
           ''
         )}
-        <div id="print">
-          <Report
-            tokenType="Aad" // "Aad"
-            accessToken={dataBI ? dataBI.accessToken : 'sem token'}
-            embedUrl={dataBI ? dataBI.embedUrl[0].embedUrl : 'sem token'}
-            embedId={dataBI ? dataBI.embedUrl[0].reportId : 'sem token'}
-            // pageName="Sentiment" // set as current page of the report
-            reportMode="View" // open report in a particular mode View/Edit/Create
-            // datasetId={datasetId} // required for reportMode = "Create" and optional for dynamic databinding in `report` on `View` mode
-            // groupId={groupId} // optional. Used when reportMode = "Create" and to chose the target workspace when the dataset is shared.
-            // extraSettings={extraSettings}
-            style={layoutSettings}
-            permissions="Read"
-            onRender={handleLoaded}
-            extraSettings={{
-              filterPaneEnabled: false,
-            }}
-          />
-        </div>
+        {dataBI ? (
+          <div id="print">
+            <Report
+              tokenType="Aad" // "Aad"
+              accessToken={dataBI.accessToken}
+              embedUrl={dataBI.embedUrl[0].embedUrl}
+              embedId={dataBI.embedUrl[0].reportId}
+              // pageName="Sentiment" // set as current page of the report
+              reportMode="View" // open report in a particular mode View/Edit/Create
+              // datasetId={datasetId} // required for reportMode = "Create" and optional for dynamic databinding in `report` on `View` mode
+              // groupId={groupId} // optional. Used when reportMode = "Create" and to chose the target workspace when the dataset is shared.
+              // extraSettings={extraSettings}
+              style={layoutSettings}
+              permissions="Read"
+              onRender={handleLoaded}
+              extraSettings={{
+                filterPaneEnabled: false,
+              }}
+            />
+          </div>
+        ) : (
+          ''
+        )}
       </Container>
     </>
   );
