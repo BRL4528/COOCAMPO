@@ -13,7 +13,7 @@ import React, {
 
 import SwiperCore, { Navigation, Pagination, Scrollbar, A11y } from 'swiper';
 import * as Yup from 'yup';
-import { Swiper, SwiperSlide } from 'swiper/react';
+// import { Swiper, SwiperSlide } from 'swiper/react';
 
 import UseAnimations from 'react-useanimations';
 import radioButton from 'react-useanimations/lib/radioButton';
@@ -31,8 +31,8 @@ import { useLoading, Oval } from '@agney/react-loading';
 import { Form } from '@unform/web';
 import { FormHandles } from '@unform/core';
 import { useToast } from '../../../hooks/toast';
-import search from '../../../assets/chart.svg';
-import notion from '../../../assets/notion.svg';
+// import search from '../../../assets/chart.svg';
+// import notion from '../../../assets/notion.svg';
 import logo from '../../../assets/logo.svg';
 
 import { api } from '../../../services/api';
@@ -44,7 +44,7 @@ import {
   Calendar,
   TogleCalendar,
   ContainerMaster,
-  CardIntro,
+  // CardIntro,
 } from './styles';
 import 'swiper/swiper.scss';
 import 'swiper/components/navigation/navigation.scss';
@@ -87,6 +87,16 @@ interface IGoalsAnalytics {
   };
 }
 
+interface ISatisfactionSurvey {
+  id: string;
+  goal_id: string;
+  sector_id: string;
+  analyze_module_id: string;
+  observations: string;
+  email: string;
+  model: string;
+}
+
 interface IEmail {
   email: string;
 }
@@ -110,6 +120,7 @@ interface IObservations {
 const PainelAnalyticModule: React.FC = () => {
   const componentRef = useRef<HTMLDivElement>(null);
   SwiperCore.use([Navigation, Pagination, Scrollbar, A11y]);
+
   const { addToast } = useToast();
   const formRef = useRef<FormHandles>(null);
 
@@ -122,7 +133,7 @@ const PainelAnalyticModule: React.FC = () => {
   const [idOcurrence, setIdOcurrence] = useState('');
 
   const [openCalendar, setOpenCalendar] = useState(false);
-  const [selectedDate, setSelectedDate] = useState(new Date());
+  const [selectedDate, setSelectedDate] = useState(new Date('2021/01/06'));
   // const [currentMonth, setCurrentMonth] = useState(new Date());
 
   const [loadingItens, setLoading] = useState(true);
@@ -149,7 +160,6 @@ const PainelAnalyticModule: React.FC = () => {
 
   useEffect(() => {
     try {
-      console.log('ver', parsed.slice(1));
       api
         .get(`goals-of-sectors?analyze_module_id=${parsed.slice(1)}`)
         .then(response => {
@@ -216,7 +226,6 @@ const PainelAnalyticModule: React.FC = () => {
             result: separ[0] === '&' ? '10' : separ[0],
             id: separ[1],
           };
-          console.log('resultadoss', arrayFormat);
           returnFormated.push(arrayFormat);
         });
 
@@ -224,6 +233,30 @@ const PainelAnalyticModule: React.FC = () => {
           returnFormated.reduce((acum, current) => {
             return acum + Number(current.result);
           }, 0) / returnFormated.length;
+
+        await api
+          .get<ISatisfactionSurvey>(
+            `/satisfaction-survey-response?email=${email}`,
+          )
+          .then(async response => {
+            if (response.data.model) {
+              console.log('existe model', response.data);
+
+              await api.post('/satisfaction-survey-response', {
+                goal_id: dataGoalsAnalytic[0].goals.id,
+                sector_id: dataGoalsAnalytic[0].sector.id,
+                analyze_module_id: parsed.slice(1),
+                date: selectedDate,
+                result: JSON.stringify(returnFormated),
+                observations: JSON.stringify(dataOccurrence),
+                email,
+                model: response.data.model,
+                month: format(new Date(selectedDate), 'MMMM').toLowerCase(),
+                value: resultMonth,
+              });
+            }
+          });
+        console.log('não existe model');
 
         await api.post('/satisfaction-survey-response', {
           goal_id: dataGoalsAnalytic[0].goals.id,
@@ -233,7 +266,7 @@ const PainelAnalyticModule: React.FC = () => {
           result: JSON.stringify(returnFormated),
           observations: JSON.stringify(dataOccurrence),
           email,
-          model: email,
+          model: Math.floor(Math.random() * 10),
           month: format(new Date(selectedDate), 'MMMM').toLowerCase(),
           value: resultMonth,
         });
@@ -355,7 +388,7 @@ const PainelAnalyticModule: React.FC = () => {
   return (
     <>
       <ContainerMaster displayLow={!modalOpenLow} displayHigh={!modalOpenHigh}>
-        <Swiper
+        {/* <Swiper
           // spaceBetween={50}
           // slidesPerView={3}
           navigation
@@ -437,317 +470,293 @@ const PainelAnalyticModule: React.FC = () => {
             </CardIntro>
           </SwiperSlide>
 
-          <SwiperSlide>
-            <Container>
-              <header>
-                <h1>Pesquisa de satisfação</h1>
-              </header>
-              <span>
-                <button type="button" onClick={() => handleopenCalendar()}>
-                  {formatedDate}
+          <SwiperSlide> */}
+        <Container>
+          <header>
+            <h1>Pesquisa de satisfação</h1>
+          </header>
+          <span>
+            <button type="button" onClick={() => handleopenCalendar()}>
+              {formatedDate}
 
-                  <FiCalendar size={20} />
-                </button>
-              </span>
-              <TogleCalendar openCalendar={openCalendar}>
-                <div>
-                  <Calendar>
-                    <DayPicker
-                      weekdaysShort={['D', 'S', 'T', 'Q', 'Q', 'S', 'S']}
-                      // fromMonth={new Date()}
-                      selectedDays={selectedDate}
-                      disabledDays={[{ daysOfWeek: [0, 6] }]}
-                      modifiers={{
-                        available: { daysOfWeek: [1, 2, 3, 4, 5] },
-                      }}
-                      onDayClick={handleDateChange}
-                      months={[
-                        'Janeiro',
-                        'Fevereiro',
-                        'Março',
-                        'Abril',
-                        'Maio',
-                        'Junho',
-                        'Julho',
-                        'Agosto',
-                        'Setembro',
-                        'Outubro',
-                        'Novembro',
-                        'Dezembro',
-                      ]}
-                    />
-                  </Calendar>
-                </div>
-              </TogleCalendar>
-              {loadingItens ? (
-                <CardLoading {...containerProps} ref={componentRef}>
-                  {indicatorEl}
-                </CardLoading>
-              ) : (
+              <FiCalendar size={20} />
+            </button>
+          </span>
+          <TogleCalendar openCalendar={openCalendar}>
+            <div>
+              <Calendar>
+                <DayPicker
+                  weekdaysShort={['D', 'S', 'T', 'Q', 'Q', 'S', 'S']}
+                  // fromMonth={new Date()}
+                  selectedDays={selectedDate}
+                  disabledDays={[{ daysOfWeek: [0, 6] }]}
+                  modifiers={{
+                    available: { daysOfWeek: [1, 2, 3, 4, 5] },
+                  }}
+                  onDayClick={handleDateChange}
+                  months={[
+                    'Janeiro',
+                    'Fevereiro',
+                    'Março',
+                    'Abril',
+                    'Maio',
+                    'Junho',
+                    'Julho',
+                    'Agosto',
+                    'Setembro',
+                    'Outubro',
+                    'Novembro',
+                    'Dezembro',
+                  ]}
+                />
+              </Calendar>
+            </div>
+          </TogleCalendar>
+          {loadingItens ? (
+            <CardLoading {...containerProps} ref={componentRef}>
+              {indicatorEl}
+            </CardLoading>
+          ) : (
+            <>
+              <ModalAddOccurrenceModuleLow
+                isOpen={modalOpenLow}
+                setIsOpen={toggleModalLow}
+                handleOccurrence={handleOccurrence}
+              />
+              <ModalAddOccurrenceModuleHigh
+                isOpen={modalOpenHigh}
+                setIsOpen={toggleModalHigh}
+                handleOccurrence={handleOccurrence}
+              />
+              {dataGoalsAnalytic.length ? (
                 <>
-                  <ModalAddOccurrenceModuleLow
-                    isOpen={modalOpenLow}
-                    setIsOpen={toggleModalLow}
-                    handleOccurrence={handleOccurrence}
-                  />
-                  <ModalAddOccurrenceModuleHigh
-                    isOpen={modalOpenHigh}
-                    setIsOpen={toggleModalHigh}
-                    handleOccurrence={handleOccurrence}
-                  />
-                  {dataGoalsAnalytic.length ? (
-                    <>
-                      {dataGoalsAnalytic.map(dataAnalytic => (
-                        <CardContainer
-                          checked
-                          idCurrent={dataAnalytic.sector.id}
-                          idChecked="e"
-                          key={dataAnalytic.id}
-                        >
-                          <div className={grupChecked ? 'selected' : ''}>
-                            <div>
-                              <h2>
-                                {dataAnalytic.sector.name}
-                                <span>
-                                  {grupChecked ? (
-                                    <UseAnimations
-                                      animation={radioButton}
-                                      size={40}
-                                      strokeColor="#4CAF50"
-                                      style={{ padding: 50 }}
-                                      reverse={!!grupChecked}
-                                    />
-                                  ) : (
-                                    <FiCheck size={34} />
-                                  )}
-                                </span>
-                              </h2>
-                            </div>
-                            <h3>{dataAnalytic.goals.name}</h3>
-                            <Form ref={formRef} onSubmit={handleSubmit}>
-                              {dataAnalytic.goals.sub_goals_of_goals.map(
-                                dataSubGoal => (
-                                  <div key={dataSubGoal.id}>
-                                    <div>
-                                      <strong>
-                                        {dataSubGoal.sub_goals.name}
-                                      </strong>
-                                    </div>
-                                    <div>
-                                      <span>
-                                        <button
-                                          id={dataSubGoal.sub_goals.id}
-                                          onClick={() =>
-                                            handleSelectItem(
-                                              `0!${
-                                                dataSubGoal.sub_goals.id
-                                              }#${0}`,
-                                            )
-                                          }
-                                          type="button"
-                                          className={
-                                            optionSelected.includes(
-                                              `0!${dataSubGoal.sub_goals.id}`,
-                                            )
-                                              ? 'selectedValue'
-                                              : ''
-                                          }
-                                        >
-                                          NA
-                                        </button>
-                                        <button
-                                          onClick={() =>
-                                            handleSelectItem(
-                                              `1!${
-                                                dataSubGoal.sub_goals.id
-                                              }#${1}`,
-                                            )
-                                          }
-                                          type="button"
-                                          className={
-                                            optionSelected.includes(
-                                              `1!${dataSubGoal.sub_goals.id}`,
-                                            )
-                                              ? 'selectedValue'
-                                              : ''
-                                          }
-                                        >
-                                          1
-                                        </button>
-                                        <button
-                                          onClick={() =>
-                                            handleSelectItem(
-                                              `2!${
-                                                dataSubGoal.sub_goals.id
-                                              }#${2}`,
-                                            )
-                                          }
-                                          type="button"
-                                          className={
-                                            optionSelected.includes(
-                                              `2!${dataSubGoal.sub_goals.id}`,
-                                            )
-                                              ? 'selectedValue'
-                                              : ''
-                                          }
-                                        >
-                                          2
-                                        </button>
-                                        <button
-                                          onClick={() =>
-                                            handleSelectItem(
-                                              `3!${
-                                                dataSubGoal.sub_goals.id
-                                              }#${3}`,
-                                            )
-                                          }
-                                          type="button"
-                                          className={
-                                            optionSelected.includes(
-                                              `3!${dataSubGoal.sub_goals.id}`,
-                                            )
-                                              ? 'selectedValue'
-                                              : ''
-                                          }
-                                        >
-                                          3
-                                        </button>
-                                        <button
-                                          onClick={() =>
-                                            handleSelectItem(
-                                              `4!${
-                                                dataSubGoal.sub_goals.id
-                                              }#${4}`,
-                                            )
-                                          }
-                                          type="button"
-                                          className={
-                                            optionSelected.includes(
-                                              `4!${dataSubGoal.sub_goals.id}`,
-                                            )
-                                              ? 'selectedValue'
-                                              : ''
-                                          }
-                                        >
-                                          4
-                                        </button>
-                                        <button
-                                          onClick={() =>
-                                            handleSelectItem(
-                                              `5!${
-                                                dataSubGoal.sub_goals.id
-                                              }#${5}`,
-                                            )
-                                          }
-                                          type="button"
-                                          className={
-                                            optionSelected.includes(
-                                              `5!${dataSubGoal.sub_goals.id}`,
-                                            )
-                                              ? 'selectedValue'
-                                              : ''
-                                          }
-                                        >
-                                          5
-                                        </button>
-                                        <button
-                                          onClick={() =>
-                                            handleSelectItem(
-                                              `6!${
-                                                dataSubGoal.sub_goals.id
-                                              }#${6}`,
-                                            )
-                                          }
-                                          type="button"
-                                          className={
-                                            optionSelected.includes(
-                                              `6!${dataSubGoal.sub_goals.id}`,
-                                            )
-                                              ? 'selectedValue'
-                                              : ''
-                                          }
-                                        >
-                                          6
-                                        </button>
-                                        <button
-                                          onClick={() =>
-                                            handleSelectItem(
-                                              `7!${
-                                                dataSubGoal.sub_goals.id
-                                              }#${7}`,
-                                            )
-                                          }
-                                          type="button"
-                                          className={
-                                            optionSelected.includes(
-                                              `7!${dataSubGoal.sub_goals.id}`,
-                                            )
-                                              ? 'selectedValue'
-                                              : ''
-                                          }
-                                        >
-                                          7
-                                        </button>
-                                        <button
-                                          onClick={() =>
-                                            handleSelectItem(
-                                              `8!${
-                                                dataSubGoal.sub_goals.id
-                                              }#${8}`,
-                                            )
-                                          }
-                                          type="button"
-                                          className={
-                                            optionSelected.includes(
-                                              `8!${dataSubGoal.sub_goals.id}`,
-                                            )
-                                              ? 'selectedValue'
-                                              : ''
-                                          }
-                                        >
-                                          8
-                                        </button>
-                                        <button
-                                          onClick={() =>
-                                            handleSelectItem(
-                                              `9!${
-                                                dataSubGoal.sub_goals.id
-                                              }#${9}`,
-                                            )
-                                          }
-                                          type="button"
-                                          className={
-                                            optionSelected.includes(
-                                              `9!${dataSubGoal.sub_goals.id}`,
-                                            )
-                                              ? 'selectedValue'
-                                              : ''
-                                          }
-                                        >
-                                          9
-                                        </button>
-                                        <button
-                                          onClick={() =>
-                                            handleSelectItem(
-                                              `&!${
-                                                dataSubGoal.sub_goals.id
-                                              }#${10}`,
-                                            )
-                                          }
-                                          type="button"
-                                          className={
-                                            optionSelected.includes(
-                                              `&!${dataSubGoal.sub_goals.id}`,
-                                            )
-                                              ? 'selectedValue'
-                                              : ''
-                                          }
-                                        >
-                                          10
-                                        </button>
-                                      </span>
-                                      {/* <span> */}
-                                      {/* <RadioInput
+                  {dataGoalsAnalytic.map(dataAnalytic => (
+                    <CardContainer
+                      checked
+                      idCurrent={dataAnalytic.sector.id}
+                      idChecked="e"
+                      key={dataAnalytic.id}
+                    >
+                      <div className={grupChecked ? 'selected' : ''}>
+                        <div>
+                          <h2>
+                            {dataAnalytic.sector.name}
+                            <span>
+                              {grupChecked ? (
+                                <UseAnimations
+                                  animation={radioButton}
+                                  size={40}
+                                  strokeColor="#4CAF50"
+                                  style={{ padding: 50 }}
+                                  reverse={!!grupChecked}
+                                />
+                              ) : (
+                                <FiCheck size={34} />
+                              )}
+                            </span>
+                          </h2>
+                        </div>
+                        <h3>{dataAnalytic.goals.name}</h3>
+                        <Form ref={formRef} onSubmit={handleSubmit}>
+                          {dataAnalytic.goals.sub_goals_of_goals.map(
+                            dataSubGoal => (
+                              <div key={dataSubGoal.id}>
+                                <div>
+                                  <strong>{dataSubGoal.sub_goals.name}</strong>
+                                </div>
+                                <div>
+                                  <span>
+                                    <button
+                                      id={dataSubGoal.sub_goals.id}
+                                      onClick={() =>
+                                        handleSelectItem(
+                                          `0!${dataSubGoal.sub_goals.id}#${0}`,
+                                        )
+                                      }
+                                      type="button"
+                                      className={
+                                        optionSelected.includes(
+                                          `0!${dataSubGoal.sub_goals.id}`,
+                                        )
+                                          ? 'selectedValue'
+                                          : ''
+                                      }
+                                    >
+                                      NA
+                                    </button>
+                                    <button
+                                      onClick={() =>
+                                        handleSelectItem(
+                                          `1!${dataSubGoal.sub_goals.id}#${1}`,
+                                        )
+                                      }
+                                      type="button"
+                                      className={
+                                        optionSelected.includes(
+                                          `1!${dataSubGoal.sub_goals.id}`,
+                                        )
+                                          ? 'selectedValue'
+                                          : ''
+                                      }
+                                    >
+                                      1
+                                    </button>
+                                    <button
+                                      onClick={() =>
+                                        handleSelectItem(
+                                          `2!${dataSubGoal.sub_goals.id}#${2}`,
+                                        )
+                                      }
+                                      type="button"
+                                      className={
+                                        optionSelected.includes(
+                                          `2!${dataSubGoal.sub_goals.id}`,
+                                        )
+                                          ? 'selectedValue'
+                                          : ''
+                                      }
+                                    >
+                                      2
+                                    </button>
+                                    <button
+                                      onClick={() =>
+                                        handleSelectItem(
+                                          `3!${dataSubGoal.sub_goals.id}#${3}`,
+                                        )
+                                      }
+                                      type="button"
+                                      className={
+                                        optionSelected.includes(
+                                          `3!${dataSubGoal.sub_goals.id}`,
+                                        )
+                                          ? 'selectedValue'
+                                          : ''
+                                      }
+                                    >
+                                      3
+                                    </button>
+                                    <button
+                                      onClick={() =>
+                                        handleSelectItem(
+                                          `4!${dataSubGoal.sub_goals.id}#${4}`,
+                                        )
+                                      }
+                                      type="button"
+                                      className={
+                                        optionSelected.includes(
+                                          `4!${dataSubGoal.sub_goals.id}`,
+                                        )
+                                          ? 'selectedValue'
+                                          : ''
+                                      }
+                                    >
+                                      4
+                                    </button>
+                                    <button
+                                      onClick={() =>
+                                        handleSelectItem(
+                                          `5!${dataSubGoal.sub_goals.id}#${5}`,
+                                        )
+                                      }
+                                      type="button"
+                                      className={
+                                        optionSelected.includes(
+                                          `5!${dataSubGoal.sub_goals.id}`,
+                                        )
+                                          ? 'selectedValue'
+                                          : ''
+                                      }
+                                    >
+                                      5
+                                    </button>
+                                    <button
+                                      onClick={() =>
+                                        handleSelectItem(
+                                          `6!${dataSubGoal.sub_goals.id}#${6}`,
+                                        )
+                                      }
+                                      type="button"
+                                      className={
+                                        optionSelected.includes(
+                                          `6!${dataSubGoal.sub_goals.id}`,
+                                        )
+                                          ? 'selectedValue'
+                                          : ''
+                                      }
+                                    >
+                                      6
+                                    </button>
+                                    <button
+                                      onClick={() =>
+                                        handleSelectItem(
+                                          `7!${dataSubGoal.sub_goals.id}#${7}`,
+                                        )
+                                      }
+                                      type="button"
+                                      className={
+                                        optionSelected.includes(
+                                          `7!${dataSubGoal.sub_goals.id}`,
+                                        )
+                                          ? 'selectedValue'
+                                          : ''
+                                      }
+                                    >
+                                      7
+                                    </button>
+                                    <button
+                                      onClick={() =>
+                                        handleSelectItem(
+                                          `8!${dataSubGoal.sub_goals.id}#${8}`,
+                                        )
+                                      }
+                                      type="button"
+                                      className={
+                                        optionSelected.includes(
+                                          `8!${dataSubGoal.sub_goals.id}`,
+                                        )
+                                          ? 'selectedValue'
+                                          : ''
+                                      }
+                                    >
+                                      8
+                                    </button>
+                                    <button
+                                      onClick={() =>
+                                        handleSelectItem(
+                                          `9!${dataSubGoal.sub_goals.id}#${9}`,
+                                        )
+                                      }
+                                      type="button"
+                                      className={
+                                        optionSelected.includes(
+                                          `9!${dataSubGoal.sub_goals.id}`,
+                                        )
+                                          ? 'selectedValue'
+                                          : ''
+                                      }
+                                    >
+                                      9
+                                    </button>
+                                    <button
+                                      onClick={() =>
+                                        handleSelectItem(
+                                          `&!${dataSubGoal.sub_goals.id}#${10}`,
+                                        )
+                                      }
+                                      type="button"
+                                      className={
+                                        optionSelected.includes(
+                                          `&!${dataSubGoal.sub_goals.id}`,
+                                        )
+                                          ? 'selectedValue'
+                                          : ''
+                                      }
+                                    >
+                                      10
+                                    </button>
+                                  </span>
+                                  {/* <span> */}
+                                  {/* <RadioInput
                                           name={`a${formatNameInputRadio(
                                             dataSubGoal.sub_goals.id,
                                           )}`}
@@ -946,8 +955,8 @@ const PainelAnalyticModule: React.FC = () => {
                                           ]}
                                         />
                                       </span> */}
-                                    </div>
-                                    {/* <CheckboxInput
+                                </div>
+                                {/* <CheckboxInput
                                       name={`yes-${dataSubGoal.id}`}
                                       options={[
                                         {
@@ -975,55 +984,54 @@ const PainelAnalyticModule: React.FC = () => {
                                         },
                                       ]}
                                     /> */}
-                                  </div>
-                                ),
-                              )}
+                              </div>
+                            ),
+                          )}
 
-                              <section>
-                                <span>
-                                  <p>
-                                    Confirme este formulário, adicionando seu
-                                    email
-                                  </p>
-                                  <Input
-                                    name="email"
-                                    placeholder="Adicione seu email utilizado na cooperativa"
-                                  />
-                                  <Button
-                                    // onClick={() => handleChecked(dataAnalytic.id)}
-                                    type="submit"
-                                  >
-                                    Finalizar
-                                  </Button>
-                                </span>
-                              </section>
-                            </Form>
-                          </div>
-                        </CardContainer>
-                      ))}
-                    </>
-                  ) : (
-                    <>
-                      <FiSmile size={40} />
-                      <p>
-                        Parece que este módulo de análise esta faltando algumas
-                        peças!
-                      </p>
-                      <strong>
-                        Mas não se preocupe, aguarde até que fique tudo pronto.
-                      </strong>
-                    </>
-                  )}
+                          <section>
+                            <span>
+                              <p>
+                                Confirme este formulário, adicionando seu email
+                              </p>
+                              <Input
+                                name="email"
+                                placeholder="Adicione seu email utilizado na cooperativa"
+                              />
+                              <Button
+                                // onClick={() => handleChecked(dataAnalytic.id)}
+                                type="submit"
+                              >
+                                Finalizar
+                              </Button>
+                            </span>
+                          </section>
+                        </Form>
+                      </div>
+                    </CardContainer>
+                  ))}
+                </>
+              ) : (
+                <>
+                  <FiSmile size={40} />
+                  <p>
+                    Parece que este módulo de análise esta faltando algumas
+                    peças!
+                  </p>
+                  <strong>
+                    Mas não se preocupe, aguarde até que fique tudo pronto.
+                  </strong>
                 </>
               )}
-              <footer>
-                <img src={logo} alt="Samasc" />
+            </>
+          )}
+          <footer>
+            <img src={logo} alt="Samasc" />
 
-                <p>Developed by Midas tech-corp</p>
-              </footer>
-            </Container>
-          </SwiperSlide>
-        </Swiper>
+            <p>Developed by Midas tech-corp</p>
+          </footer>
+        </Container>
+        {/* </SwiperSlide>
+        </Swiper> */}
       </ContainerMaster>
     </>
   );
