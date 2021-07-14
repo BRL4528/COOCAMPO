@@ -1119,6 +1119,7 @@ const PainelAnalyticModule: React.FC = () => {
                                 // onClick={() => handleChecked(dataAnalytic.id)}
                                 type="submit"
                                 disabled={loadingButton}
+                                isUsed
                               >
                                 {loadingButton ? (
                                   <div {...containerProps} ref={componentRef}>
