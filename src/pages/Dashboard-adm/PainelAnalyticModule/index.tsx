@@ -177,7 +177,6 @@ const PainelAnalyticModule: React.FC = () => {
             }
           });
 
-          console.log('GET/goals-of-sectors?analyze_module_id=', response.data);
           setLoading(false);
           setGrupChecked(status_of_conclusion);
           setDataGoalsAnalytic(response.data);

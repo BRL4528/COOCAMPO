@@ -118,6 +118,7 @@ const SelectorFolders: React.FC = () => {
       api
         .get<IDataSectorToUser[]>(`/accesses-of-sectors/${user.id}`)
         .then(response => {
+          console.log('verisso aq', response.data);
           const dataFormated = response.data.map(data => {
             return data.sector;
           });

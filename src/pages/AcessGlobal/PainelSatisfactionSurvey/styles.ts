@@ -201,6 +201,26 @@ export const CardContainer = styled.div<ICheck>`
       div {
         margin: 0;
       }
+
+      .select {
+        .clear-selected-button {
+          margin-bottom: 5px;
+          svg {
+            padding: 0px;
+          }
+        }
+        .dropdown-heading-value {
+          span {
+            padding: 15px;
+            margin-bottom: 20px;
+          }
+        }
+        .dropdown-content {
+          span {
+            min-width: 600px;
+          }
+        }
+      }
     }
   }
 

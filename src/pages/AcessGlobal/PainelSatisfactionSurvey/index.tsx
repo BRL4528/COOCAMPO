@@ -12,7 +12,8 @@ import React, {
 } from 'react';
 
 import SwiperCore, { Navigation, Pagination, Scrollbar, A11y } from 'swiper';
-import * as Yup from 'yup';
+// import * as Yup from 'yup';
+import MultiSelect from 'react-multi-select-component';
 // import { Swiper, SwiperSlide } from 'swiper/react';
 
 import UseAnimations from 'react-useanimations';
@@ -56,7 +57,7 @@ import Button from '../../../components/Global/Button';
 
 import ModalAddOccurrenceModuleLow from '../../../components/Admin/Modal/ModalObservationPainelSatisfaction';
 import ModalAddOccurrenceModuleHigh from '../../../components/Admin/Modal/ModalObservationPainelSatisfaction2';
-import Input from '../../../components/Global/Input';
+// import Input from '../../../components/Global/Input';
 
 interface IGoalsAnalytics {
   id: string;
@@ -97,10 +98,6 @@ interface ISatisfactionSurvey {
   model: string;
 }
 
-interface IEmail {
-  email: string;
-}
-
 // interface ResSubGoals {
 //   a0b6d3b09875c489bac84e5646e0e81f0: string;
 //   a198c5317a84a4146bc7e9c175b7bdedc: string;
@@ -115,6 +112,12 @@ interface Occurrence {
 interface IObservations {
   id: string;
   observation: string;
+}
+
+interface SelectValue {
+  value: string;
+  label: string;
+  disabled: boolean;
 }
 
 const PainelAnalyticModule: React.FC = () => {
@@ -133,10 +136,11 @@ const PainelAnalyticModule: React.FC = () => {
   const [idOcurrence, setIdOcurrence] = useState('');
 
   const [openCalendar, setOpenCalendar] = useState(false);
-  const [selectedDate, setSelectedDate] = useState(new Date('2021/01/06'));
+  const [selectedDate, setSelectedDate] = useState(new Date('2021/06/01'));
   // const [currentMonth, setCurrentMonth] = useState(new Date());
 
   const [loadingItens, setLoading] = useState(true);
+  const [loadingButton, setLoadingButton] = useState(false);
   // const [idRelationSector, seIdRelationSector] = useState('');
   const [grupChecked, setGrupChecked] = useState(false);
   const [dataGoalsAnalytic, setDataGoalsAnalytic] = useState<IGoalsAnalytics[]>(
@@ -145,9 +149,10 @@ const PainelAnalyticModule: React.FC = () => {
 
   const [optionSelected, setOptionSelected] = useState<string[]>([]);
   // const [adder, setAdder] = useState({});
+  const [emailSelected, setEmailSelected] = useState<SelectValue[]>([]);
 
   const { containerProps, indicatorEl } = useLoading({
-    loading: loadingItens,
+    loading: loadingButton,
     indicator: <Oval />,
   });
 
@@ -193,123 +198,132 @@ const PainelAnalyticModule: React.FC = () => {
     }
   }, []);
 
-  const handleSubmit = useCallback(
-    async (data: IEmail) => {
-      try {
-        formRef.current?.setErrors({});
+  const handleSubmit = useCallback(async () => {
+    try {
+      setLoadingButton(true);
+      formRef.current?.setErrors({});
 
-        const schema = Yup.object().shape({
-          email: Yup.string()
-            .required('E-mail do representante obrigátorio')
-            .email('Digite um e-mail válido'),
-        });
-        await schema.validate(data, {
-          abortEarly: false,
-        });
+      // const schema = Yup.object().shape({
+      //   email: Yup.string()
+      //     .required('E-mail do representante obrigátorio')
+      //     .email('Digite um e-mail válido'),
+      // });
+      // await schema.validate(data, {
+      //   abortEarly: false,
+      // });
 
-        if (optionSelected.length < 4) {
-          addToast({
-            type: 'error',
-            title: 'Erro na ação',
-            description:
-              'Talvez esteja faltando algumas questões, marque todas as alternativas.',
-          });
-        }
-        const { email } = data;
-
-        const returnFormated: { id: string; result: string }[] = [];
-
-        optionSelected.forEach(resultUnit => {
-          const separ = resultUnit.split('!');
-
-          const arrayFormat = {
-            result: separ[0] === '&' ? '10' : separ[0],
-            id: separ[1],
-          };
-          returnFormated.push(arrayFormat);
-        });
-
-        const resultMonth =
-          returnFormated.reduce((acum, current) => {
-            return acum + Number(current.result);
-          }, 0) / returnFormated.length;
-
-        await api
-          .get<ISatisfactionSurvey>(
-            `/satisfaction-survey-response?email=${email}`,
-          )
-          .then(async response => {
-            if (response.data.model) {
-              console.log('existe model', response.data);
-
-              await api.post('/satisfaction-survey-response', {
-                goal_id: dataGoalsAnalytic[0].goals.id,
-                sector_id: dataGoalsAnalytic[0].sector.id,
-                analyze_module_id: parsed.slice(1),
-                date: selectedDate,
-                result: JSON.stringify(returnFormated),
-                observations: JSON.stringify(dataOccurrence),
-                email,
-                model: response.data.model,
-                month: format(new Date(selectedDate), 'MMMM').toLowerCase(),
-                value: resultMonth,
-              });
-            }
-          });
-        console.log('não existe model');
-
-        await api.post('/satisfaction-survey-response', {
-          goal_id: dataGoalsAnalytic[0].goals.id,
-          sector_id: dataGoalsAnalytic[0].sector.id,
-          analyze_module_id: parsed.slice(1),
-          date: selectedDate,
-          result: JSON.stringify(returnFormated),
-          observations: JSON.stringify(dataOccurrence),
-          email,
-          model: Math.floor(Math.random() * 10),
-          month: format(new Date(selectedDate), 'MMMM').toLowerCase(),
-          value: resultMonth,
-        });
-
-        const status = {
-          status_of_conclusion: true,
-        };
-
-        // await api
-        //   .put(`/goals-of-sectors?analyze_module_id=${parsed.slice(1)}`, status)
-        //   .then(response => {
-        //     console.log(response.data);
-        //   });
-
-        localStorage.setItem(
-          '@Samasc:statusSuvey',
-          `${status.status_of_conclusion}`,
-        );
-        setGrupChecked(true);
-
+      if (emailSelected.length === 0) {
         addToast({
-          type: 'success',
-          title: 'Pesquisa de satisfação finalizada com sucesso',
-          description: 'sucesso ao finalizar a pesquisa de satisfação',
+          type: 'error',
+          title: 'Erro na ação',
+          description: 'Selecione seu email.',
         });
-      } catch (err) {
+        setLoadingButton(false);
+        return;
+      }
+      if (optionSelected.length < 4) {
         addToast({
           type: 'error',
           title: 'Erro na ação',
           description:
-            'ocorreu um erro ao finalizar a pesquisa, verifique se foi adicionado o email.',
+            'Talvez esteja faltando algumas questões, marque todas as alternativas.',
         });
+        setLoadingButton(false);
+        return;
       }
-    },
-    [
-      optionSelected,
-      dataOccurrence,
-      dataGoalsAnalytic,
-      parsed,
-      selectedDate,
-      addToast,
-    ],
-  );
+      // const { email } = data;
+
+      const returnFormated: { id: string; result: string }[] = [];
+
+      optionSelected.forEach(resultUnit => {
+        const separ = resultUnit.split('!');
+
+        const arrayFormat = {
+          result: separ[0] === '&' ? '10' : separ[0],
+          id: separ[1],
+        };
+        returnFormated.push(arrayFormat);
+      });
+
+      const resultMonth =
+        returnFormated.reduce((acum, current) => {
+          return acum + Number(current.result);
+        }, 0) / returnFormated.length;
+
+      await api
+        .get<ISatisfactionSurvey>(
+          `/satisfaction-survey-response?email=${emailSelected[0].value}`,
+        )
+        .then(async response => {
+          if (response.data.model) {
+            await api.post('/satisfaction-survey-response', {
+              goal_id: dataGoalsAnalytic[0].goals.id,
+              sector_id: dataGoalsAnalytic[0].sector.id,
+              analyze_module_id: parsed.slice(1),
+              date: selectedDate,
+              result: JSON.stringify(returnFormated),
+              observations: JSON.stringify(dataOccurrence),
+              email: emailSelected[0].value,
+              model: response.data.model,
+              month: format(new Date(selectedDate), 'MMMM').toLowerCase(),
+              value: resultMonth,
+            });
+          }
+        });
+
+      await api.post('/satisfaction-survey-response', {
+        goal_id: dataGoalsAnalytic[0].goals.id,
+        sector_id: dataGoalsAnalytic[0].sector.id,
+        analyze_module_id: parsed.slice(1),
+        date: selectedDate,
+        result: JSON.stringify(returnFormated),
+        observations: JSON.stringify(dataOccurrence),
+        email: emailSelected[0].value,
+        model: emailSelected[0].value,
+        month: format(new Date(selectedDate), 'MMMM').toLowerCase(),
+        value: resultMonth,
+      });
+
+      const status = {
+        status_of_conclusion: true,
+      };
+
+      // await api
+      //   .put(`/goals-of-sectors?analyze_module_id=${parsed.slice(1)}`, status)
+      //   .then(response => {
+      //     console.log(response.data);
+      //   });
+
+      localStorage.setItem(
+        '@Samasc:statusSuvey',
+        `${status.status_of_conclusion}`,
+      );
+      setGrupChecked(true);
+
+      addToast({
+        type: 'success',
+        title: 'Pesquisa de satisfação finalizada com sucesso',
+        description: 'sucesso ao finalizar a pesquisa de satisfação',
+      });
+      setLoadingButton(false);
+    } catch (err) {
+      setLoadingButton(false);
+      addToast({
+        type: 'error',
+        title: 'Erro na ação',
+        description:
+          'ocorreu um erro ao finalizar a pesquisa, verifique se foi adicionado o email.',
+      });
+    }
+  }, [
+    emailSelected,
+    optionSelected,
+    dataGoalsAnalytic,
+    parsed,
+    selectedDate,
+    dataOccurrence,
+    addToast,
+  ]);
 
   // const handleChecked = useCallback(
   //   (id: string) => {
@@ -345,8 +359,6 @@ const PainelAnalyticModule: React.FC = () => {
           observation: `${temp.observations}`,
         };
 
-        console.log('veeerr', dataObservations);
-
         setOoccurrence([...dataOccurrence, dataObservations]);
       } catch (err) {
         console.log(err);
@@ -363,6 +375,7 @@ const PainelAnalyticModule: React.FC = () => {
         result: dataItem[1],
         id: dataItem[0],
       };
+
       const itemSelected = optionSelected.findIndex((item: string) => {
         return item.substring(1) === itemObject.id.substring(1);
       });
@@ -384,6 +397,99 @@ const PainelAnalyticModule: React.FC = () => {
     },
     [optionSelected],
   );
+
+  const options = [
+    {
+      value: 'afonso.valerio@cooasgo.com.br',
+      label: 'afonso.valerio@cooasgo.com.br',
+      disabled: emailSelected.length > 0,
+    },
+    {
+      value: 'comunicacao@cooasgo.com.br',
+      label: 'comunicacao@cooasgo.com.br',
+      disabled: emailSelected.length > 0,
+    },
+    {
+      value: 'fabrica2@gmail.com',
+      label: 'fabrica2@gmail.com',
+      disabled: emailSelected.length > 0,
+    },
+    {
+      value: 'fabrica@cooasgo.com.br',
+      label: 'fabrica@cooasgo.com.br',
+      disabled: emailSelected.length > 0,
+    },
+    {
+      value: 'fernando.yoshida@cooasgo.com.br',
+      label: 'fernando.yoshida@cooasgo.com.br',
+      disabled: emailSelected.length > 0,
+    },
+    {
+      value: 'financeiro@cooasgo.com.br',
+      label: 'financeiro@cooasgo.com.br',
+      disabled: emailSelected.length > 0,
+    },
+    {
+      value: 'katiele.silva@cooasgo.com.br',
+      label: 'katiele.silva@cooasgo.com.br',
+      disabled: emailSelected.length > 0,
+    },
+    {
+      value: 'kenner.lopes@cooasgo.com.br',
+      label: 'kenner.lopes@cooasgo.com.br',
+      disabled: emailSelected.length > 0,
+    },
+    {
+      value: 'lisiane.barela@cooasgo.com.br',
+      label: 'lisiane.barela@cooasgo.com.br',
+      disabled: emailSelected.length > 0,
+    },
+    {
+      value: 'marcos.piaia@cooasgo.com.br',
+      label: 'marcos.piaia@cooasgo.com.br',
+      disabled: emailSelected.length > 0,
+    },
+    {
+      value: 'ricardo.antonio@cooasgo.com.br',
+      label: 'ricardo.antonio@cooasgo.com.br',
+      disabled: emailSelected.length > 0,
+    },
+    {
+      value: 'sesmt@cooasgo.com.br',
+      label: 'sesmt@cooasgo.com.br',
+      disabled: emailSelected.length > 0,
+    },
+    {
+      value: 'camilo.martins@cooasgo.com.br',
+      label: 'camilo.martins@cooasgo.com.br',
+      disabled: emailSelected.length > 0,
+    },
+    {
+      value: 'cesario.pereira@cooasgo.com.br',
+      label: 'cesario.pereira@cooasgo.com.br',
+      disabled: emailSelected.length > 0,
+    },
+    {
+      value: 'cooasgo.remoto@gmail.com',
+      label: 'cooasgo.remoto@gmail.com',
+      disabled: emailSelected.length > 0,
+    },
+    {
+      value: 'udg@cooasgo.com.br',
+      label: 'udg@cooasgo.com.br',
+      disabled: emailSelected.length > 0,
+    },
+  ];
+
+  // eslint-disable-next-line no-unused-vars
+  const Internationalization = {
+    allItemsAreSelected: 'Todos os itens selecionados.',
+    clearSearch: 'Limpar pesquisa',
+    noOptions: 'Sem opções',
+    search: 'Pesquisar',
+    selectAll: 'Selecionar todos',
+    selectSomeItems: 'Selecione seu email...',
+  };
 
   return (
     <>
@@ -993,15 +1099,34 @@ const PainelAnalyticModule: React.FC = () => {
                               <p>
                                 Confirme este formulário, adicionando seu email
                               </p>
-                              <Input
+                              {/* <Input
                                 name="email"
                                 placeholder="Adicione seu email utilizado na cooperativa"
+                              /> */}
+
+                              <MultiSelect
+                                className="select"
+                                options={options}
+                                value={emailSelected}
+                                onChange={setEmailSelected}
+                                labelledBy="Selecione"
+                                overrideStrings={Internationalization}
+                                hasSelectAll={false}
+                                disableSearch
                               />
+
                               <Button
                                 // onClick={() => handleChecked(dataAnalytic.id)}
                                 type="submit"
+                                disabled={loadingButton}
                               >
-                                Finalizar
+                                {loadingButton ? (
+                                  <div {...containerProps} ref={componentRef}>
+                                    {indicatorEl}
+                                  </div>
+                                ) : (
+                                  'Finalizar'
+                                )}
                               </Button>
                             </span>
                           </section>

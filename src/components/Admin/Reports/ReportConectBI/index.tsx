@@ -1,11 +1,12 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Report } from 'powerbi-report-component';
 import { useLoading, Oval } from '@agney/react-loading';
-import Button from '../../../../components/Global/Button';
+// import Button from '../../../Global/Button';
 
-import { CardButton, CardeHeader, Container } from './styles';
+import { Container } from './styles';
 import { apiPowerBI } from '../../../../services/api';
 import { useToast } from '../../../../hooks/toast';
+import { useAuth } from '../../../../hooks/auth';
 
 interface PropsPowerBI {
   accessToken: string;
@@ -21,9 +22,14 @@ interface PropsPowerBI {
   // ];
 }
 
-const SelectorFolders: React.FC = () => {
+interface ReportData {
+  reportId: string;
+}
+
+export const ReportConectBI: React.FC<ReportData> = ({ reportId }) => {
   const [loadSignInUser, setloadSignInUser] = useState(true);
   const componentRef = useRef<HTMLDivElement>(null);
+  const { user } = useAuth();
   // const [report, embed] = useReport();
 
   const { addToast } = useToast();
@@ -55,7 +61,7 @@ const SelectorFolders: React.FC = () => {
               // Data expirou, carrega novos dados
               console.log('data expirou, carregou novos dados');
               const response = await apiPowerBI.get<PropsPowerBI>(
-                '/get-embed-token?reportId=c1b98ec1-ee3b-4e1e-9bb2-fa9444ce810e',
+                `/get-embed-token?reportId=${reportId}`,
               );
 
               localStorage.setItem(
@@ -70,7 +76,7 @@ const SelectorFolders: React.FC = () => {
         console.log('não existe dados do power BI, carrou tudo novo');
         // Dados inexistes, primeiro carregamento
         const response = await apiPowerBI.get<PropsPowerBI>(
-          '/get-embed-token?reportId=49601ede-66ec-4fe2-88c0-299c21f1b1af',
+          `/get-embed-token?reportId=${reportId}`,
         );
 
         localStorage.setItem(
@@ -89,7 +95,7 @@ const SelectorFolders: React.FC = () => {
       }
     }
     loadTokenBI();
-  }, [addToast]);
+  }, [addToast, reportId]);
 
   const layoutSettings = {
     width: '100%',
@@ -132,7 +138,7 @@ const SelectorFolders: React.FC = () => {
   return (
     <>
       <Container load={loadSignInUser}>
-        <CardeHeader>
+        {/* <CardeHeader>
           <div>
             <h2>Relatórios e painéis infograficos</h2>
             <strong>
@@ -153,7 +159,7 @@ const SelectorFolders: React.FC = () => {
               </Button>
             </div>
           </CardButton>
-        </CardeHeader>
+        </CardeHeader> */}
 
         {loadSignInUser ? (
           <>
@@ -174,7 +180,7 @@ const SelectorFolders: React.FC = () => {
               embedUrl={dataBI ? dataBI.embedUrl : 'sem token'}
               embedId={dataBI ? dataBI.reportId : 'sem token'}
               // pageName="Sentiment" // set as current page of the report
-              reportMode="View" // open report in a particular mode View/Edit/Create
+              reportMode={user.tag === 'admin' ? 'Edit' : 'View'} // open report in a particular mode View/Edit/Create
               // datasetId={datasetId} // required for reportMode = "Create" and optional for dynamic databinding in `report` on `View` mode
               // groupId={groupId} // optional. Used when reportMode = "Create" and to chose the target workspace when the dataset is shared.
               // extraSettings={extraSettings}
@@ -196,5 +202,3 @@ const SelectorFolders: React.FC = () => {
     </>
   );
 };
-
-export default SelectorFolders;
