@@ -12,6 +12,8 @@ interface SectorSelected {
   leader: string;
   name: string;
   observations: string;
+  report_id: string;
+  embed_url: string;
 }
 
 const SelectedSector: React.FC = () => {
@@ -38,8 +40,10 @@ const SelectedSector: React.FC = () => {
           <strong>{sectorSelected?.observations}</strong>
         </div>
       </CardeHeader>
-
-      <ReportConectBI reportId="c1b98ec1-ee3b-4e1e-9bb2-fa9444ce810e" />
+      <ReportConectBI
+        reportId={sectorSelected?.report_id ?? 'null_id'}
+        embedUrl={sectorSelected?.embed_url ?? 'null_id'}
+      />
     </>
   );
 };

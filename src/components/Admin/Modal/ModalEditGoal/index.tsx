@@ -144,28 +144,30 @@ const ModalAddFood: React.FC<IModalProps> = ({
   useEffect(() => {
     if (isOpen) {
       if (dataEditGoal !== '') {
-        api.get<AddGoalsModal>(`/goals/${dataEditGoal}`).then(response => {
-          const initialSector = {
-            id: response.data.id,
-            name: response.data.name,
-            weight: response.data.weight,
-            type: response.data.type,
-            source: response.data.source,
-            observations: response.data.observations,
-            codccu: response.data.codccu,
-          };
+        api
+          .get<AddGoalsModal>(`/goals/show?goal_id=${dataEditGoal}`)
+          .then(response => {
+            const initialSector = {
+              id: response.data.id,
+              name: response.data.name,
+              weight: response.data.weight,
+              type: response.data.type,
+              source: response.data.source,
+              observations: response.data.observations,
+              codccu: response.data.codccu,
+            };
 
-          const initialSubGoals: React.SetStateAction<string[]> = [];
+            const initialSubGoals: React.SetStateAction<string[]> = [];
 
-          if (response.data.sub_goals_of_goals) {
-            response.data.sub_goals_of_goals.forEach(function (goals) {
-              initialSubGoals.push(goals.sub_goals.id);
-            });
-          }
-          setSelectedSubGoalsItems(initialSubGoals);
-          setCurrentSubGoals(initialSubGoals);
-          setDataInitialGoal(initialSector);
-        });
+            if (response.data.sub_goals_of_goals) {
+              response.data.sub_goals_of_goals.forEach(function (goals) {
+                initialSubGoals.push(goals.sub_goals.id);
+              });
+            }
+            setSelectedSubGoalsItems(initialSubGoals);
+            setCurrentSubGoals(initialSubGoals);
+            setDataInitialGoal(initialSector);
+          });
 
         api
           .get(`/analysis-module-of-goals?goal_id=${dataEditGoal}`)

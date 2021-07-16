@@ -4,6 +4,7 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 
 import { FormHandles } from '@unform/core';
+import MultiSelect from 'react-multi-select-component';
 
 import { FiX, FiLink2, FiEdit2, FiPlus } from 'react-icons/fi';
 
@@ -49,6 +50,11 @@ interface IGoals {
   observations: string;
   codccu?: string;
 }
+interface IOptions {
+  value: string;
+  label: string;
+  model?: string;
+}
 
 interface IModalProps {
   isOpen: boolean;
@@ -89,7 +95,6 @@ interface IAnalyticModule {
   condition: string;
   observations: string;
   model?: string;
-  codccu?: string;
 }
 
 const ModalEditSector: React.FC<IModalProps> = ({
@@ -110,13 +115,17 @@ const ModalEditSector: React.FC<IModalProps> = ({
   const [currentGoals, setCurrentGoals] = useState<string[]>([]);
 
   const [opengoals, setOpenGoals] = useState<boolean>(false);
-  const [dataGoals, setDataGoals] = useState<IGoals[]>([]);
+  const [dataGoals, setDataGoals] = useState<IOptions[]>([]);
+
+  const [goalsSelected, setGoalsSelected] = useState<IOptions[]>([]);
 
   const [dataInitialSector, setDataInitialSector] = useState<ISector>();
   // const [dataInitialGoals, setDataInitialGoals] = useState<string[]>([]);
   const [openAnalyticModule, setAnlalyticModule] = useState(false);
 
-  const [analyticModule, setAnalyticModule] = useState<IAnalyticModule[]>([]);
+  const [analyticModule, setAnalyticModule] = useState<IOptions[]>([]);
+  const [analyticSelected, setAnalyticSelected] = useState<[]>([]);
+
   const [selectedAnalyticItems, setSelectedAnalyticItems] = useState<string[]>(
     [],
   );
@@ -127,16 +136,29 @@ const ModalEditSector: React.FC<IModalProps> = ({
   >([]);
 
   useEffect(() => {
-    if (openAnalyticModule) {
-      try {
-        api.get('/analysis-module').then(response => {
-          setAnalyticModule(response.data);
+    try {
+      api.get<IAnalyticModule[]>('/analysis-module').then(response => {
+        console.log('analise', response.data);
+
+        const arrayanalyticModuleFormated: React.SetStateAction<IOptions[]> =
+          [];
+        response.data.forEach(element => {
+          const analytic = {
+            value: element.id,
+            label: element.name,
+            model: element.model,
+          };
+
+          arrayanalyticModuleFormated.push(analytic);
         });
-      } catch (err) {
-        console.log(err);
-      }
+        console.log('analise', arrayanalyticModuleFormated);
+
+        setAnalyticModule(arrayanalyticModuleFormated);
+      });
+    } catch (err) {
+      console.log(err);
     }
-  }, [openAnalyticModule]);
+  }, []);
 
   useEffect(() => {
     if (isOpen === false) {
@@ -156,12 +178,6 @@ const ModalEditSector: React.FC<IModalProps> = ({
   }, [isOpen]);
 
   useEffect(() => {
-    api.get('/goals').then(response => {
-      setDataGoals(response.data);
-    });
-  }, []);
-
-  useEffect(() => {
     if (isOpen) {
       if (dataEditSector !== '') {
         api
@@ -169,7 +185,6 @@ const ModalEditSector: React.FC<IModalProps> = ({
             `/goals-of-sectors?sector_id=${dataEditSector}`,
           )
           .then(response => {
-            console.log(response.data);
             if (response.data) {
               // const initialSector = {
               //   id: response.data[0].sector.id,
@@ -180,24 +195,42 @@ const ModalEditSector: React.FC<IModalProps> = ({
               //   // observations: response.data[0].sector.observations,
               // };
               const initialGoals:
-                | IGoals
-                | ((prevState: IGoals | undefined) => IGoals | undefined)
-                | string[]
-                | undefined = [];
+                | React.SetStateAction<IOptions>
+                | { value: string; label: string }[] = [];
 
-              response.data.forEach(function (goals) {
-                initialGoals.push(goals.goals.id);
+              response.data.forEach(element => {
+                const goal = {
+                  value: element.goals.id,
+                  label: element.goals.name,
+                };
+                initialGoals.push(goal);
               });
-              setSelectedGoalsItems(initialGoals);
-              setSelectedGoalsIdConst(initialGoals);
-              setCurrentGoals(initialGoals);
+
+              setGoalsSelected(initialGoals);
             }
           });
         api
           .get<ISector>(`sectors/show?sector_id=${dataEditSector}`)
           .then(res => {
+            api
+              .get<IGoals[]>(`goals/show?codccu=${res.data.codccu}`)
+              .then(resp => {
+                const arrayGoalFormated:
+                  | React.SetStateAction<IOptions>
+                  | { value: string; label: string }[] = [];
+
+                resp.data.forEach(element => {
+                  const goal = {
+                    value: element.id,
+                    label: element.name,
+                  };
+                  arrayGoalFormated.push(goal);
+                });
+
+                setDataGoals(arrayGoalFormated);
+              });
+
             setDataInitialSector(res.data);
-            console.log(res.data);
           });
         setOpenGoals(true);
       }
@@ -234,32 +267,33 @@ const ModalEditSector: React.FC<IModalProps> = ({
         handleSector(formData);
 
         // formata os id, apagando o id selecionado do estado de selectedGoalsItems
-        if (arrayAnalyticModuleAndGoal.length > 0) {
-          selectedGoalsItems.splice(
-            selectedGoalsItems.indexOf(arrayAnalyticModuleAndGoal[0].goal_id),
-            1,
-          );
-        }
+        // if (arrayAnalyticModuleAndGoal.length > 0) {
+        //   selectedGoalsItems.splice(
+        //     selectedGoalsItems.indexOf(arrayAnalyticModuleAndGoal[0].goal_id),
+        //     1,
+        //   );
+        // }
 
         // verifica se houve alterações nas metas
         const checked = selectedGoalsItems.filter(element =>
           currentGoals.includes(element),
         );
-
+        console.log('verifica se houve alterações nas metas', checked);
         // Encontra qual foi o módulo de analise selecionado, para add o modelo na url
         const analyticModuleFiltred = analyticModule.find(element => {
-          return element.id === selectedAnalyticItems[0];
+          return element.value === selectedAnalyticItems[0];
         });
+
         console.log('encontra módulo de analise', analyticModuleFiltred);
 
         // const route = analyticModule.find(
         //   analytic => analytic.id === selectedAnalyticItems[0],
         // );
-        // Cria novo relacionamento entre a meta selecionanda e o setor
+        // Cria novo relacionamento entre a meta selecionando e o setor
         if (currentGoals.length === 0 && selectedGoalsItems.length !== 0) {
           console.log('cria novo relacionamento');
 
-          await api.post('/goals-of-sectors/create-all', {
+          await api.post('/1goals-of-sectors/create-all', {
             goals_ids: selectedGoalsItems,
             sector_id: dataEditSector,
             analysis_module: arrayAnalyticModuleAndGoal,
@@ -267,7 +301,7 @@ const ModalEditSector: React.FC<IModalProps> = ({
 
           if (selectedAnalyticItems.length !== 0) {
             await api.put(
-              `/analysis-module?analyze_module_id=${selectedAnalyticItems[0]}`,
+              `/1analysis-module?analyze_module_id=${selectedAnalyticItems[0]}`,
               {
                 url: `https://www.samasc.cloud/painel-module-${analyticModuleFiltred?.model}?${selectedAnalyticItems[0]}`,
                 // url: `http://localhost:3000/painel-${analyticModuleFiltred?.model}?${selectedAnalyticItems[0]}`,
@@ -286,7 +320,7 @@ const ModalEditSector: React.FC<IModalProps> = ({
           };
           console.log(res);
 
-          await api.post('/goals-of-sectors/create-all', {
+          await api.post('/1goals-of-sectors/create-all', {
             goals_ids: selectedGoalsItems,
             sector_id: dataEditSector,
             analysis_module: arrayAnalyticModuleAndGoal,
@@ -294,7 +328,7 @@ const ModalEditSector: React.FC<IModalProps> = ({
 
           if (selectedAnalyticItems.length !== 0) {
             await api.put(
-              `/analysis-module?analyze_module_id=${selectedAnalyticItems[0]}`,
+              `/1analysis-module?analyze_module_id=${selectedAnalyticItems[0]}`,
               {
                 url: `https://www.samasc.cloud/painel-module-${analyticModuleFiltred?.model}?${selectedAnalyticItems[0]}`,
                 // url: `http://localhost:3000/painel-${analyticModuleFiltred?.model}?${selectedAnalyticItems[0]}`,
@@ -304,9 +338,9 @@ const ModalEditSector: React.FC<IModalProps> = ({
           // Atualiza se houve alterações
         } else if (!(checked.length === selectedGoalsItems.length)) {
           console.log('Atualiza 02');
-          await api.delete(`/goals-of-sectors/${dataEditSector}`);
+          await api.delete(`/1goals-of-sectors/${dataEditSector}`);
 
-          await api.post('/goals-of-sectors/create-all', {
+          await api.post('/1goals-of-sectors/create-all', {
             goals_ids: selectedGoalsItems,
             sector_id: dataEditSector,
             analysis_module: arrayAnalyticModuleAndGoal,
@@ -314,7 +348,7 @@ const ModalEditSector: React.FC<IModalProps> = ({
 
           if (selectedAnalyticItems.length !== 0) {
             await api.put(
-              `/analysis-module?analyze_module_id=${selectedAnalyticItems[0]}`,
+              `/1analysis-module?analyze_module_id=${selectedAnalyticItems[0]}`,
               {
                 url: `https://www.samasc.cloud/painel-module-${analyticModuleFiltred?.model}?${selectedAnalyticItems[0]}`,
                 // url: `http://localhost:3000/painel-${analyticModuleFiltred?.model}?${selectedAnalyticItems[0]}`,
@@ -394,6 +428,15 @@ const ModalEditSector: React.FC<IModalProps> = ({
     { value: '11', label: '11-Cerealista' },
   ];
 
+  const Internationalization = {
+    allItemsAreSelected: 'Todos os itens selecionados.',
+    clearSearch: 'Limpar pesquisa',
+    noOptions: 'Sem opções',
+    search: 'Pesquisar',
+    selectAll: 'Selecionar todos',
+    selectSomeItems: 'Selecione...',
+  };
+
   const handleSelectGoalsItem = useCallback(
     (id: string) => {
       const alreadySelected = selectedGoalsIdConst.findIndex(
@@ -431,17 +474,17 @@ const ModalEditSector: React.FC<IModalProps> = ({
     },
     [openAnalyticModule],
   );
-  const handleCloseAnalyticModule = useCallback(() => {
-    const moduleIds = {
-      analyze_module_id: selectedAnalyticItems[0],
-      goal_id: selectedIdGoal,
-    };
+  // const handleCloseAnalyticModule = useCallback(() => {
+  //   const moduleIds = {
+  //     analyze_module_id: selectedAnalyticItems[0],
+  //     goal_id: selectedIdGoal,
+  //   };
 
-    setArrayAnalyticModuleAndGoal([moduleIds]);
+  //   setArrayAnalyticModuleAndGoal([moduleIds]);
 
-    setAnlalyticModule(!openAnalyticModule);
-    // setOpenGoals(false);
-  }, [openAnalyticModule, selectedAnalyticItems, selectedIdGoal]);
+  //   setAnlalyticModule(!openAnalyticModule);
+  //   // setOpenGoals(false);
+  // }, [openAnalyticModule, selectedAnalyticItems, selectedIdGoal]);
 
   return (
     <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
@@ -479,71 +522,24 @@ const ModalEditSector: React.FC<IModalProps> = ({
         <p>Observações</p>
         <TextArea name="observations" placeholder="Descrição" />
 
+        <p>Meta</p>
+        <MultiSelect
+          options={dataGoals}
+          value={goalsSelected}
+          onChange={setGoalsSelected}
+          labelledBy="Selecione"
+          overrideStrings={Internationalization}
+        />
+        <p>Modulo de analise</p>
+        <MultiSelect
+          options={analyticModule}
+          value={analyticSelected}
+          onChange={setAnalyticSelected}
+          labelledBy="Selecione"
+          overrideStrings={Internationalization}
+        />
         <nav>
-          <span>
-            <button name="subGoals" onClick={hanleOpenGoals} type="button">
-              Atribuir metas
-              <FiLink2 size={20} onClick={handleOpenAnalyticModule} />
-            </button>
-          </span>
-
-          <ContainerSub>
-            <ContainerAnalytic
-              className={
-                openAnalyticModule ? 'openModelAnlalytc' : 'closedModelAnalytic'
-              }
-            >
-              <header>
-                <strong>Vincular novo módulo de análise</strong>
-
-                <FiX size={20} onClick={handleOpenAnalyticModule} />
-              </header>
-              {analyticModule.map(analytic => (
-                <CardAnalytic
-                  onClick={() => handleSelectItem(analytic.id)}
-                  key={analytic.id}
-                  className={
-                    selectedAnalyticItems.includes(analytic.id)
-                      ? 'selected'
-                      : ''
-                  }
-                >
-                  <h4>{analytic.name}</h4>
-                </CardAnalytic>
-              ))}
-              <DivLeft>
-                <Button onClick={handleCloseAnalyticModule}>salvar</Button>
-              </DivLeft>
-            </ContainerAnalytic>
-
-            {dataGoals.map(sub => (
-              <ContainerGoal key={sub.id} opengoals={opengoals}>
-                <CardSub
-                  onClick={() => handleSelectGoalsItem(sub.id)}
-                  className={
-                    selectedGoalsIdConst.includes(sub.id) ? 'selected' : ''
-                  }
-                >
-                  <div>
-                    <h4>{sub.name}</h4>
-
-                    <p>
-                      Código centro de custo:
-                      {sub.codccu}
-                    </p>
-                  </div>
-                </CardSub>
-                <Info title="Vincular módulo de análise">
-                  <CircleAdd>
-                    <FiPlus
-                      size={20}
-                      onClick={() => handleOpenAnalyticModule(sub.id)}
-                    />
-                  </CircleAdd>
-                </Info>
-              </ContainerGoal>
-            ))}
-          </ContainerSub>
+          <ContainerSub />
 
           <DivLeft>
             <Button type="submit" data-testid="add-food-button">

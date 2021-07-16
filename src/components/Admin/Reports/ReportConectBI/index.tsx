@@ -6,7 +6,6 @@ import { useLoading, Oval } from '@agney/react-loading';
 import { Container } from './styles';
 import { apiPowerBI } from '../../../../services/api';
 import { useToast } from '../../../../hooks/toast';
-import { useAuth } from '../../../../hooks/auth';
 
 interface PropsPowerBI {
   accessToken: string;
@@ -24,12 +23,15 @@ interface PropsPowerBI {
 
 interface ReportData {
   reportId: string;
+  embedUrl: string;
 }
 
-export const ReportConectBI: React.FC<ReportData> = ({ reportId }) => {
+export const ReportConectBI: React.FC<ReportData> = ({
+  reportId,
+  embedUrl,
+}) => {
   const [loadSignInUser, setloadSignInUser] = useState(true);
   const componentRef = useRef<HTMLDivElement>(null);
-  const { user } = useAuth();
   // const [report, embed] = useReport();
 
   const { addToast } = useToast();
@@ -49,41 +51,48 @@ export const ReportConectBI: React.FC<ReportData> = ({ reportId }) => {
       try {
         if (localStorage.getItem('@SamascBI:dataAccess')) {
           const dataAccessBI = localStorage.getItem('@SamascBI:dataAccess');
-          console.log('ver', dataAccessBI);
+
           if (dataAccessBI) {
             const formatedDataAccesBI: PropsPowerBI = JSON.parse(dataAccessBI);
 
             if (new Date(formatedDataAccesBI.expiry) > new Date()) {
               // Data ainda esta valida
-              console.log('Data ainda valida');
               setDataBI(formatedDataAccesBI);
             } else if (new Date(formatedDataAccesBI.expiry) < new Date()) {
               // Data expirou, carrega novos dados
-              console.log('data expirou, carregou novos dados');
+
               const response = await apiPowerBI.get<PropsPowerBI>(
                 `/get-embed-token?reportId=${reportId}`,
               );
 
+              const dataConectBI = {
+                accessToken: response.data.accessToken,
+                expiry: response.data.expiry,
+                reportId,
+                embedUrl,
+              };
+
               localStorage.setItem(
                 '@SamascBI:dataAccess',
-                JSON.stringify(response.data),
+                JSON.stringify(dataConectBI),
               );
               setDataBI(response.data);
             }
           }
           return;
         }
-        console.log('não existe dados do power BI, carrou tudo novo');
         // Dados inexistes, primeiro carregamento
-        const response = await apiPowerBI.get<PropsPowerBI>(
-          `/get-embed-token?reportId=${reportId}`,
-        );
+        if (reportId !== 'null_id') {
+          const response = await apiPowerBI.get<PropsPowerBI>(
+            `/get-embed-token?reportId=${reportId}`,
+          );
 
-        localStorage.setItem(
-          '@SamascBI:dataAccess',
-          JSON.stringify(response.data),
-        );
-        setDataBI(response.data);
+          localStorage.setItem(
+            '@SamascBI:dataAccess',
+            JSON.stringify(response.data),
+          );
+          setDataBI(response.data);
+        }
       } catch (err) {
         console.log(err);
 
@@ -95,7 +104,7 @@ export const ReportConectBI: React.FC<ReportData> = ({ reportId }) => {
       }
     }
     loadTokenBI();
-  }, [addToast, reportId]);
+  }, [addToast, embedUrl, reportId]);
 
   const layoutSettings = {
     width: '100%',
@@ -180,13 +189,14 @@ export const ReportConectBI: React.FC<ReportData> = ({ reportId }) => {
               embedUrl={dataBI ? dataBI.embedUrl : 'sem token'}
               embedId={dataBI ? dataBI.reportId : 'sem token'}
               // pageName="Sentiment" // set as current page of the report
-              reportMode={user.tag === 'admin' ? 'Edit' : 'View'} // open report in a particular mode View/Edit/Create
+              reportMode="View" // open report in a particular mode View/Edit/Create
               // datasetId={datasetId} // required for reportMode = "Create" and optional for dynamic databinding in `report` on `View` mode
               // groupId={groupId} // optional. Used when reportMode = "Create" and to chose the target workspace when the dataset is shared.
               // extraSettings={extraSettings}
               style={layoutSettings}
               permissions="All"
-              onRender={handleLoaded}
+              // onRender={handleLoaded}
+              onLoad={handleLoaded}
               extraSettings={{
                 filterPaneEnabled: false,
               }}
