@@ -11,7 +11,6 @@ export const Conatiner = styled.div`
 
   .cards {
     display: flex;
-    background: red;
 
     /* Put a card in the next row when previous cards take all width */
     flex-wrap: wrap;

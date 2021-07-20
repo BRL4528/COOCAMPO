@@ -108,6 +108,7 @@ export default createGlobalStyle`
 @media print {
     #noPrint {
       display: none;
+      visibility: hidden;
     }
     #print {
       width: 100%;

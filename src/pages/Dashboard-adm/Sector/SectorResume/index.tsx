@@ -1,7 +1,9 @@
-import React, { useEffect, useState } from 'react';
+/* eslint-disable prettier/prettier */
+import React, { useEffect, useState, useCallback } from 'react';
 
 import { api } from '../../../../services/api';
-import { CardeHeader } from './styles';
+import { CardeHeader, Container } from './styles';
+import Button from '../../../../components/Global/Button';
 
 import { ReportConectBI } from '../../../../components/Admin/Reports/ReportConectBI';
 
@@ -19,6 +21,7 @@ interface SectorSelected {
 const SelectedSector: React.FC = () => {
   const parsed = window.location.search;
   const [sectorSelected, setSectorSelected] = useState<SectorSelected>();
+  const [styleReport, setStyleReport] = useState<'window' | 'print'>('window');
 
   useEffect(() => {
     try {
@@ -32,19 +35,33 @@ const SelectedSector: React.FC = () => {
     }
   }, [parsed]);
 
+  const handleSetPrintReport = useCallback(() => {
+    setStyleReport('print');
+    setTimeout(() => window.print(), 3000);
+  }, []);
+
   return (
-    <>
+    <Container>
       <CardeHeader className="iconPrint">
         <div>
           <h2>{sectorSelected?.name}</h2>
           <strong>{sectorSelected?.observations}</strong>
         </div>
+        <span id="noPrint">
+          <Button type="button" onClick={() => handleSetPrintReport()}>
+            Imprimir
+          </Button>
+        </span>
       </CardeHeader>
-      <ReportConectBI
-        reportId={sectorSelected?.report_id ?? 'null_id'}
-        embedUrl={sectorSelected?.embed_url ?? 'null_id'}
-      />
-    </>
+
+      <div className="print-container">
+        <ReportConectBI
+          styleReport={styleReport}
+          reportId={sectorSelected?.report_id ?? 'null_id'}
+          embedUrl={sectorSelected?.embed_url ?? 'null_id'}
+        />
+      </div>
+    </Container>
   );
 };
 

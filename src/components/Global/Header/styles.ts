@@ -5,8 +5,13 @@ interface ContainerProps {
 }
 
 export const Container = styled.div<ContainerProps>`
+  position: fixed;
+  overflow: hidden;
+  width: 100vw;
+  top: 0;
+
   background: #fff;
-  padding: 8px 0;
+  padding: 5px 0;
   border-bottom: 2px solid var(--text-tertiary);
 `;
 export const HeaderContent = styled.div<ContainerProps>`

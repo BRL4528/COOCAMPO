@@ -24,11 +24,13 @@ interface PropsPowerBI {
 interface ReportData {
   reportId: string;
   embedUrl: string;
+  styleReport: 'print' | 'window';
 }
 
 export const ReportConectBI: React.FC<ReportData> = ({
   reportId,
   embedUrl,
+  styleReport,
 }) => {
   const [loadSignInUser, setloadSignInUser] = useState(true);
   const componentRef = useRef<HTMLDivElement>(null);
@@ -55,10 +57,23 @@ export const ReportConectBI: React.FC<ReportData> = ({
           if (dataAccessBI) {
             const formatedDataAccesBI: PropsPowerBI = JSON.parse(dataAccessBI);
 
-            if (new Date(formatedDataAccesBI.expiry) > new Date()) {
+            if (
+              new Date(formatedDataAccesBI.expiry) > new Date() &&
+              reportId !== 'null_id'
+            ) {
+              const dataConectBI = {
+                accessToken: formatedDataAccesBI.accessToken,
+                expiry: formatedDataAccesBI.expiry,
+                reportId,
+                embedUrl,
+              };
+
               // Data ainda esta valida
-              setDataBI(formatedDataAccesBI);
-            } else if (new Date(formatedDataAccesBI.expiry) < new Date()) {
+              setDataBI(dataConectBI);
+            } else if (
+              new Date(formatedDataAccesBI.expiry) < new Date() &&
+              reportId !== 'null_id'
+            ) {
               // Data expirou, carrega novos dados
 
               const response = await apiPowerBI.get<PropsPowerBI>(
@@ -87,6 +102,8 @@ export const ReportConectBI: React.FC<ReportData> = ({
             `/get-embed-token?reportId=${reportId}`,
           );
 
+          console.log('embededURL', response.data);
+
           localStorage.setItem(
             '@SamascBI:dataAccess',
             JSON.stringify(response.data),
@@ -107,10 +124,21 @@ export const ReportConectBI: React.FC<ReportData> = ({
   }, [addToast, embedUrl, reportId]);
 
   const layoutSettings = {
-    width: '100%',
+    width: '85vw',
     border: 'none',
-    height: '100vh',
+    height: `${window.innerWidth > 1500 ? '87vh' : '81vh'}`,
+    maxHeight: '100vh',
     margin: '0',
+
+    backgroundColor: '#333',
+  };
+
+  const layoutSettingsPrint = {
+    top: '0px',
+    margin: '0px',
+    minWidth: '1400px',
+    height: '900px',
+    padding: '20px',
   };
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -182,7 +210,6 @@ export const ReportConectBI: React.FC<ReportData> = ({
         )}
         {dataBI ? (
           <div id="print">
-            {console.log('ver isso', dataBI)}
             <Report
               tokenType="Aad" // "Aad"
               accessToken={dataBI ? dataBI.accessToken : 'sem token'}
@@ -193,7 +220,9 @@ export const ReportConectBI: React.FC<ReportData> = ({
               // datasetId={datasetId} // required for reportMode = "Create" and optional for dynamic databinding in `report` on `View` mode
               // groupId={groupId} // optional. Used when reportMode = "Create" and to chose the target workspace when the dataset is shared.
               // extraSettings={extraSettings}
-              style={layoutSettings}
+              style={
+                styleReport === 'print' ? layoutSettingsPrint : layoutSettings
+              }
               permissions="All"
               // onRender={handleLoaded}
               onLoad={handleLoaded}

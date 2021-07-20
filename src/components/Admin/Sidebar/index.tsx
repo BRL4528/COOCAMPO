@@ -74,7 +74,7 @@ const Sidebar: React.FC<LayoutProps> = ({ pathname }) => {
             visible={user.dashboard}
           >
             <Link to="dashboard" className="nav-link">
-              <FiBarChart color="#f2c811" size={18} />
+              <FiBarChart color="#f2c811" size={16} />
 
               <span className="link-text">Dashboard</span>
             </Link>
@@ -87,7 +87,7 @@ const Sidebar: React.FC<LayoutProps> = ({ pathname }) => {
             visible={user.goals_and_sub_goals}
           >
             <Link to="goals-subgoals" className="nav-link">
-              <FiLayers color="#f2c811" size={18} />
+              <FiLayers color="#f2c811" size={16} />
 
               <span className="link-text">Metas e Submetas</span>
             </Link>
@@ -100,7 +100,7 @@ const Sidebar: React.FC<LayoutProps> = ({ pathname }) => {
             visible={user.sector}
           >
             <Link to="sector" className="nav-link">
-              <FiMapPin color="#f2c811" size={18} />
+              <FiMapPin color="#f2c811" size={16} />
 
               <span className="link-text">Setor</span>
             </Link>
@@ -113,7 +113,7 @@ const Sidebar: React.FC<LayoutProps> = ({ pathname }) => {
             visible={user.employers}
           >
             <Link to="/employers" className="nav-link">
-              <FiUsers color="#f2c811" size={18} />
+              <FiUsers color="#f2c811" size={16} />
 
               <span className="link-text">Colaboradores</span>
             </Link>
@@ -126,7 +126,7 @@ const Sidebar: React.FC<LayoutProps> = ({ pathname }) => {
             visible={user.module_analyze}
           >
             <Link to="analyticModule" className="nav-link">
-              <FiSliders color="#f2c811" size={18} />
+              <FiSliders color="#f2c811" size={16} />
               <span className="link-text">Módulos de análise</span>
             </Link>
           </OptionList>
@@ -138,7 +138,7 @@ const Sidebar: React.FC<LayoutProps> = ({ pathname }) => {
             visible={user.imports}
           >
             <Link to="/import" className="nav-link">
-              <FiFilePlus color="#f2c811" size={18} />
+              <FiFilePlus color="#f2c811" size={16} />
               <span className="link-text">Importações</span>
             </Link>
           </OptionList>
@@ -150,7 +150,7 @@ const Sidebar: React.FC<LayoutProps> = ({ pathname }) => {
             visible={user.report}
           >
             <Link to="/report" className="nav-link">
-              <FiFileText color="#f2c811" size={18} />
+              <FiFileText color="#f2c811" size={16} />
 
               <span className="link-text">Relatório</span>
             </Link>
@@ -163,7 +163,7 @@ const Sidebar: React.FC<LayoutProps> = ({ pathname }) => {
             visible={false}
           >
             <Link to="/error404-5" className="nav-link">
-              <FiPieChart color="#f2c811" size={18} />
+              <FiPieChart color="#f2c811" size={16} />
 
               <span className="link-text">Gráficos</span>
             </Link>
@@ -176,7 +176,7 @@ const Sidebar: React.FC<LayoutProps> = ({ pathname }) => {
             visible={user.schedule}
           >
             <Link to="/schedule" className="nav-link">
-              <FiTerminal color="#f2c811" size={18} />
+              <FiTerminal color="#f2c811" size={16} />
 
               <span className="link-text">Agenda</span>
             </Link>
@@ -189,7 +189,7 @@ const Sidebar: React.FC<LayoutProps> = ({ pathname }) => {
             visible
           >
             <Link to="#" className="nav-link">
-              <FiSettings color="#f2c811" size={18} />
+              <FiSettings color="#f2c811" size={16} />
 
               <span className="link-text">Configurações</span>
             </Link>

@@ -1,100 +1,42 @@
 import styled from 'styled-components';
 
+export const Container = styled.div`
+  @media print {
+    div {
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+      margin: 0;
+      padding: 0;
+      max-width: 2000px;
+      max-height: 770px;
+    }
+  }
+`;
+
 export const CardeHeader = styled.div`
-  margin-top: 12px;
+  margin-top: 75px;
   margin-left: 8%;
   margin-right: 8%;
   color: #433f59;
+  font-size: 13px;
   /* width: 100%; */
 
   display: flex;
   align-items: center;
   justify-content: space-between;
 
-  margin-bottom: 40px;
+  span {
+    button {
+      margin: 0;
+      padding: 0;
+      width: 100px;
+      height: 40px;
+    }
+  }
 
   strong {
     color: var(--text-primary);
-    font-size: 14px;
+    font-size: 12px;
   }
-`;
-
-export const Navigation = styled.nav`
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  margin-left: 8%;
-  margin-right: 8%;
-  margin-bottom: 80px;
-  color: #433f59;
-
-  > div {
-    display: flex;
-    align-items: center;
-    flex-direction: row;
-
-    a {
-      text-decoration: none;
-      color: #433f59;
-
-      & + a {
-        margin-left: 40px;
-      }
-      p {
-        transition: var(--transition-speed);
-        font-weight: 500;
-
-        cursor: pointer;
-
-        margin-bottom: 30px;
-
-        :hover {
-          color: #1c9cd9;
-        }
-        & + p {
-          margin-left: 40px;
-        }
-      }
-    }
-  }
-
-  > span {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    width: 100%;
-    /* margin-left: 80px; */
-
-    > button {
-      z-index: 0;
-      margin: 17px 0px 0px 15px;
-      height: 39px;
-      max-width: 98px;
-    }
-  }
-
-  fieldset {
-    border: 0;
-    cursor: pointer;
-    transition: color 0.2s;
-    max-width: 200px;
-    max-height: 100px;
-  }
-
-  .sublime {
-    border-bottom: solid 2px #1c9cd9;
-  }
-`;
-
-export const CardTable = styled.div`
-  margin-top: 12px;
-  margin-left: 8%;
-  margin-right: 4%;
-  color: #433f59;
-
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-
-  margin-bottom: 40px;
 `;

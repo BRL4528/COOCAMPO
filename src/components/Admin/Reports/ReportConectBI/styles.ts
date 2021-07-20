@@ -10,32 +10,35 @@ interface Props {
 export const Container = styled.div<Props>`
   margin-top: 2px;
   margin-left: 100px;
+
   /* width: 100%; */
-  height: 100vh;
+  /* height: 100vh; */
   color: #433f59;
 
   iframe {
     border: none;
+    margin: 0;
   }
+
   svg {
     width: 20px;
     margin-left: 5px;
   }
 
-  @media print {
+  /* @media print {
     #print {
       min-width: 100%;
       height: 100vh;
       padding: 0;
     }
-  }
+  } */
 
-  #print {
+  /* #print {
     width: 100%;
     height: 100%;
     margin-left: -15px;
     ${({ load }: Props): string => (load ? 'display: none' : 'display: flex')}
-  }
+  } */
 
   .loading {
     display: flex;

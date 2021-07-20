@@ -63,11 +63,13 @@ main {
   display: flex;
   align-items: center;
   height: 3rem;
+  max-width: 2rem;
   /* color: var(--text-primary); */
   text-decoration: none;
   filter: grayscale(100%) opacity(1);
   transition: var(--transition-speed);
   /* border-left: solid 4px var(--bg-primary); */
+
 }
 
 .nav-link:hover {
@@ -81,6 +83,7 @@ main {
 
   /* color: #1c9cd9; */
   color: #f2c811;
+  transition: var(--transition-speed);
 }
 
 .link-text {
@@ -92,13 +95,14 @@ main {
 
 .nav-link svg {
   width: 2rem;
-  min-width: 2rem;
+  min-width: 1rem;
   margin: 0 1.5rem;
 }
 
+
 .nav-header svg {
   width: 2rem;
-  min-width: 2rem;
+  min-width: 1rem;
   margin: 0 1.5rem;
 }
 
@@ -182,7 +186,7 @@ main {
 @media only screen and (min-width: 600px) {
   .navbar {
     top: 0;
-    width: 5rem;
+    width: 4rem;
     height: 100vh;
   }
 
