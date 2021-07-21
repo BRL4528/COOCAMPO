@@ -4,9 +4,9 @@ export const Conatiner = styled.div`
   color: #333;
   width: 100%;
   height: 93vh;
-
+  margin-top: 55px;
   padding-left: 80px;
-  z-index: 0;
+  /* z-index: 0; */
   overflow-x: visible;
 
   .cards {
@@ -30,7 +30,7 @@ export const Conatiner = styled.div`
 export const CardItem = styled.div`
   display: flex;
   color: #333;
-  z-index: 0;
+  /* z-index: 0; */
 
   @media only screen and (max-width: 600px) {
     display: grid;

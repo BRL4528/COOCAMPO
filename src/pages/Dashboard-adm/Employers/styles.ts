@@ -3,8 +3,7 @@ import styled from 'styled-components';
 export const Container = styled.div`
   /* display: flex; */
   /* align-items: stretch; */
-
-  margin-top: 12px;
+  margin-top: 60px;
   margin-left: 8%;
 
   color: #433f59;

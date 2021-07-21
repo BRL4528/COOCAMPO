@@ -5,6 +5,7 @@ interface ContainerProps {
 }
 
 export const Container = styled.div<ContainerProps>`
+  z-index: 1;
   position: fixed;
   overflow: hidden;
   width: 100vw;

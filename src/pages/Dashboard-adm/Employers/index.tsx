@@ -101,13 +101,6 @@ const UserManagement: React.FC = () => {
 
   return (
     <>
-      <ModalCreateUser
-        isOpen={modalOpen}
-        setIsOpen={toggleModal}
-        handleUser={handleUser}
-        // dataEditUser={dataEditUser}
-      />
-
       <Container>
         <CardeHeader>
           <div>
@@ -125,7 +118,7 @@ const UserManagement: React.FC = () => {
         </CardeHeader>
 
         {dataAccess.map(users => (
-          <CardGraphic>
+          <CardGraphic key={users.id}>
             <CardGraphicText>
               <GraphicTitle>
                 <h3>{users.name}</h3>
@@ -139,6 +132,12 @@ const UserManagement: React.FC = () => {
           </CardGraphic>
         ))}
       </Container>
+      <ModalCreateUser
+        isOpen={modalOpen}
+        setIsOpen={toggleModal}
+        handleUser={handleUser}
+        // dataEditUser={dataEditUser}
+      />
     </>
   );
 };
