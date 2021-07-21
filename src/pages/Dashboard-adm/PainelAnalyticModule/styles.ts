@@ -53,6 +53,7 @@ export const Container = styled.div`
     min-width: 700px;
 
     margin: 15px;
+    margin-top: 90px;
     border-radius: 6px;
     min-height: 100px;
     padding: 35px;
