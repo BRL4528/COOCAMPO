@@ -188,11 +188,15 @@ const Sidebar: React.FC<LayoutProps> = ({ pathname }) => {
             className="nav-item"
             visible
           >
-            <Link to="#" className="nav-link">
+            <button
+              type="button"
+              onClick={() => console.log('teste')}
+              className="nav-link"
+            >
               <FiSettings color="#f2c811" size={16} />
 
               <span className="link-text">Configurações</span>
-            </Link>
+            </button>
           </OptionList>
         </ul>
       </nav>

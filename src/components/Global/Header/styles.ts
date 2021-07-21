@@ -11,7 +11,7 @@ export const Container = styled.div<ContainerProps>`
   width: 100vw;
   top: 0;
 
-  background: #fff;
+  background: var(--white-secondary);
   padding: 5px 0;
   border-bottom: 2px solid var(--text-tertiary);
 `;

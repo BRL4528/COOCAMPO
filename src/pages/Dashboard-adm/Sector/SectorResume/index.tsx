@@ -1,9 +1,11 @@
-/* eslint-disable prettier/prettier */
-import React, { useEffect, useState, useCallback } from 'react';
+/* eslint-disable react/jsx-wrap-multilines */
+import React, { useEffect, useState, useCallback, useRef } from 'react';
+import { Menu, MenuItem, MenuButton, SubMenu } from '@szhsin/react-menu';
+import '@szhsin/react-menu/dist/index.css';
 
+import { useLoading, Oval } from '@agney/react-loading';
 import { api } from '../../../../services/api';
 import { CardeHeader, Container } from './styles';
-import Button from '../../../../components/Global/Button';
 
 import { ReportConectBI } from '../../../../components/Admin/Reports/ReportConectBI';
 
@@ -19,9 +21,12 @@ interface SectorSelected {
 }
 
 const SelectedSector: React.FC = () => {
+  const componentRef = useRef<HTMLDivElement>(null);
   const parsed = window.location.search;
   const [sectorSelected, setSectorSelected] = useState<SectorSelected>();
   const [styleReport, setStyleReport] = useState<'window' | 'print'>('window');
+
+  const [loadPrint, setLoadPrint] = useState(false);
 
   useEffect(() => {
     try {
@@ -36,9 +41,22 @@ const SelectedSector: React.FC = () => {
   }, [parsed]);
 
   const handleSetPrintReport = useCallback(() => {
+    setLoadPrint(true);
     setStyleReport('print');
-    setTimeout(() => window.print(), 3000);
+    setTimeout(() => {
+      window.print();
+      setLoadPrint(false);
+    }, 3000);
   }, []);
+
+  window.onafterprint = function () {
+    setStyleReport('window');
+  };
+
+  const { containerProps, indicatorEl } = useLoading({
+    loading: loadPrint,
+    indicator: <Oval />,
+  });
 
   return (
     <Container>
@@ -48,9 +66,28 @@ const SelectedSector: React.FC = () => {
           <strong>{sectorSelected?.observations}</strong>
         </div>
         <span id="noPrint">
-          <Button type="button" onClick={() => handleSetPrintReport()}>
-            Imprimir
-          </Button>
+          <Menu
+            menuButton={
+              <MenuButton>
+                {loadPrint ? (
+                  <div {...containerProps} ref={componentRef}>
+                    {indicatorEl}
+                  </div>
+                ) : (
+                  ' Opções'
+                )}
+              </MenuButton>
+            }
+            className="my-menu"
+          >
+            <SubMenu label="Imprimir">
+              <MenuItem onClick={() => handleSetPrintReport()}>
+                Modo paisagem
+              </MenuItem>
+              <MenuItem disabled>Modo Retrato</MenuItem>
+            </SubMenu>
+            <MenuItem>Relatar erro</MenuItem>
+          </Menu>
         </span>
       </CardeHeader>
 

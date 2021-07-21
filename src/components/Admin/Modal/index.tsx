@@ -26,7 +26,7 @@ const Modal: React.FC<IModalProps> = ({ children, isOpen, setIsOpen }) => {
         ariaHideApp={false}
         style={{
           content: {
-            top: '48%',
+            top: '50%',
             left: '50%',
             right: 'auto',
             bottom: 'auto',
