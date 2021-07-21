@@ -232,10 +232,11 @@ export const ReportConectBI: React.FC<ReportData> = ({
             />
           </div>
         ) : (
-          <div className="loading" {...containerProps} ref={componentRef}>
-            <p>Carregando relatório</p>
-            {indicatorEl}
-          </div>
+          ''
+          // <div className="loading" {...containerProps} ref={componentRef}>
+          //   <p>Carregando relatório</p>
+          //   {indicatorEl}
+          // </div>
         )}
       </Container>
     </>

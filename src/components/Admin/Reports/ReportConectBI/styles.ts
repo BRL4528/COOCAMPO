@@ -33,12 +33,12 @@ export const Container = styled.div<Props>`
     }
   } */
 
-  /* #print {
+  #print {
     width: 100%;
     height: 100%;
-    margin-left: -15px;
+    /* margin-left: -15px; */
     ${({ load }: Props): string => (load ? 'display: none' : 'display: flex')}
-  } */
+  }
 
   .loading {
     display: flex;
