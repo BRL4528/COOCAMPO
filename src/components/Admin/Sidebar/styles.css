@@ -69,6 +69,9 @@ main {
   filter: grayscale(100%) opacity(1);
   transition: var(--transition-speed);
   /* border-left: solid 4px var(--bg-primary); */
+  border: none;
+  background: none;
+    
 
 }
 
