@@ -11,13 +11,19 @@ import SelectorFolders from '../pages/Dashboard-adm/GoalsSubgoals';
 import Email from '../pages/Dashboard-adm/Email';
 import Report from '../pages/Dashboard-adm/Report';
 import IcomeStatement from '../pages/Dashboard-adm/Report/IncomeStatement';
+
 import PainelSatisfactionSurveyResult from '../pages/Dashboard-adm/Report/PainelSatisfactionSurveyResult';
+
 import Sector from '../pages/Dashboard-adm/Sector';
 import SectorSelected from '../pages/Dashboard-adm/Sector/SelectedSector';
 import SectorResume from '../pages/Dashboard-adm/Sector/SectorResume';
 import AnalyticModuloAdm from '../pages/Dashboard-adm/AnalyticModule';
 import PainelAnalyticModulo from '../pages/Dashboard-adm/PainelAnalyticModule';
+
 import PainelSatisfactionSurvey from '../pages/AcessGlobal/PainelSatisfactionSurvey';
+
+import SatisfactionSurvey from '../pages/AcessGlobal/SatisfactionSurvey';
+
 import Import from '../pages/Dashboard-adm/Imports';
 import Schedule from '../pages/Dashboard-adm/Schedule';
 import ScheduleOnly from '../pages/Dashboard-adm/Schedule/ScheduleUnic';
@@ -35,6 +41,13 @@ const Routes: React.FC = () => (
     <Route
       path="/painel-module-satisfaction/:analyticId?"
       component={PainelSatisfactionSurvey}
+      isGlobal
+      // isPrivate
+      // isAdmin
+    />
+    <Route
+      path="/satisfactionSurvey"
+      component={SatisfactionSurvey}
       isGlobal
       isPrivate
       isAdmin

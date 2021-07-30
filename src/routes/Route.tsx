@@ -7,7 +7,7 @@ import {
 
 import { useAuth } from '../hooks/auth';
 import SignIn from '../pages/SignIn';
-import PainelSatisfactionSurvey from '../pages/AcessGlobal/PainelSatisfactionSurvey';
+import PainelSatisfactionSurvey from '../pages/AcessGlobal/SatisfactionSurvey';
 
 import LayoutAdm from '../pages/_Layouts/admin';
 // import LayoutUser from '../pages/_Layouts/user';
@@ -28,7 +28,7 @@ const Route: React.FC<RouteProps> = ({
   component: Component,
   ...rest
 }) => {
-  const { user } = useAuth();
+  const { user, signOut } = useAuth();
 
   if (user) {
     return (
@@ -52,10 +52,13 @@ const Route: React.FC<RouteProps> = ({
     );
   }
   if (isGlobal) {
+    signOut;
     return (
       <ReactDOMRoute
         {...rest}
-        path="/painel-satisfaction-survey/:analyticId?"
+        // path="/painel-satisfaction-survey/:analyticId?"
+        // component={PainelSatisfactionSurvey}
+        path="/satisfactionSurvey"
         component={PainelSatisfactionSurvey}
       />
     );
