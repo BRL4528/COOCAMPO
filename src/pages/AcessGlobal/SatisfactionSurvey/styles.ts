@@ -483,7 +483,9 @@ export const CardIntro = styled.div`
     @media (max-width: 600px) {
       padding: 15px;
       font-size: 14px;
+      position: relative;
       img {
+        margin-bottom: 25px;
         width: 100px;
       }
     }
