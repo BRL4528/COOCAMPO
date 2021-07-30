@@ -57,7 +57,7 @@ const SelectorFolders: React.FC = () => {
               <GraphicTitle>
                 <h3>Pesquisa de satisfação</h3>
 
-                <p>Setor - Tecnologia da informação</p>
+                <p>Pesquisa sobre mudança no horário de almoço</p>
               </GraphicTitle>
             </CardGraphicText>
           </CardGraphic>
