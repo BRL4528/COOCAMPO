@@ -1,3 +1,4 @@
+/* eslint-disable array-callback-return */
 import React, { useCallback, useEffect, useState } from 'react';
 
 import { FiEdit, FiLink, FiSend } from 'react-icons/fi';
@@ -66,8 +67,11 @@ const SelectorFolders: React.FC = () => {
 
   useEffect(() => {
     if (user.tag !== 'admin') {
-      api.get(`/analysis-module/show?email=${user.email}`).then(response => {
-        setDataAnalyticModule(response.data);
+      api.get<IAnalyticModule[]>(`/analysis-module`).then(response => {
+        const resp = response.data.filter(function (da) {
+          return da.email === user.email || da.responsible === 'global';
+        });
+        setDataAnalyticModule(resp);
       });
     } else {
       api.get('/analysis-module').then(response => {
