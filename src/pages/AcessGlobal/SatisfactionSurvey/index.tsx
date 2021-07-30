@@ -44,7 +44,7 @@ const SatisfactionSurvey: React.FC = () => {
           <SwiperSlide>
             <CardIntro>
               <div>
-                <img src={search} alt="Samasc" />
+                <img src={search} alt="Samasc" className="imgSearch" />
                 <div>
                   <h1>Pesquisa sobre horário de almoço</h1>
                   <h2>Prezado,</h2>

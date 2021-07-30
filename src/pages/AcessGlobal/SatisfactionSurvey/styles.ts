@@ -145,6 +145,13 @@ export const Container = styled.div`
     img {
       width: 180px;
     }
+
+    @media (max-width: 600px) {
+      font-size: 14px;
+      img {
+        width: 100px;
+      }
+    }
   }
 `;
 export const CardContainer = styled.div`
@@ -414,6 +421,12 @@ export const CardIntro = styled.div`
     margin: 15px 0 15px 0;
     transition: var(--transition-speed);
     max-width: 109vh;
+    @media (max-width: 600px) {
+      padding: 15px;
+      img {
+        display: none;
+      }
+    }
 
     > header {
       display: flex;
@@ -423,6 +436,13 @@ export const CardIntro = styled.div`
       img {
         width: 85%;
         margin-right: 100px;
+      }
+
+      @media (max-width: 600px) {
+        padding: 15px;
+        img {
+          display: none;
+        }
       }
     }
 
@@ -458,6 +478,14 @@ export const CardIntro = styled.div`
 
     img {
       width: 180px;
+    }
+
+    @media (max-width: 600px) {
+      padding: 15px;
+      font-size: 14px;
+      img {
+        width: 100px;
+      }
     }
   }
 `;
