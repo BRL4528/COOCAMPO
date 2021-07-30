@@ -4,28 +4,12 @@ import { shade } from 'polished';
 
 import Tooltip from '../../../components/Global/Tooltip';
 
-interface ICheck {
-  checked: boolean;
-  idCurrent: string;
-  idChecked: string;
-}
-
-interface Idisplay {
-  displayLow?: boolean;
-  displayHigh?: boolean;
-}
-
-interface ICalendar {
-  openCalendar: boolean;
-}
-
-export const ContainerMaster = styled.div<Idisplay>`
-  ${({ displayLow }: Idisplay) => (displayLow ? '' : 'display: none;')}
-  ${({ displayHigh }: Idisplay) => (displayHigh ? '' : 'display: none;')}
+export const ContainerMaster = styled.div`
   color: #433f59;
   align-items: center;
   flex-direction: column;
-  background: #fff;
+  /* background: #fff; */
+  background: #f2f0e6;
 
   .selectedValue {
     background: rgba(28, 156, 217, 0.2);
@@ -76,13 +60,19 @@ export const Container = styled.div`
   width: 100%;
   height: 100vh;
 
-  overflow-y: scroll;
-  overflow-x: hidden;
+  overflow: hidden;
 
-  ::-webkit-scrollbar {
+  iframe {
+    width: 100%;
+    height: 100vh;
+    border: none;
+    overflow: hidden;
+  }
+
+  /* ::-webkit-scrollbar {
     width: 0.2rem;
     height: 0.5rem;
-  }
+  } */
 
   ::-webkit-scrollbar-track {
     background: rgba(25, 25, 26, 0.23);
@@ -155,9 +145,16 @@ export const Container = styled.div`
     img {
       width: 180px;
     }
+
+    @media (max-width: 600px) {
+      font-size: 14px;
+      img {
+        width: 100px;
+      }
+    }
   }
 `;
-export const CardContainer = styled.div<ICheck>`
+export const CardContainer = styled.div`
   z-index: 0;
   display: flex;
   align-items: center;
@@ -345,12 +342,9 @@ export const Calendar = styled.aside`
   }
 `;
 
-export const TogleCalendar = styled.div<ICalendar>`
+export const TogleCalendar = styled.div`
   position: absolute;
   z-index: 1;
-
-  ${({ openCalendar }: ICalendar): string =>
-    openCalendar ? '' : 'display: none;'}
 `;
 
 export const Info = styled(Tooltip)`
@@ -427,6 +421,12 @@ export const CardIntro = styled.div`
     margin: 15px 0 15px 0;
     transition: var(--transition-speed);
     max-width: 109vh;
+    @media (max-width: 600px) {
+      padding: 15px;
+      img {
+        display: none;
+      }
+    }
 
     > header {
       display: flex;
@@ -436,6 +436,13 @@ export const CardIntro = styled.div`
       img {
         width: 85%;
         margin-right: 100px;
+      }
+
+      @media (max-width: 600px) {
+        padding: 15px;
+        img {
+          display: none;
+        }
       }
     }
 
@@ -471,6 +478,16 @@ export const CardIntro = styled.div`
 
     img {
       width: 180px;
+    }
+
+    @media (max-width: 600px) {
+      padding: 15px;
+      font-size: 14px;
+      position: relative;
+      img {
+        margin-bottom: 25px;
+        width: 100px;
+      }
     }
   }
 `;

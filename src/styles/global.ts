@@ -105,6 +105,8 @@ export default createGlobalStyle`
   }
 }
 
+
+
 @media print {
     #noPrint {
       display: none;
