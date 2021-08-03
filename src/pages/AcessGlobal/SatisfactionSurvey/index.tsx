@@ -87,8 +87,8 @@ const SatisfactionSurvey: React.FC = () => {
                     <p>
                       - Fique atento quanto ao período vigente da pesquisa, pois
                       a mesma tera inicio dia{' '}
-                      <strong>30/07/2021 09:00 horas</strong> e será fechada no
-                      dia <strong>30/07/2021 16:00 horas</strong>
+                      <strong>03/08/2021 11:00 horas</strong> e será fechada no
+                      dia <strong>04/08/2021 11:00 horas</strong>
                     </p>
                   </span>
                 </div>
