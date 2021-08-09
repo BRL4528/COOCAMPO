@@ -83,7 +83,7 @@ const SelectorFolders: React.FC = () => {
         params: {
           ano: 2021,
           mesInicial: 1,
-          mesFinal: 6,
+          mesFinal: 7,
           painel: 'PPR Adm Central',
         },
       })
@@ -171,7 +171,7 @@ const SelectorFolders: React.FC = () => {
       return 625;
     }
     if (dataHeader.percentageLiquid >= 3.51) {
-      return 875;
+      return 770;
     }
     return 0;
   }, [dataHeader]);
