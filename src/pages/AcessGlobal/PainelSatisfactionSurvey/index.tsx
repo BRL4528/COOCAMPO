@@ -408,15 +408,15 @@ const PainelAnalyticModule: React.FC = () => {
     setEmailSelected(e.target.value);
   }, []);
 
-  // eslint-disable-next-line no-unused-vars
-  const Internationalization = {
-    allItemsAreSelected: 'Todos os itens selecionados.',
-    clearSearch: 'Limpar pesquisa',
-    noOptions: 'Sem opções',
-    search: 'Pesquisar',
-    selectAll: 'Selecionar todos',
-    selectSomeItems: 'Selecione seu email...',
-  };
+  // // eslint-disable-next-line no-unused-vars
+  // const Internationalization = {
+  //   allItemsAreSelected: 'Todos os itens selecionados.',
+  //   clearSearch: 'Limpar pesquisa',
+  //   noOptions: 'Sem opções',
+  //   search: 'Pesquisar',
+  //   selectAll: 'Selecionar todos',
+  //   selectSomeItems: 'Selecione seu email...',
+  // };
 
   return (
     <>
