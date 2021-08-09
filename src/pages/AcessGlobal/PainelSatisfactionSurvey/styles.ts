@@ -69,6 +69,16 @@ export const Container = styled.div`
     }
   }
 
+  .selectOpt {
+    width: 100%;
+    height: 35px;
+    margin-top: 15px;
+    color: var(--text-quarterly);
+    border-color: var(--text-primary);
+    border-radius: 4px;
+    font-family: 16px;
+  }
+
   display: flex;
   align-items: center;
   flex-direction: column;
@@ -197,29 +207,33 @@ export const CardContainer = styled.div<ICheck>`
     section {
       span {
         margin-top: 25px;
+
+        div {
+          display: block;
+
+          /* .selectInput {
+            .clear-selected-button {
+              margin-bottom: 5px;
+              svg {
+                padding: 0px;
+              }
+            }
+            .dropdown-heading-value {
+              span {
+                padding: 15px;
+                margin-bottom: 20px;
+              }
+            }
+            .dropdown-content {
+              span {
+                min-width: 600px;
+              }
+            }
+          } */
+        }
       }
       div {
         margin: 0;
-      }
-
-      .select {
-        .clear-selected-button {
-          margin-bottom: 5px;
-          svg {
-            padding: 0px;
-          }
-        }
-        .dropdown-heading-value {
-          span {
-            padding: 15px;
-            margin-bottom: 20px;
-          }
-        }
-        .dropdown-content {
-          span {
-            min-width: 600px;
-          }
-        }
       }
     }
   }

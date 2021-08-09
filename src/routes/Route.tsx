@@ -7,7 +7,7 @@ import {
 
 import { useAuth } from '../hooks/auth';
 import SignIn from '../pages/SignIn';
-import PainelSatisfactionSurvey from '../pages/AcessGlobal/SatisfactionSurvey';
+import PainelSatisfactionSurvey from '../pages/AcessGlobal/PainelSatisfactionSurvey';
 
 import LayoutAdm from '../pages/_Layouts/admin';
 // import LayoutUser from '../pages/_Layouts/user';
@@ -58,7 +58,7 @@ const Route: React.FC<RouteProps> = ({
         {...rest}
         // path="/painel-satisfaction-survey/:analyticId?"
         // component={PainelSatisfactionSurvey}
-        path="/satisfactionSurvey"
+        path="/painel-module-satisfaction/:analyticId?"
         component={PainelSatisfactionSurvey}
       />
     );

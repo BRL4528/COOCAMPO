@@ -8,7 +8,7 @@ export const Container = styled.div`
   /* display: flex; */
   /* align-items: stretch; */
 
-  margin-top: 2px;
+  margin-top: 70px;
   margin-left: 8%;
 
   color: #433f59;
