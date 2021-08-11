@@ -210,7 +210,7 @@ const SelectorFolders: React.FC = () => {
         </CardeHeader>
         <div id="print">
           <Header className="headerPrint">
-            <h1>Demonstrativo do Resultado - Junho 2021</h1>
+            <h1>Demonstrativo do Resultado - Julho 2021</h1>
           </Header>
           <CardHeader color="#0B85BD">
             <Revenues>
