@@ -105,7 +105,7 @@ const SelectorFolders: React.FC = () => {
 
         // Calculando o faturamento líquido do mês
         const resultRevenuesMonth = res.data.response.filter(
-          el => el.indicador === '(PPR) FATURAMENTO LÍQUIDO' && el.mes === 6,
+          el => el.indicador === '(PPR) FATURAMENTO LÍQUIDO' && el.mes === 7,
         );
 
         // Calculando do resultado liquido
@@ -124,7 +124,7 @@ const SelectorFolders: React.FC = () => {
 
         // Calculando do resultado liquido
         const resultLiquidMonth = res.data.response.filter(
-          el => el.indicador === '(PPR) RESULTADO LÍQUIDO' && el.mes === 6,
+          el => el.indicador === '(PPR) RESULTADO LÍQUIDO' && el.mes === 7,
         );
 
         const resultFinances = {
