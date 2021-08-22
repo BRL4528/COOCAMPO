@@ -11,20 +11,27 @@ import { React15Tabulator } from 'react-tabulator';
 import { format } from 'date-fns';
 import ptBR from 'date-fns/locale/pt-BR';
 
+import { formatPrice } from '../../../utils/format';
+import typesTable from '../../../utils/types';
+
 import 'react-tabulator/lib/css/bootstrap/tabulator_bootstrap.min.css';
-import api from '../../../services/api';
+import { api, apiGeninfo } from '../../../services/api';
 
 interface ITableSector {
   idSector: string;
-  isOpen: boolean;
+  isOpen?: boolean;
+  startOpen: boolean;
   month: string;
-  setIsOpen: () => void;
+  setIsOpen?: () => void;
 }
 
 interface ISectorData {
   id: string;
   status_of_conclusion: boolean;
-
+  sector: {
+    name: string;
+    observations: string;
+  };
   goals: {
     id: string;
     name: string;
@@ -82,287 +89,400 @@ interface ISectorFormated {
   type: string;
   status_of_conclusion: boolean;
   result: string;
-  date: string;
+  // date: string;
   weightGoal: string;
 }
 
-const Table: React.FC<ITableSector> = ({ idSector, isOpen, month }) => {
+// interface ISectorInfo {
+//   name: string;
+//   observations: string;
+// }
+
+interface IGeninfo {
+  status: boolean;
+  response: [
+    {
+      painel: string;
+      indicador: string;
+      ano: number;
+      mes: number;
+      orcado: number;
+      realizado: number;
+      variacao: number;
+      percentual: number;
+    },
+  ];
+}
+
+const Table: React.FC<ITableSector> = ({
+  idSector,
+  isOpen,
+  month,
+  startOpen,
+}) => {
   const tableRef = useRef(null);
   const [dataTableSector, setDataTableSector] = useState<ISectorFormated[]>([]);
+
+  // const [infoSector, setInfoSector] = useState<ISectorInfo>();
 
   // const [dataSectorGoals, setDataSectorGoals] = useState<ISectorData[]>([]);
 
   useEffect(() => {
-    if (idSector && idSector) {
-      api
-        .get<ISectorData[]>(`/goals-of-sectors?sector_id=${idSector}`)
-        .then(response => {
-          const formatedInfoSector: {
-            id: string;
-            name: string;
-            status: boolean;
-            weight: string;
-            source: string;
-            observations: string;
-            type: string;
-            status_of_conclusion: boolean;
-            weightGoal: string;
-            result: string;
-            date: string;
-          }[] = [];
+    try {
+      if (idSector && idSector) {
+        api
+          .get<ISectorData[]>(`/goals-of-sectors?sector_id=${idSector}`)
+          .then(respons => {
+            const formatedInfoSector: {
+              id: string;
+              name: string;
+              status: boolean;
+              weight: string;
+              source: string;
+              observations: string;
+              type: string;
+              status_of_conclusion: boolean;
+              weightGoal: string;
+              result: string;
+              goal: string;
+              // date: string;
+            }[] = [];
 
-          // console.log(response.data);
-          // const { januar } = month.split('/')[0];
+            if (respons.data.length >= 0) {
+              const infoSector = respons.data[0].sector;
 
-          response.data.forEach(function (goaldata) {
-            function calcResult(result: number, budgeted: number) {
-              const value = result / budgeted - 1;
-              if (value < 0) {
-                const calcValue = value * -1;
+              respons.data.forEach(function (goaldata) {
+                function calcResult(result: number, budgeted: number) {
+                  const value = result / budgeted - 1;
+                  if (value < 0) {
+                    const calcValue = value * -1;
 
-                if (calcValue <= 0.15) {
-                  return goaldata.goals.weight;
-                }
+                    if (calcValue <= 0.15) {
+                      return goaldata.goals.weight;
+                    }
 
-                if (calcValue >= 0.16) {
+                    if (calcValue >= 0.16) {
+                      return 0;
+                    }
+                  }
+                  if (value > 0 && value <= 0.15) {
+                    return goaldata.goals.weight;
+                  }
                   return 0;
                 }
-              }
-              if (value > 0 && value <= 0.15) {
-                return goaldata.goals.weight;
-              }
-              return 0;
-            }
 
-            function filterResults() {
-              if (goaldata.goals.result_of_goal.length) {
-                const resultFiltered = goaldata.goals.result_of_goal.filter(
-                  searchResult => {
-                    return searchResult.sector_id === idSector;
-                  },
-                );
+                function filterResults() {
+                  if (goaldata.goals.result_of_goal.length) {
+                    const resultFiltered = goaldata.goals.result_of_goal.filter(
+                      searchResult => {
+                        return searchResult.sector_id === idSector;
+                      },
+                    );
 
-                // console.log(resultFiltered[0].april);
-                console.log(resultFiltered[0].january);
-                const monthFormated = month.split('/')[1];
-                switch (monthFormated) {
-                  case 'january': {
-                    const responseData = {
-                      status: String(resultFiltered[0].january) !== 'NaN',
-                      result:
-                        String(resultFiltered[0].january) === 'NaN'
-                          ? 0
-                          : calcResult(
-                              Number(resultFiltered[0].january),
-                              Number(goaldata.goals.january),
-                            ),
-                    };
-                    return { responseData };
-                  }
-                  case 'february': {
-                    const responseData = {
-                      status: String(resultFiltered[0].february) !== 'NaN',
-                      result:
-                        String(resultFiltered[0].february) === 'NaN'
-                          ? 0
-                          : calcResult(
-                              Number(resultFiltered[0].february),
-                              Number(goaldata.goals.february),
-                            ),
-                    };
-                    return { responseData };
-                  }
-                  case 'march': {
-                    const responseData = {
-                      status: String(resultFiltered[0].march) !== 'NaN',
-                      result:
-                        String(resultFiltered[0].march) === 'NaN'
-                          ? 0
-                          : calcResult(
-                              Number(resultFiltered[0].march),
-                              Number(goaldata.goals.march),
-                            ),
-                    };
-                    return { responseData };
-                  }
-                  case 'april': {
-                    const responseData = {
-                      status: String(resultFiltered[0].april) !== 'NaN',
-                      result:
-                        String(resultFiltered[0].april) === 'NaN'
-                          ? 0
-                          : calcResult(
-                              Number(resultFiltered[0].april),
-                              Number(goaldata.goals.april),
-                            ),
-                    };
-                    return { responseData };
-                  }
-                  case 'may': {
-                    const responseData = {
-                      status: String(resultFiltered[0].may) !== 'NaN',
-                      result:
-                        String(resultFiltered[0].may) === 'NaN'
-                          ? 0
-                          : calcResult(
-                              Number(resultFiltered[0].may),
-                              Number(goaldata.goals.may),
-                            ),
-                    };
-                    return { responseData };
-                  }
-                  case 'june': {
-                    const responseData = {
-                      status: String(resultFiltered[0].june) !== 'NaN',
-                      result:
-                        String(resultFiltered[0].june) === 'NaN'
-                          ? 0
-                          : calcResult(
-                              Number(resultFiltered[0].june),
-                              Number(goaldata.goals.june),
-                            ),
-                    };
-                    return { responseData };
-                  }
-                  case 'july': {
-                    const responseData = {
-                      status: String(resultFiltered[0].july) !== 'NaN',
-                      result:
-                        String(resultFiltered[0].july) === 'NaN'
-                          ? 0
-                          : calcResult(
-                              Number(resultFiltered[0].july),
-                              Number(goaldata.goals.july),
-                            ),
-                    };
-                    return { responseData };
-                  }
-                  case 'august': {
-                    const responseData = {
-                      status: String(resultFiltered[0].august) !== 'NaN',
-                      result:
-                        String(resultFiltered[0].august) === 'NaN'
-                          ? 0
-                          : calcResult(
-                              Number(resultFiltered[0].august),
-                              Number(goaldata.goals.august),
-                            ),
-                    };
-                    return { responseData };
-                  }
-                  case 'september': {
-                    const responseData = {
-                      status: String(resultFiltered[0].september) !== 'NaN',
-                      result:
-                        String(resultFiltered[0].september) === 'NaN'
-                          ? 0
-                          : calcResult(
-                              Number(resultFiltered[0].september),
-                              Number(goaldata.goals.september),
-                            ),
-                    };
-                    return { responseData };
-                  }
-                  case 'october': {
-                    const responseData = {
-                      status: String(resultFiltered[0].october) !== 'NaN',
-                      result:
-                        String(resultFiltered[0].october) === 'NaN'
-                          ? 0
-                          : calcResult(
-                              Number(resultFiltered[0].october),
-                              Number(goaldata.goals.october),
-                            ),
-                    };
-                    return { responseData };
-                  }
-                  case 'november': {
-                    const responseData = {
-                      status: String(resultFiltered[0].november) !== 'NaN',
-                      result:
-                        String(resultFiltered[0].november) === 'NaN'
-                          ? 0
-                          : calcResult(
-                              Number(resultFiltered[0].november),
-                              Number(goaldata.goals.november),
-                            ),
-                    };
-                    return { responseData };
-                  }
-                  case 'december': {
-                    const responseData = {
-                      status: String(resultFiltered[0].december) !== 'NaN',
-                      result:
-                        String(resultFiltered[0].december) === 'NaN'
-                          ? 0
-                          : calcResult(
-                              Number(resultFiltered[0].december),
-                              Number(goaldata.goals.december),
-                            ),
-                    };
-                    return { responseData };
-                  }
-                  default: {
-                    return;
+                    const monthFormated = month.split('/')[1];
+                    console.log('RESULTADO', resultFiltered);
+                    switch (monthFormated) {
+                      case 'january': {
+                        const responseData = {
+                          status: String(resultFiltered[0].january) !== 'NaN',
+                          result:
+                            String(resultFiltered[0].january) === 'NaN'
+                              ? 0
+                              : calcResult(
+                                  Number(resultFiltered[0].january),
+                                  Number(goaldata.goals.january),
+                                ),
+                        };
+                        return { responseData };
+                      }
+                      case 'february': {
+                        const responseData = {
+                          status: String(resultFiltered[0].february) !== 'NaN',
+                          result:
+                            String(resultFiltered[0].february) === 'NaN'
+                              ? 0
+                              : calcResult(
+                                  Number(resultFiltered[0].february),
+                                  Number(goaldata.goals.february),
+                                ),
+                        };
+                        return { responseData };
+                      }
+                      case 'march': {
+                        const responseData = {
+                          status: String(resultFiltered[0].march) !== 'NaN',
+                          result:
+                            String(resultFiltered[0].march) === 'NaN'
+                              ? 0
+                              : calcResult(
+                                  Number(resultFiltered[0].march),
+                                  Number(goaldata.goals.march),
+                                ),
+                        };
+                        return { responseData };
+                      }
+                      case 'april': {
+                        const responseData = {
+                          status: String(resultFiltered[0].april) !== 'NaN',
+                          result:
+                            String(resultFiltered[0].april) === 'NaN'
+                              ? 0
+                              : calcResult(
+                                  Number(resultFiltered[0].april),
+                                  Number(goaldata.goals.april),
+                                ),
+                        };
+                        return { responseData };
+                      }
+                      case 'may': {
+                        const responseData = {
+                          status: String(resultFiltered[0].may) !== 'NaN',
+                          result:
+                            String(resultFiltered[0].may) === 'NaN'
+                              ? 0
+                              : calcResult(
+                                  Number(resultFiltered[0].may),
+                                  Number(goaldata.goals.may),
+                                ),
+                        };
+                        return { responseData };
+                      }
+                      case 'june': {
+                        const responseData = {
+                          status: String(resultFiltered[0].june) !== 'NaN',
+                          result:
+                            String(resultFiltered[0].june) === 'NaN'
+                              ? 0
+                              : calcResult(
+                                  Number(resultFiltered[0].june),
+                                  Number(goaldata.goals.june),
+                                ),
+                        };
+                        return { responseData };
+                      }
+                      case 'july': {
+                        const responseData = {
+                          status: String(resultFiltered[0].july) !== 'NaN',
+                          result:
+                            String(resultFiltered[0].july) === 'NaN'
+                              ? 0
+                              : calcResult(
+                                  Number(resultFiltered[0].july),
+                                  Number(goaldata.goals.july),
+                                ),
+                        };
+                        return { responseData };
+                      }
+                      case 'august': {
+                        const responseData = {
+                          status: String(resultFiltered[0].august) !== 'NaN',
+                          result:
+                            String(resultFiltered[0].august) === 'NaN'
+                              ? 0
+                              : calcResult(
+                                  Number(resultFiltered[0].august),
+                                  Number(goaldata.goals.august),
+                                ),
+                        };
+                        return { responseData };
+                      }
+                      case 'september': {
+                        const responseData = {
+                          status: String(resultFiltered[0].september) !== 'NaN',
+                          result:
+                            String(resultFiltered[0].september) === 'NaN'
+                              ? 0
+                              : calcResult(
+                                  Number(resultFiltered[0].september),
+                                  Number(goaldata.goals.september),
+                                ),
+                        };
+                        return { responseData };
+                      }
+                      case 'october': {
+                        const responseData = {
+                          status: String(resultFiltered[0].october) !== 'NaN',
+                          result:
+                            String(resultFiltered[0].october) === 'NaN'
+                              ? 0
+                              : calcResult(
+                                  Number(resultFiltered[0].october),
+                                  Number(goaldata.goals.october),
+                                ),
+                        };
+                        return { responseData };
+                      }
+                      case 'november': {
+                        const responseData = {
+                          status: String(resultFiltered[0].november) !== 'NaN',
+                          result:
+                            String(resultFiltered[0].november) === 'NaN'
+                              ? 0
+                              : calcResult(
+                                  Number(resultFiltered[0].november),
+                                  Number(goaldata.goals.november),
+                                ),
+                        };
+                        return { responseData };
+                      }
+                      case 'december': {
+                        const responseData = {
+                          status: String(resultFiltered[0].december) !== 'NaN',
+                          result:
+                            String(resultFiltered[0].december) === 'NaN'
+                              ? 0
+                              : calcResult(
+                                  Number(resultFiltered[0].december),
+                                  Number(goaldata.goals.december),
+                                ),
+                        };
+                        return { responseData };
+                      }
+                      default: {
+                        return;
+                      }
+                    }
                   }
                 }
-                // return resultFiltered.length
-                //   ? Number(resultFiltered[0].result).toFixed(0)
-                //   : 0;
+
+                const goalUnit = {
+                  id: goaldata.goals.id,
+                  name: goaldata.goals.name,
+                  status: filterResults()?.responseData.status || false,
+
+                  weight: `${goaldata.goals.weight}%`,
+                  source: `${goaldata.goals.source}%`,
+                  observations: goaldata.goals.observations,
+                  type: goaldata.goals.type,
+                  status_of_conclusion: goaldata.status_of_conclusion,
+                  weightGoal:
+                    goaldata.goals.type === 'Meta global' ? '80%' : '10%',
+
+                  goal: `${goaldata.goals.source}`,
+                  result: `${filterResults()?.responseData.result || 0}%`,
+                };
+
+                if (goaldata.goals.status === '2') {
+                  formatedInfoSector.push(goalUnit);
+                }
+              });
+
+              if (infoSector) {
+                console.log(infoSector);
+                apiGeninfo
+                  .get<IGeninfo>('/metas', {
+                    params: {
+                      ano: Number(
+                        format(new Date(month), 'Y', {
+                          locale: ptBR,
+                        }),
+                      ),
+                      mesFinal: Number(
+                        format(new Date(month), 'M', {
+                          locale: ptBR,
+                        }),
+                      ),
+                      mesInicial: Number(
+                        format(new Date(month), 'M', {
+                          locale: ptBR,
+                        }),
+                      ),
+                      painel: infoSector?.observations,
+                    },
+                  })
+                  .then(res => {
+                    console.log('resposta Geinfo', res.data);
+                    const { response } = res.data;
+                    const formatedInfoSectorGeninfo: {
+                      id: string;
+                      name: string;
+                      status: boolean;
+                      weight: string;
+                      source: string;
+                      observations: string;
+                      type: string;
+                      status_of_conclusion: boolean;
+                      weightGoal: string;
+                      result: string;
+                      goal: string;
+                      // date: string;
+                    }[] = [];
+                    response.forEach(function (dataGoal) {
+                      const goalUnit = {
+                        id: dataGoal.painel,
+                        name: dataGoal.indicador,
+                        status: false,
+
+                        weight: '1%',
+                        source: '2%',
+                        observations: 'nada',
+                        type: typesTable(dataGoal.indicador),
+                        // type:
+                        //   dataGoal.indicador === '(PPR) % RESULTADO FINANCEIRO'
+                        //     ? 'Meta global'
+                        //     : 'Meta do setor',
+                        status_of_conclusion: false,
+                        weightGoal:
+                          dataGoal.indicador === '(PPR) % RESULTADO FINANCEIRO'
+                            ? '80%'
+                            : '10%',
+
+                        goal:
+                          dataGoal.indicador === '(PPR) % RESULTADO FINANCEIRO'
+                            ? `${dataGoal.orcado}%`
+                            : String(formatPrice(dataGoal.orcado)),
+                        result:
+                          dataGoal.indicador === '(PPR) % RESULTADO FINANCEIRO'
+                            ? `${dataGoal.realizado}%`
+                            : String(formatPrice(dataGoal.realizado)),
+                      };
+                      formatedInfoSector.push(goalUnit);
+                    });
+
+                    const tableFormated = [...formatedInfoSector];
+
+                    const newTableFormated = tableFormated.map(dataTable => ({
+                      ...dataTable,
+                      formatedInfoSectorGeninfo,
+                    }));
+                    setDataTableSector(newTableFormated);
+                    // setDataTableSector([...dataTableSector, formatedInfoSector]);
+                  });
               }
             }
-            // eslint-disable-next-line no-undef
-
-            const goalUnit = {
-              id: goaldata.goals.id,
-              name: goaldata.goals.name,
-              status: filterResults()?.responseData.status || false,
-
-              weight: `${goaldata.goals.weight}%`,
-              source: `${goaldata.goals.source}%`,
-              observations: goaldata.goals.observations,
-              type: goaldata.goals.type,
-              status_of_conclusion: goaldata.status_of_conclusion,
-              weightGoal: goaldata.goals.type === 'Meta global' ? '80%' : '10%',
-              age: goaldata.goals.weight,
-              rating: goaldata.goals.weight,
-              // result: `${filterResults() && 0}%`,
-              result: `${filterResults()?.responseData.result || 0}%`,
-              date: format(new Date(month), "MMMM 'de' yyy", {
-                locale: ptBR,
-              }),
-            };
-
-            formatedInfoSector.push(goalUnit);
-            // console.log(goalUnit);
           });
-          setDataTableSector(formatedInfoSector);
-        });
+      }
+    } catch (err) {
+      console.log(err);
     }
   }, [idSector, isOpen, month]);
 
   const columns = [
-    { title: 'Nome', field: 'name', width: 300 },
-    { title: 'Peso', field: 'weight', hozAlign: 'center' },
-    { title: 'Resultado', field: 'result', hozAlign: 'center' },
-    {
-      title: 'Volume',
-      field: 'age',
-      hozAlign: 'left',
-      formatter: 'progress',
-    },
-    { title: 'Periodo', field: 'date', hozAlign: 'center' },
-    {
-      title: 'Avaliação',
-      field: 'rating',
-      hozAlign: 'center',
-      formatter: 'star',
-    },
+    { title: 'Nome', field: 'name' },
+    { title: 'Peso', field: 'weight', hozAlign: 'right', width: 100 },
+    { title: 'Meta', field: 'goal', hozAlign: 'right', width: 150 },
+    { title: 'Resultado', field: 'result', hozAlign: 'right', width: 150 },
+    // {
+    //   title: 'Volume',
+    //   field: 'age',
+    //   hozAlign: 'left',
+    //   formatter: 'progress',
+    //   width: 100,
+    // },
+    // { title: 'Periodo', field: 'date', hozAlign: 'center', width: 120 },
+    // {
+    //   title: 'Avaliação',
+    //   field: 'rating',
+    //   hozAlign: 'center',
+    //   formatter: 'star',
+    //   width: 120,
+    // },
     {
       title: 'Realizado',
       field: 'status',
       hozAlign: 'center',
       formatter: 'tickCross',
+      width: 120,
     },
   ];
 
@@ -463,7 +583,7 @@ const Table: React.FC<ITableSector> = ({ idSector, isOpen, month }) => {
     groupBy: ['type'],
     layout: 'fitColumns',
     movableRows: true,
-    groupStartOpen: false,
+    groupStartOpen: startOpen,
     groupHeader: [
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       function (value: any, count: any, data: any[], group: any) {

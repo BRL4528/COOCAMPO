@@ -11,7 +11,8 @@ interface ICheck {
 }
 
 interface Idisplay {
-  display?: boolean;
+  displayLow?: boolean;
+  displayHigh?: boolean;
 }
 
 interface ICalendar {
@@ -19,7 +20,8 @@ interface ICalendar {
 }
 
 export const ContainerMaster = styled.div<Idisplay>`
-  ${({ display }: Idisplay) => (display ? 'display: flex' : 'display: none;')}
+  ${({ displayLow }: Idisplay) => (displayLow ? '' : 'display: none;')}
+  ${({ displayHigh }: Idisplay) => (displayHigh ? '' : 'display: none;')}
   color: #433f59;
   align-items: center;
   flex-direction: column;
@@ -65,6 +67,16 @@ export const Container = styled.div`
         }
       }
     }
+  }
+
+  .selectOpt {
+    width: 100%;
+    height: 35px;
+    margin-top: 15px;
+    color: var(--text-quarterly);
+    border-color: var(--text-primary);
+    border-radius: 4px;
+    font-family: 16px;
   }
 
   display: flex;
@@ -142,10 +154,13 @@ export const Container = styled.div`
   }
 
   footer {
+    display: flex;
+    justify-content: space-between;
+    padding: 17px;
     margin: auto;
     width: 100%;
     bottom: 0;
-    position: fixed;
+    /* position: fixed; */
 
     img {
       width: 180px;
@@ -192,6 +207,30 @@ export const CardContainer = styled.div<ICheck>`
     section {
       span {
         margin-top: 25px;
+
+        div {
+          display: block;
+
+          /* .selectInput {
+            .clear-selected-button {
+              margin-bottom: 5px;
+              svg {
+                padding: 0px;
+              }
+            }
+            .dropdown-heading-value {
+              span {
+                padding: 15px;
+                margin-bottom: 20px;
+              }
+            }
+            .dropdown-content {
+              span {
+                min-width: 600px;
+              }
+            }
+          } */
+        }
       }
       div {
         margin: 0;

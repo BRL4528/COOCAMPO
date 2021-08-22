@@ -1,16 +1,22 @@
 import React, { useCallback, useState, useRef, useEffect } from 'react';
 
+import { Link } from 'react-router-dom';
+
 import { FullScreen, useFullScreenHandle } from 'react-full-screen';
 
-import { useReactToPrint } from 'react-to-print';
+import ReactToPrint from 'react-to-print';
 
-import { FiEdit, FiPrinter, FiMaximize, FiChevronsDown } from 'react-icons/fi';
+import {
+  FiEdit,
+  FiPrinter,
+  FiMaximize,
+  // FiChevronsDown,
+  FiGrid,
+} from 'react-icons/fi';
 
 import Button from '../../../components/Global/Button';
-import Select from '../../../components/Global/SelectRelease';
 import ModalAddGoals from '../../../components/Admin/Modal/ModalAddSector';
 import ModalEditGoals from '../../../components/Admin/Modal/ModalEditSector';
-import Table from '../../../components/Admin/Table';
 
 import {
   Container,
@@ -22,7 +28,8 @@ import {
   // CardBodyGoals,
   CardGraphicText,
 } from './styles';
-import api from '../../../services/api';
+import { api } from '../../../services/api';
+import { useAuth } from '../../../hooks/auth';
 
 interface ISector {
   id: string;
@@ -32,17 +39,31 @@ interface ISector {
   codccu?: string;
 }
 
-const SelectorFolders: React.FC = () => {
+interface IDataSectorToUser {
+  access_id: string;
+  sector_id: string;
+  sector: {
+    id: string;
+    name: string;
+    leader: string;
+    branch: string;
+    observations?: string;
+    codccu?: string;
+  };
+}
+
+interface PropsItem {
+  title?: string;
+}
+
+const SelectorFolders: React.FC<PropsItem> = ({ title }) => {
   const handle = useFullScreenHandle();
+  const { user } = useAuth();
 
   const componentRef = useRef<HTMLDivElement>(null);
 
-  const [loadingSectors, setLoadingSectors] = useState(true);
-
-  const [subject, setSubject] = useState('01/january/2021');
-
   const [modalEditSectorOpen, setModalEditSectorOpen] = useState(false);
-  const [isOpen, setIsOpen] = useState(false);
+  // const [isOpen, setIsOpen] = useState(false);
 
   const [modalOpen, setModalOpen] = useState(false);
   const [dataEditSector, setDataEditSector] = useState('');
@@ -50,19 +71,7 @@ const SelectorFolders: React.FC = () => {
   const [dataSector, setDataSector] = useState<ISector>();
   const [dataUpdateSector, setDataUpdateSector] = useState<ISector[]>([]);
 
-  const [grupSectorsSelected, setGrupSectorsSelected] = useState<string[]>([]);
-
-  const handleLoadingSectors = useCallback(() => {
-    setLoadingSectors(!loadingSectors);
-  }, [loadingSectors]);
-
-  const handleSubject = useCallback(
-    e => {
-      setLoadingSectors(false);
-      setSubject(e);
-    },
-    [setSubject],
-  );
+  // const [grupSectorsSelected, setGrupSectorsSelected] = useState<string[]>([]);
 
   const toggleModal = useCallback(() => {
     setDataEditSector('');
@@ -79,40 +88,53 @@ const SelectorFolders: React.FC = () => {
     setDataEditSector(idSector);
   }, []);
 
-  const togleOpenCard = useCallback(() => {
-    setIsOpen(true);
+  // const togleOpenCard = useCallback(() => {
+  //   setIsOpen(true);
+  // }, []);
+
+  const handlePrint = useCallback(id => {
+    const el = document.getElementById(id);
+    return el;
   }, []);
 
-  const handlePrint = useReactToPrint({
-    content: () => componentRef.current,
-  });
+  // const handleHepand = useCallback(
+  //   (id: string) => {
+  //     setIsOpen(!isOpen);
+  //     const alreadySelected = grupSectorsSelected.findIndex(
+  //       (item: string) => item === id,
+  //     );
 
-  const handleHepand = useCallback(
-    (id: string) => {
-      setIsOpen(!isOpen);
-      const alreadySelected = grupSectorsSelected.findIndex(
-        (item: string) => item === id,
-      );
+  //     if (alreadySelected >= 0) {
+  //       const filteredItems = grupSectorsSelected.filter(
+  //         (item: string) => item !== id,
+  //       );
 
-      if (alreadySelected >= 0) {
-        const filteredItems = grupSectorsSelected.filter(
-          (item: string) => item !== id,
-        );
-
-        setGrupSectorsSelected(filteredItems);
-      } else {
-        setGrupSectorsSelected([...grupSectorsSelected, id]);
-      }
-    },
-    [grupSectorsSelected, isOpen],
-  );
+  //       setGrupSectorsSelected(filteredItems);
+  //     } else {
+  //       setGrupSectorsSelected([...grupSectorsSelected, id]);
+  //     }
+  //   },
+  //   [grupSectorsSelected, isOpen],
+  // );
 
   useEffect(() => {
-    api.get('/sectors').then(response => {
-      console.log(response.data);
-      setDataUpdateSector(response.data);
-    });
-  }, [dataSector, subject]);
+    if (user.tag !== 'admin') {
+      api
+        .get<IDataSectorToUser[]>(`/accesses-of-sectors/${user.id}`)
+        .then(response => {
+          console.log('verisso aq', response.data);
+          const dataFormated = response.data.map(data => {
+            return data.sector;
+          });
+
+          setDataUpdateSector(dataFormated);
+        });
+    } else {
+      api.get('/sectors').then(response => {
+        setDataUpdateSector(response.data);
+      });
+    }
+  }, [dataSector, user.id, user.tag]);
 
   const handleSector = useCallback((sector: Omit<ISector, ''>) => {
     try {
@@ -139,8 +161,9 @@ const SelectorFolders: React.FC = () => {
         dataEditSector={dataEditSector}
         // setDataEditSector={setHandleEdit}
       />
+
       <Container>
-        <CardeHeader>
+        <CardeHeader titleItem={title}>
           <div>
             <h2>Setores</h2>
             <strong>Análise os setores da cooperativa.</strong>
@@ -154,43 +177,15 @@ const SelectorFolders: React.FC = () => {
             </div>
           </CardButton>
         </CardeHeader>
-        <span>
-          <fieldset>
-            <Select
-              name="subject"
-              label="Mês referência"
-              value={subject}
-              onChange={e => {
-                handleSubject(e.target.value);
-              }}
-              options={[
-                { value: '01/january/2021', label: 'Janeiro' },
-                { value: '01/february/2021', label: 'Fevereiro' },
-                { value: '01/march/2021', label: 'Março' },
-                { value: '01/april/2021', label: 'Abril' },
-                { value: '01/may/2021', label: 'Maio' },
-                { value: '01/june/2021', label: 'Junho' },
-                { value: '01/july/2021', label: 'Julho' },
-                { value: '01/august/2021', label: 'Agosto' },
-                { value: '01/september/2021', label: 'Setembro' },
-                { value: '01/october/2021', label: 'Outubro' },
-                { value: '01/november/2021', label: 'Novembro' },
-                { value: '01/december/2021', label: 'Dezembro' },
-              ]}
-            />
-          </fieldset>
-          <Button type="button" onClick={() => handleLoadingSectors()}>
-            {loadingSectors ? 'Limpar' : 'Carregar'}
-          </Button>
-        </span>
 
         {dataUpdateSector.map(sector => (
           <FullScreen key={sector.id} handle={handle}>
             <CardGraphic
               // className="fullscreen-item"
-              className={
-                grupSectorsSelected.includes(sector.id) ? 'selected' : ''
-              }
+              // className={
+              //   grupSectorsSelected.includes(sector.id) ? 'selected' : ''
+              // }
+              id={sector.id}
               ref={componentRef}
             >
               {/* Header */}
@@ -205,26 +200,24 @@ const SelectorFolders: React.FC = () => {
                 </GraphicTitle>
                 <span>
                   <FiEdit onClick={() => handleEdit(sector.id)} />
-                  <FiPrinter onClick={handlePrint} />
+                  <ReactToPrint
+                    trigger={() => <FiPrinter />}
+                    content={() => handlePrint(sector.id)}
+                  />
                   <FiMaximize onClick={handle.enter} />
-                  <FiChevronsDown
+                  <Link to={`/management-ppr/sector-resume?${sector.id}`}>
+                    <FiGrid />
+                  </Link>
+                  {/* <FiChevronsDown
                     className={
                       grupSectorsSelected.includes(sector.id) ? 'logo' : ''
                     }
                     onClick={() => handleHepand(sector.id)}
-                  />
+                  /> */}
                 </span>
               </CardGraphicText>
 
-              {/* <CardBodyGoals>
-                <GraphicSpeed>
-                <CardGraphicText>
-                <GraphicTitle>Meta 03</GraphicTitle>
-                </CardGraphicText>
-                <GraphicSpeedometer dataValue={450} />
-                </GraphicSpeed>
-              </CardBodyGoals> */}
-              <div
+              {/* <div
                 className={
                   grupSectorsSelected.includes(sector.id) ? 'selected' : ''
                 }
@@ -234,6 +227,7 @@ const SelectorFolders: React.FC = () => {
                     <Table
                       idSector={sector.id}
                       isOpen={isOpen}
+                      startOpen={false}
                       setIsOpen={togleOpenCard}
                       month={subject}
                     />
@@ -241,7 +235,7 @@ const SelectorFolders: React.FC = () => {
                 ) : (
                   <div>Aguardando carregar o filtro...</div>
                 )}
-              </div>
+              </div> */}
             </CardGraphic>
           </FullScreen>
         ))}

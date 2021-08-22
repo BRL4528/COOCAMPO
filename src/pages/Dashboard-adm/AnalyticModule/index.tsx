@@ -1,3 +1,4 @@
+/* eslint-disable array-callback-return */
 import React, { useCallback, useEffect, useState } from 'react';
 
 import { FiEdit, FiLink, FiSend } from 'react-icons/fi';
@@ -9,7 +10,7 @@ import Button from '../../../components/Global/Button';
 import ModalAddAnalyticModule from '../../../components/Admin/Modal/ModalAddAnalyticModule';
 import ModalEditAnalyticModule from '../../../components/Admin/Modal/ModalEditAnalyticModule';
 import ModalSendEmailAnalyticModule from '../../../components/Admin/Modal/ModalSendEmailAnalyticModule';
-import api from '../../../services/api';
+import { api } from '../../../services/api';
 
 import {
   Container,
@@ -17,6 +18,7 @@ import {
   CardButton,
   TableContainerList,
 } from './styles';
+import { useAuth } from '../../../hooks/auth';
 
 interface IAnalyticModule {
   id: string;
@@ -29,6 +31,7 @@ interface IAnalyticModule {
 }
 
 const SelectorFolders: React.FC = () => {
+  const { user } = useAuth();
   const [modalOpen, setModalOpen] = useState(false);
   const [dataAnalytic, setDataAnalytic] = useState<IAnalyticModule>();
 
@@ -63,10 +66,19 @@ const SelectorFolders: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    api.get('/analysis-module').then(response => {
-      setDataAnalyticModule(response.data);
-    });
-  }, [dataAnalytic]);
+    if (user.tag !== 'admin') {
+      api.get<IAnalyticModule[]>(`/analysis-module`).then(response => {
+        const resp = response.data.filter(function (da) {
+          return da.email === user.email || da.responsible === 'global';
+        });
+        setDataAnalyticModule(resp);
+      });
+    } else {
+      api.get('/analysis-module').then(response => {
+        setDataAnalyticModule(response.data);
+      });
+    }
+  }, [dataAnalytic, user.email, user.tag]);
 
   const handleAnalytic = useCallback(
     (analytic: Omit<IAnalyticModule, 'status'>) => {

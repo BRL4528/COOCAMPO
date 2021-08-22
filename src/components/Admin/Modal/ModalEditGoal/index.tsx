@@ -24,7 +24,7 @@ import Button from '../../../Global/Button';
 import Select from '../../../Global/Select';
 
 import Modal from '../index';
-import api from '../../../../services/api';
+import { api } from '../../../../services/api';
 
 interface IGoals {
   id: string;
@@ -99,10 +99,8 @@ const ModalAddFood: React.FC<IModalProps> = ({
   const [currentSubGoals, setCurrentSubGoals] = useState<string[]>([]);
   const [dataSubGoals, setDataSubGoals] = useState<DataSubGoals[]>([]);
 
-  const [
-    dataAnalitycModuleOfGoal,
-    setDataAnalitycModuleOfGoal,
-  ] = useState<AnalitycOfGoals>();
+  const [dataAnalitycModuleOfGoal, setDataAnalitycModuleOfGoal] =
+    useState<AnalitycOfGoals>();
   const [selectedAnalyticItems, setSelectedAnalyticItems] = useState<string[]>(
     [],
   );
@@ -146,34 +144,35 @@ const ModalAddFood: React.FC<IModalProps> = ({
   useEffect(() => {
     if (isOpen) {
       if (dataEditGoal !== '') {
-        api.get<AddGoalsModal>(`/goals/${dataEditGoal}`).then(response => {
-          const initialSector = {
-            id: response.data.id,
-            name: response.data.name,
-            weight: response.data.weight,
-            type: response.data.type,
-            source: response.data.source,
-            observations: response.data.observations,
-            codccu: response.data.codccu,
-          };
+        api
+          .get<AddGoalsModal>(`/goals/show?goal_id=${dataEditGoal}`)
+          .then(response => {
+            const initialSector = {
+              id: response.data.id,
+              name: response.data.name,
+              weight: response.data.weight,
+              type: response.data.type,
+              source: response.data.source,
+              observations: response.data.observations,
+              codccu: response.data.codccu,
+            };
 
-          const initialSubGoals: React.SetStateAction<string[]> = [];
+            const initialSubGoals: React.SetStateAction<string[]> = [];
 
-          if (response.data.sub_goals_of_goals) {
-            response.data.sub_goals_of_goals.forEach(function (goals) {
-              initialSubGoals.push(goals.sub_goals.id);
-            });
-          }
-          setSelectedSubGoalsItems(initialSubGoals);
-          setCurrentSubGoals(initialSubGoals);
-          setDataInitialGoal(initialSector);
-        });
+            if (response.data.sub_goals_of_goals) {
+              response.data.sub_goals_of_goals.forEach(function (goals) {
+                initialSubGoals.push(goals.sub_goals.id);
+              });
+            }
+            setSelectedSubGoalsItems(initialSubGoals);
+            setCurrentSubGoals(initialSubGoals);
+            setDataInitialGoal(initialSector);
+          });
 
         api
           .get(`/analysis-module-of-goals?goal_id=${dataEditGoal}`)
           .then(response => {
             if (response.data.length > 0) {
-              console.log('teste', response.data);
               setDataAnalitycModuleOfGoal(response.data[0]);
               setcurrentAnalyticItem([response.data[0].analyze_module_id]);
               setSelectedAnalyticItems([response.data[0].analyze_module_id]);
@@ -407,12 +406,7 @@ const ModalAddFood: React.FC<IModalProps> = ({
           </div>
           <div>
             <p>Peso da meta</p>
-            <Input
-              step="0.010"
-              type="number"
-              name="weight"
-              placeholder="Ex: 10"
-            />
+            <Input step="0.010" name="weight" placeholder="Ex: 10" />
           </div>
         </header>
 

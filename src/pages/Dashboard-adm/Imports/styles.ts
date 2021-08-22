@@ -9,7 +9,7 @@ export const Container = styled.div`
 `;
 
 export const CardHeader = styled.div`
-  margin-top: 18px;
+  margin-top: 60px;
   margin-left: 8%;
   display: flex;
   align-items: center;

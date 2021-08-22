@@ -1,12 +1,23 @@
 import React, { createContext, useCallback, useState, useContext } from 'react';
-import api from '../services/api';
+import { api } from '../services/api';
 
 interface User {
   id: string;
   name: string;
   nickname: string;
   tag: string;
+  email: string;
+  dashboard: boolean;
+  goals_and_sub_goals: boolean;
+  sector: boolean;
+  employers: boolean;
+  module_analyze: boolean;
+  imports: boolean;
+  report: boolean;
+  service_send_email: boolean;
+  schedule: boolean;
 }
+
 interface AuthState {
   token: string;
   user: User;

@@ -49,6 +49,17 @@ export default createGlobalStyle`
   --color-button-text: #FFFFFF;
   --color-box-base: #FFFFFF;
   --color-box-footer: #FAFAFC;
+
+  --red: #e52e4d;
+   --blue: #5429CC;
+   --green: #33CC95;
+   --yellon: #ffd166;
+   
+   --blue-light: #6933FF;
+   --text-title: #363f5f;
+   --text-body: #969cb3;
+   --background: #f0f2f5;
+   --shape: #FFFFFF;
   }
 
   * {
@@ -99,11 +110,29 @@ export default createGlobalStyle`
   }
 }
 
+
+
+
 @media (max-width: 720px) {
   html {
     font-size: 87.5%;
   }
 }
+
+
+
+@media print {
+    #noPrint {
+      display: none;
+      visibility: hidden;
+    }
+    #print {
+      width: 100%;
+      height: 100vh;
+    }
+  }
+
+
 
 .select-react {
   font-size: 10;

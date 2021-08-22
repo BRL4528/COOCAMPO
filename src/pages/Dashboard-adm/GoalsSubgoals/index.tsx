@@ -7,7 +7,7 @@ import ModalAddGoals from '../../../components/Admin/Modal/ModalAddGoals';
 import ModalAddSubGoals from '../../../components/Admin/Modal/ModalAddSubGoals';
 import ModalEditGoals from '../../../components/Admin/Modal/ModalEditGoal';
 
-import api from '../../../services/api';
+import { api } from '../../../services/api';
 
 import {
   Container,
@@ -93,7 +93,6 @@ const SelectorFolders: React.FC = () => {
 
   useEffect(() => {
     api.get('/goals').then(response => {
-      console.log(response.data);
       setDataGoals(response.data);
     });
   }, [dataTemp]);
@@ -129,7 +128,6 @@ const SelectorFolders: React.FC = () => {
     });
 
     setDataGoals(goalFound);
-    console.log(goalFound);
   }, [dataGoals, textSearchGoal]);
 
   return (

@@ -25,7 +25,7 @@ import {
   CardHeader,
   DivLeft,
 } from './styles';
-import api from '../../../services/api';
+import { api } from '../../../services/api';
 
 // import api from '../../services/api';
 

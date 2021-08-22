@@ -6,7 +6,7 @@ import { useLoading, Oval } from '@agney/react-loading';
 
 import { Conatiner, ContainerBI } from './styles';
 import { useToast } from '../../hooks/toast';
-import api from '../../services/api';
+import { api } from '../../services/api';
 
 interface PropsPowerBI {
   accessToken: string;

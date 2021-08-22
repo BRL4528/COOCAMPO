@@ -29,7 +29,7 @@ import TextArea from '../../../Global/TextArea';
 import Button from '../../../Global/Button';
 
 import Modal from '../index';
-import api from '../../../../services/api';
+import { api } from '../../../../services/api';
 
 interface ISector {
   id: string;
@@ -169,6 +169,7 @@ const ModalEditSector: React.FC<IModalProps> = ({
             `/goals-of-sectors?sector_id=${dataEditSector}`,
           )
           .then(response => {
+            console.log(response.data);
             if (response.data) {
               // const initialSector = {
               //   id: response.data[0].sector.id,
@@ -192,9 +193,12 @@ const ModalEditSector: React.FC<IModalProps> = ({
               setCurrentGoals(initialGoals);
             }
           });
-        api.get<ISector>(`sectors/${dataEditSector}`).then(res => {
-          setDataInitialSector(res.data);
-        });
+        api
+          .get<ISector>(`sectors/show?sector_id=${dataEditSector}`)
+          .then(res => {
+            setDataInitialSector(res.data);
+            console.log(res.data);
+          });
         setOpenGoals(true);
       }
     }
@@ -246,8 +250,8 @@ const ModalEditSector: React.FC<IModalProps> = ({
         const analyticModuleFiltred = analyticModule.find(element => {
           return element.id === selectedAnalyticItems[0];
         });
-        console.log('resultado que voltou', analyticModuleFiltred);
-        console.log('id que voltou', selectedAnalyticItems[0]);
+        console.log('encontra módulo de analise', analyticModuleFiltred);
+
         // const route = analyticModule.find(
         //   analytic => analytic.id === selectedAnalyticItems[0],
         // );
@@ -265,14 +269,22 @@ const ModalEditSector: React.FC<IModalProps> = ({
             await api.put(
               `/analysis-module?analyze_module_id=${selectedAnalyticItems[0]}`,
               {
-                // url: `https://www.samasc.cloud/painel-analytic-module?${selectedAnalyticItems[0]}`,
-                url: `http://localhost:3000/painel-${analyticModuleFiltred?.model}?${selectedAnalyticItems[0]}`,
+                url: `https://www.samasc.cloud/painel-module-${analyticModuleFiltred?.model}?${selectedAnalyticItems[0]}`,
+                // url: `http://localhost:3000/painel-${analyticModuleFiltred?.model}?${selectedAnalyticItems[0]}`,
               },
             );
           }
           // Atualiza se houve alterações
         } else if (!(checked.length === currentGoals.length)) {
-          await api.delete(`/goals-of-sectors/${dataEditSector}`);
+          console.log('Atualiza 01');
+          // await api.delete(`/goals-of-sectors/${dataEditSector}`);
+
+          const res = {
+            goals_ids: selectedGoalsItems,
+            sector_id: dataEditSector,
+            analysis_module: arrayAnalyticModuleAndGoal,
+          };
+          console.log(res);
 
           await api.post('/goals-of-sectors/create-all', {
             goals_ids: selectedGoalsItems,
@@ -284,14 +296,16 @@ const ModalEditSector: React.FC<IModalProps> = ({
             await api.put(
               `/analysis-module?analyze_module_id=${selectedAnalyticItems[0]}`,
               {
-                // url: `https://www.samasc.cloud/painel-analytic-module?${selectedAnalyticItems[0]}`,
-                url: `http://localhost:3000/painel-${analyticModuleFiltred?.model}?${selectedAnalyticItems[0]}`,
+                url: `https://www.samasc.cloud/painel-module-${analyticModuleFiltred?.model}?${selectedAnalyticItems[0]}`,
+                // url: `http://localhost:3000/painel-${analyticModuleFiltred?.model}?${selectedAnalyticItems[0]}`,
               },
             );
           }
           // Atualiza se houve alterações
         } else if (!(checked.length === selectedGoalsItems.length)) {
+          console.log('Atualiza 02');
           await api.delete(`/goals-of-sectors/${dataEditSector}`);
+
           await api.post('/goals-of-sectors/create-all', {
             goals_ids: selectedGoalsItems,
             sector_id: dataEditSector,
@@ -302,8 +316,8 @@ const ModalEditSector: React.FC<IModalProps> = ({
             await api.put(
               `/analysis-module?analyze_module_id=${selectedAnalyticItems[0]}`,
               {
-                // url: `https://www.samasc.cloud/painel-analytic-module?${selectedAnalyticItems[0]}`,
-                url: `http://localhost:3000/painel-${analyticModuleFiltred?.model}?${selectedAnalyticItems[0]}`,
+                url: `https://www.samasc.cloud/painel-module-${analyticModuleFiltred?.model}?${selectedAnalyticItems[0]}`,
+                // url: `http://localhost:3000/painel-${analyticModuleFiltred?.model}?${selectedAnalyticItems[0]}`,
               },
             );
           }
@@ -501,6 +515,7 @@ const ModalEditSector: React.FC<IModalProps> = ({
                 <Button onClick={handleCloseAnalyticModule}>salvar</Button>
               </DivLeft>
             </ContainerAnalytic>
+
             {dataGoals.map(sub => (
               <ContainerGoal key={sub.id} opengoals={opengoals}>
                 <CardSub

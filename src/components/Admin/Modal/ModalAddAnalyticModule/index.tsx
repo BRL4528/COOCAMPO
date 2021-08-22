@@ -16,7 +16,7 @@ import { useToast } from '../../../../hooks/toast';
 import getValidationErrors from '../../../../utils/getValidationErrors';
 
 import Modal from '../index';
-import api from '../../../../services/api';
+import { api } from '../../../../services/api';
 import Select from '../../../Global/SelectRelease';
 
 interface IAnalyticModule {
@@ -63,14 +63,7 @@ const ModalAddFood: React.FC<IModalProps> = ({
           abortEarly: false,
         });
 
-        const {
-          name,
-          responsible,
-          email,
-          condition,
-          observations,
-          model,
-        } = data;
+        const { name, responsible, email, condition, observations } = data;
 
         const formData = {
           name,
@@ -78,7 +71,7 @@ const ModalAddFood: React.FC<IModalProps> = ({
           email,
           condition,
           observations,
-          model,
+          model: subject,
         };
 
         const response = await api.post('/analysis-module', formData);
@@ -107,7 +100,7 @@ const ModalAddFood: React.FC<IModalProps> = ({
         });
       }
     },
-    [addToast, handleAnalytic, setIsOpen],
+    [addToast, handleAnalytic, setIsOpen, subject],
   );
 
   const handleSubject = useCallback(
@@ -139,7 +132,7 @@ const ModalAddFood: React.FC<IModalProps> = ({
           }}
           options={[
             {
-              value: 'satisfaction-survey',
+              value: 'satisfaction',
               label: 'Pesquisa de satisfação',
             },
             { value: 'analytical', label: 'Módulo análitico' },

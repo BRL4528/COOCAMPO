@@ -1,8 +1,10 @@
-import React, { useCallback, useRef } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import { FiUser, FiLock } from 'react-icons/fi';
 import { FormHandles } from '@unform/core';
 import { Form } from '@unform/web';
 import * as Yup from 'yup';
+
+import { useLoading, Oval } from '@agney/react-loading';
 
 import { useAuth } from '../../hooks/auth';
 import { useToast } from '../../hooks/toast';
@@ -13,7 +15,7 @@ import logoImg from '../../assets/logo.svg';
 import Input from '../../components/Global/Input';
 import Button from '../../components/Global/Button';
 
-import { Container, Content } from './styles';
+import { Container, Content, ContainerCard } from './styles';
 
 interface SignInFormData {
   nickname: string;
@@ -22,6 +24,9 @@ interface SignInFormData {
 
 const SignIn: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
+  const componentRef = useRef<HTMLDivElement>(null);
+
+  const [loadSignInUser, setloadSignInUser] = useState(false);
 
   const { signIn } = useAuth();
   const { addToast } = useToast();
@@ -29,6 +34,7 @@ const SignIn: React.FC = () => {
   const handleSubmit = useCallback(
     async (data: SignInFormData) => {
       try {
+        setloadSignInUser(true);
         formRef.current?.setErrors({});
 
         const schema = Yup.object().shape({
@@ -43,8 +49,10 @@ const SignIn: React.FC = () => {
           nickname: data.nickname,
           password: data.password,
         });
+        setloadSignInUser(false);
       } catch (err) {
         if (err instanceof Yup.ValidationError) {
+          setloadSignInUser(false);
           const errors = getValidationErrors(err);
 
           formRef.current?.setErrors(errors);
@@ -57,34 +65,50 @@ const SignIn: React.FC = () => {
           title: 'Erro na autenticação',
           description: 'Ocorreu um erro ao fazer login, cheque as credenciais.',
         });
+        setloadSignInUser(false);
       }
     },
     [signIn, addToast],
   );
 
+  const { containerProps, indicatorEl } = useLoading({
+    loading: loadSignInUser,
+    indicator: <Oval />,
+  });
+
   return (
-    <Container>
-      <Content>
-        <img src={logoImg} alt="Samasc" />
+    <ContainerCard>
+      <Container>
+        <Content>
+          <img src={logoImg} alt="Samasc" />
 
-        <Form ref={formRef} onSubmit={handleSubmit}>
-          <h1>Realize seu login</h1>
+          <Form ref={formRef} onSubmit={handleSubmit}>
+            <h2>Realize seu login</h2>
 
-          <Input name="nickname" icon={FiUser} placeholder="Usuário" />
+            <Input name="nickname" icon={FiUser} placeholder="Usuário" />
 
-          <Input
-            name="password"
-            icon={FiLock}
-            type="password"
-            placeholder="Senha"
-          />
+            <Input
+              name="password"
+              icon={FiLock}
+              type="password"
+              placeholder="Senha"
+            />
 
-          <Button type="submit">Entrar</Button>
+            <Button type="submit" disabled={loadSignInUser}>
+              {loadSignInUser ? (
+                <div {...containerProps} ref={componentRef}>
+                  {indicatorEl}
+                </div>
+              ) : (
+                'Entrar'
+              )}
+            </Button>
 
-          <a href="forgot">Recuperar senha</a>
-        </Form>
-      </Content>
-    </Container>
+            <a href="forgot">Recuperar senha</a>
+          </Form>
+        </Content>
+      </Container>
+    </ContainerCard>
   );
 };
 

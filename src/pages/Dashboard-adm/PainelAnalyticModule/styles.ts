@@ -53,6 +53,7 @@ export const Container = styled.div`
     min-width: 700px;
 
     margin: 15px;
+    margin-top: 90px;
     border-radius: 6px;
     min-height: 100px;
     padding: 35px;
@@ -135,10 +136,15 @@ export const CardContainer = styled.div<ICheck>`
     border-bottom: solid 1px var(--text-tertiary);
     margin: 14px 0 15px 5px;
     color: var(--text-primary);
+
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
   }
 
   > div {
     min-width: 700px;
+    max-width: 700px;
     transition: max-height 1s;
     background: var(--white-secondary);
     box-shadow: 0 0 14px 0 rgba(0, 0, 0, 0.07);
@@ -161,12 +167,20 @@ export const CardContainer = styled.div<ICheck>`
       display: flex;
       align-items: center;
       margin: 0 0 0 5px;
+
+      > span {
+        display: flex;
+        align-items: center;
+        flex-direction: row;
+
+        width: 300px;
+      }
       input {
         margin: 15px;
       }
 
       div {
-        width: 200px;
+        width: 300px;
 
         strong {
           /* text-overflow: ellipsis; */

@@ -6,7 +6,7 @@ import alertTriangle from 'react-useanimations/lib/alertTriangle';
 // import erro404 from '../../../assets/404.gif';
 import { Container } from './styles';
 
-const PageError404: React.FC = () => {
+const Error404: React.FC = () => {
   return (
     <Container>
       <span>
@@ -29,4 +29,4 @@ const PageError404: React.FC = () => {
   );
 };
 
-export default PageError404;
+export default Error404;

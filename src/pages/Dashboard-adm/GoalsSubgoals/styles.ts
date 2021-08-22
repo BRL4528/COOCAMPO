@@ -6,7 +6,7 @@ interface IGoals {
 }
 
 export const Container = styled.div`
-  margin-top: 12px;
+  margin-top: 60px;
   margin-left: 8%;
   color: var(--text-quarterly);
 

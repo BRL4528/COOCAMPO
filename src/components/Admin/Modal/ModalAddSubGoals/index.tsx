@@ -15,7 +15,7 @@ import TextArea from '../../../Global/TextArea';
 import Button from '../../../Global/Button';
 
 import Modal from '../index';
-import api from '../../../../services/api';
+import { api } from '../../../../services/api';
 
 interface IModalProps {
   isOpen: boolean;
@@ -37,10 +37,8 @@ const ModalAddFood: React.FC<IModalProps> = ({
   const formRef = useRef<FormHandles>(null);
   const { addToast } = useToast();
 
-  const [
-    dataInitialSubGoal,
-    setDataInitialSubGoal,
-  ] = useState<AddSubGoalsModal>();
+  const [dataInitialSubGoal, setDataInitialSubGoal] =
+    useState<AddSubGoalsModal>();
 
   useEffect(() => {
     if (isOpen === false) {
@@ -148,7 +146,7 @@ const ModalAddFood: React.FC<IModalProps> = ({
         <p>Nome da submeta</p>
         <Input name="name" placeholder="Ex: Medidas SST" />
         <p>Peso da submeta</p>
-        <Input type="number" name="weight" placeholder="Ex: 10" />
+        <Input name="weight" placeholder="Ex: 10" />
         <p>Observações</p>
         <TextArea
           name="observations"

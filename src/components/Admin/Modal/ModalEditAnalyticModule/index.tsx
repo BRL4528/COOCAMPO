@@ -17,7 +17,7 @@ import { useToast } from '../../../../hooks/toast';
 import getValidationErrors from '../../../../utils/getValidationErrors';
 
 import Modal from '../index';
-import api from '../../../../services/api';
+import { api } from '../../../../services/api';
 import Select from '../../../Global/SelectRelease';
 
 interface IAnalyticModule {
@@ -51,10 +51,8 @@ const ModalEditAnalyticModule: React.FC<IModalProps> = ({
   const [subject, setSubject] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const [
-    initialDataAnalyticModule,
-    setInitialDataAnalyticModule,
-  ] = useState<IAnalyticModule>();
+  const [initialDataAnalyticModule, setInitialDataAnalyticModule] =
+    useState<IAnalyticModule>();
 
   useEffect(() => {
     if (isOpen === false) {
@@ -113,7 +111,6 @@ const ModalEditAnalyticModule: React.FC<IModalProps> = ({
           observations,
           model: subject,
         };
-        console.log(formData);
         const response = await api.put(
           `/analysis-module?analyze_module_id=${idAnalyticModule}`,
           formData,
@@ -170,7 +167,6 @@ const ModalEditAnalyticModule: React.FC<IModalProps> = ({
           <FiX size={20} onClick={() => setIsOpen()} />
         </span>
 
-        {console.log(loading)}
         {loading ? (
           <>
             <p>Nome do módulo de análise</p>

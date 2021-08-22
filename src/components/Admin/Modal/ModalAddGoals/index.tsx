@@ -24,7 +24,7 @@ import Button from '../../../Global/Button';
 import Select from '../../../Global/Select';
 
 import Modal from '../index';
-import api from '../../../../services/api';
+import { api } from '../../../../services/api';
 
 interface IGoals {
   id: string;
@@ -156,22 +156,26 @@ const ModalAddFood: React.FC<IModalProps> = ({
         handleGoals(formData);
 
         if (selectedAnalyticItems.length > 0) {
-          await api.put(
-            `/analysis-module?analyze_module_id=${selectedAnalyticItems[0]}`,
-            {
-              url: `http://localhost:3000/painel-analytic-module?${response.data.id}`,
-            },
-          );
+          // await api.put(
+          //   `/analysis-module?analyze_module_id=${selectedAnalyticItems[0]}`,
+          //   {
+          //     url: `http://localhost:3000/painel-analytic-module?${response.data.id}`,
+          //   },
+          // );
 
           await api.post('analysis-module-of-goals', {
             analyze_module_id: selectedAnalyticItems[0],
             goal_id: response.data.id,
           });
         }
-
+        console.log(
+          'balance',
+          response.data.weight / selectedSubGoalsItems.length,
+        );
         if (selectedSubGoalsItems.length > 0) {
           await api.post('/sub-goals-of-goals/create-all', {
             sub_goals_ids: selectedSubGoalsItems,
+            weight: response.data.weight / selectedSubGoalsItems.length,
             goal_id: response.data.id,
           });
         }
