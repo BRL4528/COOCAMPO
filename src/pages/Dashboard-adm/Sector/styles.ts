@@ -7,6 +7,10 @@ interface PrpsTrade {
   trendDown?: boolean;
 }
 
+interface Iprops {
+  titleItem?: string;
+}
+
 export const Container = styled.div`
   /* display: flex; */
   /* align-items: stretch; */
@@ -52,10 +56,11 @@ export const Container = styled.div`
   }
 `;
 
-export const CardeHeader = styled.div`
+export const CardeHeader = styled.div<Iprops>`
+  ${({ titleItem }: Iprops) =>
+    titleItem === 'none' ? 'display: none;' : 'display: flex;'}
   width: 100%;
 
-  display: flex;
   align-items: center;
   justify-content: space-between;
 

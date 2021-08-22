@@ -14,7 +14,11 @@ import {
   GraphicTitle,
 } from './styles';
 
-const SelectorFolders: React.FC = () => {
+interface PropsItem {
+  title?: string;
+}
+
+const Reports: React.FC<PropsItem> = ({ title }) => {
   return (
     <>
       {/* <ModalCreateUser
@@ -24,7 +28,7 @@ const SelectorFolders: React.FC = () => {
       // dataEditUser={dataEditUser}
     /> */}
       <Container>
-        <CardeHeader>
+        <CardeHeader titleItem={title}>
           <div>
             <h2>Relatórios e painéis infograficos</h2>
             <strong>
@@ -39,7 +43,7 @@ const SelectorFolders: React.FC = () => {
           </CardButton>
         </CardeHeader>
 
-        <Link to="/report-income-statement">
+        <Link to="/management-ppr/report-income-statement">
           <CardGraphic>
             <CardGraphicText>
               <GraphicTitle>
@@ -51,11 +55,11 @@ const SelectorFolders: React.FC = () => {
           </CardGraphic>
         </Link>
 
-        <Link to="/report-satisfaction-result">
+        <Link to="/management-ppr/report-satisfaction-result">
           <CardGraphic>
             <CardGraphicText>
               <GraphicTitle>
-                <h3>Pesquisa de satisfação</h3>
+                <h3>Pesquisa sobre horário de almoço</h3>
 
                 <p>Pesquisa sobre mudança no horário de almoço</p>
               </GraphicTitle>
@@ -67,4 +71,4 @@ const SelectorFolders: React.FC = () => {
   );
 };
 
-export default SelectorFolders;
+export default Reports;

@@ -1,24 +1,20 @@
+/* eslint-disable react/jsx-indent */
 /* eslint-disable react/no-unescaped-entities */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
-import {
-  FiBarChart,
-  FiLayers,
-  FiSliders,
-  FiMapPin,
-  FiUsers,
-  FiFileText,
-  FiFilePlus,
-  FiSettings,
-  FiPieChart,
-  FiTerminal,
-} from 'react-icons/fi';
+import { FiSettings } from 'react-icons/fi';
 
 import { useAuth } from '../../../hooks/auth';
 
 import logoImg from '../../../assets/logo.svg';
+
+import {
+  ManagementPPR,
+  OrderServices,
+  Addministrator,
+} from './listMenuSidebar';
 
 import { OptionList } from './styles';
 import './styles.css';
@@ -29,6 +25,20 @@ interface LayoutProps {
 
 const Sidebar: React.FC<LayoutProps> = ({ pathname }) => {
   const { user } = useAuth();
+  const location = useLocation();
+
+  function sideBarRenderized() {
+    if (location.pathname.substring(0, 15) === '/management-ppr') {
+      return ManagementPPR(pathname, user);
+    }
+    if (location.pathname.substring(0, 15) === '/service-orders') {
+      return OrderServices(pathname, user);
+    }
+    if (location.pathname.substring(0, 14) === '/administrator') {
+      return Addministrator(pathname, user);
+    }
+    return <div>Nada</div>;
+  }
 
   return (
     <>
@@ -66,121 +76,7 @@ const Sidebar: React.FC<LayoutProps> = ({ pathname }) => {
               </svg>
             </a>
           </li>
-
-          <OptionList
-            pathname={pathname}
-            path="/dashboard"
-            className="nav-item"
-            visible={user.dashboard}
-          >
-            <Link to="dashboard" className="nav-link">
-              <FiBarChart color="#f2c811" size={16} />
-
-              <span className="link-text">Dashboard</span>
-            </Link>
-          </OptionList>
-
-          <OptionList
-            pathname={pathname}
-            path="/goals-subgoals"
-            className="nav-item"
-            visible={user.goals_and_sub_goals}
-          >
-            <Link to="goals-subgoals" className="nav-link">
-              <FiLayers color="#f2c811" size={16} />
-
-              <span className="link-text">Metas e Submetas</span>
-            </Link>
-          </OptionList>
-
-          <OptionList
-            pathname={pathname}
-            path="/sector"
-            className="nav-item"
-            visible={user.sector}
-          >
-            <Link to="sector" className="nav-link">
-              <FiMapPin color="#f2c811" size={16} />
-
-              <span className="link-text">Setor</span>
-            </Link>
-          </OptionList>
-
-          <OptionList
-            pathname={pathname}
-            path="/error404-1"
-            className="nav-item"
-            visible={user.employers}
-          >
-            <Link to="/employers" className="nav-link">
-              <FiUsers color="#f2c811" size={16} />
-
-              <span className="link-text">Colaboradores</span>
-            </Link>
-          </OptionList>
-
-          <OptionList
-            pathname={pathname}
-            path="/analyticModule"
-            className="nav-item"
-            visible={user.module_analyze}
-          >
-            <Link to="analyticModule" className="nav-link">
-              <FiSliders color="#f2c811" size={16} />
-              <span className="link-text">Módulos de análise</span>
-            </Link>
-          </OptionList>
-
-          <OptionList
-            pathname={pathname}
-            path="/import"
-            className="nav-item"
-            visible={user.imports}
-          >
-            <Link to="/import" className="nav-link">
-              <FiFilePlus color="#f2c811" size={16} />
-              <span className="link-text">Importações</span>
-            </Link>
-          </OptionList>
-
-          <OptionList
-            pathname={pathname}
-            path="/error404-3"
-            className="nav-item"
-            visible={user.report}
-          >
-            <Link to="/report" className="nav-link">
-              <FiFileText color="#f2c811" size={16} />
-
-              <span className="link-text">Relatório</span>
-            </Link>
-          </OptionList>
-
-          <OptionList
-            pathname={pathname}
-            path="/error404-5"
-            className="nav-item"
-            visible={false}
-          >
-            <Link to="/error404-5" className="nav-link">
-              <FiPieChart color="#f2c811" size={16} />
-
-              <span className="link-text">Gráficos</span>
-            </Link>
-          </OptionList>
-
-          <OptionList
-            pathname={pathname}
-            path="/schedule"
-            className="nav-item"
-            visible={user.schedule}
-          >
-            <Link to="/schedule" className="nav-link">
-              <FiTerminal color="#f2c811" size={16} />
-
-              <span className="link-text">Agenda</span>
-            </Link>
-          </OptionList>
+          {sideBarRenderized()}
 
           <OptionList
             pathname={pathname}

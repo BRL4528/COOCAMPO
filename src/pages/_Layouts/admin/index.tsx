@@ -11,11 +11,22 @@ interface LayoutProps {
 const LayoutAdm: React.FC<LayoutProps> = ({ children, path }: LayoutProps) => {
   return (
     <>
-      <Header>
-        <span>{path}</span>
-      </Header>
-      <Sidebar pathname={path} />
-      {children}
+      {path === '/menu' ? (
+        <>
+          <Header>
+            <span>{path}</span>
+          </Header>
+          {children}
+        </>
+      ) : (
+        <>
+          <Header>
+            <span>{path}</span>
+          </Header>
+          <Sidebar pathname={path} />
+          {children}
+        </>
+      )}
     </>
   );
 };

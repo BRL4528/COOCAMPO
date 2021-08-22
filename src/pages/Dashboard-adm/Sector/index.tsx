@@ -52,7 +52,11 @@ interface IDataSectorToUser {
   };
 }
 
-const SelectorFolders: React.FC = () => {
+interface PropsItem {
+  title?: string;
+}
+
+const SelectorFolders: React.FC<PropsItem> = ({ title }) => {
   const handle = useFullScreenHandle();
   const { user } = useAuth();
 
@@ -159,7 +163,7 @@ const SelectorFolders: React.FC = () => {
       />
 
       <Container>
-        <CardeHeader>
+        <CardeHeader titleItem={title}>
           <div>
             <h2>Setores</h2>
             <strong>Análise os setores da cooperativa.</strong>
@@ -201,7 +205,7 @@ const SelectorFolders: React.FC = () => {
                     content={() => handlePrint(sector.id)}
                   />
                   <FiMaximize onClick={handle.enter} />
-                  <Link to={`/sector-resume?${sector.id}`}>
+                  <Link to={`/management-ppr/sector-resume?${sector.id}`}>
                     <FiGrid />
                   </Link>
                   {/* <FiChevronsDown

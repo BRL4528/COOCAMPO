@@ -2,15 +2,35 @@ import styled from 'styled-components';
 
 export const Container = styled.div`
   @media print {
+    margin: 0;
+    padding: 0;
     div {
       display: flex;
       align-items: center;
       flex-direction: column;
       margin: 0;
       padding: 0;
-      max-width: 2000px;
-      max-height: 770px;
+      max-width: 2400px;
+      max-height: 970px;
+      background: red;
     }
+  }
+
+  .window {
+    display: none;
+  }
+  .landscape {
+    position: absolute;
+    width: 160px;
+    right: 0;
+    margin-top: -65px;
+  }
+  .portrait {
+    position: absolute;
+    margin-top: -65px;
+    display: flex;
+    width: 190px;
+    right: 0;
   }
 `;
 

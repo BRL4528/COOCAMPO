@@ -1,3 +1,4 @@
+/* eslint-disable consistent-return */
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Report } from 'powerbi-report-component';
 import { useLoading, Oval } from '@agney/react-loading';
@@ -6,6 +7,12 @@ import { useLoading, Oval } from '@agney/react-loading';
 import { Container } from './styles';
 import { apiPowerBI } from '../../../../services/api';
 import { useToast } from '../../../../hooks/toast';
+
+import {
+  layoutSettings,
+  layoutSettingsLandscape,
+  layoutSettingsPortrait,
+} from '../../../../utils/stylesOfReportPowerBI';
 
 interface PropsPowerBI {
   accessToken: string;
@@ -24,7 +31,19 @@ interface PropsPowerBI {
 interface ReportData {
   reportId: string;
   embedUrl: string;
-  styleReport: 'print' | 'window';
+  styleReport: 'window' | 'landscape' | 'portrait';
+}
+
+interface IStyles {
+  width?: string;
+  border?: string;
+  height?: string;
+  maxHeight?: string;
+  margin?: string;
+  backgroundColor?: string;
+  top?: string;
+  minWidth?: string;
+  padding?: string;
 }
 
 export const ReportConectBI: React.FC<ReportData> = ({
@@ -38,6 +57,7 @@ export const ReportConectBI: React.FC<ReportData> = ({
 
   const { addToast } = useToast();
   const [dataBI, setDataBI] = useState<PropsPowerBI>();
+  const [styles, setStyles] = useState<IStyles>();
 
   const handleLoaded = useCallback(() => {
     setloadSignInUser(false);
@@ -51,6 +71,15 @@ export const ReportConectBI: React.FC<ReportData> = ({
   useEffect(() => {
     async function loadTokenBI(): Promise<void> {
       try {
+        if (styleReport === 'portrait') {
+          setStyles(layoutSettingsPortrait);
+        }
+        if (styleReport === 'landscape') {
+          setStyles(layoutSettingsLandscape);
+        } else {
+          setStyles(layoutSettings);
+        }
+
         if (localStorage.getItem('@SamascBI:dataAccess')) {
           const dataAccessBI = localStorage.getItem('@SamascBI:dataAccess');
 
@@ -121,25 +150,7 @@ export const ReportConectBI: React.FC<ReportData> = ({
       }
     }
     loadTokenBI();
-  }, [addToast, embedUrl, reportId]);
-
-  const layoutSettings = {
-    width: '85vw',
-    border: 'none',
-    height: `${window.innerWidth > 1500 ? '87vh' : '81vh'}`,
-    maxHeight: '100vh',
-    margin: '0',
-
-    backgroundColor: '#333',
-  };
-
-  const layoutSettingsPrint = {
-    top: '0px',
-    margin: '0px',
-    minWidth: '1400px',
-    height: '900px',
-    padding: '20px',
-  };
+  }, [addToast, embedUrl, reportId, styleReport]);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   // const myReportConfig: any = {
@@ -220,9 +231,7 @@ export const ReportConectBI: React.FC<ReportData> = ({
               // datasetId={datasetId} // required for reportMode = "Create" and optional for dynamic databinding in `report` on `View` mode
               // groupId={groupId} // optional. Used when reportMode = "Create" and to chose the target workspace when the dataset is shared.
               // extraSettings={extraSettings}
-              style={
-                styleReport === 'print' ? layoutSettingsPrint : layoutSettings
-              }
+              style={styles}
               permissions="All"
               // onRender={handleLoaded}
               onLoad={handleLoaded}

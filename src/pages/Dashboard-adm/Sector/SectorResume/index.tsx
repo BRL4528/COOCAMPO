@@ -4,6 +4,7 @@ import { Menu, MenuItem, MenuButton, SubMenu } from '@szhsin/react-menu';
 import '@szhsin/react-menu/dist/index.css';
 
 import { useLoading, Oval } from '@agney/react-loading';
+import logo from '../../../../assets/logo-cooasgo-horizontal.png';
 import { api } from '../../../../services/api';
 import { CardeHeader, Container } from './styles';
 
@@ -24,7 +25,8 @@ const SelectedSector: React.FC = () => {
   const componentRef = useRef<HTMLDivElement>(null);
   const parsed = window.location.search;
   const [sectorSelected, setSectorSelected] = useState<SectorSelected>();
-  const [styleReport, setStyleReport] = useState<'window' | 'print'>('window');
+  const [styleReport, setStyleReport] =
+    useState<'window' | 'landscape' | 'portrait'>('window');
 
   const [loadPrint, setLoadPrint] = useState(false);
 
@@ -40,13 +42,14 @@ const SelectedSector: React.FC = () => {
     }
   }, [parsed]);
 
-  const handleSetPrintReport = useCallback(() => {
+  // eslint-disable-next-line prettier/prettier
+  const handleSetPrintReport = useCallback(modelPrint => {
     setLoadPrint(true);
-    setStyleReport('print');
+    setStyleReport(modelPrint);
     setTimeout(() => {
       window.print();
       setLoadPrint(false);
-    }, 3000);
+    }, 2000);
   }, []);
 
   window.onafterprint = function () {
@@ -81,10 +84,12 @@ const SelectedSector: React.FC = () => {
             className="my-menu"
           >
             <SubMenu label="Imprimir">
-              <MenuItem onClick={() => handleSetPrintReport()}>
+              <MenuItem onClick={() => handleSetPrintReport('landscape')}>
                 Modo paisagem
               </MenuItem>
-              <MenuItem disabled>Modo Retrato</MenuItem>
+              <MenuItem onClick={() => handleSetPrintReport('portrait')}>
+                Modo Retrato
+              </MenuItem>
             </SubMenu>
             <MenuItem>Relatar erro</MenuItem>
           </Menu>
@@ -98,6 +103,7 @@ const SelectedSector: React.FC = () => {
           embedUrl={sectorSelected?.embed_url ?? 'null_id'}
         />
       </div>
+      <img className={styleReport} src={logo} alt="logo cooasgo" />
     </Container>
   );
 };

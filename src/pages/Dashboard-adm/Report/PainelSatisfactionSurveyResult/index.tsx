@@ -10,13 +10,14 @@ import { ReportConectBI } from '../../../../components/Admin/Reports/ReportConec
 
 const SelectedSector: React.FC = () => {
   const componentRef = useRef<HTMLDivElement>(null);
-  const [styleReport, setStyleReport] = useState<'window' | 'print'>('window');
+  const [styleReport, setStyleReport] =
+    useState<'window' | 'landscape' | 'portrait'>('window');
 
   const [loadPrint, setLoadPrint] = useState(false);
 
-  const handleSetPrintReport = useCallback(() => {
+  const handleSetPrintReport = useCallback(modelPrint => {
     setLoadPrint(true);
-    setStyleReport('print');
+    setStyleReport(modelPrint);
     setTimeout(() => {
       window.print();
       setLoadPrint(false);
@@ -52,10 +53,12 @@ const SelectedSector: React.FC = () => {
             className="my-menu"
           >
             <SubMenu label="Imprimir">
-              <MenuItem onClick={() => handleSetPrintReport()}>
+              <MenuItem onClick={() => handleSetPrintReport('landscape')}>
                 Modo paisagem
               </MenuItem>
-              <MenuItem disabled>Modo Retrato</MenuItem>
+              <MenuItem onClick={() => handleSetPrintReport('portrait')}>
+                Modo Retrato
+              </MenuItem>
             </SubMenu>
             <MenuItem>Relatar erro</MenuItem>
           </Menu>
