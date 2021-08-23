@@ -33,9 +33,29 @@ interface IdataTable {
   urgency: string;
 }
 
+interface IFilter {
+  finishedDateIn: string;
+  finishedDateOut: string;
+  startDateIn: string;
+  startDateOut: string;
+  status: string;
+  urgency: string;
+}
+
 const Reports: React.FC<PropsItem> = ({ title }) => {
   const { user } = useAuth();
   const [modalOpen, setModalOpen] = useState(false);
+
+  const [toogleFilter, setToogleFilter] = useState(true);
+
+  const [dataFilter, setDataFilter] = useState<IFilter>({
+    finishedDateIn: '',
+    finishedDateOut: '',
+    startDateIn: '',
+    startDateOut: '',
+    status: '',
+    urgency: '',
+  });
 
   const toggleModal = useCallback(() => {
     setModalOpen(!modalOpen);
@@ -55,6 +75,14 @@ const Reports: React.FC<PropsItem> = ({ title }) => {
     [user],
   );
 
+  const handleFilter = useCallback((data: IFilter) => {
+    setDataFilter(data);
+  }, []);
+
+  const handleToogleFilter = useCallback(() => {
+    setToogleFilter(!toogleFilter);
+  }, [toogleFilter]);
+
   return (
     <>
       <ModallServicesOrders
@@ -62,7 +90,7 @@ const Reports: React.FC<PropsItem> = ({ title }) => {
         setIsOpen={toggleModal}
         handleAnalytic={handleAnalytic}
       />
-      <Container>
+      <Container toogleFilter={toogleFilter}>
         <CardeHeader titleItem={title}>
           <div>
             <h2>Ordens de serviços</h2>
@@ -80,10 +108,12 @@ const Reports: React.FC<PropsItem> = ({ title }) => {
 
         <section className="section-filter">
           <header>
-            <p>Filtro</p>
+            <Button isUsed type="button" onClick={handleToogleFilter}>
+              <p>Filtro</p>
+            </Button>
           </header>
 
-          <Form onSubmit={() => {}}>
+          <Form onSubmit={handleFilter}>
             <section>
               <div>
                 <fieldset>
@@ -94,6 +124,10 @@ const Reports: React.FC<PropsItem> = ({ title }) => {
                   <Select
                     name="urgency"
                     options={[
+                      {
+                        label: 'Vazio',
+                        value: '',
+                      },
                       {
                         label: 'Baixo',
                         value: 'baixo',
@@ -116,8 +150,12 @@ const Reports: React.FC<PropsItem> = ({ title }) => {
 
                   <p className="space-top">Status</p>
                   <Select
-                    name="urgency"
+                    name="status"
                     options={[
+                      {
+                        label: 'Vazio',
+                        value: '',
+                      },
                       {
                         label: 'Pendente',
                         value: 'Pendente',
@@ -153,13 +191,15 @@ const Reports: React.FC<PropsItem> = ({ title }) => {
                 </div>
               </fieldset>
               <span>
-                <button type="button">Aplicar filtro</button>
+                <Button isUsed type="submit">
+                  Aplicar filtro
+                </Button>
               </span>
             </section>
           </Form>
         </section>
         <div className="section-body">
-          <OrderServiceTable email={user.email} />
+          <OrderServiceTable email={user.email} filterData={dataFilter} />
         </div>
       </Container>
     </>

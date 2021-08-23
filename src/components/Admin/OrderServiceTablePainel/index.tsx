@@ -55,6 +55,18 @@ interface ITable {
   };
 }
 
+interface IDataOrderServices {
+  id: string;
+  name: string;
+  urgency: string;
+  reason: string;
+  email: string;
+  status?: string;
+  observations: string;
+  end_date: string;
+  created_at: string;
+}
+
 const OrderServiceTable: React.FC<IdataTable> = ({
   email,
   filterData,
@@ -72,6 +84,8 @@ const OrderServiceTable: React.FC<IdataTable> = ({
     page: 0,
   });
 
+  const [returnDataFinsh, setReturnDataFinsh] = useState<IDataOrderServices>();
+
   useEffect(() => {
     api
       .get<ITable>(
@@ -80,8 +94,7 @@ const OrderServiceTable: React.FC<IdataTable> = ({
       .then(resposnse => {
         setDataTable(resposnse.data);
       });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [email, filterData, user.email, pagination]);
+  }, [email, filterData, user.email, pagination, returnDataFinsh]);
 
   const toggleModal = useCallback(() => {
     setModalOpen(!modalOpen);
@@ -128,6 +141,19 @@ const OrderServiceTable: React.FC<IdataTable> = ({
     };
     setPagination(newPage);
   }, [pagination]);
+
+  const handleReturnFinishOrder = useCallback(
+    (finishOrder: Omit<IDataOrderServices, 'status'>) => {
+      try {
+        const temp = finishOrder;
+        setReturnDataFinsh(temp);
+        console.log('Finished', temp);
+      } catch (err) {
+        console.log(err);
+      }
+    },
+    [],
+  );
 
   return (
     <>
@@ -182,11 +208,13 @@ const OrderServiceTable: React.FC<IdataTable> = ({
                       })}
                 </td>
                 <td>
-                  <Button onClick={() => tggleIdModal(item.id)}>Abrir</Button>
+                  <Button isUsed onClick={() => tggleIdModal(item.id)}>
+                    Abrir
+                  </Button>
                 </td>
                 <td>
                   {item.end_date === null ? (
-                    <Button onClick={() => handleFinishOrder(item.id)}>
+                    <Button isUsed onClick={() => handleFinishOrder(item.id)}>
                       Finalizar
                     </Button>
                   ) : (
@@ -207,6 +235,7 @@ const OrderServiceTable: React.FC<IdataTable> = ({
                   isOpen={openModalFinishOrder}
                   setIsOpen={toggleModalFinishOrder}
                   setToggleModal={setToggleModalFinishOrder}
+                  handleReturnFinishOrder={handleReturnFinishOrder}
                 />
               </tr>
             ))}
@@ -215,21 +244,31 @@ const OrderServiceTable: React.FC<IdataTable> = ({
       </Container>
       <Section>
         <div>
-          <button
-            disabled={pagination.page === 0}
-            type="button"
-            onClick={returnPage}
-          >
-            Anterior
-          </button>
-          <strong>{pagination.page}</strong>
-          <button
-            disabled={pagination.page === dataTable?.pagination.totalPages}
-            type="button"
-            onClick={nextPage}
-          >
-            Proximo
-          </button>
+          <body>
+            <button
+              disabled={pagination.page === 0}
+              type="button"
+              onClick={returnPage}
+            >
+              Anterior
+            </button>
+            <strong>{pagination.page}</strong>
+            <button
+              disabled={pagination.page === dataTable?.pagination.totalPages}
+              type="button"
+              onClick={nextPage}
+            >
+              Proximo
+            </button>
+          </body>
+          <footer>
+            <strong>total de registros:</strong>
+            <strong>{dataTable?.pagination.total}</strong>
+          </footer>
+          <footer>
+            <strong>total de paginas:</strong>
+            <strong>{dataTable?.pagination.totalPages}</strong>
+          </footer>
         </div>
       </Section>
     </>

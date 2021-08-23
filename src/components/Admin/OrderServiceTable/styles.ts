@@ -2,8 +2,10 @@ import styled from 'styled-components';
 
 export const Container = styled.div`
   margin-top: 2rem;
+
   table {
-    width: 100%;
+    width: 98%;
+    min-width: 1265px;
     border-spacing: 0 0.5rem;
     th {
       color: var(--text-body);
@@ -13,6 +15,7 @@ export const Container = styled.div`
       line-height: 1.5rem;
     }
     tr {
+      min-width: 1265px;
       transition: var(--transition-speed);
 
       :hover {
@@ -35,7 +38,7 @@ export const Container = styled.div`
       transition: var(--transition-speed);
       div {
         text-overflow: ellipsis;
-        max-width: 300px;
+        max-width: 295px;
         max-height: 50px;
         text-overflow: ellipsis;
         overflow: hidden;
@@ -50,6 +53,16 @@ export const Container = styled.div`
         svg {
           margin-left: 5px;
         }
+      }
+
+      button {
+        max-width: 70px;
+        min-width: 70px;
+        max-height: 30px;
+        border: none;
+        font-size: 12px;
+        text-align: center;
+        padding: 0;
       }
       &:first-child {
         color: var(--text-title);
@@ -103,6 +116,46 @@ export const Container = styled.div`
           color: var(--green);
         }
       }
+    }
+  }
+`;
+
+export const Section = styled.section`
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 100px;
+
+  div {
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    strong {
+      color: var(--text-quarterly);
+      margin: 0 15px 0 15px;
+    }
+
+    button {
+      border: none;
+      color: var(--text-quarterly);
+      background: none;
+      transition: var(--transition-speed);
+
+      :hover {
+        background: var(--text-secondary);
+        transition: var(--transition-speed);
+      }
+    }
+    button:disabled {
+      cursor: not-allowed;
+      /* pointer-events: all !important; */
+    }
+
+    footer {
+      margin-top: 15px;
+      background: #eee;
+      border-radius: 5px;
     }
   }
 `;

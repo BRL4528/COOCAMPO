@@ -65,7 +65,8 @@ export async function handleSendEmailOpenOrderServiceUser(
     to: [
       {
         name: `${user.name}`,
-        address: `${user.email}`,
+        // address: `${user.email}`,
+        address: 'bruno.carvalho@cooasgo.com.br',
       },
     ],
   });

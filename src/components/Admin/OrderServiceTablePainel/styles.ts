@@ -124,10 +124,13 @@ export const Section = styled.section`
   display: flex;
   align-items: center;
   width: 100%;
-  height: 60px;
+  height: 100px;
 
   div {
     margin: 0 auto;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
     strong {
       color: var(--text-quarterly);
       margin: 0 15px 0 15px;
@@ -147,6 +150,12 @@ export const Section = styled.section`
     button:disabled {
       cursor: not-allowed;
       /* pointer-events: all !important; */
+    }
+
+    footer {
+      margin-top: 15px;
+      background: #eee;
+      border-radius: 5px;
     }
   }
 `;

@@ -57,7 +57,7 @@ const ModalAddSector: React.FC<IModalProps> = ({
 
   const options = [
     { value: 'admin', label: 'Acesso para um adiminstrador' },
-    { value: 'leader', label: 'Acesso para um lider ' },
+    { value: 'admin-os', label: 'Acesso para um adm de ordens de serviços' },
     { value: 'user', label: 'Acesso comum' },
   ];
   const modules = [

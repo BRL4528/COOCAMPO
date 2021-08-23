@@ -32,12 +32,7 @@ export function ManagementPPR(
 ) {
   return (
     <>
-      <OptionList
-        pathname={pathname}
-        path="/menu"
-        className="nav-item"
-        visible={user.schedule}
-      >
+      <OptionList pathname={pathname} path="/menu" className="nav-item" visible>
         <Link to="/menu" className="nav-link">
           <FiList color="#f2c811" size={16} />
 
@@ -154,6 +149,7 @@ export function OrderServices(
   pathname: string,
   // eslint-disable-next-line no-unused-vars
   user: {
+    tag: string;
     dashboard: boolean;
     goals_and_sub_goals: boolean;
     sector: boolean;
@@ -176,9 +172,9 @@ export function OrderServices(
 
       <OptionList
         pathname={pathname}
-        path="/service-order/users"
+        path="/service-orders/user"
         className="nav-item"
-        visible
+        visible={user.tag === 'admin' || user.tag === 'user'}
       >
         <Link to="/service-orders/user" className="nav-link">
           <FiClock color="#f2c811" size={16} />
@@ -191,7 +187,7 @@ export function OrderServices(
         pathname={pathname}
         path="/service-orders/painel"
         className="nav-item"
-        visible
+        visible={user.tag === 'admin' || user.tag === 'admin-os'}
       >
         <Link to="/service-orders/painel" className="nav-link">
           <FiCoffee color="#f2c811" size={16} />
@@ -218,12 +214,7 @@ export function Addministrator(
 ) {
   return (
     <>
-      <OptionList
-        pathname={pathname}
-        path="/menu"
-        className="nav-item"
-        visible={user.schedule}
-      >
+      <OptionList pathname={pathname} path="/menu" className="nav-item" visible>
         <Link to="/menu" className="nav-link">
           <FiList color="#f2c811" size={16} />
 

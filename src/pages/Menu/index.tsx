@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { Link } from 'react-router-dom';
+import { useAuth } from '../../hooks/auth';
 import { ContainerCard, Content } from './styles';
 
 import destin from '../../assets/destin.svg';
@@ -10,6 +11,7 @@ import fluxo from '../../assets/fluxo.svg';
 import adm from '../../assets/adm.svg';
 
 const Menu: React.FC = () => {
+  const { user } = useAuth();
   return (
     <ContainerCard>
       <Link to="/#">
@@ -40,12 +42,16 @@ const Menu: React.FC = () => {
         </Content>
       </Link>
 
-      <Link to="/administrator/employers">
-        <Content>
-          <img src={adm} alt="imagem de administrador" />
-          <strong>Administrador</strong>
-        </Content>
-      </Link>
+      {user.tag === 'admin' ? (
+        <Link to="/administrator/employers">
+          <Content>
+            <img src={adm} alt="imagem de administrador" />
+            <strong>Administrador</strong>
+          </Content>
+        </Link>
+      ) : (
+        ''
+      )}
     </ContainerCard>
   );
 };

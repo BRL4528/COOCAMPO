@@ -11,9 +11,13 @@ import { format } from 'date-fns';
 // eslint-disable-next-line import/no-duplicates
 import formatDistance from 'date-fns/formatDistance';
 
+import { toast } from 'react-toastify';
+
+import { useLoading, Oval } from '@agney/react-loading';
+
 // eslint-disable-next-line import/no-duplicates
 import ptBR from 'date-fns/locale/pt-BR';
-import { FiX, FiPlus } from 'react-icons/fi';
+import { FiX } from 'react-icons/fi';
 import { FormHandles } from '@unform/core';
 import Modal from '../../Modal';
 import { api } from '../../../../services/api';
@@ -27,7 +31,7 @@ interface IDataOrderServices {
   urgency: string;
   reason: string;
   email: string;
-  status: string;
+  status?: string;
   observations: string;
   end_date: string;
   created_at: string;
@@ -39,6 +43,9 @@ interface IModalProps {
   isDataId: string;
   setIsOpen: () => void;
   setToggleModal: () => void;
+  handleReturnFinishOrder: (
+    finishOrder: Omit<IDataOrderServices, 'status'>,
+  ) => void;
 }
 
 const ModalBoxItemTable: React.FC<IModalProps> = ({
@@ -47,15 +54,17 @@ const ModalBoxItemTable: React.FC<IModalProps> = ({
   id,
   isDataId,
   isOpen,
+  handleReturnFinishOrder,
 }) => {
+  const componentRef = useRef<HTMLDivElement>(null);
   const [dataSelected, setDataSelected] = useState<IDataOrderServices>();
   const formRef = useRef<FormHandles>(null);
   const [openModal, setOpenModal] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [loadingConfirm, setLoadingCinfirm] = useState(false);
 
   useEffect(() => {
     if (isDataId === id) {
-      // setLoading(true);
       api.get(`/services-orders/show?id=${id}`).then(response => {
         setDataSelected(response.data);
       });
@@ -79,6 +88,8 @@ const ModalBoxItemTable: React.FC<IModalProps> = ({
   const handleSubmit = useCallback(
     async data => {
       try {
+        setLoadingCinfirm(true);
+
         formRef.current?.setErrors({});
 
         const status = 'Finalizado';
@@ -91,16 +102,45 @@ const ModalBoxItemTable: React.FC<IModalProps> = ({
           status,
         };
 
-        api.put(`/services-orders?id=${id}`, formData);
+        api.put(`/services-orders?id=${id}`, formData).then(response => {
+          handleReturnFinishOrder(response.data);
+          console.log('finalizou', response.data);
+        });
+
+        toast.success('Ordem finalizada', {
+          position: 'bottom-right',
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
 
         setIsOpen();
+        setLoadingCinfirm(false);
       } catch (err) {
-        console.log(err);
+        console.log('ver esso', err);
+        toast.warning('problemas ao finalizar OS', {
+          position: 'bottom-right',
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+        setLoadingCinfirm(false);
         setIsOpen();
       }
     },
     [id, setIsOpen],
   );
+
+  const { containerProps, indicatorEl } = useLoading({
+    loading: loadingConfirm,
+    indicator: <Oval />,
+  });
 
   return (
     <Modal isOpen={openModal} setIsOpen={setToggleModal}>
@@ -185,7 +225,15 @@ const ModalBoxItemTable: React.FC<IModalProps> = ({
               />
 
               <DivLeft>
-                <Button type="submit">Confirmar</Button>
+                <Button isUsed type="submit">
+                  {loadingConfirm ? (
+                    <div {...containerProps} ref={componentRef}>
+                      {indicatorEl}
+                    </div>
+                  ) : (
+                    ' Confirmar'
+                  )}
+                </Button>
               </DivLeft>
             </section>
 
@@ -205,6 +253,3 @@ const ModalBoxItemTable: React.FC<IModalProps> = ({
 };
 
 export default ModalBoxItemTable;
-function useCalback(arg0: (data: any) => void, arg1: never[]) {
-  throw new Error('Function not implemented.');
-}

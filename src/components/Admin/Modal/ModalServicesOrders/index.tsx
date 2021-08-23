@@ -67,7 +67,7 @@ const ModalOrderServices: React.FC<IModalProps> = ({
 
         setIsOpen();
 
-        toast('😎 Sucesso ao abrir nova OS!', {
+        toast('Sucesso ao abrir nova OS!', {
           position: 'bottom-right',
           autoClose: 5000,
           type: 'success',
@@ -80,7 +80,7 @@ const ModalOrderServices: React.FC<IModalProps> = ({
         setLoading(false);
       } catch (err) {
         console.log(err);
-        toast('🤔 Problemas ao abrir nova OS!', {
+        toast('Problemas ao abrir nova OS!', {
           position: 'bottom-right',
           autoClose: 5000,
           type: 'warning',

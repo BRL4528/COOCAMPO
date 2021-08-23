@@ -2,9 +2,10 @@ import styled from 'styled-components';
 
 interface Iprops {
   titleItem?: string;
+  toogleFilter?: boolean;
 }
 
-export const Container = styled.div`
+export const Container = styled.div<Iprops>`
   /* display: flex; */
   /* align-items: stretch; */
 
@@ -16,11 +17,25 @@ export const Container = styled.div`
   scroll-behavior: smooth;
 
   .section-filter {
+    header {
+      button {
+        max-width: 100px;
+        max-height: 30px;
+      }
+    }
+
     form {
+      display: flex;
       border: 1px solid var(--text-tertiary);
-      /* visibility: hidden;
-        display: none; */
+      visibility: visible;
+      height: 250px;
+      transition: var(--transition-speed);
+
+      ${({ toogleFilter }: Iprops): string =>
+        toogleFilter ? 'visibility: hidden; height: 0px;' : ''}
       section {
+        height: 250px;
+        transition: var(--transition-speed);
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -29,6 +44,8 @@ export const Container = styled.div`
         font-size: 12px;
         max-width: 900px;
 
+        ${({ toogleFilter }: Iprops): string =>
+          toogleFilter ? 'display: none; height: 0px;' : ''}
         > div {
           fieldset {
             width: 300px;

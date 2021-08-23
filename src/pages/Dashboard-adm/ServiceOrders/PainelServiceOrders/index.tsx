@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 import React, { useCallback, useState } from 'react';
 import { Form } from '@unform/web';
-import Button from '../../../../components/Global/Button';
 import OrderServiceTable from '../../../../components/Admin/OrderServiceTablePainel';
 import Select from '../../../../components/Global/Select';
 import Input from '../../../../components/Global/Input';
+import Button from '../../../../components/Global/Button';
 
 import ModallServicesOrders from '../../../../components/Admin/Modal/ModalServicesOrders';
 
@@ -15,7 +15,7 @@ import {
 
 import { useAuth } from '../../../../hooks/auth';
 
-import { CardButton, CardeHeader, Container } from './styles';
+import { CardeHeader, Container } from './styles';
 
 interface PropsItem {
   title?: string;
@@ -45,6 +45,9 @@ interface IFilter {
 const Reports: React.FC<PropsItem> = ({ title }) => {
   const { user } = useAuth();
   const [modalOpen, setModalOpen] = useState(false);
+
+  const [toogleFilter, setToogleFilter] = useState(true);
+
   const [dataFilter, setDataFilter] = useState<IFilter>({
     finishedDateIn: '',
     finishedDateOut: '',
@@ -76,6 +79,10 @@ const Reports: React.FC<PropsItem> = ({ title }) => {
     setDataFilter(data);
   }, []);
 
+  const handleToogleFilter = useCallback(() => {
+    setToogleFilter(!toogleFilter);
+  }, [toogleFilter]);
+
   return (
     <>
       <ModallServicesOrders
@@ -83,25 +90,27 @@ const Reports: React.FC<PropsItem> = ({ title }) => {
         setIsOpen={toggleModal}
         handleAnalytic={handleAnalytic}
       />
-      <Container>
+      <Container toogleFilter={toogleFilter}>
         <CardeHeader titleItem={title}>
           <div>
             <h2>Ordens de serviços</h2>
             <strong>Monitore a demanda de solicitaçoes de serviços</strong>
           </div>
 
-          <CardButton>
+          {/* <CardButton>
             <div>
               <Button isUsed onClick={toggleModal}>
                 Nova ordem
               </Button>
             </div>
-          </CardButton>
+          </CardButton> */}
         </CardeHeader>
 
         <section className="section-filter">
           <header>
-            <p>Filtro</p>
+            <Button isUsed type="button" onClick={handleToogleFilter}>
+              <p>Filtro</p>
+            </Button>
           </header>
 
           <Form onSubmit={handleFilter}>
