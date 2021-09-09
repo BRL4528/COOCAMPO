@@ -1,3 +1,4 @@
+/* eslint-disable react/style-prop-object */
 import React from 'react';
 
 import { Link } from 'react-router-dom';
@@ -14,12 +15,14 @@ const Menu: React.FC = () => {
   const { user } = useAuth();
   return (
     <ContainerCard>
-      <Link to="/#">
-        <Content>
-          <img src={destin} alt="imagem de destino" />
-          <strong>Controle de frota</strong>
-        </Content>
-      </Link>
+      <div className={user.tag === 'admin' ? '' : 'disabled'}>
+        <Link to="/your-miles">
+          <Content>
+            <img src={destin} alt="imagem de destino" />
+            <strong>Controle de frota</strong>
+          </Content>
+        </Link>
+      </div>
 
       <Link to="/management-ppr/dashboard">
         <Content>
@@ -28,20 +31,23 @@ const Menu: React.FC = () => {
         </Content>
       </Link>
 
-      <Link to="/service-orders/user">
-        <Content>
-          <img src={os} alt="imagem de ordem de serviço" />
-          <strong>Ordens de serviço</strong>
-        </Content>
-      </Link>
+      <div className={user.tag === 'admin' ? '' : 'disabled'}>
+        <Link to="/service-orders/user">
+          <Content>
+            <img src={os} alt="imagem de ordem de serviço" />
+            <strong>Ordens de serviço</strong>
+          </Content>
+        </Link>
+      </div>
 
-      <Link to="/dashboard">
-        <Content>
-          <img src={fluxo} alt="imagem de fluxo grama" />
-          <strong>Normas interna</strong>
-        </Content>
-      </Link>
-
+      <div className={user.tag === 'admin' ? '' : 'disabled'}>
+        <Link to="/rules">
+          <Content>
+            <img src={fluxo} alt="imagem de fluxo grama" />
+            <strong>Normas interna</strong>
+          </Content>
+        </Link>
+      </div>
       {user.tag === 'admin' ? (
         <Link to="/administrator/employers">
           <Content>

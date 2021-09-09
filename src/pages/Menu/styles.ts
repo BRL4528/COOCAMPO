@@ -7,6 +7,10 @@ export const ContainerCard = styled.div`
 
   height: 100vh;
 
+  .disabled {
+    display: none;
+  }
+
   a {
     background: #ffff;
     width: 173px;
