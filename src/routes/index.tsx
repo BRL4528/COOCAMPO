@@ -35,6 +35,13 @@ import FormsOrderService from '../components/Admin/FormsOrderService';
 import ServicesOrders from '../pages/Dashboard-adm/ServiceOrders/UserServiceOrders';
 import PainelServicesOrders from '../pages/Dashboard-adm/ServiceOrders/PainelServiceOrders';
 
+import YouMiles from '../pages/Dashboard-adm/Miles/YouMiles';
+
+import SectorSelectedRules from '../pages/Dashboard-adm/Rules/SelectedSector';
+
+import Rules from '../pages/Dashboard-adm/Rules';
+import Visio from '../pages/Dashboard-adm/Rules/Visio';
+
 // Routes user no ADM
 import DashboardUser from '../pages/Dashboard-user';
 import AnalyticModuloUser from '../pages/Dashboard-user/AnalyticModule';
@@ -119,6 +126,13 @@ const Routes: React.FC = () => (
       isPrivate
       isAdmin
     />
+
+    <Route
+      path="/rules/sector-resume-rules/:sectorId?"
+      component={SectorSelectedRules}
+      isPrivate
+      isAdmin
+    />
     <Route path="/management-ppr/import" component={Import} isPrivate isAdmin />
     <Route
       path="/management-ppr/schedule"
@@ -151,6 +165,9 @@ const Routes: React.FC = () => (
       isPrivate
       isAdmin
     />
+
+    <Route path="/your-miles" component={YouMiles} isPrivate isAdmin />
+
     <Route
       path="/service-orders/painel"
       component={PainelServicesOrders}
@@ -173,6 +190,10 @@ const Routes: React.FC = () => (
       isUser
       isAdmin
     />
+
+    <Route path="/rules" component={Rules} isPrivate isUser isAdmin />
+
+    <Route path="/visio" component={Visio} isPrivate isUser isAdmin />
 
     <Route path="/error404-1" component={Error404} isPrivate isUser isAdmin />
     <Route path="/error404-2" component={Error404} isPrivate isUser isAdmin />
