@@ -52,17 +52,17 @@ interface ITable {
   };
 }
 
-interface IDataOrderServices {
-  id: string;
-  name: string;
-  urgency: string;
-  reason: string;
-  email: string;
-  status?: string;
-  observations: string;
-  end_date: string;
-  created_at: string;
-}
+// interface IDataOrderServices {
+//  id: string;
+//  name: string;
+//  urgency: string;
+//  reason: string;
+//  email: string;
+//  status?: string;
+//  observations: string;
+//  end_date: string;
+//  created_at: string;
+// }
 
 const OrderServiceTable: React.FC<IdataTable> = ({
   email,

@@ -134,7 +134,7 @@ const ModalBoxItemTable: React.FC<IModalProps> = ({
         setIsOpen();
       }
     },
-    [id, setIsOpen],
+    [handleReturnFinishOrder, id, setIsOpen],
   );
 
   const { containerProps, indicatorEl } = useLoading({
