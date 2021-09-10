@@ -87,7 +87,7 @@ const SignIn: React.FC = () => {
           <h3>Facilidade</h3>
           <p>
             Em um único lugar e com o mesmo usuário, você tem acesso
-            centralizado aos sistemas Web da Aurora. Seja bem-vindo e fique a
+            centralizado aos sistemas Web da Cooasgo. Seja bem-vindo e fique a
             vontade.
           </p>
         </div>
