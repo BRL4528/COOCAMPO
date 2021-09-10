@@ -3,6 +3,20 @@ import { createGlobalStyle } from 'styled-components';
 export default createGlobalStyle`
 
   :root {
+    --white: #ffffff;
+
+--gray-100: #e1e2e6;
+--gray-300: #a8a8b3;
+--gray-700: #323238;
+--gray-800: #29292e;
+--gray-850: #1f2729;
+--gray-900: #121214;
+
+--cyan-500: #61dafb;
+--yellon-500: #eba517;
+
+
+
     --text-primary: #b2b2b2;
     --text-secondary: #ececec;
     --text-tertiary: rgba(150, 156, 186, 0.2);

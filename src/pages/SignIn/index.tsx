@@ -78,6 +78,20 @@ const SignIn: React.FC = () => {
 
   return (
     <ContainerCard>
+      <div className="infohome">
+        <header>
+          <h1>Portal Cooasgo</h1>
+        </header>
+
+        <div>
+          <h3>Facilidade</h3>
+          <p>
+            Em um único lugar e com o mesmo usuário, você tem acesso
+            centralizado aos sistemas Web da Aurora. Seja bem-vindo e fique a
+            vontade.
+          </p>
+        </div>
+      </div>
       <Container>
         <Content>
           <img src={logoImg} alt="Samasc" />

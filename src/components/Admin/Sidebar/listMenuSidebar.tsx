@@ -14,8 +14,62 @@ import {
   FiClock,
   FiList,
   FiCoffee,
+  FiCompass,
+  FiCalendar,
 } from 'react-icons/fi';
 import { OptionList } from './styles';
+
+export function ManagementMiles(
+  pathname: string,
+  user: {
+    dashboard: boolean;
+    goals_and_sub_goals: boolean;
+    sector: boolean;
+    employers: boolean;
+    module_analyze: boolean;
+    imports: boolean;
+    report: boolean;
+    schedule: boolean;
+  },
+) {
+  return (
+    <>
+      <OptionList pathname={pathname} path="/menu" className="nav-item" visible>
+        <Link to="/menu" className="nav-link">
+          <FiList color="#f2c811" size={16} />
+
+          <span className="link-text">Menu inicial</span>
+        </Link>
+      </OptionList>
+
+      <OptionList
+        pathname={pathname}
+        path="/schedule-vehicle"
+        className="nav-item"
+        visible={user.employers}
+      >
+        <Link to="/schedule-vehicle" className="nav-link">
+          <FiCalendar color="#f2c811" size={16} />
+
+          <span className="link-text">Agendar veiculo</span>
+        </Link>
+      </OptionList>
+
+      <OptionList
+        pathname={pathname}
+        path="/your-miles"
+        className="nav-item"
+        visible={user.employers}
+      >
+        <Link to="/your-miles" className="nav-link">
+          <FiCompass color="#f2c811" size={16} />
+
+          <span className="link-text">Quilometragem</span>
+        </Link>
+      </OptionList>
+    </>
+  );
+}
 
 export function ManagementPPR(
   pathname: string,
@@ -232,6 +286,20 @@ export function Addministrator(
           <FiUsers color="#f2c811" size={16} />
 
           <span className="link-text">Colaboradores</span>
+        </Link>
+      </OptionList>
+    </>
+  );
+}
+
+export function Rules(pathname: string) {
+  return (
+    <>
+      <OptionList pathname={pathname} path="/menu" className="nav-item" visible>
+        <Link to="/menu" className="nav-link">
+          <FiList color="#f2c811" size={16} />
+
+          <span className="link-text">Menu inicial</span>
         </Link>
       </OptionList>
     </>

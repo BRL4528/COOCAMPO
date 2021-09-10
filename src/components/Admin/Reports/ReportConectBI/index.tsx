@@ -212,7 +212,7 @@ export const ReportConectBI: React.FC<ReportData> = ({
         {loadSignInUser ? (
           <>
             <div className="loading" {...containerProps} ref={componentRef}>
-              <p>Carregando relatório</p>
+              <p>Trabalhando em metadados</p>
               {indicatorEl}
             </div>
           </>
@@ -237,6 +237,7 @@ export const ReportConectBI: React.FC<ReportData> = ({
               onLoad={handleLoaded}
               extraSettings={{
                 filterPaneEnabled: false,
+                navContentPaneEnabled: false,
               }}
             />
           </div>

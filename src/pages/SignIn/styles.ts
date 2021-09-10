@@ -7,6 +7,21 @@ export const ContainerCard = styled.div`
   justify-content: center;
 
   height: 100vh;
+
+  .infohome {
+    color: #433f59;
+    margin: 30px;
+    header {
+      margin-top: -30px;
+      margin-bottom: 25px;
+    }
+    div {
+      max-width: 230px;
+      p {
+        margin-top: 25px;
+      }
+    }
+  }
 `;
 
 export const Container = styled.div`

@@ -14,6 +14,8 @@ import {
   ManagementPPR,
   OrderServices,
   Addministrator,
+  ManagementMiles,
+  Rules,
 } from './listMenuSidebar';
 
 import { OptionList } from './styles';
@@ -36,6 +38,12 @@ const Sidebar: React.FC<LayoutProps> = ({ pathname }) => {
     }
     if (location.pathname.substring(0, 14) === '/administrator') {
       return Addministrator(pathname, user);
+    }
+    if (location.pathname.substring(0, 14) === '/your-miles') {
+      return ManagementMiles(pathname, user);
+    }
+    if (location.pathname.substring(0, 6) === '/rules') {
+      return Rules(pathname);
     }
     return <div>Nada</div>;
   }
