@@ -1,14 +1,14 @@
 /* eslint-disable react/jsx-wrap-multilines */
-import React, { useEffect, useState, useCallback, useRef } from 'react';
-import { Menu, MenuItem, MenuButton, SubMenu } from '@szhsin/react-menu';
+import React, { useEffect, useState } from 'react';
+
 import '@szhsin/react-menu/dist/index.css';
 
-import { useLoading, Oval } from '@agney/react-loading';
+// import { useLoading, Oval } from '@agney/react-loading';
 import logo from '../../../../assets/logo-cooasgo-horizontal.png';
 import { api } from '../../../../services/api';
 import { CardeHeader, Container } from './styles';
 
-import { ReportConectBI } from '../../../../components/Admin/Reports/ReportConectBI';
+import { ReportConectBI } from '../../../../components/Admin/Reports/ReportConectBI/index';
 
 interface SectorSelected {
   branch: string;
@@ -22,13 +22,12 @@ interface SectorSelected {
 }
 
 const SelectedSector: React.FC = () => {
-  const componentRef = useRef<HTMLDivElement>(null);
   const parsed = window.location.search;
   const [sectorSelected, setSectorSelected] = useState<SectorSelected>();
   const [styleReport, setStyleReport] =
     useState<'window' | 'landscape' | 'portrait'>('window');
 
-  const [loadPrint, setLoadPrint] = useState(false);
+  // const [loadPrint, setLoadPrint] = useState(false);
 
   useEffect(() => {
     try {
@@ -43,23 +42,23 @@ const SelectedSector: React.FC = () => {
   }, [parsed]);
 
   // eslint-disable-next-line prettier/prettier
-  const handleSetPrintReport = useCallback(modelPrint => {
-    setLoadPrint(true);
-    setStyleReport(modelPrint);
-    setTimeout(() => {
-      window.print();
-      setLoadPrint(false);
-    }, 2000);
-  }, []);
+  // const handleSetPrintReport = useCallback(modelPrint => {
+  //   setLoadPrint(true);
+  //   setStyleReport(modelPrint);
+  //   setTimeout(() => {
+  //     window.print();
+  //     setLoadPrint(false);
+  //   }, 2000);
+  // }, []);
 
   window.onafterprint = function () {
     setStyleReport('window');
   };
 
-  const { containerProps, indicatorEl } = useLoading({
-    loading: loadPrint,
-    indicator: <Oval />,
-  });
+  // const { containerProps, indicatorEl } = useLoading({
+  //   loading: loadPrint,
+  //   indicator: <Oval />,
+  // });
 
   return (
     <Container>
@@ -68,37 +67,11 @@ const SelectedSector: React.FC = () => {
           <h2>{sectorSelected?.name}</h2>
           <strong>{sectorSelected?.observations}</strong>
         </div>
-        <span id="noPrint">
-          <Menu
-            menuButton={
-              <MenuButton>
-                {loadPrint ? (
-                  <div {...containerProps} ref={componentRef}>
-                    {indicatorEl}
-                  </div>
-                ) : (
-                  ' Opções'
-                )}
-              </MenuButton>
-            }
-            className="my-menu"
-          >
-            <SubMenu label="Imprimir">
-              <MenuItem onClick={() => handleSetPrintReport('landscape')}>
-                Modo paisagem
-              </MenuItem>
-              <MenuItem onClick={() => handleSetPrintReport('portrait')}>
-                Modo Retrato
-              </MenuItem>
-            </SubMenu>
-            <MenuItem>Relatar erro</MenuItem>
-          </Menu>
-        </span>
       </CardeHeader>
-
+      {console.log(styleReport)}
       <div className="print-container">
         <ReportConectBI
-          styleReport={styleReport}
+          // styleReport={styleReport}
           reportId={sectorSelected?.report_id ?? 'null_id'}
           embedUrl={sectorSelected?.embed_url ?? 'null_id'}
         />

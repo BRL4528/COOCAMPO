@@ -46,24 +46,6 @@ export const CardeHeader = styled.div`
   align-items: center;
   justify-content: space-between;
 
-  span {
-    button {
-      margin: 0;
-      padding: 0;
-      width: 100px;
-      height: 40px;
-      background: var(--color-theme-primary);
-      border-radius: 3px;
-      border: solid 2px var(--color-theme-primary);
-      padding: 0 10px;
-      color: var(--white-secondary);
-
-      svg {
-        width: 16px;
-      }
-    }
-  }
-
   strong {
     color: var(--text-primary);
     font-size: 12px;

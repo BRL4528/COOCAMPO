@@ -10,7 +10,7 @@ interface Props {
 export const Container = styled.div<Props>`
   margin-top: 2px;
   margin-left: 100px;
-
+  /* height: 100%; */
   /* width: 100%; */
   /* height: 100vh; */
   color: #433f59;
@@ -33,11 +33,22 @@ export const Container = styled.div<Props>`
     }
   } */
 
-  #print {
-    width: 100%;
-    height: 100%;
-    /* margin-left: -15px; */
-    ${({ load }: Props): string => (load ? 'display: none' : 'display: flex')}
+  span {
+    button {
+      margin: 0;
+      padding: 0;
+      width: 100px;
+      height: 40px;
+      background: var(--color-theme-primary);
+      border-radius: 3px;
+      border: solid 2px var(--color-theme-primary);
+      padding: 0 10px;
+      color: var(--white-secondary);
+
+      svg {
+        width: 16px;
+      }
+    }
   }
 
   .loading {
@@ -165,4 +176,9 @@ export const CardHeader = styled.div<Colors>`
     height: 200px; */
     border-right: 3px solid #fff;
   }
+`;
+export const DivLeft = styled.div`
+  text-align: right;
+  margin-right: 100px;
+  /* width: 100%; */
 `;
