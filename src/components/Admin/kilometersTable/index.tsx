@@ -1,7 +1,6 @@
 /* eslint-disable no-multi-assign */
 /* eslint-disable no-unused-vars */
 import React, { useCallback, useEffect, useState } from 'react';
-import { FiCheckCircle, FiClock } from 'react-icons/fi';
 
 // eslint-disable-next-line import/no-duplicates
 import { format } from 'date-fns';
@@ -11,7 +10,7 @@ import ptBR from 'date-fns/locale/pt-BR';
 import ModalBoxItemTable from './ModalBoxItemTable';
 
 import { api } from '../../../services/api';
-import { Container, Section } from './styles';
+import { Container } from './styles';
 
 interface IdataTable {
   newRegister: string;
@@ -40,9 +39,9 @@ const OrderServiceTable: React.FC<IdataTable> = ({
 
   const [idOpenModal, setIdOpenModal] = useState('nada');
 
-  const [pagination, setPagination] = useState({
-    page: 0,
-  });
+  // const [pagination, setPagination] = useState({
+  //   page: 0,
+  // });
 
   useEffect(() => {
     api.get<IKilometers[]>(`/kilometers`).then(response => {
@@ -66,19 +65,19 @@ const OrderServiceTable: React.FC<IdataTable> = ({
     setIdOpenModal('');
   }, []);
 
-  const nextPage = useCallback(() => {
-    const newPage = {
-      page: (pagination.page += 1),
-    };
-    setPagination(newPage);
-  }, [pagination]);
+  // const nextPage = useCallback(() => {
+  //   const newPage = {
+  //     page: (pagination.page += 1),
+  //   };
+  //   setPagination(newPage);
+  // }, [pagination]);
 
-  const returnPage = useCallback(() => {
-    const newPage = {
-      page: pagination.page - 1,
-    };
-    setPagination(newPage);
-  }, [pagination]);
+  // const returnPage = useCallback(() => {
+  //   const newPage = {
+  //     page: pagination.page - 1,
+  //   };
+  //   setPagination(newPage);
+  // }, [pagination]);
 
   return (
     <>
