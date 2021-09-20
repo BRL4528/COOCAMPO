@@ -40,7 +40,7 @@ export async function handleSendEmailOpenOrderServiceAdm(data: {
     to: [
       {
         name: 'Bruno Luiz',
-        address: 'bruno.carvalho@cooasgo.com.br',
+        address: 'edson.azambuja@cooasgo.com.br',
       },
     ],
   });
@@ -65,8 +65,8 @@ export async function handleSendEmailOpenOrderServiceUser(
     to: [
       {
         name: `${user.name}`,
-        // address: `${user.email}`,
-        address: 'bruno.carvalho@cooasgo.com.br',
+        address: `${user.email}`,
+        // address: 'bruno.carvalho@cooasgo.com.br',
       },
     ],
   });
