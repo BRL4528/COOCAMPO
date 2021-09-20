@@ -33,7 +33,13 @@ const Menu: React.FC = () => {
       </Link>
 
       <div className={user.tag === 'admin' || 'admin-os' ? '' : 'disabled'}>
-        <Link to="/service-orders/user">
+        <Link
+          to={
+            user.tag === 'admin-os'
+              ? '/service-orders/painel'
+              : '/service-orders/user'
+          }
+        >
           <Content>
             <img src={os} alt="imagem de ordem de serviço" />
             <strong>Ordens de serviço</strong>
