@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useCallback } from 'react';
 import { useReport } from 'powerbi-report-component';
 
 // import { layoutSettings } from '../../../../utils/stylesOfReportPowerBI';
@@ -65,6 +65,10 @@ export const ReportConectBI: React.FC<ReportData> = ({
     if (report) report.print();
   };
 
+  const setFullscreen = useCallback(() => {
+    if (report) report.fullscreen();
+  }, [report]);
+
   return (
     <>
       <Container load={false}>
@@ -75,11 +79,13 @@ export const ReportConectBI: React.FC<ReportData> = ({
               className="my-menu"
             >
               <MenuItem onClick={handleClick}>Imprimir</MenuItem>
+              <MenuItem onClick={setFullscreen}>FullScreen</MenuItem>
 
               <MenuItem>Relatar erro</MenuItem>
             </Menu>
           </span>
         </DivLeft>
+
         <div className="report" style={layoutSettings()} ref={reportRef} />
       </Container>
     </>
