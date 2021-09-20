@@ -97,6 +97,19 @@ export const Form = styled(unform)`
     height: 115px;
     transition: height 600ms ease;
   }
+  section {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    /* justify-content: space-between; */
+    /* padding: 10px; */
+    margin-bottom: 5px;
+
+    svg {
+      margin-top: 10px;
+      margin-left: 15px;
+    }
+  }
   @media only screen and (max-width: 600px) {
     padding: 10px 20px;
     display: flex;

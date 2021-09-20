@@ -1,3 +1,4 @@
+/* eslint-disable no-constant-condition */
 /* eslint-disable react/style-prop-object */
 import React from 'react';
 
@@ -15,7 +16,7 @@ const Menu: React.FC = () => {
   const { user } = useAuth();
   return (
     <ContainerCard>
-      <div className={user.tag === 'admin' ? '' : 'disabled'}>
+      <div className={user.tag === 'admin' || 'admin-os' ? '' : 'disabled'}>
         <Link to="/your-miles">
           <Content>
             <img src={destin} alt="imagem de destino" />

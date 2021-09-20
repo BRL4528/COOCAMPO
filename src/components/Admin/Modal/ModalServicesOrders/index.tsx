@@ -1,8 +1,8 @@
-import React, { useCallback, useRef, useState } from 'react';
+import React, { useCallback, useRef, useState, ChangeEvent } from 'react';
 
 import { FormHandles } from '@unform/core';
 
-import { FiX } from 'react-icons/fi';
+import { FiX, FiPaperclip } from 'react-icons/fi';
 
 import { useLoading, Oval } from '@agney/react-loading';
 
@@ -108,6 +108,29 @@ const ModalOrderServices: React.FC<IModalProps> = ({
     indicator: <Oval />,
   });
 
+  const handleAvatarChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      const data = new FormData();
+
+      data.append('avatar', e.target.files[0]);
+      console.log('subiu', data);
+      const config = {
+        headers: {
+          'content-type': 'multipart/form-data',
+        },
+      };
+      api
+        .put(
+          `/vehicles/upload/document?id=7f2428ca-7f8c-482b-adf8-5184a7167821`,
+          data,
+          config,
+        )
+        .then(response => {
+          console.log('atualizado', response.data);
+        });
+    }
+  }, []);
+
   return (
     <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
       <Form ref={formRef} onSubmit={handleSubmit}>
@@ -126,16 +149,20 @@ const ModalOrderServices: React.FC<IModalProps> = ({
           options={[
             {
               value: 'Alto',
-              label: 'Alto nivel de urgência',
+              label: 'Alto',
             },
-            { value: 'Medio', label: 'Médio nivel de urgência' },
+            { value: 'Medio', label: 'Médio' },
             {
               value: 'Baixo',
-              label: 'Baixo nivel de urgência',
+              label: 'Baixo',
             },
           ]}
         />
-        <p>Qual o motivo?</p>
+        <section>
+          <p>Qual o motivo?</p>
+          <FiPaperclip size={20} />
+          <input type="file" id="avatar" onChange={handleAvatarChange} />
+        </section>
         <TextArea name="reason" placeholder="Ex: Troca de mouse e teclado." />
 
         <DivLeft>

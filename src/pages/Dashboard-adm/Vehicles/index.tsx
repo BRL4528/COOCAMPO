@@ -56,7 +56,6 @@ const UserManagement: React.FC = () => {
         progress: undefined,
       });
     } catch (err) {
-      console.log(err.message);
       toast('Problemas ao adicionar novo veículo!', {
         position: 'bottom-right',
         autoClose: 5000,
