@@ -16,7 +16,7 @@ const Menu: React.FC = () => {
   const { user } = useAuth();
   return (
     <ContainerCard>
-      <div className={user.tag === 'admin' || 'admin-os' ? '' : 'disabled'}>
+      <div className={user.tag === 'admin' ? '' : 'disabled'}>
         <Link to="/your-miles">
           <Content>
             <img src={destin} alt="imagem de destino" />
@@ -32,7 +32,7 @@ const Menu: React.FC = () => {
         </Content>
       </Link>
 
-      <div className={user.tag === 'admin' ? '' : 'disabled'}>
+      <div className={user.tag === 'admin' || 'admin-os' ? '' : 'disabled'}>
         <Link to="/service-orders/user">
           <Content>
             <img src={os} alt="imagem de ordem de serviço" />
@@ -49,16 +49,14 @@ const Menu: React.FC = () => {
           </Content>
         </Link>
       </div>
-      {user.tag === 'admin' ? (
+      <div className={user.tag === 'admin' || 'admin-os' ? '' : 'disabled'}>
         <Link to="/administrator/employers">
           <Content>
             <img src={adm} alt="imagem de administrador" />
             <strong>Administrador</strong>
           </Content>
         </Link>
-      ) : (
-        ''
-      )}
+      </div>
     </ContainerCard>
   );
 };
