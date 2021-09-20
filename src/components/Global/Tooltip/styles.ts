@@ -5,6 +5,7 @@ export const Container = styled.div`
 
   span {
     width: 160px;
+    text-align: center;
     background: var(--color-theme-secundary);
     padding: 8px;
     border-radius: 4px;

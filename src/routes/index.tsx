@@ -29,6 +29,7 @@ import Import from '../pages/Dashboard-adm/Imports';
 import Schedule from '../pages/Dashboard-adm/Schedule';
 import ScheduleOnly from '../pages/Dashboard-adm/Schedule/ScheduleUnic';
 import Employers from '../pages/Dashboard-adm/Employers';
+import Vehicles from '../pages/Dashboard-adm/Vehicles';
 
 import FormsOrderService from '../components/Admin/FormsOrderService';
 
@@ -152,9 +153,17 @@ const Routes: React.FC = () => (
       isPrivate
       isAdmin
     />
+
     <Route
       path="/administrator/employers"
       component={Employers}
+      isPrivate
+      isAdmin
+    />
+
+    <Route
+      path="/administrator/vehicles"
+      component={Vehicles}
       isPrivate
       isAdmin
     />
