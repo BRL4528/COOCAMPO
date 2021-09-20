@@ -35,6 +35,7 @@ import FormsOrderService from '../components/Admin/FormsOrderService';
 
 import ServicesOrders from '../pages/Dashboard-adm/ServiceOrders/UserServiceOrders';
 import PainelServicesOrders from '../pages/Dashboard-adm/ServiceOrders/PainelServiceOrders';
+import ServiceIntegrity from '../pages/Dashboard-adm/ServiceOrders/ServiceIntegrity';
 
 import YouMiles from '../pages/Dashboard-adm/Miles/YouMiles';
 
@@ -175,14 +176,21 @@ const Routes: React.FC = () => (
       isAdmin
     />
 
-    <Route path="/your-miles" component={YouMiles} isPrivate isAdmin />
-
     <Route
       path="/service-orders/painel"
       component={PainelServicesOrders}
       isPrivate
       isAdmin
     />
+
+    <Route
+      path="/service-orders/service-integrity"
+      component={ServiceIntegrity}
+      isPrivate
+      isAdmin
+    />
+
+    <Route path="/your-miles" component={YouMiles} isPrivate isAdmin />
     <Route
       path="/management-ppr/painel-module-analytical/:analyticId?"
       component={PainelAnalyticModulo}

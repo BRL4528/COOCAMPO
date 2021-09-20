@@ -79,7 +79,6 @@ const Import: React.FC = () => {
           description: 'Sucesso ao importar o arquivo.',
         });
       } catch (err) {
-        console.log(err.response.error);
         addToast({
           type: 'error',
           title: 'Erro ao importar arquivo',

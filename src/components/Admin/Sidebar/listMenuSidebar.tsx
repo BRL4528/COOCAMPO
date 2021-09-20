@@ -16,6 +16,7 @@ import {
   FiCoffee,
   FiCompass,
   FiCalendar,
+  FiHeart,
 } from 'react-icons/fi';
 
 import { BiCar } from 'react-icons/bi';
@@ -223,6 +224,19 @@ export function OrderServices(
           <FiList color="#f2c811" size={16} />
 
           <span className="link-text">Menu inicial</span>
+        </Link>
+      </OptionList>
+
+      <OptionList
+        pathname={pathname}
+        path="/service-orders/service-integrity"
+        className="nav-item"
+        visible
+      >
+        <Link to="/service-orders/service-integrity" className="nav-link">
+          <FiHeart color="#f2c811" size={16} />
+
+          <span className="link-text">Integridade dos serviços</span>
         </Link>
       </OptionList>
 
