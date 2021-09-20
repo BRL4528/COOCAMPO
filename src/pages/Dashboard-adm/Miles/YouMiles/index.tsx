@@ -1,36 +1,45 @@
+/* eslint-disable prettier/prettier */
+/* eslint-disable react/jsx-one-expression-per-line */
 /* eslint-disable @typescript-eslint/no-empty-function */
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState, useEffect } from 'react';
 import { Form } from '@unform/web';
+import { FiStar } from 'react-icons/fi';
+
 import Button from '../../../../components/Global/Button';
-import OrderServiceTable from '../../../../components/Admin/OrderServiceTable';
+import KilometersTable from '../../../../components/Admin/kilometersTable';
 import Select from '../../../../components/Global/Select';
 import Input from '../../../../components/Global/Input';
 
-import ModallServicesOrders from '../../../../components/Admin/Modal/ModalServicesOrders';
-
-import {
-  handleSendEmailOpenOrderServiceAdm,
-  handleSendEmailOpenOrderServiceUser,
-} from '../../../../services/sendEmailOpenOrderService';
+import ModalAddNewKm from './ModalAddKm';
 
 import { useAuth } from '../../../../hooks/auth';
 
-import { CardButton, CardeHeader, Container } from './styles';
+import { CardButton, CardeHeader, Container, Info } from './styles';
+import { api } from '../../../../services/api';
+
+interface IVehicles {
+  id?: string;
+  name: string;
+  plate: string;
+  year: string;
+  fuel: string;
+  km: number;
+  observations: string;
+}
 
 interface PropsItem {
   title?: string;
 }
 
-interface IdataTable {
-  created_at: string;
-  email: string;
-  id: string;
-  name: string;
+interface IKilometers {
+  // vehicle_id?: string;
+  // access_id?: string;
+  id?: string;
+  km_start: number;
+  km_end: number;
+  km_traveled?: number;
   observations: string;
   reason: string;
-  status: string;
-  updated_at: string;
-  urgency: string;
 }
 
 interface IFilter {
@@ -44,51 +53,114 @@ interface IFilter {
 
 const Reports: React.FC<PropsItem> = ({ title }) => {
   const { user } = useAuth();
+  const [dataVehicles, setDataVehicles] = useState<IVehicles[]>([]);
   const [modalOpen, setModalOpen] = useState(false);
+  const [favoriteVehicle, setFavoriteVehicle] = useState<IVehicles>();
+  const [updateVehicleFavorite, setUpdateVehicleFavorite] =
+    useState<IVehicles>();
+
+  const [selectedVehicle, setSelectedVehicle] = useState<IVehicles>();
 
   const [toogleFilter, setToogleFilter] = useState(true);
 
-  const [dataFilter, setDataFilter] = useState<IFilter>({
-    finishedDateIn: '',
-    finishedDateOut: '',
-    startDateIn: '',
-    startDateOut: '',
-    status: '',
-    urgency: '',
-  });
+  const [newRegister, setNewRegister] = useState<string>();
+
+  // const [dataFilter, setDataFilter] = useState<IFilter>({
+  //   finishedDateIn: '',
+  //   finishedDateOut: '',
+  //   startDateIn: '',
+  //   startDateOut: '',
+  //   status: '',
+  //   urgency: '',
+  // });
+
+  useEffect(() => {
+    const favoriteVehicleLocal = localStorage.getItem(
+      '@Samasc:favoriteVehicle',
+    );
+
+    if (favoriteVehicleLocal) {
+      setFavoriteVehicle(JSON.parse(favoriteVehicleLocal));
+      setSelectedVehicle(JSON.parse(favoriteVehicleLocal));
+    }
+
+    api.get('/vehicles').then(response => {
+      if (favoriteVehicleLocal) {
+        const verifyVehicle = response.data.filter(
+          (vehicle: { id: any }) =>
+            vehicle.id === JSON.parse(favoriteVehicleLocal || '').id,
+        )[0];
+
+        if (JSON.stringify(verifyVehicle) !== favoriteVehicleLocal) {
+          localStorage.setItem(
+            '@Samasc:favoriteVehicle',
+            JSON.stringify(verifyVehicle),
+          );
+        }
+        setSelectedVehicle(verifyVehicle);
+      }
+
+      setDataVehicles(response.data);
+    });
+  }, [updateVehicleFavorite, newRegister]);
 
   const toggleModal = useCallback(() => {
     setModalOpen(!modalOpen);
   }, [modalOpen]);
 
-  const handleAnalytic = useCallback(
-    async (servicesOrders: Omit<IdataTable, 'e'>) => {
-      try {
-        const temp = servicesOrders;
-        // setServicesOrders(temp);
-        handleSendEmailOpenOrderServiceAdm(temp);
-        handleSendEmailOpenOrderServiceUser(temp, user);
-      } catch (err) {
-        console.log(err);
-      }
+  const handleAddNewKilometer = useCallback(
+    async (data: Omit<IKilometers, 'e'>) => {
+      const { km_end, km_start, observations, reason, km_traveled } = data;
+
+      const formatData = {
+        km_end: Number(km_end),
+        km_start: Number(km_start),
+        observations,
+        reason,
+        km_traveled: Number(km_traveled),
+        vehicle_id: selectedVehicle?.id,
+        access_id: user.id,
+      };
+
+      api.post('/kilometers', formatData).then(response => {
+        setNewRegister(response.data.id);
+      });
+
+      console.log('retorno cadastro KM', formatData);
     },
-    [user],
+    [selectedVehicle?.id, user.id],
   );
 
   const handleFilter = useCallback((data: IFilter) => {
-    setDataFilter(data);
+    // setDataFilter(data);
+    console.log('talves filtrar por aq', data);
   }, []);
 
   const handleToogleFilter = useCallback(() => {
     setToogleFilter(!toogleFilter);
   }, [toogleFilter]);
 
+  const handleSetFavorite = useCallback(
+    (data: IVehicles) => {
+      if (data.id !== favoriteVehicle?.id) {
+        localStorage.setItem('@Samasc:favoriteVehicle', JSON.stringify(data));
+        setUpdateVehicleFavorite(data);
+      }
+    },
+    [favoriteVehicle?.id],
+  );
+
+  const handleSelectedVehicle = useCallback((data: IVehicles) => {
+    setSelectedVehicle(data);
+  }, []);
+
   return (
     <>
-      <ModallServicesOrders
+      <ModalAddNewKm
+        km_initial={{ km_start: selectedVehicle?.km || 0 }}
         isOpen={modalOpen}
         setIsOpen={toggleModal}
-        handleAnalytic={handleAnalytic}
+        handleAddNewKilometer={handleAddNewKilometer}
       />
       <Container toogleFilter={toogleFilter}>
         <CardeHeader titleItem={title}>
@@ -106,12 +178,47 @@ const Reports: React.FC<PropsItem> = ({ title }) => {
           </CardButton>
         </CardeHeader>
 
-        <section className="section-vehicle-available">
-          <h4>Veiculos disponiveis</h4>
+        <h4>Veiculos disponiveis</h4>
 
-          <p>Fiat strada - placa OYH7YTF</p>
-          <h4>KM atual</h4>
+        <section className="section-vehicle-available">
+          {dataVehicles.map(vehicle => (
+            <div
+              key={vehicle.id}
+              className={selectedVehicle?.id === vehicle.id ? 'selected' : ''}
+            >
+              <button
+                type="button"
+                onClick={() => handleSelectedVehicle(vehicle)}
+              >
+                <div className="containerVehicle">
+                  <img
+                    alt="carrro"
+                    src="https://th.bing.com/th/id/R.5af4d6a470abca78969189197e7b0206?rik=Fv%2fc7Cy%2fnS18NA&riu=http%3a%2f%2fwww.planetcarsz.com%2fassets%2fuploads%2fFIAT+STRADA+FREEDOM+CABINE+PLUS+2021+05.jpg&ehk=2YTcM%2bYg1rPW7Ce2KIWYRWlVVpaD%2fTD4F3rzaCCCFFA%3d&risl=&pid=ImgRaw&r=0"
+                  />
+                  <section>
+                    <p>
+                      {vehicle.name} - placa {vehicle.plate}
+                    </p>
+                    <p>{vehicle.km} KM rodados até agora</p>
+                  </section>
+                </div>
+              </button>
+              <section
+                className={favoriteVehicle?.id === vehicle.id ? 'favorite' : ''}
+              >
+                <Info title="Fixar como favorito">
+                  <button
+                    type="button"
+                    onClick={() => handleSetFavorite(vehicle)}
+                  >
+                    <FiStar size={20} />
+                  </button>
+                </Info>
+              </section>
+            </div>
+          ))}
         </section>
+
         <section className="section-filter">
           <header>
             <Button isUsed type="button" onClick={handleToogleFilter}>
@@ -206,7 +313,11 @@ const Reports: React.FC<PropsItem> = ({ title }) => {
         </section>
 
         <div className="section-body">
-          <OrderServiceTable email={user.email} filterData={dataFilter} />
+          <KilometersTable
+            access_id={user.id}
+            vehicle_id={selectedVehicle?.id || ''}
+            newRegister={newRegister || ''}
+          />
         </div>
       </Container>
     </>

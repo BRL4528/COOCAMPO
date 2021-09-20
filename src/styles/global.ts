@@ -68,7 +68,7 @@ export default createGlobalStyle`
    --blue: #5429CC;
    --green: #33CC95;
    --yellon: #ffd166;
-   
+
    --blue-light: #6933FF;
    --text-title: #363f5f;
    --text-body: #969cb3;

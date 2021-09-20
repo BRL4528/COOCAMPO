@@ -17,6 +17,8 @@ import {
   FiCompass,
   FiCalendar,
 } from 'react-icons/fi';
+
+import { BiCar } from 'react-icons/bi';
 import { OptionList } from './styles';
 
 export function ManagementMiles(
@@ -286,6 +288,19 @@ export function Addministrator(
           <FiUsers color="#f2c811" size={16} />
 
           <span className="link-text">Colaboradores</span>
+        </Link>
+      </OptionList>
+
+      <OptionList
+        pathname={pathname}
+        path="/administrator/vehicles"
+        className="nav-item"
+        visible={user.employers}
+      >
+        <Link to="/administrator/vehicles" className="nav-link">
+          <BiCar color="#f2c811" size={16} />
+
+          <span className="link-text">Veículos</span>
         </Link>
       </OptionList>
     </>
