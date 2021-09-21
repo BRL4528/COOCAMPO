@@ -48,7 +48,7 @@ export const Container = styled.div`
         display: flex;
         align-items: center;
         justify-content: space-between;
-        max-width: 100px;
+        max-width: 110px;
 
         svg {
           margin-left: 5px;
@@ -106,6 +106,14 @@ export const Container = styled.div`
         }
         svg {
           color: var(--red-primary);
+        }
+      }
+      .Andamento {
+        p {
+          color: var(--color-theme-primary);
+        }
+        svg {
+          color: var(--color-theme-primary);
         }
       }
       .Finalizado {

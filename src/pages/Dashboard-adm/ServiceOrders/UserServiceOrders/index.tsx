@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Form } from '@unform/web';
 import Button from '../../../../components/Global/Button';
 import OrderServiceTable from '../../../../components/Admin/OrderServiceTable';
@@ -15,7 +15,8 @@ import {
 
 import { useAuth } from '../../../../hooks/auth';
 
-import { CardButton, CardeHeader, Container } from './styles';
+import { CardButton, CardeHeader, Container, CardInfo } from './styles';
+import { api } from '../../../../services/api';
 
 interface PropsItem {
   title?: string;
@@ -56,6 +57,23 @@ const Reports: React.FC<PropsItem> = ({ title }) => {
     status: '',
     urgency: '',
   });
+
+  // const [statusServices, setStatusServices] = useState('');
+
+  useEffect(() => {
+    api
+      .get<IdataTable[]>('/services-orders')
+      .then((response: { data: any[] }) => {
+        const servicesFiltred = response.data.filter(
+          item => item.status === 'Andamento',
+        );
+        console.log('resultado filtrado', servicesFiltred);
+        if (servicesFiltred) {
+          // setStatusServices(servicesFiltred[0]);
+        }
+        // setStatusServices('Livre');
+      });
+  }, []);
 
   const toggleModal = useCallback(() => {
     setModalOpen(!modalOpen);
@@ -105,7 +123,14 @@ const Reports: React.FC<PropsItem> = ({ title }) => {
             </div>
           </CardButton>
         </CardeHeader>
-
+        <CardInfo>
+          <div>
+            <header>
+              <h4>Status de atendimento</h4>
+              {/* <strong>{statusServices}</strong> */}
+            </header>
+          </div>
+        </CardInfo>
         <section className="section-filter">
           <header>
             <Button isUsed type="button" onClick={handleToogleFilter}>

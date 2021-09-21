@@ -142,3 +142,16 @@ export const CardButton = styled.div`
     }
   }
 `;
+
+export const CardInfo = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  width: 100%;
+
+  div {
+    background: red;
+    width: 50%;
+  }
+`;

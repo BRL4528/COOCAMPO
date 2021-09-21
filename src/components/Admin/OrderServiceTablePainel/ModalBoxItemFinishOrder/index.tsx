@@ -1,3 +1,5 @@
+/* eslint-disable no-useless-return */
+/* eslint-disable consistent-return */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable no-unused-vars */
@@ -31,7 +33,7 @@ interface IDataOrderServices {
   urgency: string;
   reason: string;
   email: string;
-  status?: string;
+  status: string;
   observations: string;
   end_date: string;
   created_at: string;
@@ -104,7 +106,6 @@ const ModalBoxItemTable: React.FC<IModalProps> = ({
 
         api.put(`/services-orders?id=${id}`, formData).then(response => {
           handleReturnFinishOrder(response.data);
-          console.log('finalizou', response.data);
         });
 
         toast.success('Ordem finalizada', {
