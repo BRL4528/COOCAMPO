@@ -1,5 +1,9 @@
 import styled from 'styled-components';
 
+interface Iprops {
+  disabled: boolean;
+}
+
 export const Container = styled.div`
   margin-top: 2rem;
 
@@ -36,19 +40,19 @@ export const Container = styled.div`
       border-bottom: 1px solid #ddd;
       cursor: pointer;
       transition: var(--transition-speed);
-      div {
+      /* div {
         text-overflow: ellipsis;
         max-width: 295px;
         max-height: 50px;
         text-overflow: ellipsis;
         overflow: hidden;
         white-space: nowrap;
-      }
+      } */
       span {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        max-width: 100px;
+        max-width: 110px;
 
         svg {
           margin-left: 5px;
@@ -63,6 +67,7 @@ export const Container = styled.div`
         font-size: 12px;
         text-align: center;
         padding: 0;
+        margin-top: -8px;
       }
       &:first-child {
         color: var(--text-title);
@@ -100,12 +105,32 @@ export const Container = styled.div`
           font-weight: 500;
         }
       }
+
+      section {
+        button {
+          width: 100px;
+          height: 40px;
+          background: var(--color-theme-primary);
+          border-radius: 3px;
+          border: solid 2px var(--color-theme-primary);
+          padding: 0 10px;
+          color: var(--white-secondary);
+        }
+      }
       .Pendente {
         p {
           color: var(--red-primary);
         }
         svg {
           color: var(--red-primary);
+        }
+      }
+      .Andamento {
+        p {
+          color: var(--color-theme-primary);
+        }
+        svg {
+          color: var(--color-theme-primary);
         }
       }
       .Finalizado {
@@ -158,4 +183,7 @@ export const Section = styled.section`
       border-radius: 5px;
     }
   }
+`;
+export const TagStatus = styled.div<Iprops>`
+  ${({ disabled }: Iprops) => (disabled ? '' : 'display: none;')};
 `;

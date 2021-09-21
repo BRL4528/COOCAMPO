@@ -1,20 +1,25 @@
 /* eslint-disable no-multi-assign */
 /* eslint-disable no-unused-vars */
-import React, { useCallback, useEffect, useState } from 'react';
-import { FiCheckCircle, FiClock } from 'react-icons/fi';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { FiCheckCircle, FiClock, FiAlertCircle } from 'react-icons/fi';
+
+import { Menu, MenuItem, MenuButton } from '@szhsin/react-menu';
 
 // eslint-disable-next-line import/no-duplicates
 import { format } from 'date-fns';
 // eslint-disable-next-line import/no-duplicates
 import ptBR from 'date-fns/locale/pt-BR';
 
+import { FormHandles } from '@unform/core';
+
+import { toast } from 'react-toastify';
 import ModalBoxItemTable from './ModalBoxItemTable';
 import ModalFinishOrder from './ModalBoxItemFinishOrder';
 
 import Button from '../../Global/Button';
 
 import { api } from '../../../services/api';
-import { Container, Section } from './styles';
+import { Container, Section, TagStatus } from './styles';
 
 import { useAuth } from '../../../hooks/auth';
 
@@ -72,6 +77,7 @@ const OrderServiceTable: React.FC<IdataTable> = ({
   filterData,
 }: IdataTable) => {
   const { user } = useAuth();
+  const formRef = useRef<FormHandles>(null);
   const [dataTable, setDataTable] = useState<ITable>();
   const [modalOpen, setModalOpen] = useState(false);
 
@@ -155,6 +161,50 @@ const OrderServiceTable: React.FC<IdataTable> = ({
     [],
   );
 
+  const handleAddOrderInStage = useCallback(
+    async id => {
+      try {
+        // setLoading(true);
+
+        formRef.current?.setErrors({});
+
+        const status = 'Andamento';
+
+        const formData = {
+          status,
+        };
+
+        api.put(`/services-orders?id=${id}`, formData).then(response => {
+          handleReturnFinishOrder(response.data);
+          toast.success('OS em atendimento', {
+            position: 'bottom-right',
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
+        });
+
+        // setLoading(false);
+      } catch (err) {
+        console.log('ver esso', err);
+        toast.warning('problemas ao atender OS', {
+          position: 'bottom-right',
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+        // setLoading(false);
+      }
+    },
+    [handleReturnFinishOrder],
+  );
+
   return (
     <>
       <Container>
@@ -183,17 +233,26 @@ const OrderServiceTable: React.FC<IdataTable> = ({
                   <div>{item.reason}</div>
                 </td>
                 <td>
-                  {item.status === 'Pendente' ? (
+                  <TagStatus disabled={item.status === 'Pendente'}>
                     <span className={item.status}>
                       <p>{item.status}</p>
                       <FiClock size={20} />
                     </span>
-                  ) : (
+                  </TagStatus>
+
+                  <TagStatus disabled={item.status === 'Finalizado'}>
                     <span className={item.status}>
                       <p>{item.status}</p>
                       <FiCheckCircle size={20} />
                     </span>
-                  )}
+                  </TagStatus>
+
+                  <TagStatus disabled={item.status === 'Andamento'}>
+                    <span className={item.status}>
+                      <p>{item.status}</p>
+                      <FiAlertCircle size={20} />
+                    </span>
+                  </TagStatus>
                 </td>
                 <td>
                   {format(new Date(item.created_at), 'dd/MM/yyyy - HH:mm:ss', {
@@ -214,9 +273,28 @@ const OrderServiceTable: React.FC<IdataTable> = ({
                 </td>
                 <td>
                   {item.end_date === null ? (
-                    <Button isUsed onClick={() => handleFinishOrder(item.id)}>
-                      Finalizar
-                    </Button>
+                    // <Button isUsed onClick={() => handleFinishOrder(item.id)}>
+                    //   Finalizar
+                    // </Button>
+                    <section>
+                      <Menu
+                        menuButton={<MenuButton>Opções</MenuButton>}
+                        className="my-menu"
+                      >
+                        {item.status === 'Andamento' ? (
+                          ''
+                        ) : (
+                          <MenuItem
+                            onClick={() => handleAddOrderInStage(item.id)}
+                          >
+                            Atender
+                          </MenuItem>
+                        )}
+                        <MenuItem onClick={() => handleFinishOrder(item.id)}>
+                          Finalizar
+                        </MenuItem>
+                      </Menu>
+                    </section>
                   ) : (
                     'Orden finalizada'
                   )}
