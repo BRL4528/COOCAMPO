@@ -51,6 +51,10 @@ export const Container = styled.div<Props>`
     }
   }
 
+  .report {
+    min-height: 100vh;
+  }
+
   .loading {
     display: flex;
     flex-direction: row;

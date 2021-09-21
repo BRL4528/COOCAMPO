@@ -32,7 +32,7 @@ const Menu: React.FC = () => {
         </Content>
       </Link>
 
-      <div className={user.tag === 'admin' || 'admin-os' ? '' : 'disabled'}>
+      <div className={user.tag === 'admin' ? '' : 'disabled'}>
         <Link
           to={
             user.tag === 'admin-os'
@@ -55,7 +55,7 @@ const Menu: React.FC = () => {
           </Content>
         </Link>
       </div>
-      <div className={user.tag === 'admin' || 'admin-os' ? '' : 'disabled'}>
+      <div className={user.tag === 'admin' ? '' : 'disabled'}>
         <Link to="/administrator/employers">
           <Content>
             <img src={adm} alt="imagem de administrador" />

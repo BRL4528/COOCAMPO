@@ -18,23 +18,20 @@ import { api } from '../../../../../services/api';
 import Select from '../../../../../components/Global/SelectRelease';
 import TextArea from '../../../../../components/Global/TextArea';
 
-interface IServicesOrders {
-  created_at: string;
-  email: string;
+interface IServices {
   id: string;
-  name: string;
-  observations: string;
-  reason: string;
+  service: string;
   status: string;
+  level: string;
+  created_at: string;
   updated_at: string;
-  urgency: string;
 }
 
 interface IModalProps {
   isOpen: boolean;
   setIsOpen: () => void;
   // eslint-disable-next-line no-unused-vars
-  handleAnalytic: (analytic: Omit<IServicesOrders, ''>) => void;
+  handleAnalytic: (analytic: Omit<IServices, ''>) => void;
 }
 
 const ModalUpdateServiceIntegrity: React.FC<IModalProps> = ({
@@ -50,16 +47,16 @@ const ModalUpdateServiceIntegrity: React.FC<IModalProps> = ({
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = useCallback(
-    async (data: IServicesOrders) => {
+    async (data: IServices) => {
       try {
         setLoading(true);
-        const { reason } = data;
+        const { service } = data;
 
         const formData = {
           urgency: subject,
           name: user.name,
           email: user.email,
-          reason,
+          service,
           observations: 'null',
         };
 
@@ -68,7 +65,7 @@ const ModalUpdateServiceIntegrity: React.FC<IModalProps> = ({
 
         setIsOpen();
 
-        toast('Sucesso ao abrir nova OS!', {
+        toast('Sucesso ao Atualizar serviço!', {
           position: 'bottom-right',
           autoClose: 5000,
           type: 'success',
@@ -81,7 +78,7 @@ const ModalUpdateServiceIntegrity: React.FC<IModalProps> = ({
         setLoading(false);
       } catch (err) {
         console.log(err);
-        toast('Problemas ao abrir nova OS!', {
+        toast('Problemas ao Atualizar serviço!', {
           position: 'bottom-right',
           autoClose: 5000,
           type: 'warning',
