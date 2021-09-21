@@ -75,7 +75,7 @@ const Reports: React.FC<PropsItem> = () => {
       </CardeHeader>
       <Container>
         <div className="section-body">
-          <h1>Nivel Global</h1>
+          <h1>Nivel Geral</h1>
           <table>
             <thead>
               <tr>
