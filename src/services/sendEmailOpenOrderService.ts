@@ -29,14 +29,19 @@ export async function handleSendEmailOpenOrderServiceAdm(data: {
   id: any;
 }): Promise<IdataTable> {
   await api.post('/send-email-os', {
-    body: `${data.name} abriu uma nova ordem de serviço, segue descrição da solicitação.
+    body: `${
+      data.name
+    } abriu uma nova ordem de serviço, segue descrição da solicitação, Nova ordem de serviço - id ${parseInt(
+      data.id || 'x',
+      16,
+    )}.
     `,
     urgency: `${data.urgency}`,
     reason: `${data.reason}`,
     date: `${format(new Date(data.created_at), 'dd/MM/yyyy - HH:mm:ss', {
       locale: ptBR,
     })}`,
-    subject: `Nova ordem de serviço - id ${parseInt(data.id || 'x', 16)}`,
+    subject: `${data.id}`,
     to: [
       {
         name: 'Bruno Luiz',
