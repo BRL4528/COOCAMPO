@@ -57,6 +57,10 @@ export async function handleSendEmailOpenOrderServiceAdm(data: {
               name: `${response.data.name}`,
               address: 'bruno.carvalho@cooasgo.com.br',
             },
+            {
+              name: `Edson Azambuja`,
+              address: 'edson.azambuja@cooasgo.com.br',
+            },
           ],
         });
       });
