@@ -14,8 +14,6 @@ import ModalUpdateServiceIntegrity from './ModalUpdateServiceIntegrity';
 import { CardButton, CardeHeader, Container } from './styles';
 import { api } from '../../../../services/api';
 
-import { useAuth } from '../../../../hooks/auth';
-
 interface IServices {
   id: string;
   service: string;
@@ -27,7 +25,6 @@ interface IServices {
 
 const Reports: React.FC = () => {
   // eslint-disable-next-line no-unused-vars
-  const { user } = useAuth();
   const [modalOpen, setModalOpen] = useState(false);
   const [dataServices, setDataServices] = useState<IServices[]>();
   const [statusServices, setStatusServices] = useState<IServices>();
