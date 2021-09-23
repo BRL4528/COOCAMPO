@@ -1,6 +1,7 @@
+/* eslint-disable no-nested-ternary */
 /* eslint-disable @typescript-eslint/no-empty-function */
 import React, { useCallback, useState, useEffect } from 'react';
-import { FcOk, FcHighPriority } from 'react-icons/fc';
+import { FcOk, FcHighPriority, FcExpired } from 'react-icons/fc';
 
 // eslint-disable-next-line import/no-duplicates
 import { format } from 'date-fns';
@@ -25,12 +26,13 @@ interface IServices {
 const Reports: React.FC = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [dataServices, setDataServices] = useState<IServices[]>();
+  const [statusServices, setStatusServices] = useState<IServices>();
 
   useEffect(() => {
     api.get('/services-integrity').then(response => {
       setDataServices(response.data);
     });
-  }, []);
+  }, [statusServices]);
 
   const toggleModal = useCallback(() => {
     setModalOpen(!modalOpen);
@@ -40,7 +42,7 @@ const Reports: React.FC = () => {
     async (servicesOrders: Omit<IServices, 'e'>) => {
       try {
         const temp = servicesOrders;
-        console.log('dados para atualização', temp);
+        setStatusServices(temp);
         // handleSendEmailOpenOrderServiceAdm(temp);
         // handleSendEmailOpenOrderServiceUser(temp, user);
       } catch (err) {
@@ -95,8 +97,10 @@ const Reports: React.FC = () => {
                     <div>
                       {service.status === 'Online' ? (
                         <FcOk size={20} />
-                      ) : (
+                      ) : service.status === 'Offline' ? (
                         <FcHighPriority size={20} />
+                      ) : (
+                        <FcExpired size={20} />
                       )}
 
                       <p>{service.status}</p>

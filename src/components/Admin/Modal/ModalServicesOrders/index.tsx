@@ -1,4 +1,9 @@
+/* eslint-disable radix */
+/* eslint-disable react/jsx-one-expression-per-line */
+/* eslint-disable react/jsx-no-target-blank */
 import React, { useCallback, useRef, useState, ChangeEvent } from 'react';
+
+import nextId from 'react-id-generator';
 
 import { FormHandles } from '@unform/core';
 
@@ -28,6 +33,9 @@ interface IServicesOrders {
   status: string;
   updated_at: string;
   urgency: string;
+  identification: number;
+  file: string;
+  reason_observation: string;
 }
 
 interface IModalProps {
@@ -37,9 +45,9 @@ interface IModalProps {
   handleAnalytic: (analytic: Omit<IServicesOrders, ''>) => void;
 }
 
-interface IUpload {
-  document_url: string;
-}
+// interface IUpload {
+//   document_url: string;
+// }
 
 const ModalOrderServices: React.FC<IModalProps> = ({
   isOpen,
@@ -50,29 +58,40 @@ const ModalOrderServices: React.FC<IModalProps> = ({
   const componentRef = useRef<HTMLDivElement>(null);
   const { user } = useAuth();
   const [subject, setSubject] = useState('');
+  const [reason, setReson] = useState('');
 
   const [loading, setLoading] = useState(false);
   const [loadingUpload, setLoadingUpload] = useState(false);
-  const [urlDocument, setUrlDocument] = useState<IUpload>();
+  const [urlDocument, setDocument] = useState<any>();
+
+  const [file, setFile] = useState<any>();
 
   const handleSubmit = useCallback(
     async (data: IServicesOrders) => {
       try {
         setLoading(true);
-        const { reason } = data;
-
+        const { observations } = data;
         const formData = {
           urgency: subject,
           name: user.name,
           email: user.email,
           reason,
-          observations: 'null',
+          reason_observation: observations,
+          observations: 'teste',
+          identification: parseInt(nextId().replace(/[^0-9]/g, '')),
         };
 
-        const response = await api.post('/services-orders', formData);
-        handleAnalytic(response.data);
+        await api.post('/services-orders', formData).then(response => {
+          handleAnalytic(response.data);
+
+          api.patch(
+            `/services-orders/upload?id=${response.data.id}`,
+            urlDocument,
+          );
+        });
 
         setIsOpen();
+        // setUrlDocument({ document_url: '' });
 
         toast('Sucesso ao abrir nova OS!', {
           position: 'bottom-right',
@@ -90,7 +109,7 @@ const ModalOrderServices: React.FC<IModalProps> = ({
         toast('Problemas ao abrir nova OS!', {
           position: 'bottom-right',
           autoClose: 5000,
-          type: 'warning',
+          type: 'error',
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
@@ -100,7 +119,15 @@ const ModalOrderServices: React.FC<IModalProps> = ({
         setLoading(false);
       }
     },
-    [handleAnalytic, setIsOpen, subject, user.email, user.name],
+    [
+      handleAnalytic,
+      reason,
+      setIsOpen,
+      subject,
+      urlDocument,
+      user.email,
+      user.name,
+    ],
   );
 
   const handleSubject = useCallback(
@@ -109,6 +136,9 @@ const ModalOrderServices: React.FC<IModalProps> = ({
     },
     [setSubject],
   );
+  const handleReason = useCallback(e => {
+    setReson(e);
+  }, []);
 
   const { containerProps, indicatorEl } = useLoading({
     loading: loadingUpload,
@@ -119,19 +149,19 @@ const ModalOrderServices: React.FC<IModalProps> = ({
     (e: ChangeEvent<HTMLInputElement>) => {
       setLoadingUpload(true);
       if (e.target.files) {
+        setFile(e.target.files);
         const data = new FormData();
 
-        data.append('document', e.target.files[0]);
-
-        api
-          .patch(
-            `/vehicles/upload/document?id=7f2428ca-7f8c-482b-adf8-5184a7167821`,
-            data,
-          )
-          .then(response => {
-            setUrlDocument(response.data.document_url);
-            setLoadingUpload(false);
-          });
+        data.append('file', e.target.files[0]);
+        setDocument(data);
+        // api
+        //   .patch(
+        //     `/services-orders/upload?id=00f55605-4470-49eb-aa1b-8ad5460d031e`,
+        //     data,
+        //   )
+        //   .then(response => {
+        //   });
+        setLoadingUpload(false);
       }
     },
     [],
@@ -164,8 +194,43 @@ const ModalOrderServices: React.FC<IModalProps> = ({
             },
           ]}
         />
+
+        <Select
+          name="reason"
+          label="Qual o motivo da OS?"
+          value={reason}
+          onChange={e => {
+            handleReason(e.target.value);
+          }}
+          options={[
+            {
+              value: 'Manutenção da estação de trabalho',
+              label: 'Manutenção da estação de trabalho',
+            },
+            {
+              value: 'Manutenção de rede e internet',
+              label: 'Manutenção de rede e internet',
+            },
+            {
+              value: 'Manutenção de impressora',
+              label: 'Manutenção de impressora',
+            },
+            {
+              value: 'Manutenção de Gescooper',
+              label: 'Manutenção de Gescooper',
+            },
+            {
+              value: 'Manutenção de servidores',
+              label: 'Manutenção de servidores',
+            },
+            {
+              value: 'Outros',
+              label: 'Outros',
+            },
+          ]}
+        />
         <section>
-          <p>Qual o motivo?</p>
+          <p>Observações?</p>
 
           <UploadInputt>
             <label htmlFor="avatar">
@@ -180,7 +245,13 @@ const ModalOrderServices: React.FC<IModalProps> = ({
             </label>
           </UploadInputt>
           <div>
-            {urlDocument ? <a href={`${urlDocument}`}>Visualizar</a> : ''}
+            {urlDocument ? (
+              <>
+                <strong>{file[0].name}</strong>
+              </>
+            ) : (
+              ''
+            )}
           </div>
         </section>
 
@@ -191,7 +262,10 @@ const ModalOrderServices: React.FC<IModalProps> = ({
         ) : (
           <a href={`${urlDocument}`}>Documento</a>
         )} */}
-        <TextArea name="reason" placeholder="Ex: Troca de mouse e teclado." />
+        <TextArea
+          name="observations"
+          placeholder="Ex: Troca de mouse e teclado."
+        />
 
         <DivLeft>
           <Button

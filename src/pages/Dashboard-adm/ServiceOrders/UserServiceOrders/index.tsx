@@ -1,6 +1,8 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 import React, { useCallback, useEffect, useState } from 'react';
 import { Form } from '@unform/web';
+import UseAnimations from 'react-useanimations';
+import alertCircle from 'react-useanimations/lib/alertCircle';
 import Button from '../../../../components/Global/Button';
 import OrderServiceTable from '../../../../components/Admin/OrderServiceTable';
 import Select from '../../../../components/Global/Select';
@@ -32,6 +34,9 @@ interface IdataTable {
   status: string;
   updated_at: string;
   urgency: string;
+  identification: number;
+  file: string;
+  reason_observation: string;
 }
 
 interface IFilter {
@@ -58,7 +63,7 @@ const Reports: React.FC<PropsItem> = ({ title }) => {
     urgency: '',
   });
 
-  // const [statusServices, setStatusServices] = useState('');
+  const [statusServices, setStatusServices] = useState('Carregando...');
 
   useEffect(() => {
     api
@@ -68,10 +73,15 @@ const Reports: React.FC<PropsItem> = ({ title }) => {
           item => item.status === 'Andamento',
         );
         console.log('resultado filtrado', servicesFiltred);
-        if (servicesFiltred) {
-          // setStatusServices(servicesFiltred[0]);
+        if (servicesFiltred.length > 0) {
+          setStatusServices(
+            `Técnico em TI esta em ${servicesFiltred.length} ${
+              servicesFiltred.length > 0 ? 'Atendimentos' : 'Atendimento'
+            } no momento`,
+          );
+        } else if (servicesFiltred.length <= 0) {
+          setStatusServices('Técnico em TI está aguardando novas OS');
         }
-        // setStatusServices('Livre');
       });
   }, []);
 
@@ -124,11 +134,25 @@ const Reports: React.FC<PropsItem> = ({ title }) => {
           </CardButton>
         </CardeHeader>
         <CardInfo>
-          <div>
-            <header>
-              <h4>Status de atendimento</h4>
-              {/* <strong>{statusServices}</strong> */}
-            </header>
+          <div
+            className={
+              statusServices === 'Técnico em TI está aguardando novas OS'
+                ? 'success'
+                : 'info'
+            }
+          >
+            <span>
+              <UseAnimations
+                animation={alertCircle}
+                size={40}
+                strokeColor="#ddca20"
+                style={{ padding: 50 }}
+              />
+              <header>
+                <h4>Status para atendimento</h4>
+                <strong>{statusServices}</strong>
+              </header>
+            </span>
           </div>
         </CardInfo>
         <section className="section-filter">

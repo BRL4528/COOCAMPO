@@ -23,6 +23,18 @@ import { Container, Section, TagStatus } from './styles';
 
 import { useAuth } from '../../../hooks/auth';
 
+interface IDataOrderServices {
+  id: string;
+  name: string;
+  urgency: string;
+  reason: string;
+  email: string;
+  status?: string;
+  observations: string;
+  end_date: string;
+  created_at: string;
+}
+
 interface IdataTable {
   // eslint-disable-next-line react/require-default-props
   email?: string;
@@ -35,6 +47,7 @@ interface IdataTable {
     status: string;
     urgency: string;
   };
+  newServicesOrders: any;
 }
 
 interface ITable {
@@ -50,6 +63,7 @@ interface ITable {
       updated_at: string;
       urgency: string;
       end_date: string;
+      identification: number;
     },
   ];
   pagination: {
@@ -60,21 +74,10 @@ interface ITable {
   };
 }
 
-interface IDataOrderServices {
-  id: string;
-  name: string;
-  urgency: string;
-  reason: string;
-  email: string;
-  status?: string;
-  observations: string;
-  end_date: string;
-  created_at: string;
-}
-
 const OrderServiceTable: React.FC<IdataTable> = ({
   email,
   filterData,
+  newServicesOrders,
 }: IdataTable) => {
   const { user } = useAuth();
   const formRef = useRef<FormHandles>(null);
@@ -100,7 +103,16 @@ const OrderServiceTable: React.FC<IdataTable> = ({
       .then(resposnse => {
         setDataTable(resposnse.data);
       });
-  }, [email, filterData, user.email, pagination, returnDataFinsh]);
+
+    console.log(newServicesOrders);
+  }, [
+    email,
+    filterData,
+    user.email,
+    pagination,
+    returnDataFinsh,
+    newServicesOrders,
+  ]);
 
   const toggleModal = useCallback(() => {
     setModalOpen(!modalOpen);

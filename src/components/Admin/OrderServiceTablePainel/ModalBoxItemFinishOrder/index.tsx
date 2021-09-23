@@ -37,6 +37,7 @@ interface IDataOrderServices {
   observations: string;
   end_date: string;
   created_at: string;
+  identification: number;
 }
 
 interface IModalProps {
@@ -151,7 +152,7 @@ const ModalBoxItemTable: React.FC<IModalProps> = ({
             <span>
               <div>
                 <h2>Ordem de serviço</h2>
-                <p>{parseInt(dataSelected?.id || '0', 16)}</p>
+                <p>{dataSelected?.identification}</p>
               </div>
 
               <FiX size={20} onClick={() => setToggleModal()} />
@@ -183,7 +184,7 @@ const ModalBoxItemTable: React.FC<IModalProps> = ({
             <span>
               <div>
                 <h2>Ordem de serviço</h2>
-                <p>{parseInt(dataSelected?.id || 'x', 16)}</p>
+                <p>{dataSelected?.identification}</p>
               </div>
 
               <FiX size={20} onClick={() => setToggleModal()} />

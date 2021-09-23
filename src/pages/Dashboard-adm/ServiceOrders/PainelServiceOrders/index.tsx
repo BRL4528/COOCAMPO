@@ -27,11 +27,14 @@ interface IdataTable {
   email: string;
   id: string;
   name: string;
-  observations: string;
   reason: string;
   status: string;
   updated_at: string;
   urgency: string;
+  identification: number;
+  observations: string;
+  file: string;
+  reason_observation: string;
 }
 
 interface IFilter {
@@ -48,6 +51,8 @@ const Reports: React.FC<PropsItem> = ({ title }) => {
   const [modalOpen, setModalOpen] = useState(false);
 
   const [toogleFilter, setToogleFilter] = useState(true);
+
+  const [newServicesOrders, setNewServicesOrders] = useState<IdataTable>();
 
   const [dataFilter, setDataFilter] = useState<IFilter>({
     finishedDateIn: '',
@@ -66,7 +71,7 @@ const Reports: React.FC<PropsItem> = ({ title }) => {
     async (servicesOrders: Omit<IdataTable, 'e'>) => {
       try {
         const temp = servicesOrders;
-        // setServicesOrders(temp);
+        setNewServicesOrders(temp);
         handleSendEmailOpenOrderServiceAdm(temp);
         handleSendEmailOpenOrderServiceUser(temp, user);
       } catch (err) {
@@ -165,6 +170,10 @@ const Reports: React.FC<PropsItem> = ({ title }) => {
                         label: 'Finalizado',
                         value: 'Finalizado',
                       },
+                      {
+                        label: 'Andamento',
+                        value: 'Andamento',
+                      },
                     ]}
                   />
                 </fieldset>
@@ -198,7 +207,11 @@ const Reports: React.FC<PropsItem> = ({ title }) => {
           </Form>
         </section>
         <div className="section-body">
-          <OrderServiceTable email={user.email} filterData={dataFilter} />
+          <OrderServiceTable
+            email={user.email}
+            filterData={dataFilter}
+            newServicesOrders={newServicesOrders}
+          />
         </div>
       </Container>
     </>

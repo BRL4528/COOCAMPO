@@ -20,7 +20,7 @@ export const Form = styled(unform)`
   p {
     color: var(--text-quarterly);
     font-size: 0.9rem;
-    margin-top: 10px;
+    margin-top: 5px;
   }
   > span {
     display: flex;
@@ -109,9 +109,8 @@ export const Form = styled(unform)`
     > div {
       margin-top: 10px;
       margin-left: 5px;
-      a {
+      p {
         color: #795189;
-        text-decoration: none;
       }
     }
   }
@@ -173,7 +172,7 @@ export const UploadInputt = styled.div`
 
     width: 38px;
     height: 38px;
-    background: #ff9000;
+    /* background: #ff9000; */
     border-radius: 50%;
     right: 0;
     bottom: 0;
@@ -198,7 +197,7 @@ export const UploadInputt = styled.div`
     }
 
     &:hover {
-      background: ${shade(0.2, '#ff9000')};
+      background: ${shade(0.2, '#eee')};
     }
   }
 `;

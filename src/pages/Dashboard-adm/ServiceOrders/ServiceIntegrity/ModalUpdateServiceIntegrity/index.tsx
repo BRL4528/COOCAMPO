@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState } from 'react';
+import React, { useCallback, useRef, useState, useEffect } from 'react';
 
 import { FormHandles } from '@unform/core';
 
@@ -6,12 +6,10 @@ import { FiX } from 'react-icons/fi';
 
 import { useLoading, Oval } from '@agney/react-loading';
 
-import { toast } from 'react-toastify';
+import { apllyToast } from '../../../../../components/Global/Toast2.0';
 import { Form, DivLeft } from './styles';
 
 import Button from '../../../../../components/Global/Button';
-
-import { useAuth } from '../../../../../hooks/auth';
 
 import Modal from '../../../../../components/Admin/Modal';
 import { api } from '../../../../../services/api';
@@ -22,6 +20,7 @@ interface IServices {
   id: string;
   service: string;
   status: string;
+  observations: string;
   level: string;
   created_at: string;
   updated_at: string;
@@ -41,57 +40,53 @@ const ModalUpdateServiceIntegrity: React.FC<IModalProps> = ({
 }) => {
   const formRef = useRef<FormHandles>(null);
   const componentRef = useRef<HTMLDivElement>(null);
-  const { user } = useAuth();
+
   const [subject, setSubject] = useState('');
 
+  const [status, setStatus] = useState('');
+
   const [loading, setLoading] = useState(false);
+
+  const [dataServices, setDataServices] = useState<IServices[]>([]);
+
+  useEffect(() => {
+    api.get<IServices[]>('/services-integrity').then(response => {
+      setDataServices(response.data);
+    });
+  }, []);
 
   const handleSubmit = useCallback(
     async (data: IServices) => {
       try {
         setLoading(true);
-        const { service } = data;
-
+        const { observations } = data;
+        console.log(observations);
         const formData = {
-          urgency: subject,
-          name: user.name,
-          email: user.email,
-          service,
-          observations: 'null',
+          level: 'Geral',
+          status,
+          // observations,
         };
 
-        const response = await api.post('/services-orders', formData);
+        const response = await api.put(
+          `/services-integrity?id=${subject}`,
+          formData,
+        );
         handleAnalytic(response.data);
 
         setIsOpen();
+        setStatus('');
+        setSubject('');
 
-        toast('Sucesso ao Atualizar serviço!', {
-          position: 'bottom-right',
-          autoClose: 5000,
-          type: 'success',
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        });
+        apllyToast('success', 'Sucesso ao Atualizar serviço!');
+
         setLoading(false);
       } catch (err) {
         console.log(err);
-        toast('Problemas ao Atualizar serviço!', {
-          position: 'bottom-right',
-          autoClose: 5000,
-          type: 'warning',
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        });
+        apllyToast('warning', 'Problemas ao Atualizar serviço!');
         setLoading(false);
       }
     },
-    [handleAnalytic, setIsOpen, subject, user.email, user.name],
+    [handleAnalytic, setIsOpen, status, subject],
   );
 
   const handleSubject = useCallback(
@@ -100,6 +95,9 @@ const ModalUpdateServiceIntegrity: React.FC<IModalProps> = ({
     },
     [setSubject],
   );
+  const handleStatus = useCallback(e => {
+    setStatus(e);
+  }, []);
 
   const { containerProps, indicatorEl } = useLoading({
     loading,
@@ -115,29 +113,60 @@ const ModalUpdateServiceIntegrity: React.FC<IModalProps> = ({
         </span>
 
         <Select
-          name="urgency"
-          label="Serviço."
+          name="service"
+          label="Serviço"
           value={subject}
           onChange={e => {
             handleSubject(e.target.value);
           }}
-          options={[
-            {
-              value: 'Alto',
-              label: 'Alto',
-            },
-            { value: 'Medio', label: 'Médio' },
-            {
-              value: 'Baixo',
-              label: 'Baixo',
-            },
-          ]}
+          // options={[
+          //   {
+          //     value: 'Alto',
+          //     label: 'Alto',
+          //   },
+          //   { value: 'Medio', label: 'Médio' },
+          //   {
+          //     value: 'Baixo',
+          //     label: 'Baixo',
+          //   },
+          // ]}
+          options={dataServices.map(service => {
+            return {
+              value: service.id,
+              label: service.service,
+            };
+          })}
         />
+
+        <span>
+          <Select
+            name="status"
+            label="Status"
+            value={status}
+            onChange={e => {
+              handleStatus(e.target.value);
+            }}
+            options={[
+              {
+                value: 'Online',
+                label: 'Online',
+              },
+              { value: 'Manutenção', label: 'Manutenção' },
+              {
+                value: 'Offline',
+                label: 'Offline',
+              },
+            ]}
+          />
+        </span>
         <section>
-          <p>Motivo.</p>
+          <p>Ocorrência</p>
         </section>
 
-        <TextArea name="reason" placeholder="Ex: Troca de mouse e teclado." />
+        <TextArea
+          name="observations"
+          placeholder="Ex: Troca de mouse e teclado."
+        />
 
         <DivLeft>
           <Button

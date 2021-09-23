@@ -150,8 +150,34 @@ export const CardInfo = styled.div`
   text-align: center;
   width: 100%;
 
-  div {
-    background: red;
-    width: 50%;
+  .info {
+    background: #fddede;
+    color: #c53030;
+    border: 1px solid var(--red-primary);
+  }
+  .success {
+    background: #e6fffa;
+    color: #2e656a;
+    border: 1px solid var(--green-primary);
+  }
+
+  > div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* justify-content: space-between; */
+    border-radius: 4px;
+    width: 40%;
+    padding: 20px;
+
+    span {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+    }
+  }
+  header {
+    text-align: left;
+    margin-left: 20px;
   }
 `;
