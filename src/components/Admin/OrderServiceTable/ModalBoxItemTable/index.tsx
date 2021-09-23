@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-target-blank */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable no-unused-vars */
@@ -30,6 +31,8 @@ interface IDataOrderServices {
   end_date: string;
   created_at: string;
   identification: number;
+  reason_observation: string;
+  file: string;
 }
 
 interface IModalProps {
@@ -105,6 +108,12 @@ const ModalBoxItemTable: React.FC<IModalProps> = ({
             <strong>Situação atual</strong>
             <SkeletonLoader style={opt} />
 
+            <strong>Observação</strong>
+            <SkeletonLoader style={opt} />
+
+            <strong>Anexo</strong>
+            <SkeletonLoader style={opt} />
+
             <strong>Data e hora de abertura da solicitação</strong>
             <p>
               <SkeletonLoader style={opt} />
@@ -146,6 +155,17 @@ const ModalBoxItemTable: React.FC<IModalProps> = ({
 
             <strong>Situação atual</strong>
             <p>{dataSelected?.status}</p>
+
+            <strong>Observação</strong>
+            <p>{dataSelected?.reason_observation}</p>
+
+            <strong>Anexo</strong>
+            <a
+              href={`https://api-samasc.s3.sa-east-1.amazonaws.com/os/file/${dataSelected?.file}`}
+              target="_blank"
+            >
+              arquivo
+            </a>
 
             <strong>Data e hora de abertura da solicitação</strong>
             <p>
