@@ -3,8 +3,6 @@
 /* eslint-disable react/jsx-no-target-blank */
 import React, { useCallback, useRef, useState, ChangeEvent } from 'react';
 
-import nextId from 'react-id-generator';
-
 import { FormHandles } from '@unform/core';
 
 import { FiX, FiPaperclip } from 'react-icons/fi';
@@ -78,7 +76,7 @@ const ModalOrderServices: React.FC<IModalProps> = ({
           reason,
           reason_observation: observations,
           observations: 'teste',
-          identification: parseInt(nextId().replace(/[^0-9]/g, '')),
+          identification: Math.round(2),
         };
 
         await api.post('/services-orders', formData).then(response => {

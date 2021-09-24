@@ -1,21 +1,14 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import { toast } from 'react-toastify';
-
+import React, { useCallback, useState } from 'react';
+import TableVehicles from '../../../components/Admin/TableVehicles';
 import Button from '../../../components/Global/Button';
+import { apllyToast } from '../../../components/Global/Toast2.0/index';
 import { api } from '../../../services/api';
 import ModalCreateVehicle from './ModalCreateVehicle';
 
-import {
-  CardButton,
-  Container,
-  CardeHeader,
-  CardGraphic,
-  GraphicTitle,
-  CardGraphicText,
-} from './styles';
+import { CardButton, Container, CardeHeader } from './styles';
 
 interface IVehicles {
-  id?: string;
+  id: string;
   name: string;
   plate: string;
   year: string;
@@ -26,48 +19,24 @@ interface IVehicles {
 
 const UserManagement: React.FC = () => {
   const [modalOpen, setModalOpen] = useState(false);
-  const [dataVehicles, setDataVehicles] = useState<IVehicles[]>([]);
+
   const [newVehicle, setNewVehicle] = useState('');
 
-  const toggleModal = useCallback(() => {
-    setModalOpen(!modalOpen);
-  }, [modalOpen]);
-
-  useEffect(() => {
-    api.get('/vehicles').then(response => {
-      setDataVehicles(response.data);
-    });
-  }, [newVehicle]);
-
-  const handleVehicle = useCallback((vehiclesInfo: Omit<IVehicles, ''>) => {
+  const handleAddVehicle = useCallback((vehiclesInfo: Omit<IVehicles, ''>) => {
     try {
       api.post('/vehicles', vehiclesInfo).then(response => {
         setNewVehicle(response.data);
       });
 
-      toast('Sucesso ao adicionar novo veículo!', {
-        position: 'bottom-right',
-        autoClose: 5000,
-        type: 'success',
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
+      apllyToast('success', 'Sucesso ao adicionar novo veículo!');
     } catch (err) {
-      toast('Problemas ao adicionar novo veículo!', {
-        position: 'bottom-right',
-        autoClose: 5000,
-        type: 'warning',
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
+      apllyToast('warning', 'Problemas ao adicionar novo veículo!');
     }
   }, []);
+
+  const toggleModal = useCallback(() => {
+    setModalOpen(!modalOpen);
+  }, [modalOpen]);
 
   return (
     <>
@@ -87,26 +56,12 @@ const UserManagement: React.FC = () => {
           </CardButton>
         </CardeHeader>
 
-        {dataVehicles.map(vehicles => (
-          <CardGraphic key={vehicles.id}>
-            <CardGraphicText>
-              <GraphicTitle>
-                <h3>{vehicles.name}</h3>
-
-                <p>
-                  Placa:
-                  {vehicles.plate}
-                </p>
-              </GraphicTitle>
-            </CardGraphicText>
-          </CardGraphic>
-        ))}
+        <TableVehicles newVehicle={newVehicle} />
       </Container>
       <ModalCreateVehicle
         isOpen={modalOpen}
         setIsOpen={toggleModal}
-        handleVehicle={handleVehicle}
-        // dataEditUser={dataEditUser}
+        handleVehicle={handleAddVehicle}
       />
     </>
   );

@@ -15,7 +15,7 @@ import TextArea from '../../../../components/Global/TextArea';
 import Modal from '../../../../components/Admin/Modal';
 
 interface IVehicles {
-  id?: string;
+  id: string;
   name: string;
   plate: string;
   year: string;
