@@ -29,15 +29,19 @@ import Import from '../pages/Dashboard-adm/Imports';
 import Schedule from '../pages/Dashboard-adm/Schedule';
 import ScheduleOnly from '../pages/Dashboard-adm/Schedule/ScheduleUnic';
 import Employers from '../pages/Dashboard-adm/Employers';
+
 import Vehicles from '../pages/Dashboard-adm/Vehicles';
+
+import VehiclesSchedule from '../pages/Dashboard-adm/Miles/Schedule';
+import YouMiles from '../pages/Dashboard-adm/Miles/YouMiles';
+import VehiclesSupply from '../pages/Dashboard-adm/Miles/Supply';
+import VehiclesMaintenance from '../pages/Dashboard-adm/Miles/Maintenance';
 
 import FormsOrderService from '../components/Admin/FormsOrderService';
 
 import ServicesOrders from '../pages/Dashboard-adm/ServiceOrders/UserServiceOrders';
 import PainelServicesOrders from '../pages/Dashboard-adm/ServiceOrders/PainelServiceOrders';
 import ServiceIntegrity from '../pages/Dashboard-adm/ServiceOrders/ServiceIntegrity';
-
-import YouMiles from '../pages/Dashboard-adm/Miles/YouMiles';
 
 import SectorSelectedRules from '../pages/Dashboard-adm/Rules/SelectedSector';
 
@@ -190,7 +194,26 @@ const Routes: React.FC = () => (
       isAdmin
     />
 
-    <Route path="/your-miles" component={YouMiles} isPrivate isAdmin />
+    <Route
+      path="/your-miles/schedule"
+      component={VehiclesSchedule}
+      isPrivate
+      isAdmin
+    />
+    <Route path="/your-miles/miles" component={YouMiles} isPrivate isAdmin />
+    <Route
+      path="/your-miles/supply"
+      component={VehiclesSupply}
+      isPrivate
+      isAdmin
+    />
+    <Route
+      path="/your-miles/maintenance"
+      component={VehiclesMaintenance}
+      isPrivate
+      isAdmin
+    />
+
     <Route
       path="/management-ppr/painel-module-analytical/:analyticId?"
       component={PainelAnalyticModulo}

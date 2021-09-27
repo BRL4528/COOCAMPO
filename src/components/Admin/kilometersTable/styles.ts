@@ -1,12 +1,21 @@
 import styled from 'styled-components';
 
 export const Container = styled.div`
+  display: flex;
+  align-items: center;
+  flex-direction: column;
   margin-top: 2rem;
+
+  svg {
+    width: 50px;
+  }
 
   table {
     width: 98%;
     min-width: 1265px;
+    margin: 0 auto;
     border-spacing: 0 0.5rem;
+
     th {
       color: var(--text-body);
       font-weight: 400;

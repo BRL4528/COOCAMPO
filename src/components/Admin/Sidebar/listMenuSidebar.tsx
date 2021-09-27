@@ -19,7 +19,8 @@ import {
   FiHeart,
 } from 'react-icons/fi';
 
-import { BiCar } from 'react-icons/bi';
+import { BiCar, BiGasPump } from 'react-icons/bi';
+import { GiAutoRepair } from 'react-icons/gi';
 import { OptionList } from './styles';
 
 export function ManagementMiles(
@@ -47,27 +48,53 @@ export function ManagementMiles(
 
       <OptionList
         pathname={pathname}
-        path="/schedule-vehicle"
+        path="/your-miles/schedule"
         className="nav-item"
         visible={user.employers}
       >
-        <Link to="/schedule-vehicle" className="nav-link">
+        <Link to="/your-miles/schedule" className="nav-link">
           <FiCalendar color="#f2c811" size={16} />
 
-          <span className="link-text">Agendar veiculo</span>
+          <span className="link-text">Agenda</span>
         </Link>
       </OptionList>
 
       <OptionList
         pathname={pathname}
-        path="/your-miles"
+        path="/your-miles/miles"
         className="nav-item"
         visible={user.employers}
       >
-        <Link to="/your-miles" className="nav-link">
+        <Link to="/your-miles/miles" className="nav-link">
           <FiCompass color="#f2c811" size={16} />
 
           <span className="link-text">Quilometragem</span>
+        </Link>
+      </OptionList>
+
+      <OptionList
+        pathname={pathname}
+        path="/your-miles/supply"
+        className="nav-item"
+        visible={user.employers}
+      >
+        <Link to="/your-miles/supply" className="nav-link">
+          <BiGasPump color="#f2c811" size={16} />
+
+          <span className="link-text">Abastecimento</span>
+        </Link>
+      </OptionList>
+
+      <OptionList
+        pathname={pathname}
+        path="/your-miles/maintenance"
+        className="nav-item"
+        visible={user.employers}
+      >
+        <Link to="/your-miles/maintenance" className="nav-link">
+          <GiAutoRepair color="#f2c811" size={16} />
+
+          <span className="link-text">Manutenção</span>
         </Link>
       </OptionList>
     </>

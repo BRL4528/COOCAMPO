@@ -17,7 +17,7 @@ const Menu: React.FC = () => {
   return (
     <ContainerCard>
       <div className={user.tag === 'admin' ? '' : 'disabled'}>
-        <Link to="/your-miles">
+        <Link to="/your-miles/schedule">
           <Content>
             <img src={destin} alt="imagem de destino" />
             <strong>Controle de frota</strong>

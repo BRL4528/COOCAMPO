@@ -39,7 +39,7 @@ const Sidebar: React.FC<LayoutProps> = ({ pathname }) => {
     if (location.pathname.substring(0, 14) === '/administrator') {
       return Addministrator(pathname, user);
     }
-    if (location.pathname.substring(0, 14) === '/your-miles') {
+    if (location.pathname.substring(0, 11) === '/your-miles') {
       return ManagementMiles(pathname, user);
     }
     if (location.pathname.substring(0, 6) === '/rules') {
