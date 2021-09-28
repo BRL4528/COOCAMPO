@@ -1,6 +1,7 @@
 import styled, { css } from 'styled-components';
 
 import { Form as unform } from '@unform/web';
+import { shade } from 'polished';
 
 export const Form = styled(unform)`
   .selected {
@@ -19,14 +20,16 @@ export const Form = styled(unform)`
   section {
     display: flex;
     align-items: center;
-    justify-content: space-between;
     flex-direction: row;
+    /* justify-content: space-between; */
+    /* padding: 10px; */
 
-    span {
-      width: 95%;
-
-      & + span {
-        margin-left: 5px;
+    margin-bottom: 5px;
+    > div {
+      margin-top: 10px;
+      margin-left: 5px;
+      p {
+        color: #795189;
       }
     }
   }
@@ -202,5 +205,47 @@ export const CardAnalytic = styled.div`
     transition: var(--transition-speed);
     background: rgba(28, 156, 217, 0.1);
     border: 2px solid rgba(28, 156, 217, 0);
+  }
+`;
+
+export const UploadInputt = styled.div`
+  /* margin-bottom: 32px; */
+  /* position: relative; */
+  margin-left: 15px;
+  margin-top: 10px;
+  align-self: center;
+
+  label {
+    /* position: absolute; */
+
+    width: 38px;
+    height: 38px;
+    /* background: #ff9000; */
+    border-radius: 50%;
+    right: 0;
+    bottom: 0;
+    border: 0;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    input {
+      display: none;
+    }
+    div {
+      margin: none;
+    }
+    svg {
+      width: 20px;
+      height: 20px;
+      margin-top: 3px;
+
+      color: #312e38;
+    }
+
+    &:hover {
+      background: ${shade(0.2, '#eee')};
+    }
   }
 `;

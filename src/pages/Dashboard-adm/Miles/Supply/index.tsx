@@ -1,16 +1,13 @@
-/* eslint-disable prettier/prettier */
-/* eslint-disable react/jsx-one-expression-per-line */
-/* eslint-disable @typescript-eslint/no-empty-function */
 import React, { useCallback, useState, useEffect } from 'react';
 import { Form } from '@unform/web';
 import { FiStar } from 'react-icons/fi';
 
 import Button from '../../../../components/Global/Button';
-import KilometersTable from '../../../../components/Admin/kilometersTable';
+import SupplyTable from '../../../../components/Admin/SupplyTable';
 import Select from '../../../../components/Global/Select';
 import Input from '../../../../components/Global/Input';
 
-import ModalAddNewKm from './ModalAddKm';
+import ModalAddNewMaintenance from './ModalAddMaintenance';
 
 import { useAuth } from '../../../../hooks/auth';
 
@@ -35,15 +32,14 @@ interface PropsItem {
   title?: string;
 }
 
-interface IKilometers {
-  // vehicle_id?: string;
-  // access_id?: string;
-  id?: string;
-  km_start: number;
-  km_end: number;
-  km_traveled?: number;
-  observations: string;
-  reason: string;
+interface ISupply {
+  date: Date;
+  type: string;
+  quantity: number;
+  amount_total: number;
+  km_odometer: number;
+  observation: string;
+  conductor: string;
 }
 
 interface IFilter {
@@ -55,7 +51,7 @@ interface IFilter {
   urgency: string;
 }
 
-const Reports: React.FC<PropsItem> = ({ title }) => {
+const Maintenance: React.FC<PropsItem> = ({ title }) => {
   const { user } = useAuth();
   const [dataVehicles, setDataVehicles] = useState<IVehicles[]>([]);
   const [modalOpen, setModalOpen] = useState(false);
@@ -112,26 +108,33 @@ const Reports: React.FC<PropsItem> = ({ title }) => {
     setModalOpen(!modalOpen);
   }, [modalOpen]);
 
-  const handleAddNewKilometer = useCallback(
-    async (data: Omit<IKilometers, 'e'>) => {
-      const { km_end, km_start, observations, reason, km_traveled } = data;
+  const handleAddNewSupply = useCallback(async (data: Omit<ISupply, 'e'>) => {
+    const {
+      date,
+      km_odometer,
+      amount_total,
+      conductor,
+      type,
+      observation,
+      quantity,
+    } = data;
 
-      const formatData = {
-        km_end: Number(km_end),
-        km_start: Number(km_start),
-        observations,
-        reason,
-        km_traveled: Number(km_traveled),
-        vehicle_id: selectedVehicle?.id,
-        access_id: user.id,
-      };
+    const formatData = {
+      date,
+      km_odometer,
+      amount_total,
+      conductor,
+      type,
+      observation,
+      quantity,
+      // vehicle_id: selectedVehicle?.id,
+      // access_id: user.id,
+    };
 
-      api.post('/kilometers', formatData).then(response => {
-        setNewRegister(response.data.id);
-      });
-    },
-    [selectedVehicle?.id, user.id],
-  );
+    api.post('/supplies', formatData).then(response => {
+      setNewRegister(response.data.id);
+    });
+  }, []);
 
   const handleFilter = useCallback((data: IFilter) => {
     // setDataFilter(data);
@@ -158,25 +161,22 @@ const Reports: React.FC<PropsItem> = ({ title }) => {
 
   return (
     <>
-      <ModalAddNewKm
-        km_initial={{ km_start: selectedVehicle?.km || 0 }}
+      <ModalAddNewMaintenance
         isOpen={modalOpen}
         setIsOpen={toggleModal}
-        handleAddNewKilometer={handleAddNewKilometer}
+        handleAddNewSupply={handleAddNewSupply}
       />
       <Container toogleFilter={toogleFilter}>
         <CardeHeader titleItem={title}>
           <div>
-            <h2>Seus Abastecimentos</h2>
-            <strong>
-              Gerencie os asbastecimentos dos veículos da cooperativa
-            </strong>
+            <h2>Abastecimento</h2>
+            <strong>Gerencie os abastecimentos de seu veículo</strong>
           </div>
 
           <CardButton>
             <div>
               <Button isUsed onClick={toggleModal}>
-                Novo KM
+                Novo Abastecimento
               </Button>
             </div>
           </CardButton>
@@ -314,7 +314,7 @@ const Reports: React.FC<PropsItem> = ({ title }) => {
         </section>
 
         <div className="section-body">
-          <KilometersTable
+          <SupplyTable
             access_id={user.id}
             vehicle_id={selectedVehicle?.id || ''}
             newRegister={newRegister || ''}
@@ -325,4 +325,4 @@ const Reports: React.FC<PropsItem> = ({ title }) => {
   );
 };
 
-export default Reports;
+export default Maintenance;

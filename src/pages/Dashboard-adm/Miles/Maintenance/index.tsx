@@ -1,16 +1,13 @@
-/* eslint-disable prettier/prettier */
-/* eslint-disable react/jsx-one-expression-per-line */
-/* eslint-disable @typescript-eslint/no-empty-function */
 import React, { useCallback, useState, useEffect } from 'react';
 import { Form } from '@unform/web';
 import { FiStar } from 'react-icons/fi';
 
 import Button from '../../../../components/Global/Button';
-import KilometersTable from '../../../../components/Admin/kilometersTable';
+import MaintenanceTable from '../../../../components/Admin/MaintenanceTable';
 import Select from '../../../../components/Global/Select';
 import Input from '../../../../components/Global/Input';
 
-import ModalAddNewKm from './ModalAddKm';
+import ModalAddNewMaintenance from './ModalAddMaintenance';
 
 import { useAuth } from '../../../../hooks/auth';
 
@@ -35,15 +32,15 @@ interface PropsItem {
   title?: string;
 }
 
-interface IKilometers {
-  // vehicle_id?: string;
-  // access_id?: string;
-  id?: string;
-  km_start: number;
-  km_end: number;
-  km_traveled?: number;
-  observations: string;
+interface IMaintenance {
+  date: Date;
+  km: number;
   reason: string;
+  type: string;
+  description: string;
+  conductor: string;
+  amount_total: number;
+  observation: string;
 }
 
 interface IFilter {
@@ -55,7 +52,7 @@ interface IFilter {
   urgency: string;
 }
 
-const Reports: React.FC<PropsItem> = ({ title }) => {
+const Maintenance: React.FC<PropsItem> = ({ title }) => {
   const { user } = useAuth();
   const [dataVehicles, setDataVehicles] = useState<IVehicles[]>([]);
   const [modalOpen, setModalOpen] = useState(false);
@@ -112,25 +109,42 @@ const Reports: React.FC<PropsItem> = ({ title }) => {
     setModalOpen(!modalOpen);
   }, [modalOpen]);
 
-  const handleAddNewKilometer = useCallback(
-    async (data: Omit<IKilometers, 'e'>) => {
-      const { km_end, km_start, observations, reason, km_traveled } = data;
+  const handleAddNewMaintenance = useCallback(
+    async (data: Omit<IMaintenance, 'e'>, document) => {
+      const {
+        date,
+        km,
+        amount_total,
+        conductor,
+        description,
+        reason,
+        type,
+        observation,
+      } = data;
 
       const formatData = {
-        km_end: Number(km_end),
-        km_start: Number(km_start),
-        observations,
+        date,
+        km,
+        amount_total,
+        conductor,
+        description,
         reason,
-        km_traveled: Number(km_traveled),
-        vehicle_id: selectedVehicle?.id,
-        access_id: user.id,
+        type,
+        observation,
+        // vehicle_id: selectedVehicle?.id,
+        // access_id: user.id,
       };
 
-      api.post('/kilometers', formatData).then(response => {
+      await api.post('/maintenance', formatData).then(async response => {
+        await api.patch(
+          `/maintenance/upload/file?id=${response.data.id}`,
+          document,
+        );
+
         setNewRegister(response.data.id);
       });
     },
-    [selectedVehicle?.id, user.id],
+    [],
   );
 
   const handleFilter = useCallback((data: IFilter) => {
@@ -158,11 +172,11 @@ const Reports: React.FC<PropsItem> = ({ title }) => {
 
   return (
     <>
-      <ModalAddNewKm
+      <ModalAddNewMaintenance
         km_initial={{ km_start: selectedVehicle?.km || 0 }}
         isOpen={modalOpen}
         setIsOpen={toggleModal}
-        handleAddNewKilometer={handleAddNewKilometer}
+        handleAddNewMaintenance={handleAddNewMaintenance}
       />
       <Container toogleFilter={toogleFilter}>
         <CardeHeader titleItem={title}>
@@ -174,7 +188,7 @@ const Reports: React.FC<PropsItem> = ({ title }) => {
           <CardButton>
             <div>
               <Button isUsed onClick={toggleModal}>
-                Novo KM
+                Nova Manutenção
               </Button>
             </div>
           </CardButton>
@@ -312,7 +326,7 @@ const Reports: React.FC<PropsItem> = ({ title }) => {
         </section>
 
         <div className="section-body">
-          <KilometersTable
+          <MaintenanceTable
             access_id={user.id}
             vehicle_id={selectedVehicle?.id || ''}
             newRegister={newRegister || ''}
@@ -323,4 +337,4 @@ const Reports: React.FC<PropsItem> = ({ title }) => {
   );
 };
 
-export default Reports;
+export default Maintenance;
