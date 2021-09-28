@@ -4,6 +4,8 @@ import Button from '../../../components/Global/Button';
 import { api } from '../../../services/api';
 import ModalCreateUser from './ModalCreateUser';
 
+import { apllyToast } from '../../../components/Global/Toast2.0';
+
 import {
   CardButton,
   Container,
@@ -93,9 +95,12 @@ const UserManagement: React.FC = () => {
             .then(response => {
               console.log('resposta vinculo setor e usuario', response.data);
             });
+
+          apllyToast('success', 'Sucesso ao criar novo usuario');
         });
     } catch (err) {
-      console.log(err.message);
+      console.log(err);
+      apllyToast('error', 'Problemas ao criar novo usuario');
     }
   }, []);
 
