@@ -43,7 +43,7 @@ import ServicesOrders from '../pages/Dashboard-adm/ServiceOrders/UserServiceOrde
 import PainelServicesOrders from '../pages/Dashboard-adm/ServiceOrders/PainelServiceOrders';
 import ServiceIntegrity from '../pages/Dashboard-adm/ServiceOrders/ServiceIntegrity';
 
-import SectorSelectedRules from '../pages/Dashboard-adm/Rules/SelectedSector';
+import SelectedNic from '../pages/Dashboard-adm/Rules/SelectedNic';
 
 import Rules from '../pages/Dashboard-adm/Rules';
 import Visio from '../pages/Dashboard-adm/Rules/Visio';
@@ -134,8 +134,8 @@ const Routes: React.FC = () => (
     />
 
     <Route
-      path="/rules/sector-resume-rules/:sectorId?"
-      component={SectorSelectedRules}
+      path="/rules/sector-resume-rules/:nicId?"
+      component={SelectedNic}
       isPrivate
       isAdmin
     />

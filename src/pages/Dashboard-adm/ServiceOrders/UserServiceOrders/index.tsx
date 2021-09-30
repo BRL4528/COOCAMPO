@@ -3,6 +3,8 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { Form } from '@unform/web';
 import UseAnimations from 'react-useanimations';
 import alertCircle from 'react-useanimations/lib/alertCircle';
+import { FiAlertCircle } from 'react-icons/fi';
+import { Link } from 'react-router-dom';
 import Button from '../../../../components/Global/Button';
 import OrderServiceTable from '../../../../components/Admin/OrderServiceTable';
 import Select from '../../../../components/Global/Select';
@@ -121,7 +123,16 @@ const Reports: React.FC<PropsItem> = ({ title }) => {
       <Container toogleFilter={toogleFilter}>
         <CardeHeader titleItem={title}>
           <div>
-            <h2>Ordens de serviços</h2>
+            <h2>
+              Ordens de serviços{' '}
+              <Link
+                target="__black"
+                to="https://www.samasc.cloud/rules/sector-resume-rules?solicitacao-de-servico-para-ti"
+              >
+                {' '}
+                <FiAlertCircle size={20} />{' '}
+              </Link>
+            </h2>
             <strong>Abra novos chamados de serviços</strong>
           </div>
 

@@ -87,6 +87,11 @@ export default createGlobalStyle`
     background: var(--white-primary);
     color: var(--white-secondary);
     -webkit-font-smoothing: antialiased;
+
+    a {
+  /* color: inherit; */
+  text-decoration: none;
+}
   }
 
   //add agora
@@ -122,6 +127,8 @@ export default createGlobalStyle`
   html {
     font-size: 93.75%;
   }
+
+
 }
 
 
