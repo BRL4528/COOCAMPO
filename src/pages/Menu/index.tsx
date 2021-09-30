@@ -32,14 +32,14 @@ const Menu: React.FC = () => {
         </Content>
       </Link>
 
-      <div className={user.tag === 'admin' ? '' : 'disabled'}>
-        <Link to="/service-orders/service-integrity">
-          <Content>
-            <img src={os} alt="imagem de ordem de serviço" />
-            <strong>Ordens de serviço</strong>
-          </Content>
-        </Link>
-      </div>
+      {/* <div className={user.tag === 'admin' ? '' : 'disabled'}> */}
+      <Link to="/service-orders/service-integrity">
+        <Content>
+          <img src={os} alt="imagem de ordem de serviço" />
+          <strong>Ordens de serviço</strong>
+        </Content>
+      </Link>
+      {/* </div> */}
 
       <div className={user.tag === 'admin' ? '' : 'disabled'}>
         <Link to="/rules">
