@@ -358,6 +358,19 @@ export function Rules(pathname: string) {
           <span className="link-text">Menu inicial</span>
         </Link>
       </OptionList>
+
+      <OptionList
+        pathname={pathname}
+        path="/rules"
+        className="nav-item"
+        visible
+      >
+        <Link to="/rules" className="nav-link">
+          <FiFileText color="#f2c811" size={16} />
+
+          <span className="link-text">Normas interna</span>
+        </Link>
+      </OptionList>
     </>
   );
 }

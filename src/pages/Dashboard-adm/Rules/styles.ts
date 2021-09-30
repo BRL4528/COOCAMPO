@@ -1,14 +1,50 @@
 import styled from 'styled-components';
 
+import { shade } from 'polished';
+
 export const Container = styled.main`
   max-width: 1120px;
   margin: 0 auto;
-  padding: 0 2rem;
+  margin-top: 10rem;
+  padding: 0 2rem 3rem;
 `;
 
 export const NicList = styled.div`
   max-width: 720px;
   margin: 5rem auto 0;
+
+  > div {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+
+    form {
+      width: 100%;
+      margin: 2rem 0 2rem 0;
+    }
+    img {
+      width: 300px;
+    }
+
+    section {
+      margin-bottom: 3rem;
+
+      button {
+        margin: 10px;
+        border-radius: 12px;
+        padding: 10px;
+        background: var(--color-theme-primary);
+        border: none;
+        transition: var(--transition-speed);
+
+        :hover {
+          transition: var(--transition-speed);
+
+          background: ${shade(0.2, '#f2c811')};
+        }
+      }
+    }
+  }
 
   a {
     display: block;

@@ -127,7 +127,7 @@ const Reports: React.FC<PropsItem> = ({ title }) => {
               Ordens de serviços{' '}
               <Link
                 target="__black"
-                to="https://www.samasc.cloud/rules/sector-resume-rules?solicitacao-de-servico-para-ti"
+                to="/rules/sector-resume-rules?solicitacao-de-servico-para-ti"
               >
                 {' '}
                 <FiAlertCircle size={20} />{' '}
