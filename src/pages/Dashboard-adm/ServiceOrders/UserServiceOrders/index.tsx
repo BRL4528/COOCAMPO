@@ -26,6 +26,24 @@ interface PropsItem {
   title?: string;
 }
 
+interface Iuser {
+  id: string;
+  name: string;
+  nickname: string;
+  status: string;
+  tag: string;
+  email: string;
+  dashboard: boolean;
+  goals_and_sub_goals: boolean;
+  sector: boolean;
+  employers: boolean;
+  module_analyze: boolean;
+  imports: boolean;
+  report: boolean;
+  service_send_email: boolean;
+  schedule: boolean;
+}
+
 interface IdataTable {
   created_at: string;
   email: string;
@@ -65,27 +83,38 @@ const Reports: React.FC<PropsItem> = ({ title }) => {
     urgency: '',
   });
 
-  const [statusServices, setStatusServices] = useState('Carregando...');
+  const [textStatusServices, setTextStatusServices] = useState('Carregando...');
+  const [statusServices, setStatusServices] = useState('loading');
 
   useEffect(() => {
     api
       .get<IdataTable[]>('/services-orders')
-      .then((response: { data: any[] }) => {
-        const servicesFiltred = response.data.filter(
-          item => item.status === 'Andamento',
-        );
-        console.log('resultado filtrado', servicesFiltred);
-        if (servicesFiltred.length > 0) {
-          setStatusServices(
-            `Técnico em TI esta em ${servicesFiltred.length} ${
-              servicesFiltred.length > 0 ? 'Atendimentos' : 'Atendimento'
-            } no momento`,
+      .then(async (response: { data: any[] }) => {
+        const { status } = (
+          await api.get<Iuser>('/accesses/58231ccb-5a12-42cb-ab1a-11ce837dff3b')
+        ).data;
+
+        if (status === 'Presente') {
+          const servicesFiltred = response.data.filter(
+            item => item.status === 'Andamento',
           );
-        } else if (servicesFiltred.length <= 0) {
-          setStatusServices('Técnico em TI está aguardando novas OS');
+          if (servicesFiltred.length > 0) {
+            setTextStatusServices(
+              `Técnico em TI esta em ${servicesFiltred.length} ${
+                servicesFiltred.length > 1 ? 'Atendimentos' : 'Atendimento'
+              } no momento`,
+            );
+            setStatusServices('info');
+          } else if (servicesFiltred.length <= 0) {
+            setTextStatusServices('Técnico em TI está aguardando novas OS');
+            setStatusServices('success');
+          }
+        } else {
+          setTextStatusServices('Técnico em TI está ausente no momento');
+          setStatusServices('waring');
         }
       });
-  }, []);
+  }, [user]);
 
   const toggleModal = useCallback(() => {
     setModalOpen(!modalOpen);
@@ -145,13 +174,7 @@ const Reports: React.FC<PropsItem> = ({ title }) => {
           </CardButton>
         </CardeHeader>
         <CardInfo>
-          <div
-            className={
-              statusServices === 'Técnico em TI está aguardando novas OS'
-                ? 'success'
-                : 'info'
-            }
-          >
+          <div className={statusServices}>
             <span>
               <UseAnimations
                 animation={alertCircle}
@@ -161,7 +184,7 @@ const Reports: React.FC<PropsItem> = ({ title }) => {
               />
               <header>
                 <h4>Status para atendimento</h4>
-                <strong>{statusServices}</strong>
+                <strong>{textStatusServices}</strong>
               </header>
             </span>
           </div>

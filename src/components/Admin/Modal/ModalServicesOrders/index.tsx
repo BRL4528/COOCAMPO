@@ -222,6 +222,10 @@ const ModalOrderServices: React.FC<IModalProps> = ({
               label: 'Manutenção de servidores',
             },
             {
+              value: 'ausente',
+              label: 'Técnico ausente',
+            },
+            {
               value: 'Outros',
               label: 'Outros',
             },

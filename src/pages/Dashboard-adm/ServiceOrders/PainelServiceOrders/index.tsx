@@ -19,6 +19,7 @@ import {
 import { useAuth } from '../../../../hooks/auth';
 
 import { CardeHeader, Container } from './styles';
+import { api } from '../../../../services/api';
 
 interface PropsItem {
   title?: string;
@@ -49,7 +50,7 @@ interface IFilter {
 }
 
 const Reports: React.FC<PropsItem> = ({ title }) => {
-  const { user } = useAuth();
+  const { user, updateUser } = useAuth();
   const [modalOpen, setModalOpen] = useState(false);
 
   const [toogleFilter, setToogleFilter] = useState(true);
@@ -91,6 +92,22 @@ const Reports: React.FC<PropsItem> = ({ title }) => {
     setToogleFilter(!toogleFilter);
   }, [toogleFilter]);
 
+  const handleServiceAbsence = useCallback(async () => {
+    if (user.status === 'Ausente') {
+      const response = api.put('/accesses', {
+        nickname: user.nickname,
+        status: 'Presente',
+      });
+      updateUser((await response).data);
+    } else if (user.status === 'Presente') {
+      const response = api.put('/accesses', {
+        nickname: user.nickname,
+        status: 'Ausente',
+      });
+      updateUser((await response).data);
+    }
+  }, [updateUser, user.nickname, user.status]);
+
   return (
     <>
       <ModallServicesOrders
@@ -125,9 +142,22 @@ const Reports: React.FC<PropsItem> = ({ title }) => {
 
         <section className="section-filter">
           <header>
-            <Button isUsed type="button" onClick={handleToogleFilter}>
-              <p>Filtro</p>
-            </Button>
+            <span>
+              <Button isUsed type="button" onClick={handleToogleFilter}>
+                <p>Filtro</p>
+              </Button>
+            </span>
+
+            <span>
+              <Button
+                isUsed
+                type="button"
+                className={user.status}
+                onClick={handleServiceAbsence}
+              >
+                <p>{user.status}</p>
+              </Button>
+            </span>
           </header>
 
           <Form onSubmit={handleFilter}>
