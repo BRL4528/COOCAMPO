@@ -348,7 +348,20 @@ export function Addministrator(
   );
 }
 
-export function Rules(pathname: string) {
+export function Rules(
+  pathname: string,
+  user: {
+    tag: string;
+    dashboard: boolean;
+    goals_and_sub_goals: boolean;
+    sector: boolean;
+    employers: boolean;
+    module_analyze: boolean;
+    imports: boolean;
+    report: boolean;
+    schedule: boolean;
+  },
+) {
   return (
     <>
       <OptionList pathname={pathname} path="/menu" className="nav-item" visible>
@@ -363,7 +376,7 @@ export function Rules(pathname: string) {
         pathname={pathname}
         path="/rules"
         className="nav-item"
-        visible
+        visible={user.tag === 'admin'}
       >
         <Link to="/rules" className="nav-link">
           <FiFileText color="#f2c811" size={16} />
