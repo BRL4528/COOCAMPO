@@ -75,7 +75,7 @@ const ModalOrderServices: React.FC<IModalProps> = ({
           email: user.email,
           reason,
           reason_observation: observations,
-          observations: 'teste',
+          observations: 'Ordem pendente',
           identification: Math.round(2),
         };
 
