@@ -17,6 +17,7 @@ import {
   FiCompass,
   FiCalendar,
   FiHeart,
+  FiActivity,
 } from 'react-icons/fi';
 
 import { BiCar, BiGasPump } from 'react-icons/bi';
@@ -290,6 +291,19 @@ export function OrderServices(
           <FiCoffee color="#f2c811" size={16} />
 
           <span className="link-text">Painel ordens de serviço</span>
+        </Link>
+      </OptionList>
+
+      <OptionList
+        pathname={pathname}
+        path="/service-orders/monitoring"
+        className="nav-item"
+        visible={user.tag === 'admin' || user.tag === 'admin-os'}
+      >
+        <Link to="/service-orders/monitoring" className="nav-link">
+          <FiActivity color="#f2c811" size={16} />
+
+          <span className="link-text">Painel de monitoramento</span>
         </Link>
       </OptionList>
     </>

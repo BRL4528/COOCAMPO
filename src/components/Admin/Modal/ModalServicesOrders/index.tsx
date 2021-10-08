@@ -17,7 +17,7 @@ import Button from '../../../Global/Button';
 import { useAuth } from '../../../../hooks/auth';
 
 import Modal from '../index';
-import { api } from '../../../../services/api';
+import { api, apiPowerBiDashboard } from '../../../../services/api';
 import Select from '../../../Global/SelectRelease';
 import TextArea from '../../../Global/TextArea';
 
@@ -79,14 +79,29 @@ const ModalOrderServices: React.FC<IModalProps> = ({
           identification: Math.round(2),
         };
 
-        await api.post('/services-orders', formData).then(response => {
-          handleAnalytic(response.data);
+        await api
+          .post<IServicesOrders>('/services-orders', formData)
+          .then(response => {
+            handleAnalytic(response.data);
+            apiPowerBiDashboard.post(
+              '/rows?key=EhZzhiqBfjtUAjPRCjGOoKHJXhyoSY0iiImiXXSy2h%2BoVJYW7Q1G%2BPjp3ATpxYNw2Oj%2BCOjU8qmJl0QTgH4cIA%3D%3D',
+              [
+                {
+                  name: response.data.name,
+                  urgency: response.data.urgency,
+                  reason: response.data.reason,
+                  status: response.data.status,
+                  created_at: response.data.created_at,
+                  id: response.data.id,
+                },
+              ],
+            );
 
-          api.patch(
-            `/services-orders/upload?id=${response.data.id}`,
-            urlDocument,
-          );
-        });
+            api.patch(
+              `/services-orders/upload?id=${response.data.id}`,
+              urlDocument,
+            );
+          });
 
         setIsOpen();
         // setUrlDocument({ document_url: '' });

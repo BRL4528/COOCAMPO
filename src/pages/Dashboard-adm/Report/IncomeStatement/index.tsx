@@ -83,7 +83,7 @@ const SelectorFolders: React.FC = () => {
         params: {
           ano: 2021,
           mesInicial: 1,
-          mesFinal: 8,
+          mesFinal: 9,
           painel: 'PPR Adm Central',
         },
       })
@@ -203,14 +203,14 @@ const SelectorFolders: React.FC = () => {
                   </Button>
                 )}
                 content={() => handlePrint('print')}
-                documentTitle="Demontrativo-Agosto-2021"
+                documentTitle="Demonstrativo-Setembro-2021"
               />
             </div>
           </CardButton>
         </CardeHeader>
         <div id="print">
           <Header className="headerPrint">
-            <h1>Demonstrativo do Resultado - Agosto 2021</h1>
+            <h1>Demonstrativo do Resultado - Setembro 2021</h1>
           </Header>
           <CardHeader color="#0B85BD">
             <Revenues>
@@ -273,7 +273,7 @@ const SelectorFolders: React.FC = () => {
 
           <CardHeader color="#e2c90a">
             <Revenues>
-              <h3>Faturamento líquido - Agosto</h3>
+              <h3>Faturamento líquido - Setembro</h3>
               <h1>
                 {formatPrice(
                   dataHeader?.resultMonth ? dataHeader?.resultMonth : 0,
@@ -282,7 +282,7 @@ const SelectorFolders: React.FC = () => {
             </Revenues>
             <span />
             <Result>
-              <h3>Resultado líquido - Agosto</h3>
+              <h3>Resultado líquido - Setembro</h3>
               <h1>
                 {formatPrice(
                   dataHeader?.liquidMonth ? dataHeader?.liquidMonth : 0,
@@ -291,7 +291,7 @@ const SelectorFolders: React.FC = () => {
             </Result>
             <span />
             <Finances>
-              <h3>Resultado financeiro - Agosto</h3>
+              <h3>Resultado financeiro - Setembro</h3>
               <h1>
                 {dataHeader?.percentageLiquidMonth
                   ? dataHeader?.percentageLiquidMonth.toFixed(2)

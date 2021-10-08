@@ -42,6 +42,7 @@ import FormsOrderService from '../components/Admin/FormsOrderService';
 import ServicesOrders from '../pages/Dashboard-adm/ServiceOrders/UserServiceOrders';
 import PainelServicesOrders from '../pages/Dashboard-adm/ServiceOrders/PainelServiceOrders';
 import ServiceIntegrity from '../pages/Dashboard-adm/ServiceOrders/ServiceIntegrity';
+import Monitoring from '../pages/Dashboard-adm/ServiceOrders/Monitoring';
 
 import SelectedNic from '../pages/Dashboard-adm/Rules/SelectedNic';
 
@@ -190,6 +191,12 @@ const Routes: React.FC = () => (
     <Route
       path="/service-orders/service-integrity"
       component={ServiceIntegrity}
+      isPrivate
+      isAdmin
+    />
+    <Route
+      path="/service-orders/monitoring"
+      component={Monitoring}
       isPrivate
       isAdmin
     />

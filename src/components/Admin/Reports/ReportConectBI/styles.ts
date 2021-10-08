@@ -14,7 +14,7 @@ export const Container = styled.div<Props>`
   /* width: 100%; */
   /* height: 100vh; */
   color: #433f59;
-
+  ${(load: Props) => (load ? `display: flex;` : `display: none;`)}
   iframe {
     border: none;
     margin: 0;

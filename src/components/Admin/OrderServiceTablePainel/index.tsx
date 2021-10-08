@@ -224,6 +224,7 @@ const OrderServiceTable: React.FC<IdataTable> = ({
           <thead>
             <tr>
               <th>Identificação</th>
+              <th>Solicitante</th>
               <th>Urgência</th>
               <th>Motivo</th>
               <th>Status</th>
@@ -238,6 +239,9 @@ const OrderServiceTable: React.FC<IdataTable> = ({
             {dataTable?.serviceOrder.map(item => (
               <tr key={item.id}>
                 <td>{parseInt(item.id || 'x', 16)}</td>
+                <td>
+                  <p>{item.name}</p>
+                </td>
                 <td className={item.urgency}>
                   <p>{item.urgency}</p>
                 </td>
