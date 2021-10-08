@@ -1,12 +1,7 @@
 import styled from 'styled-components';
 import Tooltip from '../../../../components/Global/Tooltip';
 
-interface Iprops {
-  titleItem?: string;
-  toogleFilter?: boolean;
-}
-
-export const Container = styled.div<Iprops>`
+export const Container = styled.div`
   /* display: flex; */
   /* align-items: stretch; */
 
@@ -114,63 +109,6 @@ export const Container = styled.div<Iprops>`
     }
   }
 
-  .section-filter {
-    header {
-      button {
-        max-width: 100px;
-        max-height: 30px;
-      }
-    }
-    form {
-      display: flex;
-      border: 1px solid var(--text-tertiary);
-      visibility: visible;
-      height: 250px;
-      transition: var(--transition-speed);
-
-      ${({ toogleFilter }: Iprops): string =>
-        toogleFilter ? 'visibility: hidden; height: 0px;' : ''}
-      section {
-        height: 250px;
-        transition: var(--transition-speed);
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 15px;
-
-        font-size: 12px;
-        max-width: 900px;
-
-        ${({ toogleFilter }: Iprops): string =>
-          toogleFilter ? 'display: none; height: 0px;' : ''}
-        > div {
-          fieldset {
-            width: 300px;
-          }
-        }
-
-        fieldset {
-          padding: 30px;
-          border: 1px solid var(--text-tertiary);
-        }
-
-        .space-top {
-          margin-top: 20px;
-        }
-
-        > span {
-          height: 200px;
-          display: flex;
-          align-items: flex-end;
-
-          button {
-            height: 30px;
-          }
-        }
-      }
-    }
-  }
-
   a {
     text-decoration: none;
   }
@@ -194,10 +132,7 @@ export const Container = styled.div<Iprops>`
   }
 `;
 
-export const CardeHeader = styled.div<Iprops>`
-  ${({ titleItem }: Iprops) =>
-    titleItem === 'none' ? 'display: none;' : 'display: flex;'}
-
+export const CardeHeader = styled.div`
   width: 100%;
 
   align-items: center;

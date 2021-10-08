@@ -1,20 +1,7 @@
-/* eslint-disable prettier/prettier */
-/* eslint-disable react/jsx-one-expression-per-line */
-/* eslint-disable @typescript-eslint/no-empty-function */
 import React, { useCallback, useState, useEffect } from 'react';
-import { Form } from '@unform/web';
 import { FiStar } from 'react-icons/fi';
 
-import Button from '../../../../components/Global/Button';
-import KilometersTable from '../../../../components/Admin/kilometersTable';
-import Select from '../../../../components/Global/Select';
-import Input from '../../../../components/Global/Input';
-
-import ModalAddNewKm from './ModalAddKm';
-
-import { useAuth } from '../../../../hooks/auth';
-
-import { CardButton, CardeHeader, Container, Info } from './styles';
+import { CardeHeader, Container, Info } from './styles';
 import { api } from '../../../../services/api';
 
 interface IVehicles {
@@ -35,39 +22,14 @@ interface PropsItem {
   title?: string;
 }
 
-interface IKilometers {
-  // vehicle_id?: string;
-  // access_id?: string;
-  id?: string;
-  km_start: number;
-  km_end: number;
-  km_traveled?: number;
-  observations: string;
-  reason: string;
-}
-
-interface IFilter {
-  finishedDateIn: string;
-  finishedDateOut: string;
-  startDateIn: string;
-  startDateOut: string;
-  status: string;
-  urgency: string;
-}
-
-const Reports: React.FC<PropsItem> = ({ title }) => {
-  const { user } = useAuth();
+const Reports: React.FC<PropsItem> = () => {
   const [dataVehicles, setDataVehicles] = useState<IVehicles[]>([]);
-  const [modalOpen, setModalOpen] = useState(false);
+
   const [favoriteVehicle, setFavoriteVehicle] = useState<IVehicles>();
   const [updateVehicleFavorite, setUpdateVehicleFavorite] =
     useState<IVehicles>();
 
   const [selectedVehicle, setSelectedVehicle] = useState<IVehicles>();
-
-  const [toogleFilter, setToogleFilter] = useState(true);
-
-  const [newRegister, setNewRegister] = useState<string>();
 
   // const [dataFilter, setDataFilter] = useState<IFilter>({
   //   finishedDateIn: '',
@@ -106,41 +68,7 @@ const Reports: React.FC<PropsItem> = ({ title }) => {
 
       setDataVehicles(response.data);
     });
-  }, [updateVehicleFavorite, newRegister]);
-
-  const toggleModal = useCallback(() => {
-    setModalOpen(!modalOpen);
-  }, [modalOpen]);
-
-  const handleAddNewKilometer = useCallback(
-    async (data: Omit<IKilometers, 'e'>) => {
-      const { km_end, km_start, observations, reason, km_traveled } = data;
-
-      const formatData = {
-        km_end: Number(km_end),
-        km_start: Number(km_start),
-        observations,
-        reason,
-        km_traveled: Number(km_traveled),
-        vehicle_id: selectedVehicle?.id,
-        access_id: user.id,
-      };
-
-      api.post('/kilometers', formatData).then(response => {
-        setNewRegister(response.data.id);
-      });
-    },
-    [selectedVehicle?.id, user.id],
-  );
-
-  const handleFilter = useCallback((data: IFilter) => {
-    // setDataFilter(data);
-    console.log('talves filtrar por aq', data);
-  }, []);
-
-  const handleToogleFilter = useCallback(() => {
-    setToogleFilter(!toogleFilter);
-  }, [toogleFilter]);
+  }, [updateVehicleFavorite]);
 
   const handleSetFavorite = useCallback(
     (data: IVehicles) => {
@@ -158,33 +86,18 @@ const Reports: React.FC<PropsItem> = ({ title }) => {
 
   return (
     <>
-      <ModalAddNewKm
-        km_initial={{ km_start: selectedVehicle?.km || 0 }}
-        isOpen={modalOpen}
-        setIsOpen={toggleModal}
-        handleAddNewKilometer={handleAddNewKilometer}
-      />
-      <Container toogleFilter={toogleFilter}>
-        <CardeHeader titleItem={title}>
+      <Container>
+        <CardeHeader>
           <div>
             <h2>Agenda</h2>
             <strong>
-              Verifique a diponibilidade de um veiculo ou fassa um novo
+              Verifique a diponibilidade de um veiculo ou faça um novo
               agendamento
             </strong>
           </div>
-
-          <CardButton>
-            <div>
-              <Button isUsed onClick={toggleModal}>
-                Novo KM
-              </Button>
-            </div>
-          </CardButton>
         </CardeHeader>
 
         <h4>Veiculos disponiveis</h4>
-
         <section className="section-vehicle-available">
           {dataVehicles.map(vehicle => (
             <div
@@ -220,107 +133,6 @@ const Reports: React.FC<PropsItem> = ({ title }) => {
             </div>
           ))}
         </section>
-
-        <section className="section-filter">
-          <header>
-            <Button isUsed type="button" onClick={handleToogleFilter}>
-              <p>Filtro</p>
-            </Button>
-          </header>
-
-          <Form onSubmit={handleFilter}>
-            <section>
-              <div>
-                <fieldset>
-                  <legend>Categoria</legend>
-
-                  <p>Nivel de urgencia</p>
-
-                  <Select
-                    name="urgency"
-                    options={[
-                      {
-                        label: 'Vazio',
-                        value: '',
-                      },
-                      {
-                        label: 'Baixo',
-                        value: 'baixo',
-                      },
-                      {
-                        label: 'Médio',
-                        value: 'medio',
-                      },
-                      {
-                        label: 'Alto',
-                        value: 'alto',
-                      },
-                    ]}
-                  />
-                  {/* <select>
-                  <option>Baixo</option>
-                  <option>Médio</option>
-                  <option>Alto</option>
-                </select> */}
-
-                  <p className="space-top">Status</p>
-                  <Select
-                    name="status"
-                    options={[
-                      {
-                        label: 'Vazio',
-                        value: '',
-                      },
-                      {
-                        label: 'Pendente',
-                        value: 'Pendente',
-                      },
-                      {
-                        label: 'Finalizado',
-                        value: 'Finalizado',
-                      },
-                    ]}
-                  />
-                </fieldset>
-              </div>
-
-              <fieldset>
-                <legend>Data da solicitação</legend>
-                <div>
-                  <p>Data inicial</p>
-                  <Input type="date" name="startDateIn" />
-
-                  <p className="space-top">Data final</p>
-                  <Input type="date" name="startDateOut" />
-                </div>
-              </fieldset>
-
-              <fieldset>
-                <legend>Data de atendimento</legend>
-                <div>
-                  <p>Data inicial</p>
-                  <Input type="date" name="finishedDateIn" />
-
-                  <p className="space-top">Data final</p>
-                  <Input type="date" name="finishedDateOut" />
-                </div>
-              </fieldset>
-              <span>
-                <Button isUsed type="submit">
-                  Aplicar filtro
-                </Button>
-              </span>
-            </section>
-          </Form>
-        </section>
-
-        <div className="section-body">
-          <KilometersTable
-            access_id={user.id}
-            vehicle_id={selectedVehicle?.id || ''}
-            newRegister={newRegister || ''}
-          />
-        </div>
       </Container>
     </>
   );
