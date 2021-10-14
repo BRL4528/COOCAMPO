@@ -71,21 +71,20 @@ export const ReportConectBI: React.FC<ReportData> = ({
 
   return (
     <>
+      <DivLeft>
+        <span id="noPrint">
+          <Menu
+            menuButton={<MenuButton>Opções</MenuButton>}
+            className="my-menu"
+          >
+            <MenuItem onClick={handleClick}>Imprimir</MenuItem>
+            <MenuItem onClick={setFullscreen}>FullScreen</MenuItem>
+
+            <MenuItem>Relatar erro</MenuItem>
+          </Menu>
+        </span>
+      </DivLeft>
       <Container load={false}>
-        <DivLeft>
-          <span id="noPrint">
-            <Menu
-              menuButton={<MenuButton>Opções</MenuButton>}
-              className="my-menu"
-            >
-              <MenuItem onClick={handleClick}>Imprimir</MenuItem>
-              <MenuItem onClick={setFullscreen}>FullScreen</MenuItem>
-
-              <MenuItem>Relatar erro</MenuItem>
-            </Menu>
-          </span>
-        </DivLeft>
-
         <div className="report" style={layoutSettings()} ref={reportRef} />
       </Container>
     </>

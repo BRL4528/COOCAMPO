@@ -33,24 +33,6 @@ export const Container = styled.div<Props>`
     }
   } */
 
-  span {
-    button {
-      margin: 0;
-      padding: 0;
-      width: 100px;
-      height: 40px;
-      background: var(--color-theme-primary);
-      border-radius: 3px;
-      border: solid 2px var(--color-theme-primary);
-      padding: 0 10px;
-      color: var(--white-secondary);
-
-      svg {
-        width: 16px;
-      }
-    }
-  }
-
   .report {
     min-height: 100vh;
   }
@@ -185,4 +167,21 @@ export const DivLeft = styled.div`
   text-align: right;
   margin-right: 100px;
   /* width: 100%; */
+  span {
+    button {
+      margin: 0;
+      padding: 0;
+      width: 100px;
+      height: 40px;
+      background: var(--color-theme-primary);
+      border-radius: 3px;
+      border: solid 2px var(--color-theme-primary);
+      padding: 0 10px;
+      color: var(--white-secondary);
+
+      svg {
+        width: 16px;
+      }
+    }
+  }
 `;
