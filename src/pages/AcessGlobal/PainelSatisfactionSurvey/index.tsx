@@ -141,7 +141,7 @@ const PainelAnalyticModule: React.FC = () => {
   const [idOcurrence, setIdOcurrence] = useState('');
 
   const [openCalendar, setOpenCalendar] = useState(false);
-  const [selectedDate, setSelectedDate] = useState(new Date('2021/08/01'));
+  const [selectedDate, setSelectedDate] = useState(new Date());
   // const [currentMonth, setCurrentMonth] = useState(new Date());
 
   const [loadingItens, setLoading] = useState(true);
@@ -491,8 +491,8 @@ const PainelAnalyticModule: React.FC = () => {
                   <span>
                     <p>
                       - Fique atento quanto ao período vigente da pesquisa, pois
-                      a mesma tera inicio dia <strong>28/05/2021</strong> e será
-                      fechada no dia <strong>07/06/2021</strong>.
+                      a mesma tera inicio dia <strong>18/10/2021</strong> e será
+                      fechada no dia <strong>21/10/2021</strong>.
                     </p>
                   </span>
                 </div>
