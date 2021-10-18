@@ -1,7 +1,18 @@
 import React, { useCallback, useState, useEffect } from 'react';
-import { FiStar } from 'react-icons/fi';
+import { FiClock, FiStar } from 'react-icons/fi';
 
-import { CardeHeader, Container, Info } from './styles';
+import DayPicker from 'react-day-picker';
+import {
+  CardeHeader,
+  Container,
+  Info,
+  Content,
+  Schedule,
+  NextAppointment,
+  Section,
+  Appointment,
+  Calendar,
+} from './styles';
 import { api } from '../../../../services/api';
 
 interface IVehicles {
@@ -133,6 +144,111 @@ const Reports: React.FC<PropsItem> = () => {
             </div>
           ))}
         </section>
+
+        <Content>
+          <Schedule>
+            <h2>Horário agendados</h2>
+
+            <p>
+              {/* {isToday(selectedDate) && <span>Hoje</span>}
+            <span>Hoje</span> */}
+              <span>Dia 06 </span>
+              <span>Segunda-feira</span>
+            </p>
+            {/* {isToday(selectedDate) && nextAppointments && ( */}
+            <NextAppointment>
+              <strong>Agendamento a seguir</strong>
+              <div>
+                <img
+                  src="https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50?s=200"
+                  alt="doido"
+                />
+
+                <strong>Ricardo Pereira</strong>
+                <span>
+                  <FiClock />
+                  08:00
+                </span>
+              </div>
+            </NextAppointment>
+            {/* )} */}
+
+            <Section>
+              <strong>Manhã</strong>
+              {/* {morningAppointments.length === 0 && (
+              <p>Nenhum agendamento neste período</p>
+            )} */}
+
+              {/* {morningAppointments.map(appointment => ( */}
+              <Appointment>
+                <span>
+                  <FiClock />
+                  08:30
+                </span>
+
+                <div>
+                  <img
+                    src="https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50?s=200"
+                    alt="doido"
+                  />
+
+                  <strong>Ricardo Pereira</strong>
+                </div>
+              </Appointment>
+              {/* ))} */}
+            </Section>
+
+            <Section>
+              <strong>Tarde</strong>
+              {/* {afternoonAppointments.length === 0 && (
+              <p>Nenhum agendamento neste período</p>
+            )} */}
+              {/* {afternoonAppointments.map(appointment => ( */}
+              <Appointment>
+                <span>
+                  <FiClock />
+                  09:00
+                </span>
+
+                <div>
+                  <img
+                    src="https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50?s=200"
+                    alt="doido"
+                  />
+
+                  <strong>Ricardo Pereira</strong>
+                </div>
+              </Appointment>
+              {/* ))} */}
+            </Section>
+          </Schedule>
+          <Calendar>
+            <DayPicker
+              weekdaysShort={['D', 'S', 'T', 'Q', 'Q', 'S', 'S']}
+              fromMonth={new Date()}
+              // onMonthChange={handleMonthChange}
+              // selectedDays={selectedDate}
+              // disabledDays={[{ daysOfWeek: [0, 6] }, ...disabledDays]}
+              // modifiers={{
+              //   available: { daysOfWeek: [1, 2, 3, 4, 5] },
+              // }}
+              // onDayClick={handleDateChange}
+              // months={[
+              //   'Janeiro',
+              //   'Fevereiro',
+              //   'Março',
+              //   'Abril',
+              //   'Maio',
+              //   'Junho',
+              //   'Agosto',
+              //   'Setembro',
+              //   'Outubro',
+              //   'Novembro',
+              //   'Dezembro',
+              // ]}
+            />
+          </Calendar>
+        </Content>
       </Container>
     </>
   );
