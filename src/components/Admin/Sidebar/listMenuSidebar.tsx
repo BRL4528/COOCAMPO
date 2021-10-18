@@ -17,9 +17,11 @@ import {
   FiCompass,
   FiCalendar,
   FiHeart,
+  FiActivity,
 } from 'react-icons/fi';
 
-import { BiCar } from 'react-icons/bi';
+import { BiCar, BiGasPump } from 'react-icons/bi';
+import { GiAutoRepair } from 'react-icons/gi';
 import { OptionList } from './styles';
 
 export function ManagementMiles(
@@ -47,27 +49,53 @@ export function ManagementMiles(
 
       <OptionList
         pathname={pathname}
-        path="/schedule-vehicle"
+        path="/your-miles/schedule"
         className="nav-item"
         visible={user.employers}
       >
-        <Link to="/schedule-vehicle" className="nav-link">
+        <Link to="/your-miles/schedule" className="nav-link">
           <FiCalendar color="#f2c811" size={16} />
 
-          <span className="link-text">Agendar veiculo</span>
+          <span className="link-text">Agenda</span>
         </Link>
       </OptionList>
 
       <OptionList
         pathname={pathname}
-        path="/your-miles"
+        path="/your-miles/miles"
         className="nav-item"
         visible={user.employers}
       >
-        <Link to="/your-miles" className="nav-link">
+        <Link to="/your-miles/miles" className="nav-link">
           <FiCompass color="#f2c811" size={16} />
 
           <span className="link-text">Quilometragem</span>
+        </Link>
+      </OptionList>
+
+      <OptionList
+        pathname={pathname}
+        path="/your-miles/supply"
+        className="nav-item"
+        visible={user.employers}
+      >
+        <Link to="/your-miles/supply" className="nav-link">
+          <BiGasPump color="#f2c811" size={16} />
+
+          <span className="link-text">Abastecimento</span>
+        </Link>
+      </OptionList>
+
+      <OptionList
+        pathname={pathname}
+        path="/your-miles/maintenance"
+        className="nav-item"
+        visible={user.employers}
+      >
+        <Link to="/your-miles/maintenance" className="nav-link">
+          <GiAutoRepair color="#f2c811" size={16} />
+
+          <span className="link-text">Manutenção</span>
         </Link>
       </OptionList>
     </>
@@ -265,6 +293,19 @@ export function OrderServices(
           <span className="link-text">Painel ordens de serviço</span>
         </Link>
       </OptionList>
+
+      <OptionList
+        pathname={pathname}
+        path="/service-orders/monitoring"
+        className="nav-item"
+        visible={user.tag === 'admin' || user.tag === 'admin-os'}
+      >
+        <Link to="/service-orders/monitoring" className="nav-link">
+          <FiActivity color="#f2c811" size={16} />
+
+          <span className="link-text">Painel de monitoramento</span>
+        </Link>
+      </OptionList>
     </>
   );
 }
@@ -321,7 +362,20 @@ export function Addministrator(
   );
 }
 
-export function Rules(pathname: string) {
+export function Rules(
+  pathname: string,
+  user: {
+    tag: string;
+    dashboard: boolean;
+    goals_and_sub_goals: boolean;
+    sector: boolean;
+    employers: boolean;
+    module_analyze: boolean;
+    imports: boolean;
+    report: boolean;
+    schedule: boolean;
+  },
+) {
   return (
     <>
       <OptionList pathname={pathname} path="/menu" className="nav-item" visible>
@@ -329,6 +383,19 @@ export function Rules(pathname: string) {
           <FiList color="#f2c811" size={16} />
 
           <span className="link-text">Menu inicial</span>
+        </Link>
+      </OptionList>
+
+      <OptionList
+        pathname={pathname}
+        path="/rules"
+        className="nav-item"
+        visible={user.tag === 'admin'}
+      >
+        <Link to="/rules" className="nav-link">
+          <FiFileText color="#f2c811" size={16} />
+
+          <span className="link-text">Normas interna</span>
         </Link>
       </OptionList>
     </>

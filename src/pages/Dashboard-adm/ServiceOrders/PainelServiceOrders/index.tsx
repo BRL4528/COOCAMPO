@@ -2,6 +2,8 @@
 import React, { useCallback, useState } from 'react';
 import { Form } from '@unform/web';
 
+import { Link } from 'react-router-dom';
+import { FiAlertCircle } from 'react-icons/fi';
 import OrderServiceTable from '../../../../components/Admin/OrderServiceTablePainel';
 import Select from '../../../../components/Global/Select';
 import Input from '../../../../components/Global/Input';
@@ -17,6 +19,7 @@ import {
 import { useAuth } from '../../../../hooks/auth';
 
 import { CardeHeader, Container } from './styles';
+import { api } from '../../../../services/api';
 
 interface PropsItem {
   title?: string;
@@ -47,7 +50,7 @@ interface IFilter {
 }
 
 const Reports: React.FC<PropsItem> = ({ title }) => {
-  const { user } = useAuth();
+  const { user, updateUser } = useAuth();
   const [modalOpen, setModalOpen] = useState(false);
 
   const [toogleFilter, setToogleFilter] = useState(true);
@@ -89,6 +92,22 @@ const Reports: React.FC<PropsItem> = ({ title }) => {
     setToogleFilter(!toogleFilter);
   }, [toogleFilter]);
 
+  const handleServiceAbsence = useCallback(async () => {
+    if (user.status === 'Ausente') {
+      const response = api.put('/accesses', {
+        nickname: user.nickname,
+        status: 'Presente',
+      });
+      updateUser((await response).data);
+    } else if (user.status === 'Presente') {
+      const response = api.put('/accesses', {
+        nickname: user.nickname,
+        status: 'Ausente',
+      });
+      updateUser((await response).data);
+    }
+  }, [updateUser, user.nickname, user.status]);
+
   return (
     <>
       <ModallServicesOrders
@@ -99,7 +118,16 @@ const Reports: React.FC<PropsItem> = ({ title }) => {
       <Container toogleFilter={toogleFilter}>
         <CardeHeader titleItem={title}>
           <div>
-            <h2>Ordens de serviços</h2>
+            <h2>
+              Ordens de serviços
+              <Link
+                target="__black"
+                to="/rules/sector-resume-rules?solicitacao-de-servico-para-ti"
+              >
+                {' '}
+                <FiAlertCircle size={20} />{' '}
+              </Link>
+            </h2>
             <strong>Monitore a demanda de solicitaçoes de serviços</strong>
           </div>
 
@@ -114,9 +142,22 @@ const Reports: React.FC<PropsItem> = ({ title }) => {
 
         <section className="section-filter">
           <header>
-            <Button isUsed type="button" onClick={handleToogleFilter}>
-              <p>Filtro</p>
-            </Button>
+            <span>
+              <Button isUsed type="button" onClick={handleToogleFilter}>
+                <p>Filtro</p>
+              </Button>
+            </span>
+
+            <span>
+              <Button
+                isUsed
+                type="button"
+                className={user.status}
+                onClick={handleServiceAbsence}
+              >
+                <p>{user.status}</p>
+              </Button>
+            </span>
           </header>
 
           <Form onSubmit={handleFilter}>

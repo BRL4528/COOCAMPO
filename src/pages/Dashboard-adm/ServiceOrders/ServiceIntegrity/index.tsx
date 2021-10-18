@@ -7,6 +7,8 @@ import { FcOk, FcHighPriority, FcExpired } from 'react-icons/fc';
 import { format } from 'date-fns';
 // eslint-disable-next-line import/no-duplicates
 import ptBR from 'date-fns/locale/pt-BR';
+import { Link } from 'react-router-dom';
+import { FiAlertCircle } from 'react-icons/fi';
 import Button from '../../../../components/Global/Button';
 
 import ModalUpdateServiceIntegrity from './ModalUpdateServiceIntegrity';
@@ -62,7 +64,16 @@ const Reports: React.FC = () => {
       />
       <CardeHeader>
         <div>
-          <h2>Integridade dos serviços</h2>
+          <h2>
+            Integridade dos serviços
+            <Link
+              target="__black"
+              to="/rules/sector-resume-rules?solicitacao-de-servico-para-ti"
+            >
+              {' '}
+              <FiAlertCircle size={20} />{' '}
+            </Link>
+          </h2>
           <strong>Acompanhe o status dos serviços da cooperativa</strong>
         </div>
 

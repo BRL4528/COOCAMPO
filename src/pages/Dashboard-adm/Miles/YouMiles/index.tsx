@@ -18,13 +18,17 @@ import { CardButton, CardeHeader, Container, Info } from './styles';
 import { api } from '../../../../services/api';
 
 interface IVehicles {
-  id?: string;
+  id: string;
   name: string;
   plate: string;
   year: string;
   fuel: string;
   km: number;
+  image: string;
+  document: string;
   observations: string;
+  image_url: string;
+  document_url: string;
 }
 
 interface PropsItem {
@@ -125,8 +129,6 @@ const Reports: React.FC<PropsItem> = ({ title }) => {
       api.post('/kilometers', formatData).then(response => {
         setNewRegister(response.data.id);
       });
-
-      console.log('retorno cadastro KM', formatData);
     },
     [selectedVehicle?.id, user.id],
   );
@@ -191,10 +193,7 @@ const Reports: React.FC<PropsItem> = ({ title }) => {
                 onClick={() => handleSelectedVehicle(vehicle)}
               >
                 <div className="containerVehicle">
-                  <img
-                    alt="carrro"
-                    src="https://th.bing.com/th/id/R.5af4d6a470abca78969189197e7b0206?rik=Fv%2fc7Cy%2fnS18NA&riu=http%3a%2f%2fwww.planetcarsz.com%2fassets%2fuploads%2fFIAT+STRADA+FREEDOM+CABINE+PLUS+2021+05.jpg&ehk=2YTcM%2bYg1rPW7Ce2KIWYRWlVVpaD%2fTD4F3rzaCCCFFA%3d&risl=&pid=ImgRaw&r=0"
-                  />
+                  <img alt="carrro" src={vehicle.image_url} />
                   <section>
                     <p>
                       {vehicle.name} - placa {vehicle.plate}

@@ -1,12 +1,11 @@
 /* eslint-disable no-multi-assign */
-/* eslint-disable no-unused-vars */
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 
 // eslint-disable-next-line import/no-duplicates
 import { format } from 'date-fns';
 // eslint-disable-next-line import/no-duplicates
 import ptBR from 'date-fns/locale/pt-BR';
-
+import { useLoading, Oval } from '@agney/react-loading';
 import ModalBoxItemTable from './ModalBoxItemTable';
 
 import { api } from '../../../services/api';
@@ -20,13 +19,23 @@ interface IdataTable {
 interface IKilometers {
   // vehicle_id?: string;
   // access_id?: string;
-  id: string;
-  km_start: number;
-  km_end: number;
-  km_traveled?: number;
-  observations: string;
-  reason: string;
-  created_at: string;
+  kilometer: [
+    {
+      id: string;
+      km_start: number;
+      km_end: number;
+      km_traveled: number;
+      observations: string;
+      reason: string;
+      created_at: string;
+    },
+  ];
+  pagination: {
+    page: number;
+    take: number;
+    total: number;
+    totalPages: number;
+  };
 }
 
 const OrderServiceTable: React.FC<IdataTable> = ({
@@ -34,19 +43,28 @@ const OrderServiceTable: React.FC<IdataTable> = ({
   vehicle_id,
   newRegister,
 }: IdataTable) => {
-  const [dataTable, setDataTable] = useState<IKilometers[]>([]);
+  const componentRef = useRef<HTMLDivElement>(null);
+  const [dataTable, setDataTable] = useState<IKilometers>();
   const [modalOpen, setModalOpen] = useState(false);
 
   const [idOpenModal, setIdOpenModal] = useState('nada');
+
+  const [loading, setLoading] = useState(false);
 
   // const [pagination, setPagination] = useState({
   //   page: 0,
   // });
 
   useEffect(() => {
-    api.get<IKilometers[]>(`/kilometers`).then(response => {
-      setDataTable(response.data);
-    });
+    setLoading(true);
+    api
+      .get<IKilometers>(
+        `/kilometers/filter?access_id=${access_id}&vehicle_id=${vehicle_id}&take=6&page=0`,
+      )
+      .then(response => {
+        setDataTable(response.data);
+        setLoading(false);
+      });
   }, [access_id, vehicle_id, newRegister]);
 
   const toggleModal = useCallback(() => {
@@ -79,47 +97,73 @@ const OrderServiceTable: React.FC<IdataTable> = ({
   //   setPagination(newPage);
   // }, [pagination]);
 
+  const { containerProps, indicatorEl } = useLoading({
+    loading,
+    indicator: <Oval />,
+  });
+
   return (
     <>
       <Container>
-        <table>
-          <thead>
-            <tr>
-              <th>Data</th>
-              <th>KM Inicial</th>
-              <th>KM Final</th>
-              <th>KM percorrido</th>
-              <th>Destino</th>
-              <th>Motivo</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            {dataTable?.map(item => (
-              <tr key={item.id} onClick={() => tggleIdModal(item.id)}>
-                <td>
-                  {format(new Date(item.created_at), 'dd/MM/yyyy - HH:mm:ss', {
-                    locale: ptBR,
-                  })}
-                </td>
-
-                <td>{item.km_start}</td>
-                <td>{item.km_end}</td>
-                <td>{item.km_traveled}</td>
-                <td>{item.observations}</td>
-                <td>{item.reason}</td>
-
-                <ModalBoxItemTable
-                  id={item.id}
-                  isDataId={idOpenModal}
-                  isOpen={modalOpen}
-                  setIsOpen={toggleModal}
-                  setToggleModal={setToggleModal}
-                />
+        {loading ? (
+          <div {...containerProps} ref={componentRef}>
+            {indicatorEl}
+          </div>
+        ) : (
+          <table>
+            <thead>
+              <tr>
+                <th>Data</th>
+                <th>KM Inicial</th>
+                <th>KM Final</th>
+                <th>KM percorrido</th>
+                <th>Destino</th>
+                <th>Motivo</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+
+            <tbody>
+              <>
+                {dataTable?.kilometer !== undefined &&
+                dataTable?.kilometer.length > 0 ? (
+                  <>
+                    {dataTable?.kilometer.map(item => (
+                      <tr key={item.id} onClick={() => tggleIdModal(item.id)}>
+                        <td>
+                          {format(
+                            new Date(item.created_at),
+                            'dd/MM/yyyy - HH:mm:ss',
+                            {
+                              locale: ptBR,
+                            },
+                          )}
+                        </td>
+
+                        <td>{item.km_start}</td>
+                        <td>{item.km_end}</td>
+                        <td>{item.km_traveled}</td>
+                        <td>{item.observations}</td>
+                        <td>{item.reason}</td>
+
+                        <ModalBoxItemTable
+                          id={item.id}
+                          isDataId={idOpenModal}
+                          isOpen={modalOpen}
+                          setIsOpen={toggleModal}
+                          setToggleModal={setToggleModal}
+                        />
+                      </tr>
+                    ))}
+                  </>
+                ) : (
+                  <div>
+                    <p>Você não possui quilometragens com este veículo</p>
+                  </div>
+                )}
+              </>
+            </tbody>
+          </table>
+        )}
       </Container>
       {/* <Section>
         <div>

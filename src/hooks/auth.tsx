@@ -5,6 +5,7 @@ interface User {
   id: string;
   name: string;
   nickname: string;
+  status: string;
   tag: string;
   email: string;
   dashboard: boolean;

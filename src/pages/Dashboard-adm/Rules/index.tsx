@@ -1,247 +1,197 @@
-import React, { useCallback, useState, useRef, useEffect } from 'react';
+/* eslint-disable @typescript-eslint/no-empty-function */
+/* eslint-disable react/jsx-indent */
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 
+import Prismic from '@prismicio/client';
+import { RichText } from 'prismic-dom';
 import { Link } from 'react-router-dom';
+import { Form } from '@unform/web';
 
-import { FullScreen, useFullScreenHandle } from 'react-full-screen';
+import { FiSearch } from 'react-icons/fi';
+import { FormHandles } from '@unform/core';
+import Input from '../../../components/Global/Input';
+import { getPrismicClient } from '../../../services/prismic';
 
-import ReactToPrint from 'react-to-print';
+import { Container, NicList } from './styles';
 
-import {
-  FiEdit,
-  FiPrinter,
-  FiMaximize,
-  // FiChevronsDown,
-  FiGrid,
-} from 'react-icons/fi';
+import nic_logo from '../../../assets/nic_logo.png';
 
-import Button from '../../../components/Global/Button';
-import ModalAddGoals from '../../../components/Admin/Modal/ModalAddSector';
-import ModalEditGoals from '../../../components/Admin/Modal/ModalEditSector';
-
-import {
-  Container,
-  CardeHeader,
-  CardButton,
-  CardGraphic,
-  GraphicTitle,
-  // GraphicSpeed,
-  // CardBodyGoals,
-  CardGraphicText,
-} from './styles';
-import { api } from '../../../services/api';
-import { useAuth } from '../../../hooks/auth';
-
-interface ISector {
-  id: string;
-  name: string;
-  leader: string;
-  observations?: string;
-  codccu?: string;
+interface NicsProps {
+  slug: string | undefined;
+  title: string;
+  excerpt: any;
+  updateAt: string;
 }
 
-interface IDataSectorToUser {
-  access_id: string;
-  sector_id: string;
-  sector: {
-    id: string;
-    name: string;
-    leader: string;
-    branch: string;
-    observations?: string;
-    codccu?: string;
-  };
-}
+const InternalNorm: React.FC = () => {
+  const [nicInternal, setNicInternal] = useState<NicsProps[]>([]);
+  const formRef = useRef<FormHandles>(null);
 
-interface PropsItem {
-  title?: string;
-}
+  useEffect(() => {}, []);
 
-const SelectorFolders: React.FC<PropsItem> = ({ title }) => {
-  const handle = useFullScreenHandle();
-  const { user } = useAuth();
+  async function handlePrismic(search: string, type: string) {
+    const prismic = getPrismicClient();
 
-  const componentRef = useRef<HTMLDivElement>(null);
-
-  const [modalEditSectorOpen, setModalEditSectorOpen] = useState(false);
-  // const [isOpen, setIsOpen] = useState(false);
-
-  const [modalOpen, setModalOpen] = useState(false);
-  const [dataEditSector, setDataEditSector] = useState('');
-
-  const [dataSector, setDataSector] = useState<ISector>();
-  const [dataUpdateSector, setDataUpdateSector] = useState<ISector[]>([]);
-
-  // const [grupSectorsSelected, setGrupSectorsSelected] = useState<string[]>([]);
-
-  const toggleModal = useCallback(() => {
-    setDataEditSector('');
-    setModalOpen(!modalOpen);
-  }, [modalOpen]);
-
-  const toggleModalEditSector = useCallback(() => {
-    setDataEditSector('');
-    setModalEditSectorOpen(!modalEditSectorOpen);
-  }, [modalEditSectorOpen]);
-
-  const handleEdit = useCallback((idSector: string) => {
-    setModalEditSectorOpen(true);
-    setDataEditSector(idSector);
-  }, []);
-
-  // const togleOpenCard = useCallback(() => {
-  //   setIsOpen(true);
-  // }, []);
-
-  const handlePrint = useCallback(id => {
-    const el = document.getElementById(id);
-    return el;
-  }, []);
-
-  // const handleHepand = useCallback(
-  //   (id: string) => {
-  //     setIsOpen(!isOpen);
-  //     const alreadySelected = grupSectorsSelected.findIndex(
-  //       (item: string) => item === id,
-  //     );
-
-  //     if (alreadySelected >= 0) {
-  //       const filteredItems = grupSectorsSelected.filter(
-  //         (item: string) => item !== id,
-  //       );
-
-  //       setGrupSectorsSelected(filteredItems);
-  //     } else {
-  //       setGrupSectorsSelected([...grupSectorsSelected, id]);
-  //     }
-  //   },
-  //   [grupSectorsSelected, isOpen],
-  // );
-
-  useEffect(() => {
-    if (user.tag !== 'admin') {
-      api
-        .get<IDataSectorToUser[]>(`/accesses-of-sectors/${user.id}`)
+    if (type === 'search') {
+      console.log(type);
+      await prismic
+        .query(
+          [
+            Prismic.predicates.at('document.type', 'publication'),
+            Prismic.predicates.fulltext('document', `${search}`),
+          ],
+          {
+            fetch: ['publication.title', 'publication.content'],
+            pageSize: 100,
+          },
+        )
         .then(response => {
-          console.log('verisso aq', response.data);
-          const dataFormated = response.data.map(data => {
-            return data.sector;
+          const nics = response.results.map(nic => {
+            return {
+              slug: nic.uid,
+              title: RichText.asText(nic.data.title),
+              excerpt:
+                nic.data.content.find(
+                  (content: { type: string }) => content.type === 'paragraph',
+                )?.text ?? '',
+              updateAt: new Date(
+                nic.last_publication_date ?? '',
+              ).toLocaleDateString('pt-BR', {
+                day: '2-digit',
+                month: 'long',
+                year: 'numeric',
+              }),
+            };
           });
 
-          setDataUpdateSector(dataFormated);
+          setNicInternal(nics);
         });
-    } else {
-      api.get('/sectors').then(response => {
-        setDataUpdateSector(response.data);
-      });
-    }
-  }, [dataSector, user.id, user.tag]);
+    } else if (type === 'tag') {
+      console.log(type);
+      await prismic
+        .query([Prismic.predicates.at('document.tags', [`${search}`])], {
+          fetch: ['publication.title', 'publication.content'],
+          pageSize: 100,
+        })
+        .then(response => {
+          const nics = response.results.map(nic => {
+            return {
+              slug: nic.uid,
+              title: RichText.asText(nic.data.title),
+              excerpt:
+                nic.data.content.find(
+                  (content: { type: string }) => content.type === 'paragraph',
+                )?.text ?? '',
+              updateAt: new Date(
+                nic.last_publication_date ?? '',
+              ).toLocaleDateString('pt-BR', {
+                day: '2-digit',
+                month: 'long',
+                year: 'numeric',
+              }),
+            };
+          });
 
-  const handleSector = useCallback((sector: Omit<ISector, ''>) => {
-    try {
-      const sectorData = sector;
-      setDataSector(sectorData);
-    } catch (err) {
-      console.log(err);
+          setNicInternal(nics);
+        });
+    } else if (type === 'all') {
+      console.log(type);
+      await prismic
+        .query([Prismic.predicates.at('document.type', 'publication')], {
+          fetch: ['publication.title', 'publication.content'],
+          pageSize: 100,
+        })
+        .then(response => {
+          const nics = response.results.map(nic => {
+            return {
+              slug: nic.uid,
+              title: RichText.asText(nic.data.title),
+              excerpt:
+                nic.data.content.find(
+                  (content: { type: string }) => content.type === 'paragraph',
+                )?.text ?? '',
+              updateAt: new Date(
+                nic.last_publication_date ?? '',
+              ).toLocaleDateString('pt-BR', {
+                day: '2-digit',
+                month: 'long',
+                year: 'numeric',
+              }),
+            };
+          });
+
+          setNicInternal(nics);
+        });
     }
+  }
+
+  const handleSubmite = useCallback(data => {
+    handlePrismic(data.search, 'search');
+    console.log('rrri');
+  }, []);
+
+  const handleTag = useCallback((tag, type) => {
+    handlePrismic(tag, type);
+    console.log('oou');
   }, []);
 
   return (
-    <>
-      <ModalAddGoals
-        isOpen={modalOpen}
-        setIsOpen={toggleModal}
-        handleSector={handleSector}
-        dataEditSector={dataEditSector}
-        // setDataEditSector={setHandleEdit}
-      />
-      <ModalEditGoals
-        isOpen={modalEditSectorOpen}
-        setIsOpen={toggleModalEditSector}
-        handleSector={handleSector}
-        dataEditSector={dataEditSector}
-        // setDataEditSector={setHandleEdit}
-      />
+    <Container>
+      <NicList>
+        <div>
+          <img src={nic_logo} alt="logo search" />
 
-      <Container>
-        <CardeHeader titleItem={title}>
-          <div>
-            <h2>Normas interna</h2>
-            <strong>Visualize as normas internas da cooperativa.</strong>
-          </div>
+          <Form ref={formRef} onSubmit={handleSubmite}>
+            <Input
+              name="search"
+              type="text"
+              icon={FiSearch}
+              placeholder="Pesquisar"
+            />
+          </Form>
 
-          <CardButton>
-            <div>
-              <Button onClick={toggleModal} type="button">
-                Adicionar nova rotina
-              </Button>
-            </div>
-          </CardButton>
-        </CardeHeader>
-
-        {dataUpdateSector.map(sector => (
-          <FullScreen key={sector.id} handle={handle}>
-            <CardGraphic
-              // className="fullscreen-item"
-              // className={
-              //   grupSectorsSelected.includes(sector.id) ? 'selected' : ''
-              // }
-              id={sector.id}
-              ref={componentRef}
+          <section>
+            <button type="button" onClick={() => handleTag('manual', 'tag')}>
+              Manuais
+            </button>
+            <button type="button" onClick={() => handleTag('standards', 'tag')}>
+              Normas
+            </button>
+            <button
+              type="button"
+              onClick={() => handleTag('step-by-step', 'tag')}
             >
-              {/* Header */}
-              <CardGraphicText>
-                <GraphicTitle>
-                  <h3>{sector.name}</h3>
+              Passo a Passo
+            </button>
+            <button type="button" onClick={() => handleTag('flowchart', 'tag')}>
+              Fluxogramas
+            </button>
 
-                  <p>
-                    Centro de custo:
-                    {sector.codccu}
-                  </p>
-                </GraphicTitle>
-                <span>
-                  <FiEdit onClick={() => handleEdit(sector.id)} />
-                  <ReactToPrint
-                    trigger={() => <FiPrinter />}
-                    content={() => handlePrint(sector.id)}
-                  />
-                  <FiMaximize onClick={handle.enter} />
-                  <Link to={`/rules/sector-resume-rules?${sector.id}`}>
-                    <FiGrid />
-                  </Link>
-                  {/* <FiChevronsDown
-                    className={
-                      grupSectorsSelected.includes(sector.id) ? 'logo' : ''
-                    }
-                    onClick={() => handleHepand(sector.id)}
-                  /> */}
-                </span>
-              </CardGraphicText>
+            <button type="button" onClick={() => handleTag('gescooper', 'tag')}>
+              Gescooper
+            </button>
 
-              {/* <div
-                className={
-                  grupSectorsSelected.includes(sector.id) ? 'selected' : ''
-                }
+            <button type="button" onClick={() => handleTag('all', 'all')}>
+              Todos
+            </button>
+          </section>
+        </div>
+        {nicInternal
+          ? nicInternal.map(nic => (
+              <Link
+                key={nic.slug}
+                to={`/rules/sector-resume-rules?${nic.slug}`}
               >
-                {loadingSectors ? (
-                  <>
-                    <Table
-                      idSector={sector.id}
-                      isOpen={isOpen}
-                      startOpen={false}
-                      setIsOpen={togleOpenCard}
-                      month={subject}
-                    />
-                  </>
-                ) : (
-                  <div>Aguardando carregar o filtro...</div>
-                )}
-              </div> */}
-            </CardGraphic>
-          </FullScreen>
-        ))}
-      </Container>
-    </>
+                <time>{nic.updateAt}</time>
+                <strong>{nic.title}</strong>
+                <p>{nic.excerpt}</p>
+              </Link>
+            ))
+          : ''}
+      </NicList>
+    </Container>
   );
 };
 
-export default SelectorFolders;
+export default InternalNorm;

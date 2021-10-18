@@ -20,7 +20,7 @@ const GraphicBarApex: React.FC<ColorStyles> = ({
     series: [
       {
         name: 'Resultado',
-        data: [4.85, 3.14, 2.86, 2.97, 3.24, 3.57, 3.56, result],
+        data: [4.85, 3.14, 2.86, 2.97, 3.24, 3.57, 3.56, 3.25, result],
       },
     ],
     plotOptions: {
@@ -41,6 +41,7 @@ const GraphicBarApex: React.FC<ColorStyles> = ({
         'Junho',
         'Julho',
         'Agosto',
+        'Setembro',
       ],
     },
     // chart: {

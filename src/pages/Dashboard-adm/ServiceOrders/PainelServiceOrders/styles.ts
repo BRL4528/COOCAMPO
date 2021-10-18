@@ -1,5 +1,7 @@
 import styled from 'styled-components';
 
+import { shade } from 'polished';
+
 interface Iprops {
   titleItem?: string;
   toogleFilter?: boolean;
@@ -18,9 +20,33 @@ export const Container = styled.div<Iprops>`
 
   .section-filter {
     header {
+      .Ausente {
+        color: var(--color-title-in-primary);
+        background: #e83f5b;
+        border-color: #e83f5b;
+        :hover {
+          background: ${shade(0.2, '#e83f5b')};
+          border-color: ${shade(0.2, '#e83f5b')};
+        }
+      }
+
+      .Presente {
+        color: var(--color-title-in-primary);
+        background: #33cc95;
+        border-color: #33cc95;
+        :hover {
+          background: ${shade(0.2, '#33CC95')};
+          border-color: ${shade(0.2, '#33CC95')};
+        }
+      }
       button {
         max-width: 100px;
-        max-height: 30px;
+        max-height: 35px;
+      }
+      span {
+        & + span {
+          margin-left: 15px;
+        }
       }
     }
 

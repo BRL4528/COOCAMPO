@@ -18,3 +18,8 @@ export const apiGeninfo = axios.create({
     password: 'C0Ox@G.1l',
   },
 });
+
+export const apiPowerBiDashboard = axios.create({
+  baseURL:
+    'https://api.powerbi.com/beta/e9a74b56-c008-4411-9616-0a7f17e12dad/datasets/fc14a445-b4bb-4435-a72a-7a4e88de65f8/',
+});

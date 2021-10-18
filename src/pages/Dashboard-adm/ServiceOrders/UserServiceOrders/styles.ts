@@ -160,6 +160,11 @@ export const CardInfo = styled.div`
     color: #2e656a;
     border: 1px solid var(--green-primary);
   }
+  .waring {
+    background: #fcf6bd;
+    color: var(--text-quarterly);
+    border: 1px solid #fb8500;
+  }
 
   > div {
     display: flex;
