@@ -203,14 +203,14 @@ const SelectorFolders: React.FC = () => {
                   </Button>
                 )}
                 content={() => handlePrint('print')}
-                documentTitle="Demontrativo-Agosto-2021"
+                documentTitle="Demontrativo-Julho-2021"
               />
             </div>
           </CardButton>
         </CardeHeader>
         <div id="print">
           <Header className="headerPrint">
-            <h1>Demonstrativo do Resultado - Agosto 2021</h1>
+            <h1>Demonstrativo do Resultado - Julho 2021</h1>
           </Header>
           <CardHeader color="#0B85BD">
             <Revenues>
@@ -273,7 +273,7 @@ const SelectorFolders: React.FC = () => {
 
           <CardHeader color="#e2c90a">
             <Revenues>
-              <h3>Faturamento líquido - Agosto</h3>
+              <h3>Faturamento líquido - Julho</h3>
               <h1>
                 {formatPrice(
                   dataHeader?.resultMonth ? dataHeader?.resultMonth : 0,
@@ -282,7 +282,7 @@ const SelectorFolders: React.FC = () => {
             </Revenues>
             <span />
             <Result>
-              <h3>Resultado líquido - Agosto</h3>
+              <h3>Resultado líquido - Julho</h3>
               <h1>
                 {formatPrice(
                   dataHeader?.liquidMonth ? dataHeader?.liquidMonth : 0,
@@ -291,7 +291,7 @@ const SelectorFolders: React.FC = () => {
             </Result>
             <span />
             <Finances>
-              <h3>Resultado financeiro - Agosto</h3>
+              <h3>Resultado financeiro - Julho</h3>
               <h1>
                 {dataHeader?.percentageLiquidMonth
                   ? dataHeader?.percentageLiquidMonth.toFixed(2)
@@ -314,7 +314,7 @@ const SelectorFolders: React.FC = () => {
             <CardGraphicSpeed>
               <h3>Resultado Mês a Mês (%)</h3>
               <GraphicBar
-                result={Number(dataHeader?.percentageLiquid.toFixed(2))}
+                result={3.25}
                 width={390}
                 height={300}
                 title=""
@@ -324,7 +324,7 @@ const SelectorFolders: React.FC = () => {
             <CardGraphicSpeed>
               <h3>Metas x Resultados (%)</h3>
               <GraphicLine
-                resultData={Number(dataHeader?.percentageLiquid.toFixed(2))}
+                resultData={3.25}
                 width={390}
                 height={300}
                 color="#240dac"
