@@ -301,34 +301,40 @@ const SelectorFolders: React.FC = () => {
             </Finances>
           </CardHeader>
 
-          <ContainerGraphics>
-            <CardGraphicSpeed>
+          <CardGraphicSpeed>
+            <div>
               <h3>Alcance PPRS</h3>
               <GraphicSpeed
                 title={title}
                 textValue={`${dataHeader.percentageLiquid.toFixed(2)}%`}
-                width={420}
+                width={500}
                 dataValue={dataGraphicspeed}
               />
-            </CardGraphicSpeed>
-            <CardGraphicSpeed>
-              <h3>Resultado Mês a Mês (%)</h3>
+              {/* </CardGraphicSpeed>
+            <CardGraphicSpeed> */}
+            </div>
+            <div>
+              <span>
+                <h3>Resultado Mês a Mês (%)</h3>
+              </span>
               <GraphicBar
-                result={3.25}
-                width={390}
+                result={Number(dataHeader?.percentageLiquid.toFixed(2))}
+                width={1000}
                 height={300}
                 title=""
                 color="#240dac"
               />
-            </CardGraphicSpeed>
+            </div>
+          </CardGraphicSpeed>
+          <ContainerGraphics>
             <CardGraphicSpeed>
-              <h3>Metas x Resultados (%)</h3>
-              <GraphicLine
-                resultData={3.25}
+              {/* <h3>Metas x Resultados (%)</h3> */}
+              {/* <GraphicLine
+                resultData={Number(dataHeader?.percentageLiquid.toFixed(2))}
                 width={390}
                 height={300}
                 color="#240dac"
-              />
+              /> */}
             </CardGraphicSpeed>
           </ContainerGraphics>
 

@@ -237,15 +237,34 @@ export const ContainerGraphics = styled.div`
 export const CardGraphicSpeed = styled.div`
   display: flex;
   align-items: center;
-  flex-direction: column;
+  flex-direction: row;
+  justify-content: space-between;
+
   margin-top: 40px;
+  margin-right: 40px;
+
+  /* text-align: center; */
+  /* margin: 0 auto; */
+  /* max-width: 300px;
+  min-width: 300px; */
 
   .speedometer {
-    margin-top: 60px;
+    margin-top: 20px;
   }
 
-  h3 {
+  > h3 {
     color: #433f59;
+  }
+  span {
+    h3 {
+      color: #433f59;
+      margin-top: -8px;
+      margin-bottom: 8px;
+    }
+  }
+
+  div {
+    text-align: center;
   }
 `;
 
