@@ -1,3 +1,4 @@
+import shade from 'polished/lib/color/shade';
 import styled from 'styled-components';
 
 interface Colors {
@@ -18,23 +19,6 @@ export const Container = styled.div`
     font-size: 14px;
   }
 
-  .selected {
-    max-height: 300px;
-
-    /* transition: var(--transition-speed); */
-
-    div {
-      max-height: 200px;
-      visibility: visible;
-      opacity: 1;
-      /* transition: var(--transition-speed); */
-    }
-    svg {
-      color: #1c9cd9;
-    }
-    /* transition: max-height 10s; */
-  }
-
   .logo {
     transform: rotate(180deg);
     transition: var(--transition-speed);
@@ -46,6 +30,35 @@ export const Container = styled.div`
     display: flex;
     flex-direction: column;
     overflow: scroll;
+  }
+
+  section {
+    margin-bottom: 3rem;
+
+    button {
+      margin: 8px;
+      min-width: 60px;
+      border-radius: 6px;
+      border: 2px solid #f2c811;
+      color: #ffb703;
+      font-weight: 500;
+      font-size: small;
+      padding: 5px;
+      background: #fdffb6;
+      transition: var(--transition-speed);
+
+      :hover {
+        transition: var(--transition-speed);
+
+        background: ${shade(0.2, '#fdffb6')};
+      }
+    }
+
+    .selected {
+      background: #e1faec;
+      border: 2px solid #34cb79;
+      color: #34cb79;
+    }
   }
 `;
 

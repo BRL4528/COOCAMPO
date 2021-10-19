@@ -1,3 +1,7 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+/* eslint-disable no-multi-assign */
+/* eslint-disable no-plusplus */
+/* eslint-disable @typescript-eslint/no-empty-function */
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import ReactToPrint from 'react-to-print';
 import Button from '../../../../components/Global/Button';
@@ -64,6 +68,103 @@ const title = {
   text3: '1,5 Sal.Base',
   text4: '2 Sal.Base',
 };
+
+const years = [
+  // {
+  //   year_number: 2016,
+  // },
+  // {
+  //   year_number: 2017,
+  // },
+  // {
+  //   year_number: 2018,
+  // },
+  // {
+  //   year_number: 2019,
+  // },
+  // {
+  //   year_number: 2020,
+  // },
+  {
+    year_number: 2021,
+  },
+];
+
+const months = [
+  {
+    month_text: 'Janeiro',
+    month_number: 1,
+    goal: 5.61,
+    result: 4.85,
+  },
+  {
+    month_text: 'Fevereiro',
+    month_number: 2,
+    goal: 5.43,
+    result: 3.14,
+  },
+  {
+    month_text: 'Março',
+    month_number: 3,
+    goal: 4.75,
+    result: 2.86,
+  },
+  {
+    month_text: 'Abril',
+    month_number: 4,
+    goal: 4.77,
+    result: 2.97,
+  },
+  {
+    month_text: 'Maio',
+    month_number: 5,
+    goal: 4.45,
+    result: 3.24,
+  },
+  {
+    month_text: 'Junho',
+    month_number: 6,
+    goal: 4.33,
+    result: 3.57,
+  },
+  {
+    month_text: 'Julho',
+    month_number: 7,
+    goal: 4.17,
+    result: 3.56,
+  },
+  {
+    month_text: 'Agosto',
+    month_number: 8,
+    goal: 4.05,
+    result: 3.25,
+  },
+  {
+    month_text: 'Setembro',
+    month_number: 9,
+    goal: 3.95,
+    result: 3.3,
+  },
+  {
+    month_text: 'Outubro',
+    month_number: 10,
+    goal: 3.92,
+    result: 3.51,
+  },
+  {
+    month_text: 'Novembro',
+    month_number: 11,
+    goal: 3.95,
+    result: 3.51,
+  },
+  {
+    month_text: 'Dezembro',
+    month_number: 12,
+    goal: 4.04,
+    result: 3.51,
+  },
+];
+
 const SelectorFolders: React.FC = () => {
   const [dataHeader, setDataHeader] = useState<IDataHeader>({
     goalRevenues: 0,
@@ -77,18 +178,28 @@ const SelectorFolders: React.FC = () => {
     percentageLiquidMonth: 0,
   });
 
+  const [monthSelected, setMonthSelected] = useState(
+    Number(String(new Date().getMonth() + 1).padStart(2, '0')) - 1,
+  );
+  const [yearSelected, setYearSelected] = useState(2021);
+
   useEffect(() => {
     apiGeninfo
       .get<IDataGeinfo>('/metas', {
         params: {
-          ano: 2021,
+          ano: yearSelected,
           mesInicial: 1,
-          mesFinal: 9,
+          mesFinal: monthSelected,
           painel: 'PPR Adm Central',
         },
       })
       .then(res => {
-        console.log(res);
+        // const resultFinancesOrcadoFormated = resultFinancesGraphc.map(
+        //   result => {
+        //     return result.orcado;
+        //   },
+        // );
+
         // Calculando o faturamento líquido
         const resultRevenues = res.data.response.filter(
           el => el.indicador === '(PPR) FATURAMENTO LÍQUIDO',
@@ -105,7 +216,9 @@ const SelectorFolders: React.FC = () => {
 
         // Calculando o faturamento líquido do mês
         const resultRevenuesMonth = res.data.response.filter(
-          el => el.indicador === '(PPR) FATURAMENTO LÍQUIDO' && el.mes === 9,
+          el =>
+            el.indicador === '(PPR) FATURAMENTO LÍQUIDO' &&
+            el.mes === monthSelected,
         );
 
         // Calculando do resultado liquido
@@ -117,14 +230,38 @@ const SelectorFolders: React.FC = () => {
           (total, number) => total + number.orcado,
           0,
         );
+
         const resultFormated = result.reduce(
           (total, number) => total + number.realizado,
           0,
         );
 
+        // const resultMonth = [];
+        // const monthCurrent = [];
+
+        // const resultLiquid = [];
+        // const fatuLiquid = [];
+        const e: { month: number; result: number; acumuled: number }[] = [];
+
+        function formatedAcumuled() {
+          return e.reduce((total, number) => total + number.result, 0);
+        }
+
+        for (let index = 0; index < result.length; index++) {
+          const formated = {
+            month: result[index].mes,
+            result: result[index].realizado,
+            acumuled: formatedAcumuled(),
+          };
+
+          e.push(formated);
+        }
+
         // Calculando do resultado liquido
         const resultLiquidMonth = res.data.response.filter(
-          el => el.indicador === '(PPR) RESULTADO LÍQUIDO' && el.mes === 9,
+          el =>
+            el.indicador === '(PPR) RESULTADO LÍQUIDO' &&
+            el.mes === monthSelected,
         );
 
         const resultFinances = {
@@ -134,7 +271,9 @@ const SelectorFolders: React.FC = () => {
           resultMonth: resultRevenuesMonth[0].realizado,
 
           percentageRevenues: (goaltFormated / goaltRevenuesFormated) * 100,
+
           percentageLiquid: (resultFormated / resultRevenuesFormated) * 100,
+
           percentageLiquidMonth:
             (resultLiquidMonth[0].realizado /
               resultRevenuesMonth[0].realizado) *
@@ -148,7 +287,7 @@ const SelectorFolders: React.FC = () => {
 
         setDataHeader(resultFinances);
       });
-  }, []);
+  }, [monthSelected, yearSelected]);
 
   const handlePrint = useCallback(id => {
     return document.getElementById(id);
@@ -175,6 +314,19 @@ const SelectorFolders: React.FC = () => {
     }
     return 0;
   }, [dataHeader]);
+
+  const filterMonths = useMemo(() => {
+    const formated = months.filter(el => el.month_number <= monthSelected);
+    return formated;
+  }, [monthSelected]);
+
+  const handleSelectedMonth = useCallback((month: number) => {
+    setMonthSelected(month);
+  }, []);
+
+  const handleSelectedYear = useCallback((year: number) => {
+    setYearSelected(year);
+  }, []);
 
   return (
     <>
@@ -208,6 +360,37 @@ const SelectorFolders: React.FC = () => {
             </div>
           </CardButton>
         </CardeHeader>
+
+        <section>
+          <h4>Selecione o ano</h4>
+          {years.map(year => (
+            <button
+              type="button"
+              onClick={() => handleSelectedYear(year.year_number)}
+              className={
+                yearSelected === year.year_number ? 'selected' : 'unselected'
+              }
+            >
+              {year.year_number}
+            </button>
+          ))}
+        </section>
+
+        <section>
+          <h4>Selecione o mês final</h4>
+          {months.map(month => (
+            <button
+              type="button"
+              onClick={() => handleSelectedMonth(month.month_number)}
+              className={
+                monthSelected === month.month_number ? 'selected' : 'unselected'
+              }
+            >
+              {month.month_text}
+            </button>
+          ))}
+        </section>
+
         <div id="print">
           <Header className="headerPrint">
             <h1>Demonstrativo do Resultado - Setembro 2021</h1>
@@ -318,7 +501,7 @@ const SelectorFolders: React.FC = () => {
                 <h3>Resultado Mês a Mês (%)</h3>
               </span>
               <GraphicBar
-                result={Number(dataHeader?.percentageLiquid.toFixed(2))}
+                result={filterMonths}
                 width={650}
                 height={300}
                 title=""
