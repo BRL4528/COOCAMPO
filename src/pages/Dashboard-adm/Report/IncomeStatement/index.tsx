@@ -307,7 +307,7 @@ const SelectorFolders: React.FC = () => {
               <GraphicSpeed
                 title={title}
                 textValue={`${dataHeader.percentageLiquid.toFixed(2)}%`}
-                width={500}
+                width={400}
                 dataValue={dataGraphicspeed}
               />
               {/* </CardGraphicSpeed>
@@ -319,7 +319,7 @@ const SelectorFolders: React.FC = () => {
               </span>
               <GraphicBar
                 result={Number(dataHeader?.percentageLiquid.toFixed(2))}
-                width={1000}
+                width={650}
                 height={300}
                 title=""
                 color="#240dac"

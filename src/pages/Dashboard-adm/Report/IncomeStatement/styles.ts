@@ -240,7 +240,7 @@ export const CardGraphicSpeed = styled.div`
   flex-direction: row;
   justify-content: space-between;
 
-  margin-top: 40px;
+  margin-top: 10px;
   margin-right: 40px;
 
   /* text-align: center; */
@@ -252,14 +252,14 @@ export const CardGraphicSpeed = styled.div`
     margin-top: 20px;
   }
 
-  > h3 {
+  h3 {
     color: #433f59;
   }
   span {
     h3 {
       color: #433f59;
       margin-top: -8px;
-      margin-bottom: 8px;
+      /* margin-bottom: 8px; */
     }
   }
 
