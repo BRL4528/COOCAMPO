@@ -3,7 +3,7 @@ import ReactToPrint from 'react-to-print';
 import Button from '../../../../components/Global/Button';
 import GraphicSpeed from '../../../../components/Global/GraphicModels/GraphicSpeedometer';
 import GraphicBar from '../../../../components/Global/GraphicModels/ApexGraphicBar';
-import GraphicLine from '../../../../components/Global/GraphicModels/ApexGraphicLine';
+// import GraphicLine from '../../../../components/Global/GraphicModels/ApexGraphicLine';
 
 import { formatPrice } from '../../../../utils/format';
 
