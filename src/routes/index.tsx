@@ -32,6 +32,7 @@ import Employers from '../pages/Dashboard-adm/Employers';
 
 import Vehicles from '../pages/Dashboard-adm/Vehicles';
 
+import DashboardMiles from '../pages/Dashboard-adm/Miles';
 import VehiclesSchedule from '../pages/Dashboard-adm/Miles/Schedule';
 import YouMiles from '../pages/Dashboard-adm/Miles/YouMiles';
 import VehiclesSupply from '../pages/Dashboard-adm/Miles/Supply';
@@ -197,6 +198,13 @@ const Routes: React.FC = () => (
     <Route
       path="/service-orders/monitoring"
       component={Monitoring}
+      isPrivate
+      isAdmin
+    />
+
+    <Route
+      path="/dashboard-miles"
+      component={DashboardMiles}
       isPrivate
       isAdmin
     />

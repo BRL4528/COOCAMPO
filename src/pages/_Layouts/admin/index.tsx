@@ -9,24 +9,26 @@ interface LayoutProps {
 }
 
 const LayoutAdm: React.FC<LayoutProps> = ({ children, path }: LayoutProps) => {
+  if (path === '/menu') {
+    return (
+      <>
+        <Header>
+          <span>{path}</span>
+        </Header>
+        {children}
+      </>
+    );
+  }
+  if (path.substring(0, 16) === '/dashboard-miles') {
+    return <>{children}</>;
+  }
   return (
     <>
-      {path === '/menu' ? (
-        <>
-          <Header>
-            <span>{path}</span>
-          </Header>
-          {children}
-        </>
-      ) : (
-        <>
-          <Header>
-            <span>{path}</span>
-          </Header>
-          <Sidebar pathname={path} />
-          {children}
-        </>
-      )}
+      <Header>
+        <span>{path}</span>
+      </Header>
+      <Sidebar pathname={path} />
+      {children}
     </>
   );
 };

@@ -84,6 +84,7 @@ export default createGlobalStyle`
   }
 
   body {
+    transition: var(--transition-speed);
     background: var(--white-primary);
     color: var(--white-secondary);
     -webkit-font-smoothing: antialiased;

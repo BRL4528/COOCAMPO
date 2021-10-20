@@ -2,6 +2,7 @@ import React, { useCallback, useState, useEffect } from 'react';
 import { FiClock, FiStar } from 'react-icons/fi';
 
 import DayPicker from 'react-day-picker';
+
 import {
   CardeHeader,
   Container,
@@ -226,26 +227,6 @@ const Reports: React.FC<PropsItem> = () => {
             <DayPicker
               weekdaysShort={['D', 'S', 'T', 'Q', 'Q', 'S', 'S']}
               fromMonth={new Date()}
-              // onMonthChange={handleMonthChange}
-              // selectedDays={selectedDate}
-              // disabledDays={[{ daysOfWeek: [0, 6] }, ...disabledDays]}
-              // modifiers={{
-              //   available: { daysOfWeek: [1, 2, 3, 4, 5] },
-              // }}
-              // onDayClick={handleDateChange}
-              // months={[
-              //   'Janeiro',
-              //   'Fevereiro',
-              //   'Março',
-              //   'Abril',
-              //   'Maio',
-              //   'Junho',
-              //   'Agosto',
-              //   'Setembro',
-              //   'Outubro',
-              //   'Novembro',
-              //   'Dezembro',
-              // ]}
             />
           </Calendar>
         </Content>
