@@ -26,6 +26,7 @@ export function HeaderUp() {
       mt="4"
       px="6"
       align="center"
+      bg="theme"
     >
       {!isWideVersion && (
         <IconButton

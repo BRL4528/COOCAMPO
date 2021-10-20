@@ -1,21 +1,27 @@
+/* eslint-disable prettier/prettier */
 import styled from 'styled-components';
 
-interface ContainerProps {
+interface Prps {
   size?: 'small' | 'large';
+  theme: string;
 }
 
-export const Container = styled.div<ContainerProps>`
+export const Container = styled.div<Prps>`
   z-index: 1;
   position: fixed;
   overflow: hidden;
   width: 100vw;
   top: 0;
 
-  background: var(--white-secondary);
+  /* background: var(--white-secondary); */
+  background: ${({ theme }) => (theme === 'light' ? '#fff' : '#1F2029')};
+
+  transition: var(--transition-speed);
   padding: 5px 0;
-  border-bottom: 2px solid var(--text-tertiary);
+  border-bottom: ${({ theme }) =>
+    theme === 'light' ? '2px solid var(--text-tertiary)' : ''}; ;
 `;
-export const HeaderContent = styled.div<ContainerProps>`
+export const HeaderContent = styled.div<Prps>`
   width: 100%;
   margin: 0 auto;
   padding: ${({ size }) => (size === 'small' ? '0 15px ' : '0 50px 0px')};
@@ -25,7 +31,7 @@ export const HeaderContent = styled.div<ContainerProps>`
 
   > strong {
     margin-left: 5%;
-    color: var(--text-primary);
+    /* color: var(--text-primary); */
   }
 
   > div {
@@ -36,6 +42,17 @@ export const HeaderContent = styled.div<ContainerProps>`
       height: 80px;
       margin-bottom: -10px;
     } */
+    section {
+      display: flex;
+      flex-direction: row;
+      width: 60px;
+      justify-content: space-between;
+
+      & + button {
+        margin: 0 20px 0 0;
+      }
+    }
+
     span {
       color: var(--text-primary);
     }

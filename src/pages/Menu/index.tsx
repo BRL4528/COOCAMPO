@@ -1,9 +1,10 @@
 /* eslint-disable no-constant-condition */
 /* eslint-disable react/style-prop-object */
-import React from 'react';
+import React, { useContext } from 'react';
 
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../hooks/auth';
+
 import { ContainerCard, Content } from './styles';
 
 import destin from '../../assets/destin.svg';
@@ -11,11 +12,14 @@ import pie from '../../assets/pie.svg';
 import os from '../../assets/os.svg';
 import fluxo from '../../assets/fluxo.svg';
 import adm from '../../assets/adm.svg';
+import { SetToggleThemeContext } from '../../contexts/SetToggleThemeContext';
 
 const Menu: React.FC = () => {
   const { user } = useAuth();
+  const { toggleTheme } = useContext(SetToggleThemeContext);
+
   return (
-    <ContainerCard>
+    <ContainerCard theme={toggleTheme}>
       <div className={user.tag === 'admin' ? '' : 'disabled'}>
         <Link to="/dashboard-miles">
           <Content>

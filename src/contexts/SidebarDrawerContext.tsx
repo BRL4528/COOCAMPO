@@ -1,4 +1,4 @@
-import React, { createContext, ReactNode, useContext, useEffect } from 'react';
+import { createContext, ReactNode, useContext, useEffect } from 'react';
 import { useDisclosure, UseDisclosureReturn } from '@chakra-ui/react';
 import { useLocation } from 'react-router-dom';
 
@@ -18,7 +18,8 @@ export function SidebarDrawerProvider({
 
   useEffect(() => {
     disclosure.onClose();
-  }, [disclosure, pathname]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pathname]);
 
   return (
     <SidebarDrawerContext.Provider value={disclosure}>

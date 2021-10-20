@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-indent */
 /* eslint-disable react/no-unescaped-entities */
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React from 'react';
+import React, { useContext } from 'react';
 import { useLocation } from 'react-router-dom';
 
 import { FiSettings } from 'react-icons/fi';
@@ -18,7 +18,8 @@ import {
   Rules,
 } from './listMenuSidebar';
 
-import { OptionList } from './styles';
+import { SetToggleThemeContext } from '../../../contexts/SetToggleThemeContext';
+import { OptionList, Container } from './styles';
 import './styles.css';
 
 interface LayoutProps {
@@ -28,6 +29,7 @@ interface LayoutProps {
 const Sidebar: React.FC<LayoutProps> = ({ pathname }) => {
   const { user } = useAuth();
   const location = useLocation();
+  const { toggleTheme } = useContext(SetToggleThemeContext);
 
   function sideBarRenderized() {
     if (location.pathname.substring(0, 15) === '/management-ppr') {
@@ -49,7 +51,7 @@ const Sidebar: React.FC<LayoutProps> = ({ pathname }) => {
   }
 
   return (
-    <>
+    <Container theme={toggleTheme}>
       <nav id="noPrint" className="navbar">
         <ul className="navbar-nav">
           <li className="logo">
@@ -91,6 +93,7 @@ const Sidebar: React.FC<LayoutProps> = ({ pathname }) => {
             path="/import"
             className="nav-item"
             visible
+            theme={toggleTheme}
           >
             <button
               type="button"
@@ -104,7 +107,7 @@ const Sidebar: React.FC<LayoutProps> = ({ pathname }) => {
           </OptionList>
         </ul>
       </nav>
-    </>
+    </Container>
   );
 };
 

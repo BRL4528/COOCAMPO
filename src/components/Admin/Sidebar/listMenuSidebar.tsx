@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import {
   FiBarChart,
@@ -23,6 +23,7 @@ import {
 import { BiCar, BiGasPump } from 'react-icons/bi';
 import { GiAutoRepair } from 'react-icons/gi';
 import { OptionList } from './styles';
+import { SetToggleThemeContext } from '../../../contexts/SetToggleThemeContext';
 
 export function ManagementMiles(
   pathname: string,
@@ -37,9 +38,16 @@ export function ManagementMiles(
     schedule: boolean;
   },
 ) {
+  const { toggleTheme } = useContext(SetToggleThemeContext);
   return (
     <>
-      <OptionList pathname={pathname} path="/menu" className="nav-item" visible>
+      <OptionList
+        theme={toggleTheme}
+        pathname={pathname}
+        path="/menu"
+        className="nav-item"
+        visible
+      >
         <Link to="/menu" className="nav-link">
           <FiList color="#f2c811" size={16} />
 

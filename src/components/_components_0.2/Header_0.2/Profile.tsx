@@ -22,7 +22,7 @@ export function Profile({ showProfileData = true }: ProfileProps) {
         </Box>
       )}
 
-      <Avatar size="md" name="Bruno Luiz" />
+      <Avatar size="md" name={user.name} />
     </Flex>
   );
 }

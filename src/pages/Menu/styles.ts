@@ -1,6 +1,11 @@
+/* eslint-disable prettier/prettier */
 import styled from 'styled-components';
 
-export const ContainerCard = styled.div`
+interface Iprops {
+  theme: string;
+}
+
+export const ContainerCard = styled.div<Iprops>`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -12,7 +17,10 @@ export const ContainerCard = styled.div`
   }
 
   a {
-    background: #ffff;
+    ${({ theme }: Iprops): string =>
+      theme === 'light' ? 'background: #fff' : 'background: #1F2029'};
+
+    transition: var(--transition-speed);
     width: 173px;
     height: 143px;
     padding: 25px;
@@ -23,13 +31,21 @@ export const ContainerCard = styled.div`
     font-family: 24px;
     cursor: pointer;
     margin: 20px;
-    border: 2px solid var(--text-tertiary);
+
+    ${({ theme }: Iprops): string =>
+      theme === 'light' ? 'border: 2px solid var(--text-tertiary);' : ''};
+
     animation: slide-mensagem 1s;
     text-decoration: none;
-    color: #433f59;
+    /* color: #433f59; */
 
     :hover {
       box-shadow: 8px 5px 5px rgba(0, 0, 0, 0.07);
+
+      ${({ theme }: Iprops): string =>
+        theme === 'light'
+          ? 'box-shadow: 8px 5px 5px rgba(0, 0, 0, 0.07);'
+          : 'box-shadow: 8px 5px 5px rgba(0, 0, 0, 7);'};
     }
 
     @keyframes slide-mensagem {

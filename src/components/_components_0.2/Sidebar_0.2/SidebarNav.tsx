@@ -16,31 +16,31 @@ export function SidebarNav() {
   return (
     <Stack spacing="12" align="flex-start">
       <NavSection title="GERAL">
-        <NavLink href="/menu" icon={RiMenu2Fill}>
+        <NavLink to="/menu" icon={RiMenu2Fill}>
           Menu
         </NavLink>
 
-        <NavLink href="/dashboard" icon={RiDashboardLine}>
+        <NavLink to="/dashboard" icon={RiDashboardLine}>
           Dashboard
         </NavLink>
       </NavSection>
 
       <NavSection title="GESTÃO DE FROTA">
-        <NavLink href="/forms" icon={RiCalendarCheckLine}>
+        <NavLink to="/forms" icon={RiCalendarCheckLine}>
           Agenda
         </NavLink>
 
-        <NavLink href="/automation" icon={RiCompass3Line}>
+        <NavLink to="/automation" icon={RiCompass3Line}>
           Quilometragem
         </NavLink>
-        <NavLink href="/forms" icon={BiGasPump}>
+        <NavLink to="/forms" icon={BiGasPump}>
           Abastecimento
         </NavLink>
 
-        <NavLink href="/automation" icon={GiAutoRepair}>
+        <NavLink to="/automation" icon={GiAutoRepair}>
           Manutenção
         </NavLink>
-        <NavLink href="/forms" icon={BiCar}>
+        <NavLink to="/forms" icon={BiCar}>
           Veiculos
         </NavLink>
       </NavSection>

@@ -7,7 +7,7 @@ main {
 .navbar {
   z-index: 1;
   position: fixed;
-  background-color: var(--beige-primary);
+  /* background-color: var(--beige-primary); */
   transition: width 600ms ease;
   overflow: hidden;
   border-right: solid 2px rgba(150, 156, 186, 0.2);
@@ -22,7 +22,7 @@ main {
   flex-direction: column;
   align-items: center;
   height: 100%;
-  background-color: var(--white-secondary);
+  /* background-color: var(--white-secondary); */
 }
 
 .nav-item {
@@ -38,7 +38,7 @@ main {
   display: flex;
   align-items: center;
   height: 4rem;
-  color: var(--text-primary);
+  /* color: var(--text-primary); */
   text-decoration: none;
   filter: grayscale(100%) opacity(0.7);
   transition: var(--transition-speed);
@@ -70,9 +70,7 @@ main {
   transition: var(--transition-speed);
   /* border-left: solid 4px var(--bg-primary); */
   border: none;
-  background: none;
-    
-
+  /* background: none; */
 }
 
 .nav-link:hover {
@@ -101,7 +99,6 @@ main {
   min-width: 1rem;
   margin: 0 1.5rem;
 }
-
 
 .nav-header svg {
   width: 2rem;

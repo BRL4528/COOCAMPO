@@ -2,10 +2,13 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { SetToggleTheme } from './contexts/SetToggleThemeContext';
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <SetToggleTheme>
+      <App />
+    </SetToggleTheme>
   </React.StrictMode>,
   document.getElementById('root'),
 );

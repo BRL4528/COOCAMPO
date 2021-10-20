@@ -1,6 +1,6 @@
 import { extendTheme } from '@chakra-ui/react';
 
-export const theme = extendTheme({
+export const dark = extendTheme({
   colors: {
     gray: {
       '900': '#181B23',
@@ -21,7 +21,7 @@ export const theme = extendTheme({
 
   fonts: {
     heading: 'Roboto',
-    bosy: 'Roboto',
+    body: 'Roboto',
   },
 
   styles: {
@@ -30,6 +30,31 @@ export const theme = extendTheme({
         bg: 'gray.900',
         color: 'gray.50',
         transition: '1s',
+        webkitFontSmoothing: 'antialiased',
+        h1: {
+          fontWeight: '500',
+        },
+        h2: {
+          fontWeight: '500',
+        },
+        h3: {
+          fontWeight: '500',
+        },
+        h4: {
+          fontWeight: '500',
+        },
+        h5: {
+          fontWeight: '500',
+        },
+        h6: {
+          fontWeight: '500',
+        },
+        strong: {
+          fontWeight: '500',
+        },
+        select: {
+          fontWeight: '500',
+        },
       },
     },
   },
