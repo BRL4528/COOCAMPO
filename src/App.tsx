@@ -24,9 +24,9 @@ const App: React.FC = () => {
       <AuthContext>
         <SidebarDrawerProvider>
           <ChakraProvider theme={toggleTheme === 'light' ? light : dark}>
+            <GlobalStyle />
             <Routes />
             <ToastContainer />
-            <GlobalStyle />
           </ChakraProvider>
         </SidebarDrawerProvider>
       </AuthContext>

@@ -3,16 +3,16 @@ import { extendTheme } from '@chakra-ui/react';
 export const light = extendTheme({
   colors: {
     gray: {
-      '900': '#181B23',
-      '800': '#1F2029',
-      '700': '#353646',
-      '600': '#4B4D63',
-      '500': '#616480',
-      '400': '#797D9A',
-      '300': '#9699B0',
-      '200': '#B3B5C6',
-      '100': '#D1D2DC',
-      '50': '#EEEEF2',
+      '50': '#181B23',
+      '100': '#1F2029',
+      '200': '#353646',
+      '300': '#4B4D63',
+      '400': '#616480',
+      '500': '#797D9A',
+      '600': '#333',
+      '700': '#B3B5C6',
+      '900': '#EEEEF2',
+      '800': '#FEFEFE',
     },
     white: {
       '100': '#F8F8FB',
@@ -37,6 +37,7 @@ export const light = extendTheme({
         webkitFontSmoothing: 'antialiased',
         h1: {
           fontWeight: '500',
+          fontSize: '24px',
         },
         h2: {
           fontWeight: '500',

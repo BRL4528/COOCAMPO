@@ -32,11 +32,11 @@ import Employers from '../pages/Dashboard-adm/Employers';
 
 import Vehicles from '../pages/Dashboard-adm/Vehicles';
 
-import DashboardMiles from '../pages/Dashboard-adm/Miles';
-import VehiclesSchedule from '../pages/Dashboard-adm/Miles/Schedule';
-import YouMiles from '../pages/Dashboard-adm/Miles/YouMiles';
-import VehiclesSupply from '../pages/Dashboard-adm/Miles/Supply';
-import VehiclesMaintenance from '../pages/Dashboard-adm/Miles/Maintenance';
+import DashboardMiles from '../pages/Dashboard-adm/VehiclesManagement';
+import VehiclesSchedule from '../pages/Dashboard-adm/VehiclesManagement/Schedule';
+import Kilometers from '../pages/Dashboard-adm/VehiclesManagement/Kilometers';
+import VehiclesSupply from '../pages/Dashboard-adm/VehiclesManagement/Supply';
+import VehiclesMaintenance from '../pages/Dashboard-adm/VehiclesManagement/Maintenance';
 
 import FormsOrderService from '../components/Admin/FormsOrderService';
 
@@ -203,27 +203,22 @@ const Routes: React.FC = () => (
     />
 
     <Route
-      path="/dashboard-miles"
+      path="/miles/dashboard"
       component={DashboardMiles}
       isPrivate
       isAdmin
     />
 
     <Route
-      path="/your-miles/schedule"
+      path="/miles/schedule"
       component={VehiclesSchedule}
       isPrivate
       isAdmin
     />
-    <Route path="/your-miles/miles" component={YouMiles} isPrivate isAdmin />
+    <Route path="/miles/kilometers" component={Kilometers} isPrivate isAdmin />
+    <Route path="/miles/supply" component={VehiclesSupply} isPrivate isAdmin />
     <Route
-      path="/your-miles/supply"
-      component={VehiclesSupply}
-      isPrivate
-      isAdmin
-    />
-    <Route
-      path="/your-miles/maintenance"
+      path="/miles/maintenance"
       component={VehiclesMaintenance}
       isPrivate
       isAdmin

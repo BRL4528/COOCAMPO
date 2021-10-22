@@ -19,7 +19,7 @@ const LayoutAdm: React.FC<LayoutProps> = ({ children, path }: LayoutProps) => {
       </>
     );
   }
-  if (path.substring(0, 16) === '/dashboard-miles') {
+  if (path.substring(0, 6) === '/miles') {
     return <>{children}</>;
   }
   return (

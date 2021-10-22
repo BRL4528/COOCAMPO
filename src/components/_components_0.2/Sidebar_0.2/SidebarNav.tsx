@@ -20,27 +20,27 @@ export function SidebarNav() {
           Menu
         </NavLink>
 
-        <NavLink to="/dashboard" icon={RiDashboardLine}>
+        <NavLink to="/miles/dashboard" icon={RiDashboardLine}>
           Dashboard
         </NavLink>
       </NavSection>
 
       <NavSection title="GESTÃO DE FROTA">
-        <NavLink to="/forms" icon={RiCalendarCheckLine}>
+        <NavLink to="/miles/schedule" icon={RiCalendarCheckLine}>
           Agenda
         </NavLink>
 
-        <NavLink to="/automation" icon={RiCompass3Line}>
+        <NavLink to="/miles/kilometers" icon={RiCompass3Line}>
           Quilometragem
         </NavLink>
-        <NavLink to="/forms" icon={BiGasPump}>
+        <NavLink to="/miles/supply" icon={BiGasPump}>
           Abastecimento
         </NavLink>
 
-        <NavLink to="/automation" icon={GiAutoRepair}>
+        <NavLink to="/miles/maintenance" icon={GiAutoRepair}>
           Manutenção
         </NavLink>
-        <NavLink to="/forms" icon={BiCar}>
+        <NavLink to="/vehicles" icon={BiCar}>
           Veiculos
         </NavLink>
       </NavSection>

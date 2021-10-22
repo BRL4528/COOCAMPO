@@ -1,5 +1,4 @@
 /* eslint-disable react/require-default-props */
-import React from 'react';
 import { Flex, Box, Text, Avatar } from '@chakra-ui/react';
 
 import { useAuth } from '../../../hooks/auth';
