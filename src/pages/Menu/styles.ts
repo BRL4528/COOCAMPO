@@ -9,7 +9,7 @@ export const ContainerCard = styled.div<Iprops>`
   display: flex;
   align-items: center;
   justify-content: center;
-
+  /* margin: 0 auto; */
   height: 100vh;
 
   .disabled {
@@ -26,11 +26,11 @@ export const ContainerCard = styled.div<Iprops>`
     padding: 25px;
     display: flex;
     border-radius: 6px;
-    align-items: stretch;
+    /* align-items: stretch; */
     transition: box-shadow 0.5s;
     font-family: 24px;
+    /* margin: 20px; */
     cursor: pointer;
-    margin: 20px;
 
     ${({ theme }: Iprops): string =>
       theme === 'light' ? 'border: 2px solid var(--text-tertiary);' : ''};

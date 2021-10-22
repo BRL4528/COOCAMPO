@@ -90,7 +90,7 @@ export default function Dashboard() {
           // width="100%"
         >
           <Box
-            p={['6', '8']}
+            p={['4', '8']}
             bg="gray.800"
             borderRadius={8}
             pb="4"
@@ -104,7 +104,7 @@ export default function Dashboard() {
           </Box>
 
           <Box
-            p={['6', '8']}
+            p={['4', '8']}
             bg="gray.800"
             borderRadius={8}
             pb="4"
@@ -117,7 +117,7 @@ export default function Dashboard() {
           </Box>
 
           <Box
-            p={['6', '8']}
+            p={['4', '8']}
             bg="gray.800"
             borderRadius={8}
             pb="4"
@@ -129,7 +129,7 @@ export default function Dashboard() {
             <Chart options={options} series={series} type="area" height={160} />
           </Box>
           <Box
-            p={['6', '8']}
+            p={['4', '8']}
             bg="gray.800"
             borderRadius={8}
             pb="4"
