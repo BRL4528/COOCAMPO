@@ -21,12 +21,16 @@ import {
   PopoverArrow,
   PopoverCloseButton,
   ButtonGroup,
+  SimpleGrid,
 } from '@chakra-ui/react';
 
 import { RiChatSmile3Line } from 'react-icons/ri';
 import { HeaderUp } from '../../../../components/_components_0.2/Header_0.2';
 import { Sidebar } from '../../../../components/_components_0.2/Sidebar_0.2';
 import { Pagination } from '../../../../components/_components_0.2/Pagination';
+import { CalendarPiker } from '../../../../components/_components_0.2/Calendar';
+import { ListFloatCar } from '../../../../components/_components_0.2/FloatListCar';
+import { FloatlistHours } from '../../../../components/_components_0.2/FloatListHours';
 
 export default function Schedule() {
   return (
@@ -37,8 +41,9 @@ export default function Schedule() {
         <Sidebar />
 
         <ScaleFade initialScale={0.9} in>
-          {/* </SimpleGrid> */}
-          {/* <SimpleGrid
+          <ListFloatCar />
+          <SimpleGrid columns={[1, null, 2]} spacing={10} flex="1">
+            {/* <SimpleGrid
             columns={1}
             flex="1"
             spacing={10}
@@ -65,111 +70,162 @@ export default function Schedule() {
               </Flex>
             </Flex> */}
 
-          <Box flex="1" borderRadius={8} bg="gray.800" p={['4', '8']}>
-            <Flex mb="8" justify="space-between" align="center">
-              <Heading size="md" fontWeight="normal">
-                Fila de saida
-              </Heading>
-            </Flex>
+            <Box
+              overflow="auto"
+              borderRadius={8}
+              bg="gray.800"
+              p={['4', '8']}
+              height="470"
+            >
+              <Flex mb="8" justify="space-between" align="center">
+                <Heading size="md" fontWeight="normal">
+                  Fila de saida
+                </Heading>
+              </Flex>
 
-            <Table colorScheme="whiteAlpha">
-              <Thead>
-                <Tr>
-                  <Th>Usuários</Th>
-                  <Th>Horario S-H</Th>
+              <Table colorScheme="whiteAlpha">
+                <Thead>
+                  <Tr>
+                    <Th>Usuários</Th>
+                    <Th>Horario S-H</Th>
 
-                  <Th width="8" />
-                </Tr>
-              </Thead>
+                    <Th width="8" />
+                  </Tr>
+                </Thead>
 
-              <Tbody>
-                <Tr>
-                  <Td>
-                    <Box>
-                      <Text fontWeight="bold">Bruno Luiz</Text>
-                      <Text fontSize="sm" color="gray.300">
-                        Fiat Kronos
-                      </Text>
-                    </Box>
-                  </Td>
+                <Tbody>
+                  <Tr>
+                    <Td>
+                      <Box>
+                        <Text fontWeight="bold">Bruno Luiz</Text>
+                        <Text fontSize="sm" color="gray.300">
+                          Fiat Kronos
+                        </Text>
+                      </Box>
+                    </Td>
 
-                  <Td>09:30 - 08:30</Td>
-                  <Td>
-                    <Popover>
-                      <PopoverTrigger>
-                        <Button
-                          as="a"
-                          size="sm"
-                          fontSize="sm"
-                          colorScheme="blue"
-                        >
-                          <Icon as={RiChatSmile3Line} fontSize="20" />
-                        </Button>
-                      </PopoverTrigger>
-                      <PopoverContent bg="gray.700">
-                        <PopoverArrow bg="gray.700" borderColor="gray.700" />
-                        <PopoverCloseButton />
-                        <PopoverHeader>Solicite um favor!</PopoverHeader>
-                        <PopoverBody>
-                          Caso queira pedir para que Bruno Luiz leve algo em
-                          algum lugar que dentro da rota planejada, solicite por
-                          aqui.
-                        </PopoverBody>
-                        <PopoverFooter d="flex" justifyContent="flex-end">
-                          <ButtonGroup size="sm">
-                            <Button colorScheme="blue">Verificar rota</Button>
-                          </ButtonGroup>
-                        </PopoverFooter>
-                      </PopoverContent>
-                    </Popover>
-                  </Td>
-                </Tr>
-                <Tr>
-                  <Td>
-                    <Box>
-                      <Text fontWeight="bold">Bruno Luiz</Text>
-                      <Text fontSize="sm" color="gray.300">
-                        Fiat Kronos
-                      </Text>
-                    </Box>
-                  </Td>
+                    <Td>09:30 - 08:30</Td>
+                    <Td>
+                      <Popover>
+                        <PopoverTrigger>
+                          <Button
+                            as="a"
+                            size="sm"
+                            fontSize="sm"
+                            colorScheme="blue"
+                          >
+                            <Icon as={RiChatSmile3Line} fontSize="20" />
+                          </Button>
+                        </PopoverTrigger>
+                        <PopoverContent bg="gray.700">
+                          <PopoverArrow bg="gray.700" borderColor="gray.700" />
+                          <PopoverCloseButton />
+                          <PopoverHeader>Solicite um favor!</PopoverHeader>
+                          <PopoverBody>
+                            Caso queira pedir para que Bruno Luiz leve algo em
+                            algum lugar que dentro da rota planejada, solicite
+                            por aqui.
+                          </PopoverBody>
+                          <PopoverFooter d="flex" justifyContent="flex-end">
+                            <ButtonGroup size="sm">
+                              <Button colorScheme="blue">Verificar rota</Button>
+                            </ButtonGroup>
+                          </PopoverFooter>
+                        </PopoverContent>
+                      </Popover>
+                    </Td>
+                  </Tr>
+                  <Tr>
+                    <Td>
+                      <Box>
+                        <Text fontWeight="bold">Bruno Luiz</Text>
+                        <Text fontSize="sm" color="gray.300">
+                          Fiat Kronos
+                        </Text>
+                      </Box>
+                    </Td>
 
-                  <Td>09:30 - 08:30</Td>
-                  <Td>
-                    <Popover>
-                      <PopoverTrigger>
-                        <Button
-                          as="a"
-                          size="sm"
-                          fontSize="sm"
-                          colorScheme="blue"
-                        >
-                          <Icon as={RiChatSmile3Line} fontSize="20" />
-                        </Button>
-                      </PopoverTrigger>
-                      <PopoverContent bg="gray.700">
-                        <PopoverArrow bg="gray.700" borderColor="gray.700" />
-                        <PopoverCloseButton />
-                        <PopoverHeader>Solicite um favor!</PopoverHeader>
-                        <PopoverBody>
-                          Caso queira pedir para que Bruno Luiz leve algo em
-                          algum lugar que dentro da rota planejada, solicite por
-                          aqui.
-                        </PopoverBody>
-                        <PopoverFooter d="flex" justifyContent="flex-end">
-                          <ButtonGroup size="sm">
-                            <Button colorScheme="blue">Verificar rota</Button>
-                          </ButtonGroup>
-                        </PopoverFooter>
-                      </PopoverContent>
-                    </Popover>
-                  </Td>
-                </Tr>
-              </Tbody>
-            </Table>
+                    <Td>09:30 - 08:30</Td>
+                    <Td>
+                      <Popover>
+                        <PopoverTrigger>
+                          <Button
+                            as="a"
+                            size="sm"
+                            fontSize="sm"
+                            colorScheme="blue"
+                          >
+                            <Icon as={RiChatSmile3Line} fontSize="20" />
+                          </Button>
+                        </PopoverTrigger>
+                        <PopoverContent bg="gray.700">
+                          <PopoverArrow bg="gray.700" borderColor="gray.700" />
+                          <PopoverCloseButton />
+                          <PopoverHeader>Solicite um favor!</PopoverHeader>
+                          <PopoverBody>
+                            Caso queira pedir para que Bruno Luiz leve algo em
+                            algum lugar que dentro da rota planejada, solicite
+                            por aqui.
+                          </PopoverBody>
+                          <PopoverFooter d="flex" justifyContent="flex-end">
+                            <ButtonGroup size="sm">
+                              <Button colorScheme="blue">Verificar rota</Button>
+                            </ButtonGroup>
+                          </PopoverFooter>
+                        </PopoverContent>
+                      </Popover>
+                    </Td>
+                  </Tr>
+                  <Tr>
+                    <Td>
+                      <Box>
+                        <Text fontWeight="bold">Bruno Luiz</Text>
+                        <Text fontSize="sm" color="gray.300">
+                          Fiat Kronos
+                        </Text>
+                      </Box>
+                    </Td>
 
-            <Pagination />
-          </Box>
+                    <Td>09:30 - 08:30</Td>
+                    <Td>
+                      <Popover>
+                        <PopoverTrigger>
+                          <Button
+                            as="a"
+                            size="sm"
+                            fontSize="sm"
+                            colorScheme="blue"
+                          >
+                            <Icon as={RiChatSmile3Line} fontSize="20" />
+                          </Button>
+                        </PopoverTrigger>
+                        <PopoverContent bg="gray.700">
+                          <PopoverArrow bg="gray.700" borderColor="gray.700" />
+                          <PopoverCloseButton />
+                          <PopoverHeader>Solicite um favor!</PopoverHeader>
+                          <PopoverBody>
+                            Caso queira pedir para que Bruno Luiz leve algo em
+                            algum lugar que dentro da rota planejada, solicite
+                            por aqui.
+                          </PopoverBody>
+                          <PopoverFooter d="flex" justifyContent="flex-end">
+                            <ButtonGroup size="sm">
+                              <Button colorScheme="blue">Verificar rota</Button>
+                            </ButtonGroup>
+                          </PopoverFooter>
+                        </PopoverContent>
+                      </Popover>
+                    </Td>
+                  </Tr>
+                </Tbody>
+              </Table>
+              <Pagination />
+            </Box>
+            <Box borderRadius={8} bg="gray.800" p={['4', '8']} height="470">
+              <CalendarPiker />
+            </Box>
+          </SimpleGrid>
+          <FloatlistHours />
         </ScaleFade>
       </Flex>
     </Flex>

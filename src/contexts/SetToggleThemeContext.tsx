@@ -22,7 +22,6 @@ export function SetToggleTheme({ children }: SetThemeProvider) {
     } else {
       setToggleTheme('light');
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   };
 
   const themeProvider = {
