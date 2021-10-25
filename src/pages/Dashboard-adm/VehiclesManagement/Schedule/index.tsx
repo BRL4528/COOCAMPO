@@ -1,3 +1,5 @@
+/* eslint-disable no-shadow */
+import { useCallback, useState } from 'react';
 import {
   Flex,
   ScaleFade,
@@ -32,7 +34,24 @@ import { CalendarPiker } from '../../../../components/_components_0.2/Calendar';
 import { ListFloatCar } from '../../../../components/_components_0.2/FloatListCar';
 import { FloatlistHours } from '../../../../components/_components_0.2/FloatListHours';
 
+interface IVehicle {
+  id: string;
+}
+
 export default function Schedule() {
+  const [vehicleSelected, setVehicleSelected] = useState(
+    'Nenhum veiculo selecionado',
+  );
+  const [daySelected, setDaySelected] = useState('');
+
+  const handleSelectedVehicleId = useCallback((vehicle: Omit<IVehicle, ''>) => {
+    setVehicleSelected(vehicle.id);
+  }, []);
+
+  const handleDateSelected = useCallback((day: Omit<string, ''>) => {
+    setDaySelected(String(day));
+  }, []);
+
   return (
     <Flex direction="column" h="100vh">
       <HeaderUp />
@@ -41,7 +60,8 @@ export default function Schedule() {
         <Sidebar />
 
         <ScaleFade initialScale={0.9} in>
-          <ListFloatCar />
+          <ListFloatCar handleSelectedVehicleId={handleSelectedVehicleId} />
+
           <SimpleGrid columns={[1, null, 2]} spacing={10} flex="1">
             {/* <SimpleGrid
             columns={1}
@@ -222,10 +242,16 @@ export default function Schedule() {
               <Pagination />
             </Box>
             <Box borderRadius={8} bg="gray.800" p={['4', '8']} height="470">
-              <CalendarPiker />
+              <CalendarPiker
+                vehicleSelected={vehicleSelected}
+                handleDateSelected={handleDateSelected}
+              />
             </Box>
           </SimpleGrid>
-          <FloatlistHours />
+          <FloatlistHours
+            vehicleSelected={vehicleSelected}
+            daySelected={daySelected}
+          />
         </ScaleFade>
       </Flex>
     </Flex>

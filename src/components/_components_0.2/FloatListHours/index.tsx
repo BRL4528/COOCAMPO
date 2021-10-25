@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import {
   RadioGroup,
   Center,
@@ -6,8 +7,43 @@ import {
   Text,
   Button,
 } from '@chakra-ui/react';
+import { api } from '../../../services/api';
 
-export function FloatlistHours() {
+interface FloatlistHoursProps {
+  daySelected: string;
+  vehicleSelected: string;
+}
+
+export function FloatlistHours({
+  daySelected,
+  vehicleSelected,
+}: FloatlistHoursProps) {
+  useEffect(() => {
+    api
+      .get(`/vehicles-availability/${vehicleSelected}/day`, {
+        params: {
+          day:
+            daySelected === ''
+              ? new Date().getDate()
+              : new Date(daySelected).getDate(),
+
+          year:
+            daySelected === ''
+              ? new Date().getDate()
+              : new Date(daySelected).getFullYear(),
+
+          month:
+            daySelected === ''
+              ? new Date().getDate()
+              : new Date(daySelected).getMonth() + 1,
+        },
+      })
+      .then(response => {
+        console.log('dia', new Date(daySelected));
+        console.log('resposta', response.data);
+      });
+  }, [daySelected, vehicleSelected]);
+
   return (
     <Center flexDirection="column" mt="8">
       <Text fontSize={['md', 'lg', 'xl']}>

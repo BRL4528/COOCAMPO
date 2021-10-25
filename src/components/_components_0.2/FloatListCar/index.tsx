@@ -1,94 +1,203 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
-import { Flex, Box, Image, useBreakpointValue } from '@chakra-ui/react';
+import {
+  Flex,
+  Box,
+  Image,
+  useBreakpointValue,
+  Button,
+  Icon,
+  Tooltip,
+  Spinner,
+  Center,
+} from '@chakra-ui/react';
 
-const vehicles = [
-  {
-    name: 'Fiat Kronos',
-    plate: '785-4718',
-    img: 'https://www.autoinforme.com.br/wp-content/uploads/2020/03/GM-tracker_2021.jpg',
-  },
-  {
-    name: 'Fiat Strada',
-    plate: '4523-3412',
-    img: 'https://www.autoo.com.br/fotos/2021/5/1280_960/chevrolet_tracker_2021_1_26052021_48144_1280_960.jpg',
-  },
-  {
-    name: 'Fiat Strada',
-    plate: '4523-3412',
-    img: 'https://www.autoo.com.br/fotos/2021/5/1280_960/chevrolet_tracker_2021_1_26052021_48144_1280_960.jpg',
-  },
-  {
-    name: 'Fiat Strada',
-    plate: '455-3432312',
-    img: 'https://blog.nakata.com.br/wp-content/uploads/2020/08/post_thumbnail-1f77e8996174df4fb19587977331de22-780x450.jpg',
-  },
-  {
-    name: 'Fiat Strada',
-    plate: '455-3432312',
-    img: 'https://blog.nakata.com.br/wp-content/uploads/2020/08/post_thumbnail-1f77e8996174df4fb19587977331de22-780x450.jpg',
-  },
-];
+import { useCallback, useEffect, useState } from 'react';
+import { RiBookmarkFill } from 'react-icons/ri';
+import { api } from '../../../services/api';
 
-export function ListFloatCar() {
+interface IVehicles {
+  id: string;
+  name: string;
+  plate: string;
+  year: string;
+  fuel: string;
+  km: number;
+  image: string;
+  document: string;
+  observations: string;
+  image_url: string;
+  document_url: string;
+}
+
+interface IListFloatCarProps {
+  handleSelectedVehicleId: (vehicle: Omit<IVehicles, ''>) => void;
+}
+
+export function ListFloatCar({ handleSelectedVehicleId }: IListFloatCarProps) {
   const isWideVersion = useBreakpointValue({
     base: false,
     lg: true,
   });
 
+  const [loading, setLoading] = useState(false);
+
+  const [dataVehicles, setDataVehicles] = useState<IVehicles[]>([]);
+
+  const [favoriteVehicle, setFavoriteVehicle] = useState<IVehicles>();
+  const [updateVehicleFavorite, setUpdateVehicleFavorite] =
+    useState<IVehicles>();
+
+  const [selectedVehicle, setSelectedVehicle] = useState<IVehicles>();
+
+  useEffect(() => {
+    const favoriteVehicleLocal = localStorage.getItem(
+      '@Samasc:favoriteVehicle',
+    );
+    setLoading(true);
+
+    if (favoriteVehicleLocal) {
+      setFavoriteVehicle(JSON.parse(favoriteVehicleLocal));
+      setSelectedVehicle(JSON.parse(favoriteVehicleLocal));
+
+      setLoading(false);
+    }
+
+    api.get('/vehicles').then(response => {
+      if (favoriteVehicleLocal) {
+        const verifyVehicle = response.data.filter(
+          (vehicle: { id: any }) =>
+            vehicle.id === JSON.parse(favoriteVehicleLocal || '').id,
+        )[0];
+
+        if (JSON.stringify(verifyVehicle) !== favoriteVehicleLocal) {
+          localStorage.setItem(
+            '@Samasc:favoriteVehicle',
+            JSON.stringify(verifyVehicle),
+          );
+        }
+        setSelectedVehicle(verifyVehicle);
+        handleSelectedVehicleId(verifyVehicle);
+      }
+
+      setDataVehicles(response.data);
+      setLoading(false);
+    });
+    // setLoading(false);
+  }, [handleSelectedVehicleId, updateVehicleFavorite]);
+
+  const handleSetFavorite = useCallback(
+    (data: IVehicles) => {
+      if (data.id !== favoriteVehicle?.id) {
+        localStorage.setItem('@Samasc:favoriteVehicle', JSON.stringify(data));
+        setUpdateVehicleFavorite(data);
+      }
+    },
+    [favoriteVehicle?.id],
+  );
+
+  const handleSelectedVehicle = useCallback(
+    (data: IVehicles) => {
+      handleSelectedVehicleId(data);
+      setSelectedVehicle(data);
+    },
+    [handleSelectedVehicleId],
+  );
+
   return (
     <>
-      <Flex
-        align="center"
-        flexDirection="row"
-        mt="15"
-        pb="5"
-        w={[360, 460, 600, 950, 1100, 1135]}
-        overflowX="scroll"
-        flexWrap="nowrap"
-        mb="8"
-        borderRadius={8}
-      >
-        {vehicles.map(vehicle => (
-          <Box
-            bg="gray.800"
-            borderRadius="5px"
-            borderWidth="1px"
-            borderColor="gray.700"
-            mr="5"
-            minWidth="230"
-            // ="250px"
-          >
-            <button type="button" onClick={() => {}}>
-              <Box>
-                {isWideVersion && (
-                  <Image
-                    borderTopRadius={8}
-                    borderColor="gray.700"
-                    boxSize="250"
-                    h="140"
-                    alt="carrro"
-                    src={vehicle.img}
-                  />
-                )}
+      {loading ? (
+        <Center>
+          <Spinner mt="50" mb="50" />
+        </Center>
+      ) : (
+        <Flex
+          align="center"
+          flexDirection="row"
+          mt="15"
+          pb="5"
+          w={[360, 460, 600, 950, 1100, 1135]}
+          overflowX="scroll"
+          flexWrap="nowrap"
+          mb="8"
+          borderRadius={8}
+        >
+          {dataVehicles.map(vehicle => (
+            <Box
+              display="flex"
+              key={vehicle.id}
+              bg="gray.800"
+              borderRadius="5px"
+              borderWidth="2px"
+              borderColor={
+                selectedVehicle?.id === vehicle.id ? 'green.400' : 'gray.700'
+              }
+              mr="5"
+              minWidth="230"
+              maxHeight="230px"
+              // minHeight="214px"
+              flexDirection="row"
+              position="relative"
+            >
+              <Box
+                onClick={() => handleSelectedVehicle(vehicle)}
+                bg="none"
+                textAlign="center"
+                w="100%"
+                cursor="pointer"
+              >
+                <Box>
+                  {isWideVersion && (
+                    <Image
+                      borderTopRadius={4}
+                      borderColor="gray.700"
+                      boxSize="250"
+                      maxHeight="140"
+                      alt="carrro"
+                      src={vehicle.image_url}
+                      opacity={selectedVehicle?.id === vehicle.id ? '0.5' : ''}
+                    />
+                  )}
 
-                <section>
-                  <p>
-                    {vehicle.name} - placa {vehicle.plate}
-                  </p>
-                  <p>2344 KM rodados até agora</p>
-                </section>
+                  <Box>
+                    <p>
+                      {vehicle.name} - placa {vehicle.plate}
+                    </p>
+                    <p>{vehicle.km} KM rodados até agora</p>
+                  </Box>
+                </Box>
               </Box>
-            </button>
-            <section>
-              <div title="Fixar como favorito">
-                <button type="button" onClick={() => {}}>
-                  Icon
-                </button>
-              </div>
-            </section>
-          </Box>
-        ))}
-      </Flex>
+              <Box position="absolute">
+                <Tooltip
+                  hasArrow
+                  label={
+                    favoriteVehicle?.id === vehicle.id
+                      ? 'Veiculo principal!'
+                      : 'Marcar como principal!'
+                  }
+                  bg="blue.500"
+                >
+                  <Button
+                    type="button"
+                    onClick={() => handleSetFavorite(vehicle)}
+                    bg=""
+                    top="-13px"
+                    left="-10px"
+                    position="absolute"
+                  >
+                    <Icon
+                      as={RiBookmarkFill}
+                      fontSize="20"
+                      color={
+                        favoriteVehicle?.id === vehicle.id ? 'blue.500' : ''
+                      }
+                    />
+                  </Button>
+                </Tooltip>
+              </Box>
+            </Box>
+          ))}
+        </Flex>
+      )}
     </>
   );
 }

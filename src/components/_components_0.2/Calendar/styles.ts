@@ -40,8 +40,8 @@ export const Calendar = styled.div`
     background: transparent !important;
   }
   .DayPicker-Day--selected {
-    background: var(--color-theme-primary) !important;
+    background: #3182ce !important;
     border-radius: 10px;
-    color: #232129 !important;
+    color: #fff !important;
   }
 `;
