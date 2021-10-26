@@ -93,7 +93,7 @@ export default function Dashboard() {
             columns={2}
             flex="1"
             spacing={10}
-            minChildWidth={['320px', '420px']}
+            minChildWidth={['370px', '400', '420px']}
             align="flex-start"
           >
             <Box
