@@ -59,7 +59,7 @@ export function ListFloatCar({ handleSelectedVehicleId }: IListFloatCarProps) {
       setFavoriteVehicle(JSON.parse(favoriteVehicleLocal));
       setSelectedVehicle(JSON.parse(favoriteVehicleLocal));
 
-      setLoading(false);
+      // setLoading(false);
     }
 
     api.get('/vehicles').then(response => {

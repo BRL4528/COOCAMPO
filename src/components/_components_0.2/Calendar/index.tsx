@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import { Text, Center, Spinner } from '@chakra-ui/react';
 import { format, parseISO } from 'date-fns';
 
 import DayPicker, { DayModifiers } from 'react-day-picker';
@@ -30,6 +31,7 @@ export function CalendarPiker({
   vehicleSelected,
   handleDateSelected,
 }: ICalendarProps) {
+  const [loading, setLoading] = useState(false);
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [currentMonth, setCurrentMonth] = useState(new Date());
 
@@ -57,7 +59,7 @@ export function CalendarPiker({
 
   useEffect(() => {
     if (vehicleSelected !== 'Nenhum veiculo selecionado') {
-      console.log(vehicleSelected);
+      setLoading(true);
       api
         .get(`/vehicles-availability/${vehicleSelected}/month`, {
           params: {
@@ -67,6 +69,7 @@ export function CalendarPiker({
         })
         .then(response => {
           setMonthAvalability(response.data);
+          setLoading(false);
         });
     }
   }, [currentMonth, vehicleSelected]);
@@ -74,11 +77,11 @@ export function CalendarPiker({
   useEffect(() => {
     api
       .get<Appointments[]>('/appointments', {
-        params: {
-          year: selectedDate.getFullYear(),
-          month: selectedDate.getMonth() + 1,
-          day: selectedDate.getDate(),
-        },
+        // params: {
+        //   year: selectedDate.getFullYear(),
+        //   month: selectedDate.getMonth() + 1,
+        //   day: selectedDate.getDate(),
+        // },
       })
       .then(response => {
         const appointmentsFormatted = response.data.map(appointment => {
@@ -112,31 +115,45 @@ export function CalendarPiker({
 
   return (
     <Calendar>
-      <DayPicker
-        weekdaysShort={['D', 'S', 'T', 'Q', 'Q', 'S', 'S']}
-        fromMonth={new Date()}
-        onMonthChange={handleMonthChange}
-        selectedDays={selectedDate}
-        disabledDays={[{ daysOfWeek: [0, 6] }, ...disabledDays]}
-        modifiers={{
-          available: { daysOfWeek: [1, 2, 3, 4, 5] },
-        }}
-        onDayClick={handleDateChange}
-        months={[
-          'Janeiro',
-          'Fevereiro',
-          'Março',
-          'Abril',
-          'Maio',
-          'Junho',
-          'Julho',
-          'Agosto',
-          'Setembro',
-          'Outubro',
-          'Novembro',
-          'Dezembro',
-        ]}
-      />
+      {vehicleSelected === 'Nenhum veiculo selecionado' ? (
+        <Center>
+          <Text>{vehicleSelected}</Text>
+        </Center>
+      ) : (
+        // <>
+        //   {loading ? (
+        //     <Center>
+        //       <Spinner mt="50" mb="50" />
+        //     </Center>
+        //   ) : (
+        <DayPicker
+          weekdaysShort={['D', 'S', 'T', 'Q', 'Q', 'S', 'S']}
+          fromMonth={new Date()}
+          onMonthChange={handleMonthChange}
+          selectedDays={selectedDate}
+          disabledDays={[{ daysOfWeek: [0, 6] }, ...disabledDays]}
+          modifiers={{
+            available: { daysOfWeek: [1, 2, 3, 4, 5] },
+          }}
+          onDayClick={handleDateChange}
+          months={[
+            'Janeiro',
+            'Fevereiro',
+            'Março',
+            'Abril',
+            'Maio',
+            'Junho',
+            'Julho',
+            'Agosto',
+            'Setembro',
+            'Outubro',
+            'Novembro',
+            'Dezembro',
+          ]}
+        />
+        //   )}
+        // </>
+      )}
     </Calendar>
   );
 }

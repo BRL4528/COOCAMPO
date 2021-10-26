@@ -1,12 +1,14 @@
-import { useEffect, useMemo, useState } from 'react';
+/* eslint-disable react/jsx-curly-newline */
+import { useEffect, useMemo, useState, useCallback } from 'react';
 import { format } from 'date-fns';
 import {
-  RadioGroup,
+  Box,
   Center,
-  Radio,
+  Checkbox,
   SimpleGrid,
   Text,
   Button,
+  Spinner,
 } from '@chakra-ui/react';
 import { api } from '../../../services/api';
 
@@ -24,31 +26,32 @@ export function FloatlistHours({
   daySelected,
   vehicleSelected,
 }: FloatlistHoursProps) {
+  const [loading, setLoading] = useState(false);
   const [hoursAvailable, setHoursAvailable] = useState<IAvailable[]>([]);
+  const [arrayHoursSelected, setArrayHoursSelected] = useState<any[]>([]);
+
+  const [handleButton, setHandleButton] = useState(false);
 
   useEffect(() => {
-    api
-      .get(`/vehicles-availability/${vehicleSelected}/day`, {
-        params: {
-          day:
-            daySelected === ''
-              ? new Date().getDate()
-              : new Date(daySelected).getDate(),
+    if (vehicleSelected !== 'Nenhum veiculo selecionado') {
+      setLoading(true);
+      const dayFormated =
+        daySelected === '' ? new Date() : new Date(daySelected);
+      api
+        .get(`/vehicles-availability/${vehicleSelected}/day`, {
+          params: {
+            day: dayFormated.getDate(),
 
-          year:
-            daySelected === ''
-              ? new Date().getDate()
-              : new Date(daySelected).getFullYear(),
+            year: dayFormated.getFullYear(),
 
-          month:
-            daySelected === ''
-              ? new Date().getDate()
-              : new Date(daySelected).getMonth() + 1,
-        },
-      })
-      .then(response => {
-        setHoursAvailable(response.data);
-      });
+            month: dayFormated.getMonth() + 1,
+          },
+        })
+        .then(response => {
+          setHoursAvailable(response.data);
+          setLoading(false);
+        });
+    }
   }, [daySelected, vehicleSelected]);
 
   const morningAvailability = useMemo(() => {
@@ -75,87 +78,137 @@ export function FloatlistHours({
       });
   }, [hoursAvailable]);
 
+  const handleHoursSelected = useCallback(
+    (data: [string, boolean]) => {
+      if (data[1]) {
+        setHandleButton(false);
+        setArrayHoursSelected([
+          ...arrayHoursSelected,
+          format(new Date().setHours(Number(data[0])), 'HH:00:00'),
+        ]);
+      } else if (!data[1]) {
+        const array = arrayHoursSelected;
+
+        const hourFormated = format(
+          new Date().setHours(Number(data[0])),
+          'HH:00:00',
+        );
+        const index = array.indexOf(hourFormated);
+        if (index > -1) {
+          array.splice(index, 1);
+          setArrayHoursSelected(array);
+          setHandleButton(true);
+        }
+      }
+    },
+    [arrayHoursSelected],
+  );
+
+  const handleSubmitAppointments = useCallback(() => {
+    const dayFormated =
+      daySelected === ''
+        ? format(new Date(), 'yyyy-MM-dd')
+        : format(new Date(daySelected), 'yyyy-MM-dd');
+
+    const dateFormated = arrayHoursSelected.map(data => {
+      return `${dayFormated} ${data}`;
+    });
+
+    console.log('data formatada', dateFormated);
+  }, [arrayHoursSelected, daySelected]);
+
+  const handleVerifyHours = useMemo(() => {
+    console.log('ver array', arrayHoursSelected);
+    return arrayHoursSelected.length === 0 || handleButton === false;
+  }, [arrayHoursSelected, handleButton]);
+
   return (
     <Center flexDirection="column" mt="8">
-      <Text fontSize={['md', 'lg', 'xl']} mt="10" mb="10">
-        Selecione um horario disponivel para agendar este veiculo
-      </Text>
-      <RadioGroup>
-        <Text>Manhâ</Text>
-        <SimpleGrid
-          // minChildWidth="100%"
-          columns={[3, null, 5]}
-          spacing={2}
-          mt={4}
-          bg="re"
-        >
-          {morningAvailability.map(hour => (
-            <Radio
-              key={hour.hour}
-              p={['2', '4']}
-              value={String(hour.hour)}
-              bg={hour.available ? 'gray.700' : 'gray.800'}
-              borderRadius={8}
-              isDisabled={!hour.available}
-              cursor={hour.available ? 'pointer' : 'not-allowed'}
-              m="2"
-            >
-              {hour.hourFormatted}
-            </Radio>
-          ))}
+      {vehicleSelected === 'Nenhum veiculo selecionado' ? (
+        <Center>
+          <Text>{vehicleSelected}</Text>
+        </Center>
+      ) : (
+        <>
+          <Text fontSize={['md', 'lg', 'xl']} mt="10" mb="10">
+            Selecione um horario disponivel para agendar este veiculo
+          </Text>
+          {loading ? (
+            <Center>
+              <Spinner />
+            </Center>
+          ) : (
+            <>
+              <Box>
+                <Text>Manhâ</Text>
+                <SimpleGrid
+                  // minChildWidth="100%"
+                  columns={[3, null, 5]}
+                  spacing={2}
+                  mt={4}
+                  bg="re"
+                >
+                  {morningAvailability.map(hour => (
+                    <Checkbox
+                      key={hour.hour}
+                      p={['2', '4']}
+                      value={String(hour.hour)}
+                      bg={hour.available ? 'gray.700' : 'gray.800'}
+                      borderRadius={8}
+                      isDisabled={!hour.available}
+                      cursor={hour.available ? 'pointer' : 'not-allowed'}
+                      onChange={e =>
+                        handleHoursSelected([e.target.value, e.target.checked])
+                      }
+                      m="2"
+                    >
+                      {hour.hourFormatted}
+                    </Checkbox>
+                  ))}
+                </SimpleGrid>
+                <Text mt="10">Tarde</Text>
+                <SimpleGrid
+                  // minChildWidth="100%"
+                  columns={[3, null, 5]}
+                  spacing={2}
+                  mt={4}
+                  bg="re"
+                >
+                  {afternoonAvailability.map(hour => (
+                    <Checkbox
+                      key={hour.hour}
+                      p={['2', '4']}
+                      value={String(hour.hour)}
+                      bg={hour.available ? 'gray.700' : 'gray.800'}
+                      borderRadius={8}
+                      isDisabled={!hour.available}
+                      cursor={hour.available ? 'pointer' : 'not-allowed'}
+                      m="2"
+                      onChange={e =>
+                        handleHoursSelected([e.target.value, e.target.checked])
+                      }
+                    >
+                      {hour.hourFormatted}
+                    </Checkbox>
+                  ))}
+                </SimpleGrid>
+              </Box>
 
-          {/* <Radio p={['2', '4']} value="1" bg="gray.700" borderRadius={8} m="2">
-            9:00 AM - 9:15 AM
-          </Radio>
-
-          <Radio p={['2', '4']} value="2" bg="gray.700" borderRadius={8} m="2">
-            9:15 AM - 9:30 AM
-          </Radio>
-
-          <Radio p={['2', '4']} value="3" bg="gray.700" borderRadius={8} m="2">
-            9:30 AM - 9:45 AM
-          </Radio>
-
-          <Radio p={['2', '4']} value="4" bg="gray.700" borderRadius={8} m="2">
-            10:00 AM - 10:15 AM
-          </Radio>
-
-          <Radio p={['2', '4']} value="5" bg="gray.700" borderRadius={8} m="2">
-            10:15 AM - 10:30 AM
-          </Radio>
-
-          <Radio p={['2', '4']} value="6" bg="gray.700" borderRadius={8} m="2">
-            10:30 AM - 10:45 AM
-          </Radio> */}
-        </SimpleGrid>
-        <Text mt="10">Tarde</Text>
-        <SimpleGrid
-          // minChildWidth="100%"
-          columns={[3, null, 5]}
-          spacing={2}
-          mt={4}
-          bg="re"
-        >
-          {afternoonAvailability.map(hour => (
-            <Radio
-              key={hour.hour}
-              p={['2', '4']}
-              value={String(hour.hour)}
-              bg={hour.available ? 'gray.700' : 'gray.800'}
-              borderRadius={8}
-              isDisabled={!hour.available}
-              cursor={hour.available ? 'pointer' : 'not-allowed'}
-              m="2"
-            >
-              {hour.hourFormatted}
-            </Radio>
-          ))}
-        </SimpleGrid>
-      </RadioGroup>
-
-      <Button mt="15" mb="20" bg="blue.500">
-        Agendar veiculo
-      </Button>
+              <Button
+                onClick={handleSubmitAppointments}
+                mt="15"
+                mb="20"
+                bg="blue.500"
+                disabled={
+                  arrayHoursSelected.length === 0 || handleButton === true
+                }
+              >
+                Agendar veiculo
+              </Button>
+            </>
+          )}
+        </>
+      )}
     </Center>
   );
 }
