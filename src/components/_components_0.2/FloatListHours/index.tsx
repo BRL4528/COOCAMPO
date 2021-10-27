@@ -117,10 +117,10 @@ export function FloatlistHours({
     console.log('data formatada', dateFormated);
   }, [arrayHoursSelected, daySelected]);
 
-  const handleVerifyHours = useMemo(() => {
-    console.log('ver array', arrayHoursSelected);
-    return arrayHoursSelected.length === 0 || handleButton === false;
-  }, [arrayHoursSelected, handleButton]);
+  // const handleVerifyHours = useMemo(() => {
+  //   console.log('ver array', arrayHoursSelected);
+  //   return arrayHoursSelected.length === 0 || handleButton === false;
+  // }, [arrayHoursSelected, handleButton]);
 
   return (
     <Center flexDirection="column" mt="8">

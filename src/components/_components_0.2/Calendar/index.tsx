@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { Text, Center, Spinner } from '@chakra-ui/react';
+import { Text, Center } from '@chakra-ui/react';
 import { format, parseISO } from 'date-fns';
 
 import DayPicker, { DayModifiers } from 'react-day-picker';
@@ -31,7 +31,6 @@ export function CalendarPiker({
   vehicleSelected,
   handleDateSelected,
 }: ICalendarProps) {
-  const [loading, setLoading] = useState(false);
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [currentMonth, setCurrentMonth] = useState(new Date());
 
@@ -59,7 +58,6 @@ export function CalendarPiker({
 
   useEffect(() => {
     if (vehicleSelected !== 'Nenhum veiculo selecionado') {
-      setLoading(true);
       api
         .get(`/vehicles-availability/${vehicleSelected}/month`, {
           params: {
@@ -69,7 +67,6 @@ export function CalendarPiker({
         })
         .then(response => {
           setMonthAvalability(response.data);
-          setLoading(false);
         });
     }
   }, [currentMonth, vehicleSelected]);
@@ -120,12 +117,6 @@ export function CalendarPiker({
           <Text>{vehicleSelected}</Text>
         </Center>
       ) : (
-        // <>
-        //   {loading ? (
-        //     <Center>
-        //       <Spinner mt="50" mb="50" />
-        //     </Center>
-        //   ) : (
         <DayPicker
           weekdaysShort={['D', 'S', 'T', 'Q', 'Q', 'S', 'S']}
           fromMonth={new Date()}
