@@ -13,7 +13,7 @@ import {
 
 import { useCallback, useEffect, useState } from 'react';
 import { RiBookmarkFill } from 'react-icons/ri';
-import { api } from '../../../services/api';
+import { api } from '../../../../services/api';
 
 interface IVehicles {
   id: string;

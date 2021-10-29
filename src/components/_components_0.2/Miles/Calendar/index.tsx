@@ -5,7 +5,7 @@ import { format, parseISO } from 'date-fns';
 import DayPicker, { DayModifiers } from 'react-day-picker';
 import { Calendar } from './styles';
 import 'react-day-picker/lib/style.css';
-import { api } from '../../../services/api';
+import { api } from '../../../../services/api';
 
 interface monthAvailabilityIem {
   day: number;

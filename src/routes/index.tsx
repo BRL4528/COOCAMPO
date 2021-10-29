@@ -35,6 +35,7 @@ import Vehicles from '../pages/Dashboard-adm/Vehicles';
 import DashboardMiles from '../pages/Dashboard-adm/VehiclesManagement';
 import VehiclesSchedule from '../pages/Dashboard-adm/VehiclesManagement/Schedule';
 import Kilometers from '../pages/Dashboard-adm/VehiclesManagement/Kilometers';
+import KilometersVelho from '../pages/Dashboard-adm/Miles/YouMiles';
 import VehiclesSupply from '../pages/Dashboard-adm/VehiclesManagement/Supply';
 import VehiclesMaintenance from '../pages/Dashboard-adm/VehiclesManagement/Maintenance';
 
@@ -216,6 +217,12 @@ const Routes: React.FC = () => (
       isAdmin
     />
     <Route path="/miles/kilometers" component={Kilometers} isPrivate isAdmin />
+    <Route
+      path="/miles/kilometers-velho"
+      component={KilometersVelho}
+      isPrivate
+      isAdmin
+    />
     <Route path="/miles/supply" component={VehiclesSupply} isPrivate isAdmin />
     <Route
       path="/miles/maintenance"

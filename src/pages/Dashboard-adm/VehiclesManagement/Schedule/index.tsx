@@ -24,15 +24,16 @@ import {
   PopoverCloseButton,
   ButtonGroup,
   SimpleGrid,
+  Badge,
 } from '@chakra-ui/react';
 
 import { RiChatSmile3Line } from 'react-icons/ri';
 import { HeaderUp } from '../../../../components/_components_0.2/Header_0.2';
 import { Sidebar } from '../../../../components/_components_0.2/Sidebar_0.2';
-import { Pagination } from '../../../../components/_components_0.2/Pagination';
-import { CalendarPiker } from '../../../../components/_components_0.2/Calendar';
-import { ListFloatCar } from '../../../../components/_components_0.2/FloatListCar';
-import { FloatlistHours } from '../../../../components/_components_0.2/FloatListHours';
+import { Pagination } from '../../../../components/_components_0.2/Miles/Pagination';
+import { CalendarPiker } from '../../../../components/_components_0.2/Miles/Calendar';
+import { ListFloatCar } from '../../../../components/_components_0.2/Miles/FloatListCar';
+import { FloatlistHours } from '../../../../components/_components_0.2/Miles/FloatListHours';
 
 interface IVehicle {
   id: string;
@@ -117,7 +118,9 @@ export default function Schedule() {
                   <Tr>
                     <Td>
                       <Box>
-                        <Text fontWeight="bold">Bruno Luiz</Text>
+                        <Text fontWeight="bold">
+                          Bruno Luiz <Badge colorScheme="green">Novo</Badge>
+                        </Text>
                         <Text fontSize="sm" color="gray.300">
                           Fiat Kronos
                         </Text>
@@ -143,8 +146,8 @@ export default function Schedule() {
                           <PopoverHeader>Solicite um favor!</PopoverHeader>
                           <PopoverBody>
                             Caso queira pedir para que Bruno Luiz leve algo em
-                            algum lugar que dentro da rota planejada, solicite
-                            por aqui.
+                            algum lugar que seja dentro da rota planejada,
+                            solicite por aqui.
                           </PopoverBody>
                           <PopoverFooter d="flex" justifyContent="flex-end">
                             <ButtonGroup size="sm">

@@ -10,7 +10,7 @@ import {
   Button,
   Spinner,
 } from '@chakra-ui/react';
-import { api } from '../../../services/api';
+import { api } from '../../../../services/api';
 
 interface FloatlistHoursProps {
   daySelected: string;
@@ -104,6 +104,19 @@ export function FloatlistHours({
     [arrayHoursSelected],
   );
 
+  function createArayHours() {
+    const dt = new Date(1970, 0, 1, 0, 0, 0, 0);
+    const array = [];
+
+    while (dt.getDate() === 1) {
+      const point = dt.toLocaleTimeString('en-US');
+      dt.setMinutes(dt.getMinutes() + 30);
+
+      array.push(point);
+    }
+    return array;
+  }
+
   const handleSubmitAppointments = useCallback(() => {
     const dayFormated =
       daySelected === ''
@@ -114,7 +127,9 @@ export function FloatlistHours({
       return `${dayFormated} ${data}`;
     });
 
-    console.log('data formatada', dateFormated);
+    console.log(dateFormated);
+
+    console.log('teste dde data', createArayHours());
   }, [arrayHoursSelected, daySelected]);
 
   // const handleVerifyHours = useMemo(() => {
@@ -140,7 +155,7 @@ export function FloatlistHours({
           ) : (
             <>
               <Box>
-                <Text>Manhâ</Text>
+                <Text>Manhã</Text>
                 <SimpleGrid
                   // minChildWidth="100%"
                   columns={[3, null, 5]}
