@@ -6,7 +6,7 @@ export function Logo() {
     <Text
       fontSize={['2xl', '3xl']}
       fontWeight="bold"
-      latterSpacing="tight"
+      // latterSpacing="right"
       w="64"
     >
       cooasgo

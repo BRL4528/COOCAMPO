@@ -115,7 +115,7 @@ export function ListFloatCar({ handleSelectedVehicleId }: IListFloatCarProps) {
           flexDirection="row"
           mt="15"
           pb="5"
-          w={[360, 460, 600, 950, 1100, 1135]}
+          w={[320, 460, 600, 950, 1100, 1135]}
           overflowX="scroll"
           flexWrap="nowrap"
           mb="8"

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable react/jsx-curly-newline */
 import { useEffect, useMemo, useState, useCallback } from 'react';
 import { format } from 'date-fns';
@@ -9,16 +10,20 @@ import {
   Text,
   Button,
   Spinner,
+  Flex,
 } from '@chakra-ui/react';
+
+import { createArayHoursFormated } from '../../../../utils/createArayHoursFormated';
 import { api } from '../../../../services/api';
+import { apllyToast } from '../../../Global/Toast2.0';
 
 interface FloatlistHoursProps {
   daySelected: string;
   vehicleSelected: string;
 }
 
-interface IAvailable {
-  hour: number;
+interface IDateAvailable {
+  date: string;
   available: boolean;
 }
 
@@ -27,10 +32,12 @@ export function FloatlistHours({
   vehicleSelected,
 }: FloatlistHoursProps) {
   const [loading, setLoading] = useState(false);
-  const [hoursAvailable, setHoursAvailable] = useState<IAvailable[]>([]);
-  const [arrayHoursSelected, setArrayHoursSelected] = useState<any[]>([]);
+  const [hoursAvailable, setHoursAvailable] = useState<IDateAvailable[]>([]);
 
-  const [handleButton, setHandleButton] = useState(false);
+  const [start_date, setStart_date] = useState('');
+  const [end_date, setEnd_date] = useState('');
+
+  const [handleButtonStatus, setHandleButtonStatus] = useState('start');
 
   useEffect(() => {
     if (vehicleSelected !== 'Nenhum veiculo selecionado') {
@@ -38,8 +45,10 @@ export function FloatlistHours({
       const dayFormated =
         daySelected === '' ? new Date() : new Date(daySelected);
       api
-        .get(`/vehicles-availability/${vehicleSelected}/day`, {
+        .get(`/appointments/vehicle`, {
           params: {
+            vehicle_id: vehicleSelected,
+
             day: dayFormated.getDate(),
 
             year: dayFormated.getFullYear(),
@@ -48,89 +57,79 @@ export function FloatlistHours({
           },
         })
         .then(response => {
-          setHoursAvailable(response.data);
+          const dateFormated = createArayHoursFormated(
+            response.data,
+            daySelected,
+          );
+          setHoursAvailable(dateFormated);
           setLoading(false);
         });
     }
   }, [daySelected, vehicleSelected]);
 
   const morningAvailability = useMemo(() => {
-    return hoursAvailable
-      .filter(({ hour }) => hour < 12)
-      .map(({ hour, available }) => {
-        return {
-          hour,
-          available,
-          hourFormatted: format(new Date().setHours(hour), 'HH:00'),
-        };
-      });
-  }, [hoursAvailable]);
-
-  const afternoonAvailability = useMemo(() => {
-    return hoursAvailable
-      .filter(({ hour }) => hour >= 12)
-      .map(({ hour, available }) => {
-        return {
-          hour,
-          available,
-          hourFormatted: format(new Date().setHours(hour), 'HH:00'),
-        };
-      });
-  }, [hoursAvailable]);
-
-  const handleHoursSelected = useCallback(
-    (data: [string, boolean]) => {
-      if (data[1]) {
-        setHandleButton(false);
-        setArrayHoursSelected([
-          ...arrayHoursSelected,
-          format(new Date().setHours(Number(data[0])), 'HH:00:00'),
-        ]);
-      } else if (!data[1]) {
-        const array = arrayHoursSelected;
-
-        const hourFormated = format(
-          new Date().setHours(Number(data[0])),
-          'HH:00:00',
-        );
-        const index = array.indexOf(hourFormated);
-        if (index > -1) {
-          array.splice(index, 1);
-          setArrayHoursSelected(array);
-          setHandleButton(true);
-        }
-      }
-    },
-    [arrayHoursSelected],
-  );
-
-  function createArayHours() {
-    const dt = new Date(1970, 0, 1, 0, 0, 0, 0);
-    const array = [];
-
-    while (dt.getDate() === 1) {
-      const point = dt.toLocaleTimeString('en-US');
-      dt.setMinutes(dt.getMinutes() + 30);
-
-      array.push(point);
-    }
-    return array;
-  }
-
-  const handleSubmitAppointments = useCallback(() => {
     const dayFormated =
       daySelected === ''
         ? format(new Date(), 'yyyy-MM-dd')
         : format(new Date(daySelected), 'yyyy-MM-dd');
+    const daySelectedFormated = `${dayFormated} 12:00:00`;
 
-    const dateFormated = arrayHoursSelected.map(data => {
-      return `${dayFormated} ${data}`;
+    return hoursAvailable
+      .filter(({ date }) => new Date(date) < new Date(daySelectedFormated))
+      .map(({ date, available }) => {
+        return {
+          date,
+          available,
+          hourFormated: format(new Date(date), 'HH:mm'),
+          availableDateSelected:
+            new Date(date) >= new Date(start_date) &&
+            new Date(date) <= new Date(end_date),
+        };
+      });
+  }, [daySelected, end_date, hoursAvailable, start_date]);
+
+  const afternoonAvailability = useMemo(() => {
+    const dayFormated =
+      daySelected === ''
+        ? format(new Date(), 'yyyy-MM-dd')
+        : format(new Date(daySelected), 'yyyy-MM-dd');
+    const daySelectedFormated = `${dayFormated} 12:00:00`;
+
+    return hoursAvailable
+      .filter(({ date }) => new Date(date) >= new Date(daySelectedFormated))
+      .map(({ date, available }) => {
+        return {
+          date,
+          available,
+          hourFormated: format(new Date(date), 'HH:mm'),
+          availableDateSelected:
+            new Date(date) >= new Date(start_date) &&
+            new Date(date) <= new Date(end_date),
+        };
+      });
+  }, [daySelected, end_date, hoursAvailable, start_date]);
+
+  const handleHoursSelected = useCallback(
+    (data: [string, boolean]) => {
+      if (handleButtonStatus === 'start') {
+        setStart_date(data[0]);
+        setHandleButtonStatus('return');
+      } else if (new Date(data[0]) <= new Date(start_date)) {
+        apllyToast('error', 'Verifique a data selecionada');
+      } else if (handleButtonStatus === 'return') {
+        setEnd_date(data[0]);
+      }
+    },
+    [handleButtonStatus, start_date],
+  );
+
+  const handleSubmitScheduleVehicle = useCallback(() => {
+    api.post('/appointments', {
+      vehicle_id: vehicleSelected,
+      start_date,
+      end_date,
     });
-
-    console.log(dateFormated);
-
-    console.log('teste dde data', createArayHours());
-  }, [arrayHoursSelected, daySelected]);
+  }, [end_date, start_date, vehicleSelected]);
 
   // const handleVerifyHours = useMemo(() => {
   //   console.log('ver array', arrayHoursSelected);
@@ -148,14 +147,35 @@ export function FloatlistHours({
           <Text fontSize={['md', 'lg', 'xl']} mt="10" mb="10">
             Selecione um horario disponivel para agendar este veiculo
           </Text>
+
           {loading ? (
             <Center>
               <Spinner />
             </Center>
           ) : (
-            <>
+            <Center flexDirection="column">
+              <Flex mb="30px">
+                <Button
+                  colorScheme="teal"
+                  bg={handleButtonStatus === 'start' ? 'green.500' : 'blue.500'}
+                  onClick={() => {}}
+                >
+                  Partida
+                </Button>
+                <Text>.............</Text>
+                <Button
+                  colorScheme="teal"
+                  bg={
+                    handleButtonStatus === 'return' ? 'green.500' : 'blue.500'
+                  }
+                  onClick={() => {}}
+                >
+                  Retorno
+                </Button>
+              </Flex>
               <Box>
                 <Text>Manhã</Text>
+
                 <SimpleGrid
                   // minChildWidth="100%"
                   columns={[3, null, 5]}
@@ -165,23 +185,26 @@ export function FloatlistHours({
                 >
                   {morningAvailability.map(hour => (
                     <Checkbox
-                      key={hour.hour}
+                      key={hour.date}
                       p={['2', '4']}
-                      value={String(hour.hour)}
+                      value={String(hour.date)}
                       bg={hour.available ? 'gray.700' : 'gray.800'}
+                      color={hour.availableDateSelected ? 'blue.500' : ''}
                       borderRadius={8}
-                      isDisabled={!hour.available}
+                      isDisabled={!hour.available || hour.availableDateSelected}
                       cursor={hour.available ? 'pointer' : 'not-allowed'}
                       onChange={e =>
                         handleHoursSelected([e.target.value, e.target.checked])
                       }
                       m="2"
                     >
-                      {hour.hourFormatted}
+                      {hour.hourFormated}
                     </Checkbox>
                   ))}
                 </SimpleGrid>
+
                 <Text mt="10">Tarde</Text>
+
                 <SimpleGrid
                   // minChildWidth="100%"
                   columns={[3, null, 5]}
@@ -191,36 +214,35 @@ export function FloatlistHours({
                 >
                   {afternoonAvailability.map(hour => (
                     <Checkbox
-                      key={hour.hour}
+                      key={hour.date}
                       p={['2', '4']}
-                      value={String(hour.hour)}
+                      value={String(hour.date)}
                       bg={hour.available ? 'gray.700' : 'gray.800'}
+                      color={hour.availableDateSelected ? 'blue.500' : ''}
                       borderRadius={8}
-                      isDisabled={!hour.available}
+                      isDisabled={!hour.available || hour.availableDateSelected}
                       cursor={hour.available ? 'pointer' : 'not-allowed'}
-                      m="2"
                       onChange={e =>
                         handleHoursSelected([e.target.value, e.target.checked])
                       }
+                      m="2"
                     >
-                      {hour.hourFormatted}
+                      {hour.hourFormated}
+                      {console.log(hour)}
                     </Checkbox>
                   ))}
                 </SimpleGrid>
               </Box>
 
               <Button
-                onClick={handleSubmitAppointments}
+                onClick={handleSubmitScheduleVehicle}
                 mt="15"
                 mb="20"
                 bg="blue.500"
-                disabled={
-                  arrayHoursSelected.length === 0 || handleButton === true
-                }
               >
                 Agendar veiculo
               </Button>
-            </>
+            </Center>
           )}
         </>
       )}
