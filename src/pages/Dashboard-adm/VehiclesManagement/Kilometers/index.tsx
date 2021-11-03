@@ -1,4 +1,4 @@
-import { Flex, ScaleFade, Text } from '@chakra-ui/react';
+import { Flex, ScaleFade } from '@chakra-ui/react';
 
 import { useCallback, useState } from 'react';
 import { HeaderUp } from '../../../../components/_components_0.2/Header_0.2';
@@ -14,7 +14,6 @@ export default function Supply() {
   const [vehicleSelected, setVehicleSelected] = useState(
     'Nenhum veiculo selecionado',
   );
-  console.log(vehicleSelected);
 
   const handleSelectedVehicleId = useCallback((vehicle: Omit<IVehicle, ''>) => {
     setVehicleSelected(vehicle.id);
@@ -28,8 +27,7 @@ export default function Supply() {
         <ScaleFade initialScale={0.9} in>
           <ListFloatCar handleSelectedVehicleId={handleSelectedVehicleId} />
 
-          <Text>Quilometragem</Text>
-          <KilometerTable />
+          <KilometerTable vehicleSelected={vehicleSelected} />
         </ScaleFade>
       </Flex>
     </Flex>

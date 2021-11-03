@@ -15,13 +15,12 @@ import {
   Spinner,
   Flex,
   useDisclosure,
-  Badge,
 } from '@chakra-ui/react';
 
 import { createArayHoursFormated } from '../../../../utils/createArayHoursFormated';
 import { api } from '../../../../services/api';
 import { apllyToast } from '../../../Global/Toast2.0';
-import { ModalListHours } from '../../Modal';
+import { ModalScheduleConfirmationAppointment } from '../../Modal/ModalScheduleConfirmationAppointment';
 
 interface FloatlistHoursProps {
   daySelected: string;
@@ -182,23 +181,14 @@ export function FloatlistHours({
 
   return (
     <Center flexDirection="column" mt="8">
-      <ModalListHours
+      <ModalScheduleConfirmationAppointment
         isOpen={isOpen}
         onClose={onClose}
         handleSubmitScheduleVehicle={handleSubmitScheduleVehicle}
-      >
-        <Flex direction="column">
-          <Box>
-            <Badge colorScheme="green">Saindo</Badge>
-            <Text>{formateDateStartAppointments} </Text>
-          </Box>
+        formateDateStartAppointments={formateDateStartAppointments}
+        formateDateEndAppointments={formateDateEndAppointments}
+      />
 
-          <Box mt="5">
-            <Badge colorScheme="red">Retornoando</Badge>
-            <Text>{formateDateEndAppointments} </Text>
-          </Box>
-        </Flex>
-      </ModalListHours>
       {vehicleSelected === 'Nenhum veiculo selecionado' ? (
         <Center>
           <Text>{vehicleSelected}</Text>

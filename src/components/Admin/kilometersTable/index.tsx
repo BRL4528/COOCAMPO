@@ -59,7 +59,7 @@ const OrderServiceTable: React.FC<IdataTable> = ({
     setLoading(true);
     api
       .get<IKilometers>(
-        `/kilometers/filter?access_id=${access_id}&vehicle_id=${vehicle_id}&take=6&page=0`,
+        `/kilometers/filter?access_id=${access_id}&vehicle_id=${vehicle_id}&take=6&page=1`,
       )
       .then(response => {
         setDataTable(response.data);

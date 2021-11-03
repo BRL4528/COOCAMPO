@@ -104,10 +104,26 @@ export default createGlobalStyle`
   body::-webkit-scrollbar-track {
     background: var(--dark-primary);
   }
-
   body::-webkit-scrollbar-thumb {
-    background:   var(--color-theme-primary);
+    background:    var(--text-title);
+    border-radius:  6px;
   }
+
+  div::-webkit-scrollbar {
+  width: 0.5rem;
+  height: 0.5rem
+  }
+  div::-webkit-scrollbar-track {
+    background: var(--dark-primary);
+  }
+
+  div::-webkit-scrollbar-thumb {
+    background:   var(--text-title);
+    border-radius:  6px;
+  }
+
+
+
 
 
 

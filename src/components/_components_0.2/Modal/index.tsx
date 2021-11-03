@@ -3,25 +3,22 @@ import {
   ModalOverlay,
   ModalContent,
   ModalHeader,
-  ModalFooter,
   ModalBody,
   ModalCloseButton,
-  Button,
 } from '@chakra-ui/react';
 
 interface IpropsModal {
-  // onOpen: any;
+  title: string;
   onClose: any;
   isOpen: boolean;
   children: any;
-  handleSubmitScheduleVehicle: () => void;
 }
 
-export function ModalListHours({
+export function ModalComponent({
+  title,
   children,
   isOpen,
   onClose,
-  handleSubmitScheduleVehicle,
 }: IpropsModal) {
   return (
     <>
@@ -34,21 +31,9 @@ export function ModalListHours({
       >
         <ModalOverlay />
         <ModalContent bg="gray.700">
-          <ModalHeader>Solicitar agendamento</ModalHeader>
+          <ModalHeader>{title}</ModalHeader>
           <ModalCloseButton />
           <ModalBody>{children}</ModalBody>
-          <ModalFooter>
-            <Button
-              colorScheme="blue"
-              mr={3}
-              onClick={handleSubmitScheduleVehicle}
-            >
-              Confirmar
-            </Button>
-            <Button onClick={onClose} bg="gray.600">
-              Cancelar
-            </Button>
-          </ModalFooter>
         </ModalContent>
       </Modal>
     </>
