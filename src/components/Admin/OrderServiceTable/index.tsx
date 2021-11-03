@@ -76,7 +76,7 @@ const OrderServiceTable: React.FC<IdataTable> = ({
   const [idOpenModal, setIdOpenModal] = useState('nada');
 
   const [pagination, setPagination] = useState({
-    page: 0,
+    page: 1,
   });
 
   useEffect(() => {

@@ -90,7 +90,7 @@ const OrderServiceTable: React.FC<IdataTable> = ({
   const [idModalFinishOrder, setIdModalFinishOrder] = useState('nada');
 
   const [pagination, setPagination] = useState({
-    page: 0,
+    page: 1,
   });
 
   const [returnDataFinsh, setReturnDataFinsh] = useState<IDataOrderServices>();
