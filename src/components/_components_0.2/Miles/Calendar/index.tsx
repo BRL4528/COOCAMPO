@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Text, Center } from '@chakra-ui/react';
-import { format, parseISO } from 'date-fns';
+// import { format, parseISO } from 'date-fns';
 
 import DayPicker, { DayModifiers } from 'react-day-picker';
 import { Calendar } from './styles';
@@ -12,15 +12,15 @@ interface monthAvailabilityIem {
   available: boolean;
 }
 
-interface Appointments {
-  id: string;
-  date: string;
-  hourFormatted: string;
-  user: {
-    name: string;
-    avatar_url: string;
-  };
-}
+// interface Appointments {
+//   id: string;
+//   date: string;
+//   hourFormatted: string;
+//   user: {
+//     name: string;
+//     avatar_url: string;
+//   };
+// }
 
 interface ICalendarProps {
   vehicleSelected: any;
@@ -37,9 +37,6 @@ export function CalendarPiker({
   const [monthAvailability, setMonthAvalability] = useState<
     monthAvailabilityIem[]
   >([]);
-
-  const [appointments, setAppointments] = useState<Appointments[]>([]);
-  console.log(appointments);
 
   const handleDateChange = useCallback(
     (day: Date, modifiers: DayModifiers) => {
@@ -70,26 +67,6 @@ export function CalendarPiker({
         });
     }
   }, [currentMonth, vehicleSelected]);
-
-  useEffect(() => {
-    api
-      .get<Appointments[]>('/appointments', {
-        // params: {
-        //   year: selectedDate.getFullYear(),
-        //   month: selectedDate.getMonth() + 1,
-        //   day: selectedDate.getDate(),
-        // },
-      })
-      .then(response => {
-        const appointmentsFormatted = response.data.map(appointment => {
-          return {
-            ...appointment,
-            hourFormatted: format(parseISO(appointment.date), 'HH:mm'),
-          };
-        });
-        setAppointments(appointmentsFormatted);
-      });
-  }, [selectedDate]);
 
   const disabledDays = useMemo(() => {
     const dates = monthAvailability

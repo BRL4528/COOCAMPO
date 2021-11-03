@@ -1,7 +1,10 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable react/jsx-curly-newline */
 import { useEffect, useMemo, useState, useCallback } from 'react';
+// eslint-disable-next-line import/no-duplicates
 import { format } from 'date-fns';
+// eslint-disable-next-line import/no-duplicates
+import ptBR from 'date-fns/locale/pt-BR';
 import {
   Box,
   Center,
@@ -11,11 +14,14 @@ import {
   Button,
   Spinner,
   Flex,
+  useDisclosure,
+  Badge,
 } from '@chakra-ui/react';
 
 import { createArayHoursFormated } from '../../../../utils/createArayHoursFormated';
 import { api } from '../../../../services/api';
 import { apllyToast } from '../../../Global/Toast2.0';
+import { ModalListHours } from '../../Modal';
 
 interface FloatlistHoursProps {
   daySelected: string;
@@ -31,6 +37,7 @@ export function FloatlistHours({
   daySelected,
   vehicleSelected,
 }: FloatlistHoursProps) {
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const [loading, setLoading] = useState(false);
   const [hoursAvailable, setHoursAvailable] = useState<IDateAvailable[]>([]);
 
@@ -38,6 +45,14 @@ export function FloatlistHours({
   const [end_date, setEnd_date] = useState('');
 
   const [handleButtonStatus, setHandleButtonStatus] = useState('start');
+  const [reloadComponent, setReloadComponent] = useState(new Date());
+
+  const handleCleanAppointment = useCallback(() => {
+    setStart_date('');
+    setEnd_date('');
+    setHandleButtonStatus('start');
+    setReloadComponent(new Date());
+  }, []);
 
   useEffect(() => {
     if (vehicleSelected !== 'Nenhum veiculo selecionado') {
@@ -65,7 +80,7 @@ export function FloatlistHours({
           setLoading(false);
         });
     }
-  }, [daySelected, vehicleSelected]);
+  }, [daySelected, vehicleSelected, reloadComponent]);
 
   const morningAvailability = useMemo(() => {
     const dayFormated =
@@ -74,6 +89,7 @@ export function FloatlistHours({
         : format(new Date(daySelected), 'yyyy-MM-dd');
     const daySelectedFormated = `${dayFormated} 12:00:00`;
 
+    console.log('teste');
     return hoursAvailable
       .filter(({ date }) => new Date(date) < new Date(daySelectedFormated))
       .map(({ date, available }) => {
@@ -124,12 +140,40 @@ export function FloatlistHours({
   );
 
   const handleSubmitScheduleVehicle = useCallback(() => {
-    api.post('/appointments', {
-      vehicle_id: vehicleSelected,
-      start_date,
-      end_date,
-    });
-  }, [end_date, start_date, vehicleSelected]);
+    try {
+      api.post('/appointments', {
+        vehicle_id: vehicleSelected,
+        date: format(new Date(start_date), 'yyyy-MM-dd'),
+        start_date,
+        end_date,
+      });
+
+      onClose();
+      apllyToast('success', 'Solicitação enviado com sucesso');
+      handleCleanAppointment();
+    } catch (err) {
+      apllyToast('error', 'Erro ao confirmar solicitação');
+      handleCleanAppointment();
+      console.log(err);
+    }
+  }, [end_date, handleCleanAppointment, onClose, start_date, vehicleSelected]);
+
+  const formateDateStartAppointments = useMemo(() => {
+    if (start_date !== '') {
+      return format(new Date(start_date), `d 'de' MMMM yyyy - HH:mm:ss`, {
+        locale: ptBR,
+      });
+    }
+    return '';
+  }, [start_date]);
+  const formateDateEndAppointments = useMemo(() => {
+    if (end_date !== '') {
+      return format(new Date(end_date), `d 'de' MMMM yyyy - HH:mm:ss`, {
+        locale: ptBR,
+      });
+    }
+    return '';
+  }, [end_date]);
 
   // const handleVerifyHours = useMemo(() => {
   //   console.log('ver array', arrayHoursSelected);
@@ -138,6 +182,23 @@ export function FloatlistHours({
 
   return (
     <Center flexDirection="column" mt="8">
+      <ModalListHours
+        isOpen={isOpen}
+        onClose={onClose}
+        handleSubmitScheduleVehicle={handleSubmitScheduleVehicle}
+      >
+        <Flex direction="column">
+          <Box>
+            <Badge colorScheme="green">Saindo</Badge>
+            <Text>{formateDateStartAppointments} </Text>
+          </Box>
+
+          <Box mt="5">
+            <Badge colorScheme="red">Retornoando</Badge>
+            <Text>{formateDateEndAppointments} </Text>
+          </Box>
+        </Flex>
+      </ModalListHours>
       {vehicleSelected === 'Nenhum veiculo selecionado' ? (
         <Center>
           <Text>{vehicleSelected}</Text>
@@ -233,15 +294,28 @@ export function FloatlistHours({
                   ))}
                 </SimpleGrid>
               </Box>
+              <Box>
+                <Button
+                  onClick={handleCleanAppointment}
+                  mt="15"
+                  mb="20"
+                  mr="5"
+                  bg="gray.600"
+                  isDisabled={end_date === ''}
+                >
+                  Cancelar
+                </Button>
 
-              <Button
-                onClick={handleSubmitScheduleVehicle}
-                mt="15"
-                mb="20"
-                bg="blue.500"
-              >
-                Agendar veiculo
-              </Button>
+                <Button
+                  onClick={onOpen}
+                  mt="15"
+                  mb="20"
+                  bg="blue.500"
+                  isDisabled={end_date === ''}
+                >
+                  Agendar
+                </Button>
+              </Box>
             </Center>
           )}
         </>

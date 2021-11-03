@@ -86,7 +86,6 @@ export async function handleSendEmailOpenOrderServiceAdm(data: {
   return data.id;
 }
 
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export async function handleSendEmailOpenOrderServiceUser(
   data: IdataTable,
   user: IUser,

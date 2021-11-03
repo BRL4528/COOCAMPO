@@ -21,14 +21,25 @@ export function createArayHoursFormated(
     dt.setMinutes(dt.getMinutes() + 30);
 
     const dateFomated = `${dayFormated} ${point}`;
+    // const dateAvailable = hoursAvailableDontFormated.map(date => {
+    //   const t =
+    //     new Date(dateFomated) >= new Date(date.start_date) &&
+    //     new Date(dateFomated) <= new Date(date.end_date);
 
-    const dateAvailable = hoursAvailableDontFormated.map(date => {
-      const t =
-        new Date(dateFomated) > new Date(date.start_date) &&
-        new Date(dateFomated) < new Date(date.end_date);
+    //   return t;
+    // });
+    // console.log('hoursAvailableDontFormated', hoursAvailableDontFormated);
+    const dateAvailable = hoursAvailableDontFormated
+      .filter(date => {
+        const t =
+          new Date(dateFomated) >= new Date(date.start_date) &&
+          new Date(dateFomated) <= new Date(date.end_date);
 
-      return t;
-    });
+        return t;
+      })
+      .map(date => date.start_date !== '');
+
+    // console.log('ver isso', dateAvailable);
 
     const dateFormatedFinish = {
       date: dateFomated,
