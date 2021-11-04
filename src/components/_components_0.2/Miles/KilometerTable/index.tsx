@@ -18,7 +18,7 @@ import {
   useDisclosure,
   Tooltip,
 } from '@chakra-ui/react';
-import { RiAddLine, RiPencilLine, RiFilter2Line } from 'react-icons/ri';
+import { RiPencilLine, RiFilter2Line } from 'react-icons/ri';
 
 import { Pagination } from '../Pagination';
 import { FilterCollapse } from '../Filter';
@@ -56,7 +56,7 @@ interface IKilometers {
 
 export function KilometerTable({ vehicleSelected }: IKilometersTableProps) {
   const { user } = useAuth();
-  const { onToggle, isOpen, onClose, onOpen } = useDisclosure();
+  const { onToggle, isOpen } = useDisclosure();
   const [dataTable, setDataTable] = useState<IKilometers>();
   const isWideVersion = useBreakpointValue({
     base: false,
@@ -87,7 +87,6 @@ export function KilometerTable({ vehicleSelected }: IKilometersTableProps) {
 
   return (
     <Box>
-      <ModalAddNewKilometer isOpen={isOpen} onClose={onClose} />
       <Box flex="1" borderRadius={8} bg="gray.800" p={['4', '8']}>
         <Flex mb="8" justify="space-between" align="center">
           <Heading size="md" fontWeight="normal">
@@ -106,20 +105,9 @@ export function KilometerTable({ vehicleSelected }: IKilometersTableProps) {
                 <Icon as={RiFilter2Line} fontSize="20" />
               </Button>
             </Tooltip>
-
-            <Button
-              as="a"
-              size="sm"
-              colorScheme="blue"
-              fontWeight="medium"
-              onClick={onOpen}
-            >
-              <Icon as={RiAddLine} fontSize="20" />
-              {isWideVersion && <Text>Adicionar novo KM</Text>}
-            </Button>
+            <ModalAddNewKilometer />
           </Box>
         </Flex>
-
         <FilterCollapse isOpen={isOpen} />
 
         <Table colorScheme="whiteAlpha">
