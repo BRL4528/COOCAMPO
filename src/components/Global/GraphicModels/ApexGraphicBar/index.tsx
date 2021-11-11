@@ -35,7 +35,6 @@ const GraphicBarApex: React.FC<ColorStyles> = ({
     });
   }, [result]);
 
-  console.log('mese', filterMonth);
   const options = {
     series: [
       {
