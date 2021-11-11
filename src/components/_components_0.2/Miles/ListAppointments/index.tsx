@@ -1,4 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
+// eslint-disable-next-line import/no-duplicates
+import { differenceInSeconds, format } from 'date-fns';
+// eslint-disable-next-line import/no-duplicates
+import ptBR from 'date-fns/locale/pt-BR';
 import {
   Flex,
   Text,
@@ -44,6 +48,14 @@ interface Appointments {
       status: string;
       created_at: string;
       updated_at: string;
+      conductor: {
+        id: string;
+        name: string;
+        email: string;
+      };
+      vehicle: {
+        name: string;
+      };
     },
   ];
 }
@@ -64,6 +76,13 @@ export function ListAppointments({ vehicleSelected }: IPropsListAppointmens) {
         setListAppointments(response.data);
       });
   }, [vehicleSelected]);
+
+  const handleVerifyDateIsNew = useCallback(date => {
+    if (differenceInSeconds(new Date(), new Date(date)) < 600) {
+      return true;
+    }
+    return false;
+  }, []);
 
   return (
     <Box
@@ -95,16 +114,25 @@ export function ListAppointments({ vehicleSelected }: IPropsListAppointmens) {
               <Td>
                 <Box>
                   <Text fontWeight="bold">
-                    {appointmentitem.conductor_id}{' '}
-                    <Badge colorScheme="green">Novo</Badge>
+                    {appointmentitem.conductor.name}{' '}
+                    {handleVerifyDateIsNew(appointmentitem.created_at) ? (
+                      <Badge colorScheme="green">Novo</Badge>
+                    ) : (
+                      ''
+                    )}
                   </Text>
                   <Text fontSize="sm" color="gray.300">
-                    {appointmentitem.vehicle_id}
+                    {appointmentitem.vehicle.name}
                   </Text>
                 </Box>
               </Td>
 
-              <Td> {appointmentitem.start_date}</Td>
+              <Td>
+                {' '}
+                {format(new Date(appointmentitem.start_date), "dd 'de' MMMM", {
+                  locale: ptBR,
+                })}{' '}
+              </Td>
               <Td>
                 <Popover>
                   <PopoverTrigger>
