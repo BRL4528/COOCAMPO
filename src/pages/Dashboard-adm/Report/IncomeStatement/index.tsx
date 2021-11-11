@@ -149,7 +149,7 @@ const months = [
     month_text: 'Outubro',
     month_number: 10,
     goal: 3.92,
-    result: 3.51,
+    result: 3.9,
   },
   {
     month_text: 'Novembro',
@@ -310,7 +310,7 @@ const SelectorFolders: React.FC = () => {
       return 625;
     }
     if (dataHeader.percentageLiquid >= 3.51) {
-      return 770;
+      return 875;
     }
     return 0;
   }, [dataHeader]);
