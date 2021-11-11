@@ -3,8 +3,9 @@ import {
   ModalOverlay,
   ModalContent,
   ModalHeader,
-  ModalBody,
   ModalCloseButton,
+  useBreakpointValue,
+  Box,
 } from '@chakra-ui/react';
 
 interface IpropsModal {
@@ -20,22 +21,28 @@ export function ModalComponent({
   isOpen,
   onClose,
 }: IpropsModal) {
+  const isWideVersion = useBreakpointValue({
+    base: false,
+    lg: true,
+  });
   return (
-    <>
+    <Box p="20px">
       <Modal
         blockScrollOnMount={false}
         onClose={onClose}
         isOpen={isOpen}
         isCentered
         motionPreset="slideInBottom"
+        size={isWideVersion ? 'lg' : 'full'}
+        scrollBehavior="inside"
       >
         <ModalOverlay />
         <ModalContent bg="gray.700">
           <ModalHeader>{title}</ModalHeader>
           <ModalCloseButton />
-          <ModalBody>{children}</ModalBody>
+          {children}
         </ModalContent>
       </Modal>
-    </>
+    </Box>
   );
 }

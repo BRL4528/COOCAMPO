@@ -8,16 +8,25 @@ import { KilometerTable } from '../../../../components/_components_0.2/Miles/Kil
 
 interface IVehicle {
   id: string;
+  km: number;
 }
 
 export default function Supply() {
-  const [vehicleSelected, setVehicleSelected] = useState(
-    'Nenhum veiculo selecionado',
-  );
+  const [vehicleSelected, setVehicleSelected] = useState<IVehicle>({
+    id: '',
+    km: 0,
+  });
 
   const handleSelectedVehicleId = useCallback((vehicle: Omit<IVehicle, ''>) => {
-    setVehicleSelected(vehicle.id);
+    const { id, km } = vehicle;
+
+    const car = {
+      id,
+      km,
+    };
+    setVehicleSelected(car);
   }, []);
+
   return (
     <Flex direction="column" h="100vh">
       <HeaderUp />

@@ -11,7 +11,7 @@ import {
   Center,
 } from '@chakra-ui/react';
 
-import { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { RiBookmarkFill } from 'react-icons/ri';
 import { api } from '../../../../services/api';
 

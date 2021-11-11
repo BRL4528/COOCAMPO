@@ -29,10 +29,13 @@ import { useAuth } from '../../../../hooks/auth';
 import { api } from '../../../../services/api';
 
 interface IKilometersTableProps {
-  vehicleSelected: string;
+  vehicleSelected: {
+    id: string;
+    km: number;
+  };
 }
 
-interface IKilometers {
+interface IGetKilometers {
   // vehicle_id?: string;
   // access_id?: string;
   kilometer: [
@@ -54,10 +57,22 @@ interface IKilometers {
   };
 }
 
+interface IKilometers {
+  // vehicle_id?: string;
+  // access_id?: string;
+  id?: string;
+  km_start: number;
+  km_end: number;
+  km_traveled?: number;
+  observations: string;
+  reason: string;
+}
+
 export function KilometerTable({ vehicleSelected }: IKilometersTableProps) {
   const { user } = useAuth();
   const { onToggle, isOpen } = useDisclosure();
-  const [dataTable, setDataTable] = useState<IKilometers>();
+  const [dataTable, setDataTable] = useState<IGetKilometers>();
+  const [newRegister, setNewRegister] = useState<string>();
   const isWideVersion = useBreakpointValue({
     base: false,
     lg: true,
@@ -66,14 +81,14 @@ export function KilometerTable({ vehicleSelected }: IKilometersTableProps) {
   useEffect(() => {
     // setLoading(true);
     api
-      .get<IKilometers>(
-        `/kilometers/filter?access_id=${user.id}&vehicle_id=${vehicleSelected}&take=6&page=1`,
+      .get<IGetKilometers>(
+        `/kilometers/filter?access_id=${user.id}&vehicle_id=${vehicleSelected.id}&take=6&page=1`,
       )
       .then(response => {
         setDataTable(response.data);
         // setLoading(false);
       });
-  }, [user.id, vehicleSelected]);
+  }, [user.id, vehicleSelected, newRegister]);
 
   const handleFormatDate = useCallback((data: string) => {
     const dataFormadet = format(new Date(data), 'dd/MM/yyyy');
@@ -84,6 +99,27 @@ export function KilometerTable({ vehicleSelected }: IKilometersTableProps) {
     const dataFormadet = format(new Date(hours), 'HH:mm:ss');
     return dataFormadet;
   }, []);
+
+  const handleAddNewKilometer = useCallback(
+    async (data: Omit<IKilometers, 'e'>) => {
+      const { km_end, km_start, observations, reason, km_traveled } = data;
+
+      const formatData = {
+        km_end: Number(km_end),
+        km_start: Number(km_start),
+        observations,
+        reason,
+        km_traveled: Number(km_traveled),
+        vehicle_id: vehicleSelected.id,
+        access_id: user.id,
+      };
+
+      api.post('/kilometers', formatData).then(response => {
+        setNewRegister(response.data.id);
+      });
+    },
+    [vehicleSelected, user.id],
+  );
 
   return (
     <Box>
@@ -105,7 +141,11 @@ export function KilometerTable({ vehicleSelected }: IKilometersTableProps) {
                 <Icon as={RiFilter2Line} fontSize="20" />
               </Button>
             </Tooltip>
-            <ModalAddNewKilometer />
+
+            <ModalAddNewKilometer
+              km_initial={vehicleSelected.km || 0}
+              handleAddNewKilometer={handleAddNewKilometer}
+            />
           </Box>
         </Flex>
         <FilterCollapse isOpen={isOpen} />

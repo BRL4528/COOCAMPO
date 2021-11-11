@@ -1,5 +1,5 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Text, Center } from '@chakra-ui/react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 // import { format, parseISO } from 'date-fns';
 
 import DayPicker, { DayModifiers } from 'react-day-picker';

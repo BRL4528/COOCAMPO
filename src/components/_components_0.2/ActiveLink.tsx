@@ -1,6 +1,6 @@
 import { useLocation } from 'react-router-dom';
 
-import { ReactElement } from 'react';
+import React, { ReactElement } from 'react';
 import { Box } from '@chakra-ui/react';
 
 interface ActiveLinkProps {

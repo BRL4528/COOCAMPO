@@ -1,4 +1,5 @@
 import React, { useCallback, useRef, useState } from 'react';
+import { Center } from '@chakra-ui/react';
 import { FiUser, FiLock } from 'react-icons/fi';
 import { FormHandles } from '@unform/core';
 import { Form } from '@unform/web';
@@ -109,13 +110,15 @@ const SignIn: React.FC = () => {
             />
 
             <Button type="submit" disabled={loadSignInUser}>
-              {loadSignInUser ? (
-                <div {...containerProps} ref={componentRef}>
-                  {indicatorEl}
-                </div>
-              ) : (
-                'Entrar'
-              )}
+              <Center>
+                {loadSignInUser ? (
+                  <div {...containerProps} ref={componentRef}>
+                    {indicatorEl}
+                  </div>
+                ) : (
+                  'Entrar'
+                )}
+              </Center>
             </Button>
 
             <a href="forgot">Recuperar senha</a>

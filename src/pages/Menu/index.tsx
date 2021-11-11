@@ -3,7 +3,7 @@
 import React, { useContext } from 'react';
 
 import { Link } from 'react-router-dom';
-import { SimpleGrid, Box } from '@chakra-ui/react';
+import { Box, Center } from '@chakra-ui/react';
 import { useAuth } from '../../hooks/auth';
 
 import { ContainerCard, Content } from './styles';
@@ -21,15 +21,13 @@ const Menu: React.FC = () => {
 
   return (
     <ContainerCard theme={toggleTheme}>
-      <SimpleGrid
-        columns={[2, 5]}
-        // flex="1"
-        spacing={3}
-        // minWidth={['400', '0']}
-        // align="center"
-        // direction="row"
-      >
-        <Box className={user.tag === 'admin' ? '' : 'disabled'}>
+      <Center>
+        {/* <SimpleGrid
+          minChildWidth="80px"
+          // flex="1"
+          spacing={3}
+        > */}
+        <Box className={user.tag === 'admin' ? '' : 'disabled'} m="5px">
           <Link to="/miles/dashboard">
             <Content>
               <img src={destin} alt="imagem de destino" />
@@ -38,7 +36,7 @@ const Menu: React.FC = () => {
           </Link>
         </Box>
 
-        <Box>
+        <Box m="5px">
           <Link to="/management-ppr/dashboard">
             <Content>
               <img src={pie} alt="imagem de grafico pizza" />
@@ -48,7 +46,7 @@ const Menu: React.FC = () => {
         </Box>
 
         {/* <div className={user.tag === 'admin' ? '' : 'disabled'}> */}
-        <Box>
+        <Box m="5px">
           <Link to="/service-orders/service-integrity">
             <Content>
               <img src={os} alt="imagem de ordem de serviço" />
@@ -58,7 +56,7 @@ const Menu: React.FC = () => {
         </Box>
         {/* </div> */}
 
-        <Box className={user.tag === 'admin' ? '' : 'disabled'}>
+        <Box className={user.tag === 'admin' ? '' : 'disabled'} m="5px">
           <Link to="/rules">
             <Content>
               <img src={fluxo} alt="imagem de fluxo grama" />
@@ -66,7 +64,7 @@ const Menu: React.FC = () => {
             </Content>
           </Link>
         </Box>
-        <Box className={user.tag === 'admin' ? '' : 'disabled'}>
+        <Box className={user.tag === 'admin' ? '' : 'disabled'} m="5px">
           <Link to="/administrator/employers">
             <Content>
               <img src={adm} alt="imagem de administrador" />
@@ -74,7 +72,8 @@ const Menu: React.FC = () => {
             </Content>
           </Link>
         </Box>
-      </SimpleGrid>
+        {/* </SimpleGrid> */}
+      </Center>
     </ContainerCard>
   );
 };
