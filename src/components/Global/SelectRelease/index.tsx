@@ -7,7 +7,8 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import { FiAlertCircle } from 'react-icons/fi';
+
+import { Select as SelectChakra, Tooltip } from '@chakra-ui/react';
 
 import { Container, Error } from './styles';
 
@@ -53,32 +54,30 @@ const Select: React.FC<SelectProps> = ({ label, name, options, ...rest }) => {
     >
       <div>
         <p>{label}</p>
-        <select
-          value=""
-          id={name}
-          {...rest}
-          onFocus={handleInputFocus}
-          onBlur={handleInputBlur}
-          defaultValue={defaultValue}
-        >
-          <option value="" disabled hidden>
-            Selecione uma opção
-          </option>
+        <Tooltip hasArrow label={error} bg="#c53030">
+          <SelectChakra
+            id={name}
+            {...rest}
+            onFocus={handleInputFocus}
+            onBlur={handleInputBlur}
+            defaultValue={defaultValue}
+            size="md"
+            isInvalid={!!error}
+          >
+            <option value="" disabled hidden>
+              Selecione uma opção
+            </option>
 
-          {options.map(option => {
-            return (
-              <option key={option.value} value={option.value}>
-                {option.label}
-              </option>
-            );
-          })}
-        </select>
+            {options.map(option => {
+              return (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              );
+            })}
+          </SelectChakra>
+        </Tooltip>
       </div>
-      {error && (
-        <Error title={error}>
-          <FiAlertCircle color="#c53030" size={20} />
-        </Error>
-      )}
     </Container>
   );
 };

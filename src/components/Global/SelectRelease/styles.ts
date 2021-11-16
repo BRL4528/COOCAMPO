@@ -44,7 +44,8 @@ export const Container = styled.div<ContainerProps>`
     height: 2.6rem;
     /* margin-top: 0.8rem; */
     border-radius: 6px;
-    background: var(--white-secondary);
+    background: var(--text-tertiary);
+    color: var(--dark-quaternary);
     border: 1px solid var(--dark-quaternary);
     outline: 0;
     padding: 0 0.4rem;

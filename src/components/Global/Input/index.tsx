@@ -1,17 +1,19 @@
-import React, {
-  InputHTMLAttributes,
-  useEffect,
-  useRef,
-  useState,
-  useCallback,
-} from 'react';
+/* eslint-disable react/no-children-prop */
+import React, { useEffect, useRef } from 'react';
 import { IconBaseProps } from 'react-icons';
-import { FiAlertCircle } from 'react-icons/fi';
+
 import { useField } from '@unform/core';
+import {
+  Input as InputChakra,
+  InputProps as InputPropsElement,
+  Tooltip,
+  InputGroup,
+  InputLeftElement,
+} from '@chakra-ui/react';
 
-import { Container, Error } from './styles';
+import { Container } from './styles';
 
-interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
+interface InputProps extends InputPropsElement {
   name: string;
   icon?: React.ComponentType<IconBaseProps>;
   type?: string;
@@ -20,19 +22,7 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
 const Input: React.FC<InputProps> = ({ name, icon: Icon, type, ...rest }) => {
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const [isFocused, setIsFocused] = useState(false);
-  const [isFilled, setIsFilled] = useState(false);
-
   const { fieldName, defaultValue, registerField, error } = useField(name);
-
-  const handleInputFocus = useCallback(() => {
-    setIsFocused(true);
-  }, []);
-
-  const handleInputBlur = useCallback(() => {
-    setIsFocused(false);
-    setIsFilled(!!inputRef.current?.value);
-  }, []);
 
   useEffect(() => {
     registerField({
@@ -43,21 +33,28 @@ const Input: React.FC<InputProps> = ({ name, icon: Icon, type, ...rest }) => {
   }, [fieldName, registerField]);
 
   return (
-    <Container isErrored={!!error} isFocused={isFocused} isFilled={isFilled}>
-      {Icon && <Icon size={20} />}
-      <input
-        onFocus={handleInputFocus}
-        onBlur={handleInputBlur}
-        defaultValue={defaultValue}
-        type={type}
-        ref={inputRef}
-        {...rest}
-      />
-      {error && (
-        <Error title={error}>
-          <FiAlertCircle color="#c53030" size={20} />
-        </Error>
-      )}
+    <Container>
+      <Tooltip hasArrow label={error} bg="#c53030">
+        <InputGroup>
+          {Icon ? (
+            <InputLeftElement
+              pointerEvents="none"
+              children={Icon && <Icon color="gray.300" />}
+            />
+          ) : (
+            ''
+          )}
+
+          <InputChakra
+            isInvalid={!!error}
+            defaultValue={defaultValue}
+            type={type}
+            ref={inputRef}
+            size="md"
+            {...rest}
+          />
+        </InputGroup>
+      </Tooltip>
     </Container>
   );
 };

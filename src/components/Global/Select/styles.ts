@@ -6,12 +6,12 @@ interface ContainerProps {
 }
 
 export const Container = styled.div<ContainerProps>`
-  background: #fff;
+  background: '';
   border-radius: 6px;
   border: 1px solid #a0a4a8;
   /* padding: 10px; */
   width: 100%;
-  color: #a0a4a8;
+  color: var(--dark-quaternary);
   display: flex;
   align-items: center;
   flex-direction: row;
