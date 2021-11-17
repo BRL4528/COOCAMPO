@@ -10,7 +10,7 @@ import React, {
 
 import { Select as SelectChakra, Tooltip } from '@chakra-ui/react';
 
-import { Container, Error } from './styles';
+import { Container } from './styles';
 
 interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
   name: string;
