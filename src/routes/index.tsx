@@ -22,6 +22,8 @@ import AnalyticModuloAdm from '../pages/Dashboard-adm/AnalyticModule';
 import PainelAnalyticModulo from '../pages/Dashboard-adm/PainelAnalyticModule';
 
 import PerformanceEvaluation from '../pages/Dashboard-adm/PerformanceEvaluation';
+import ListOfEvaluation from '../pages/Dashboard-adm/PerformanceEvaluation/Evaluations/ListOfEvaluation';
+import EvaluationResume from '../pages/Dashboard-adm/PerformanceEvaluation/Evaluations/EvaluationResume';
 
 import PainelSatisfactionSurvey from '../pages/AcessGlobal/PainelSatisfactionSurvey';
 
@@ -168,6 +170,19 @@ const Routes: React.FC = () => (
       component={PerformanceEvaluation}
       isPrivate
       isAdmin
+    />
+    <Route
+      path="/management-ppr/listOf-evaluation"
+      component={ListOfEvaluation}
+      isPrivate
+      isAdmin
+    />
+    <Route
+      path="/management-ppr/evaluation-resume"
+      component={EvaluationResume}
+      isPrivate
+      isAdmin
+      exact
     />
 
     <Route

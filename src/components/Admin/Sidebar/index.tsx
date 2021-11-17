@@ -19,7 +19,7 @@ import {
 } from './listMenuSidebar';
 
 import { SetToggleThemeContext } from '../../../contexts/SetToggleThemeContext';
-import { OptionList, Container } from './styles';
+import { Container, OptionList } from './styles';
 import './styles.css';
 
 interface LayoutProps {
