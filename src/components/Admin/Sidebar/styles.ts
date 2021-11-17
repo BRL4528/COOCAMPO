@@ -17,11 +17,7 @@ export const OptionList = styled.li<LayoutProps>`
 
   :hover {
     transition: var(--transition-speed);
-
-    ${({ theme }: LayoutProps): string =>
-      theme === 'light'
-        ? 'background: var(--white-secondary);'
-        : 'background: #444'};
+    background: rgb(255, 242, 1, 0.05);
   }
 
   ${({ visible }: LayoutProps): string => (visible ? '' : 'display: none;')}
@@ -30,7 +26,7 @@ export const OptionList = styled.li<LayoutProps>`
     path === pathname ? 'border-left: solid 4px #f2c811;' : ''}
 
   ${({ path, pathname }: LayoutProps): string =>
-    path === pathname ? 'background: var(--white-primary);' : ''}
+    path === pathname ? 'background: rgb(255, 242, 1, 0.1);' : ''}
 
   svg {
     ${({ path, pathname }: LayoutProps): string =>
@@ -49,6 +45,6 @@ export const OptionList = styled.li<LayoutProps>`
 export const Container = styled.div<IThemeProps>`
   .navbar {
     ${({ theme }: IThemeProps): string =>
-      theme === 'light' ? 'background: #fff' : 'background: #333'};
+      theme === 'light' ? 'background: #fff' : 'background: #1F2029'};
   }
 `;

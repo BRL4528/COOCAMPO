@@ -33,6 +33,7 @@ export const dark = extendTheme({
         webkitFontSmoothing: 'antialiased',
         h1: {
           fontWeight: '500',
+          fontSize: '24px',
         },
         h2: {
           fontWeight: '500',
