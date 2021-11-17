@@ -21,6 +21,8 @@ import SectorResume from '../pages/Dashboard-adm/Sector/SectorResume';
 import AnalyticModuloAdm from '../pages/Dashboard-adm/AnalyticModule';
 import PainelAnalyticModulo from '../pages/Dashboard-adm/PainelAnalyticModule';
 
+import PerformanceEvaluation from '../pages/Dashboard-adm/PerformanceEvaluation';
+
 import PainelSatisfactionSurvey from '../pages/AcessGlobal/PainelSatisfactionSurvey';
 
 import SatisfactionSurvey from '../pages/AcessGlobal/SatisfactionSurvey';
@@ -158,6 +160,12 @@ const Routes: React.FC = () => (
     <Route
       path="/management-ppr/analyticModule"
       component={AnalyticModuloAdm}
+      isPrivate
+      isAdmin
+    />
+    <Route
+      path="/management-ppr/performance-evaluation"
+      component={PerformanceEvaluation}
       isPrivate
       isAdmin
     />

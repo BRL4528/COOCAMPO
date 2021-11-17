@@ -19,7 +19,7 @@ export default createGlobalStyle`
 
     --text-primary: #b2b2b2;
     --text-secondary: #ececec;
-    --text-tertiary: rgba(150, 156, 186, 0.2);
+    --text-tertiary: rgba(150, 156, 186, 0.0);
     --text-quarterly: #433f59;
 
     --white-primary: #F8F8FB;

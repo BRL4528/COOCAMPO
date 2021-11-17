@@ -1,3 +1,6 @@
+/* eslint-disable no-shadow */
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+/* eslint-disable spaced-comment */
 /* eslint-disable react/require-default-props */
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import {
@@ -52,7 +55,7 @@ export function ModalAddNewKilometer({
 
   const componentRef = useRef<HTMLDivElement>(null);
   const [loading, setLoading] = useState(false);
-  const [reason, setReason] = useState('');
+  const [reasonItem, setReason] = useState('');
 
   // const [km_start, setKm_start] = useState(0);
   const [km_endData, setKm_end] = useState(0);
@@ -60,15 +63,23 @@ export function ModalAddNewKilometer({
 
   const handleSubmit = useCallback(
     async (data: IKilometers) => {
+      console.log('ver isso aq', data);
+
       try {
         setLoading(true);
         formRef.current?.setErrors({});
 
         const schema = Yup.object().shape({
-          km_start: Yup.string().required('Km inicial é obrigatório'),
+          km_start: Yup.string()
+            .required('Km inicial é obrigatório')
+            .min(1, 'km inicial deve ser maior que zero'),
           km_end: Yup.string().required('Km final é obrigatório'),
-          km_traveled: Yup.number().required('Km percorrido é obrigatório'),
-          // reason: Yup.string().required('Motivo é obrigatório'),
+          km_traveled: Yup.number()
+            .required('Km percorrido é obrigatório')
+            .positive('Km percorrido deve ser positivo'),
+
+          reason: Yup.string().required('Motivo é obrigatório'),
+
           observations: Yup.string().required('Destino é obrigatório'),
         });
 
@@ -83,14 +94,13 @@ export function ModalAddNewKilometer({
           km_start,
           km_traveled,
           observations,
-          reason,
+          reason: reasonItem,
         };
 
         handleAddNewKilometer(formatData);
-
         setKm_traveled(0);
-
-        apllyToast('success', 'Sucesso ao abrir nova OS!');
+        apllyToast('success', 'Sucesso ao adicionar km!');
+        onClose();
 
         setLoading(false);
       } catch (err) {
@@ -103,10 +113,11 @@ export function ModalAddNewKilometer({
           return;
         }
         setKm_traveled(0);
-        apllyToast('warning', 'Problemas ao abrir nova OS!');
+        apllyToast('warning', 'Problemas ao adicionar km!');
+        onClose();
       }
     },
-    [handleAddNewKilometer, reason],
+    [handleAddNewKilometer, onClose, reasonItem],
   );
 
   const { containerProps, indicatorEl } = useLoading({
@@ -151,14 +162,21 @@ export function ModalAddNewKilometer({
         <ModalBody>
           <Form ref={formRef} onSubmit={handleSubmit}>
             <p>Quilometragem inicial</p>
-            <Input type="number" name="km_start" placeholder="1.200" />
+            <Input
+              value={km_initial}
+              type="number"
+              name="km_start"
+              placeholder="Exemplo: 1.200"
+              variant="filled"
+              bg="gray.800"
+            />
 
             <p>Quilometragem final</p>
             <Input
               onChange={handlekm_end}
               type="number"
               name="km_end"
-              placeholder="1.200"
+              placeholder="Exemplo: 1.200"
             />
 
             <p>Quilometro percorrido</p>
@@ -166,13 +184,15 @@ export function ModalAddNewKilometer({
               value={km_traveledData}
               type="number"
               name="km_traveled"
-              placeholder="1.200"
+              placeholder="Exemplo: 1.200"
+              variant="filled"
+              bg="gray.800"
             />
 
             <Select
               name="reason"
               label="Qual o motivo?"
-              value={reason}
+              value={reasonItem}
               onChange={e => {
                 handleReason(e.target.value);
               }}
@@ -197,7 +217,7 @@ export function ModalAddNewKilometer({
             <TextArea name="observations" placeholder="Ex: visita técnica." />
 
             <ModalFooter>
-              <Button colorScheme="blue" mr={3}>
+              <Button colorScheme="blue" mr={3} onClick={onClose}>
                 Fechar
               </Button>
               <Button variant="ghost" type="submit">

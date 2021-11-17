@@ -18,6 +18,7 @@ import {
   FiCalendar,
   FiHeart,
   FiActivity,
+  FiUserCheck,
 } from 'react-icons/fi';
 
 import { BiCar, BiGasPump } from 'react-icons/bi';
@@ -232,6 +233,18 @@ export function ManagementPPR(
           <FiTerminal color="#f2c811" size={16} />
 
           <span className="link-text">Agenda</span>
+        </Link>
+      </OptionList>
+      <OptionList
+        pathname={pathname}
+        path="/management-ppr/performance-evaluation"
+        className="nav-item"
+        visible={user.schedule}
+      >
+        <Link to="/management-ppr/performance-evaluation" className="nav-link">
+          <FiUserCheck color="#f2c811" size={16} />
+
+          <span className="link-text">Avaliação de desempenho</span>
         </Link>
       </OptionList>
     </>
