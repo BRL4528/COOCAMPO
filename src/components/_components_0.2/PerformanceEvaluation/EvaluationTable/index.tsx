@@ -17,10 +17,8 @@ import {
   Tooltip,
   Badge,
 } from '@chakra-ui/react';
-import { RiFilter2Line } from 'react-icons/ri';
+import { RiPrinterLine, RiEyeLine, RiSurveyLine } from 'react-icons/ri';
 import { Link } from 'react-router-dom';
-
-import { Pagination } from '../../Miles/Pagination';
 
 export function EvaluationTable() {
   const isWideVersion = useBreakpointValue({
@@ -29,26 +27,12 @@ export function EvaluationTable() {
   });
 
   return (
-    <Box>
+    <Box w="100%">
       <Box flex="1" borderRadius={8} bg="gray.800" p={['4', '8']}>
         <Flex mb="8" justify="space-between" align="center">
           <Heading size="md" fontWeight="normal">
             Lista de avaliações
           </Heading>
-
-          <Box>
-            <Tooltip hasArrow label="Filtro">
-              <Button
-                size="sm"
-                mr="2"
-                colorScheme="blue"
-                fontWeight="medium"
-                onClick={() => {}}
-              >
-                <Icon as={RiFilter2Line} fontSize="20" />
-              </Button>
-            </Tooltip>
-          </Box>
         </Flex>
 
         <Table colorScheme="whiteAlpha">
@@ -89,12 +73,37 @@ export function EvaluationTable() {
                 </Td>
               )}
               <Td>78</Td>
-              {isWideVersion && <Td>Visualizar</Td>}
-              {isWideVersion && <Td>Imprimir</Td>}
+              {isWideVersion && (
+                <Td>
+                  <Tooltip hasArrow label="Visualizar">
+                    <Button colorScheme="yellow" as={Link} to="/" size="sm">
+                      <Icon as={RiEyeLine} fontSize="20" />
+                    </Button>
+                  </Tooltip>
+                </Td>
+              )}
+              {isWideVersion && (
+                <Td>
+                  <Tooltip hasArrow label="Imprimir">
+                    <Button colorScheme="yellow" as={Link} to="/" size="sm">
+                      <Icon as={RiPrinterLine} fontSize="20" />
+                    </Button>
+                  </Tooltip>
+                </Td>
+              )}
 
               <Td>
                 {isWideVersion ? (
-                  <Link to="/management-ppr/evaluation-resume">Avaliar</Link>
+                  <Tooltip hasArrow label="Avaliar">
+                    <Button
+                      colorScheme="yellow"
+                      as={Link}
+                      to="/management-ppr/evaluation-resume"
+                      size="sm"
+                    >
+                      <Icon as={RiSurveyLine} fontSize="20" />
+                    </Button>
+                  </Tooltip>
                 ) : (
                   ''
                 )}
@@ -119,12 +128,37 @@ export function EvaluationTable() {
                 </Td>
               )}
               <Td>78</Td>
-              {isWideVersion && <Td>Visualizar</Td>}
-              {isWideVersion && <Td>Imprimir</Td>}
+              {isWideVersion && (
+                <Td>
+                  <Tooltip hasArrow label="Visualizar">
+                    <Button colorScheme="yellow" as={Link} to="/" size="sm">
+                      <Icon as={RiEyeLine} fontSize="20" />
+                    </Button>
+                  </Tooltip>
+                </Td>
+              )}
+              {isWideVersion && (
+                <Td>
+                  <Tooltip hasArrow label="Imprimir">
+                    <Button colorScheme="yellow" as={Link} to="/" size="sm">
+                      <Icon as={RiPrinterLine} fontSize="20" />
+                    </Button>
+                  </Tooltip>
+                </Td>
+              )}
 
               <Td>
                 {isWideVersion ? (
-                  <Link to="/management-ppr/evaluation-resume">Avaliar</Link>
+                  <Tooltip hasArrow label="Avaliar">
+                    <Button
+                      colorScheme="yellow"
+                      as={Link}
+                      to="/management-ppr/evaluation-resume"
+                      size="sm"
+                    >
+                      <Icon as={RiSurveyLine} fontSize="20" />
+                    </Button>
+                  </Tooltip>
                 ) : (
                   ''
                 )}
@@ -132,8 +166,6 @@ export function EvaluationTable() {
             </Tr>
           </Tbody>
         </Table>
-
-        <Pagination />
       </Box>
     </Box>
   );
