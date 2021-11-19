@@ -178,7 +178,7 @@ const Routes: React.FC = () => (
       isAdmin
     />
     <Route
-      path="/management-ppr/evaluation-resume"
+      path="/management-ppr/evaluation-resume/:name_subordinate?"
       component={EvaluationResume}
       isPrivate
       isAdmin

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
   Box,
   Text,
@@ -8,6 +8,8 @@ import {
   Button,
   ScaleFade,
 } from '@chakra-ui/react';
+import { useParams } from 'react-router-dom';
+import { useAuth } from '../../../../hooks/auth';
 import { api } from '../../../../services/api';
 
 interface Evaluations {
@@ -23,28 +25,43 @@ interface Evaluations {
     },
   ];
 }
+interface ParamsRouter {
+  name_subordinate: string;
+}
+interface DataSubordinate {
+  name: string;
+}
 
 export default function EvaluationResume() {
-  const [dataEvaluation, setDataEvaluation] = useState<Evaluations[]>();
+  const { name_subordinate } = useParams<ParamsRouter>();
+  console.log('name_subordinate', name_subordinate);
+  const { user } = useAuth();
+  const [dataEvaluation, setDataEvaluation] = useState<Evaluations[]>([]);
+  const [dataSubordinate, setdataSubordinate] = useState<DataSubordinate>();
+
   useEffect(() => {
     api.get('/factors').then(response => {
-      const array: Evaluations[] = [];
-      response.data.filter(async (dataEva: Evaluations) => {
-        await api.get(`performances/show?factor_id=${dataEva.id}`).then(res => {
-          const formated = {
-            id: dataEva.id,
-            name: dataEva.name,
-            description: dataEva.description,
-            status: dataEva.status,
-            performances: res.data,
-          };
-          array.push(formated);
-        });
-      });
-      console.log('aaaa', array);
       setDataEvaluation(response.data);
     });
-  }, []);
+    api.get(`/employees/${name_subordinate}`).then(response => {
+      setdataSubordinate(response.data);
+    });
+  }, [name_subordinate]);
+
+  const handleRadioSubmit = useCallback(
+    (data): any => {
+      // eslint-disable-next-line prettier/prettier
+      const { factor_id, performance_id, result } = JSON.parse(data);
+      const formatData = {
+        factor_id,
+        performance_id,
+        result,
+        leader: user.nickname,
+      };
+      console.log('data', formatData);
+    },
+    [user.nickname],
+  );
 
   return (
     <ScaleFade initialScale={0.9} in>
@@ -67,7 +84,7 @@ export default function EvaluationResume() {
         >
           <Text>Avaliação de desempenho</Text>
           <Text fontWeight="medium" fontSize="2xl">
-            Bruno Luiz Guimarães Carvalho
+            {dataSubordinate?.name}
           </Text>
         </Box>
 
@@ -91,11 +108,11 @@ export default function EvaluationResume() {
             >
               {data.description}
             </Text>
-            <RadioGroup mt="8">
+            <RadioGroup mt="8" onChange={handleRadioSubmit}>
               {data.performances?.map(dataPerformance => (
                 <Box>
                   <Radio
-                    value={`${dataPerformance.weight}`}
+                    value={`{"factor_id":"${data.id}", "result":"${dataPerformance.weight}", "performance_id":"${dataPerformance.id}"}`}
                     m="5"
                     cursor="pointer"
                     key={dataPerformance.id}

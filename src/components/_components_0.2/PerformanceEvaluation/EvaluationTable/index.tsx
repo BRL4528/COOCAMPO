@@ -17,14 +17,32 @@ import {
   Tooltip,
   Badge,
 } from '@chakra-ui/react';
+import { useEffect, useState } from 'react';
 import { RiPrinterLine, RiEyeLine, RiSurveyLine } from 'react-icons/ri';
 import { Link } from 'react-router-dom';
+import { useAuth } from '../../../../hooks/auth';
+import { api } from '../../../../services/api';
+
+interface DataTable {
+  id: string;
+  leader: string;
+  subordinate: string;
+}
 
 export function EvaluationTable() {
+  const { user } = useAuth();
+  const [dataTable, setDataTable] = useState<DataTable[]>();
   const isWideVersion = useBreakpointValue({
     base: false,
     lg: true,
   });
+
+  useEffect(() => {
+    api.get(`/hierarchies/show?leader=${user.nickname}`).then(response => {
+      console.log('ver', response.data);
+      setDataTable(response.data);
+    });
+  }, [user.nickname]);
 
   return (
     <Box w="100%">
@@ -54,116 +72,63 @@ export function EvaluationTable() {
           </Thead>
 
           <Tbody>
-            <Tr>
-              <Td px={['2', '4', '6']}>
-                <Checkbox colorScheme="pink" />
-              </Td>
-
-              <Td>Bruno luiz</Td>
-
-              {isWideVersion && (
-                <Td>
-                  <Text>01/12/2021</Text>
+            {dataTable?.map(data => (
+              <Tr>
+                <Td px={['2', '4', '6']}>
+                  <Checkbox colorScheme="pink" />
                 </Td>
-              )}
 
-              {isWideVersion && (
-                <Td>
-                  <Badge colorScheme="red">Não Avaliado</Badge>
-                </Td>
-              )}
-              <Td>78</Td>
-              {isWideVersion && (
-                <Td>
-                  <Tooltip hasArrow label="Visualizar">
-                    <Button colorScheme="yellow" as={Link} to="/" size="sm">
-                      <Icon as={RiEyeLine} fontSize="20" />
-                    </Button>
-                  </Tooltip>
-                </Td>
-              )}
-              {isWideVersion && (
-                <Td>
-                  <Tooltip hasArrow label="Imprimir">
-                    <Button colorScheme="yellow" as={Link} to="/" size="sm">
-                      <Icon as={RiPrinterLine} fontSize="20" />
-                    </Button>
-                  </Tooltip>
-                </Td>
-              )}
+                <Td>{data.subordinate}</Td>
 
-              <Td>
-                {isWideVersion ? (
-                  <Tooltip hasArrow label="Avaliar">
-                    <Button
-                      colorScheme="yellow"
-                      as={Link}
-                      to="/management-ppr/evaluation-resume"
-                      size="sm"
-                    >
-                      <Icon as={RiSurveyLine} fontSize="20" />
-                    </Button>
-                  </Tooltip>
-                ) : (
-                  ''
+                {isWideVersion && (
+                  <Td>
+                    <Text>01/12/2021</Text>
+                  </Td>
                 )}
-              </Td>
-            </Tr>
-            <Tr>
-              <Td px={['2', '4', '6']}>
-                <Checkbox colorScheme="pink" />
-              </Td>
 
-              <Td>Bruno luiz</Td>
-
-              {isWideVersion && (
-                <Td>
-                  <Text>01/12/2021</Text>
-                </Td>
-              )}
-
-              {isWideVersion && (
-                <Td>
-                  <Badge colorScheme="red">Não Avaliado</Badge>
-                </Td>
-              )}
-              <Td>78</Td>
-              {isWideVersion && (
-                <Td>
-                  <Tooltip hasArrow label="Visualizar">
-                    <Button colorScheme="yellow" as={Link} to="/" size="sm">
-                      <Icon as={RiEyeLine} fontSize="20" />
-                    </Button>
-                  </Tooltip>
-                </Td>
-              )}
-              {isWideVersion && (
-                <Td>
-                  <Tooltip hasArrow label="Imprimir">
-                    <Button colorScheme="yellow" as={Link} to="/" size="sm">
-                      <Icon as={RiPrinterLine} fontSize="20" />
-                    </Button>
-                  </Tooltip>
-                </Td>
-              )}
-
-              <Td>
-                {isWideVersion ? (
-                  <Tooltip hasArrow label="Avaliar">
-                    <Button
-                      colorScheme="yellow"
-                      as={Link}
-                      to="/management-ppr/evaluation-resume"
-                      size="sm"
-                    >
-                      <Icon as={RiSurveyLine} fontSize="20" />
-                    </Button>
-                  </Tooltip>
-                ) : (
-                  ''
+                {isWideVersion && (
+                  <Td>
+                    <Badge colorScheme="red">Não Avaliado</Badge>
+                  </Td>
                 )}
-              </Td>
-            </Tr>
+                <Td>78</Td>
+                {isWideVersion && (
+                  <Td>
+                    <Tooltip hasArrow label="Visualizar">
+                      <Button colorScheme="yellow" as={Link} to="/" size="sm">
+                        <Icon as={RiEyeLine} fontSize="20" />
+                      </Button>
+                    </Tooltip>
+                  </Td>
+                )}
+                {isWideVersion && (
+                  <Td>
+                    <Tooltip hasArrow label="Imprimir">
+                      <Button colorScheme="yellow" as={Link} to="/" size="sm">
+                        <Icon as={RiPrinterLine} fontSize="20" />
+                      </Button>
+                    </Tooltip>
+                  </Td>
+                )}
+
+                <Td>
+                  {isWideVersion ? (
+                    <Tooltip hasArrow label="Avaliar">
+                      <Button
+                        colorScheme="yellow"
+                        as={Link}
+                        to={`/management-ppr/evaluation-resume/${data.subordinate}`}
+                        size="sm"
+                      >
+                        <Icon as={RiSurveyLine} fontSize="20" />
+                      </Button>
+                    </Tooltip>
+                  ) : (
+                    ''
+                  )}
+                </Td>
+              </Tr>
+            ))}
           </Tbody>
         </Table>
       </Box>
