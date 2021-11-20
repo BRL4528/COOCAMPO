@@ -23,6 +23,7 @@ import {
 
 import { BiCar, BiGasPump } from 'react-icons/bi';
 import { GiAutoRepair } from 'react-icons/gi';
+import { useAuth } from '../../../hooks/auth';
 import { OptionList } from './styles';
 import { SetToggleThemeContext } from '../../../contexts/SetToggleThemeContext';
 
@@ -40,6 +41,7 @@ export function ManagementMiles(
   },
 ) {
   const { toggleTheme } = useContext(SetToggleThemeContext);
+
   return (
     <>
       <OptionList
@@ -113,7 +115,7 @@ export function ManagementMiles(
 
 export function ManagementPPR(
   pathname: string,
-  user: {
+  userData: {
     dashboard: boolean;
     goals_and_sub_goals: boolean;
     sector: boolean;
@@ -124,6 +126,7 @@ export function ManagementPPR(
     schedule: boolean;
   },
 ) {
+  const { user } = useAuth();
   return (
     <>
       <OptionList pathname={pathname} path="/menu" className="nav-item" visible>
@@ -138,7 +141,7 @@ export function ManagementPPR(
         pathname={pathname}
         path="/management-ppr/dashboard"
         className="nav-item"
-        visible={user.dashboard}
+        visible={userData.dashboard}
       >
         <Link to="/management-ppr/dashboard" className="nav-link">
           <FiBarChart color="#f2c811" size={16} />
@@ -151,7 +154,7 @@ export function ManagementPPR(
         pathname={pathname}
         path="/management-ppr/goals-subgoals"
         className="nav-item"
-        visible={user.goals_and_sub_goals}
+        visible={userData.goals_and_sub_goals}
       >
         <Link to="/management-ppr/goals-subgoals" className="nav-link">
           <FiLayers color="#f2c811" size={16} />
@@ -164,7 +167,7 @@ export function ManagementPPR(
         pathname={pathname}
         path="/management-ppr/sector"
         className="nav-item"
-        visible={user.sector}
+        visible={userData.sector}
       >
         <Link to="/management-ppr/sector" className="nav-link">
           <FiMapPin color="#f2c811" size={16} />
@@ -177,7 +180,7 @@ export function ManagementPPR(
         pathname={pathname}
         path="/management-ppr/analyticModule"
         className="nav-item"
-        visible={user.module_analyze}
+        visible={userData.module_analyze}
       >
         <Link to="/management-ppr/analyticModule" className="nav-link">
           <FiSliders color="#f2c811" size={16} />
@@ -189,7 +192,7 @@ export function ManagementPPR(
         pathname={pathname}
         path="/management-ppr/import"
         className="nav-item"
-        visible={user.imports}
+        visible={userData.imports}
       >
         <Link to="/management-ppr/import" className="nav-link">
           <FiFilePlus color="#f2c811" size={16} />
@@ -201,7 +204,7 @@ export function ManagementPPR(
         pathname={pathname}
         path="/error404-3"
         className="nav-item"
-        visible={user.report}
+        visible={userData.report}
       >
         <Link to="/management-ppr/report" className="nav-link">
           <FiFileText color="#f2c811" size={16} />
@@ -227,7 +230,7 @@ export function ManagementPPR(
         pathname={pathname}
         path="/management-ppr/schedule"
         className="nav-item"
-        visible={user.schedule}
+        visible={userData.schedule}
       >
         <Link to="/management-ppr/schedule" className="nav-link">
           <FiTerminal color="#f2c811" size={16} />
@@ -239,9 +242,12 @@ export function ManagementPPR(
         pathname={pathname}
         path="/management-ppr/performance-evaluation"
         className="nav-item"
-        visible={user.schedule}
+        visible={userData.schedule}
       >
-        <Link to="/management-ppr/performance-evaluation" className="nav-link">
+        <Link
+          to={`/management-ppr/performance-evaluation/${user.nickname}`}
+          className="nav-link"
+        >
           <FiUserCheck color="#f2c811" size={16} />
 
           <span className="link-text">Avaliação de desempenho</span>

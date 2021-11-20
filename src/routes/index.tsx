@@ -166,7 +166,7 @@ const Routes: React.FC = () => (
       isAdmin
     />
     <Route
-      path="/management-ppr/performance-evaluation"
+      path="/management-ppr/performance-evaluation/:nick_user"
       component={PerformanceEvaluation}
       isPrivate
       isAdmin
@@ -178,7 +178,7 @@ const Routes: React.FC = () => (
       isAdmin
     />
     <Route
-      path="/management-ppr/evaluation-resume/:name_subordinate?"
+      path="/management-ppr/evaluation-resume/:name_subordinate/:id_hierarchies"
       component={EvaluationResume}
       isPrivate
       isAdmin

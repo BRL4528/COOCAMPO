@@ -39,7 +39,6 @@ export function EvaluationTable() {
 
   useEffect(() => {
     api.get(`/hierarchies/show?leader=${user.nickname}`).then(response => {
-      console.log('ver', response.data);
       setDataTable(response.data);
     });
   }, [user.nickname]);
@@ -95,7 +94,12 @@ export function EvaluationTable() {
                 {isWideVersion && (
                   <Td>
                     <Tooltip hasArrow label="Visualizar">
-                      <Button colorScheme="yellow" as={Link} to="/" size="sm">
+                      <Button
+                        colorScheme="yellow"
+                        as={Link}
+                        to={`/management-ppr/performance-evaluation/${data.subordinate}`}
+                        size="sm"
+                      >
                         <Icon as={RiEyeLine} fontSize="20" />
                       </Button>
                     </Tooltip>
@@ -117,7 +121,7 @@ export function EvaluationTable() {
                       <Button
                         colorScheme="yellow"
                         as={Link}
-                        to={`/management-ppr/evaluation-resume/${data.subordinate}`}
+                        to={`/management-ppr/evaluation-resume/${data.subordinate}/${data.id}`}
                         size="sm"
                       >
                         <Icon as={RiSurveyLine} fontSize="20" />

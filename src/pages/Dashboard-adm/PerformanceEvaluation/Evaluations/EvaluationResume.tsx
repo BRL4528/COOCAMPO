@@ -27,17 +27,31 @@ interface Evaluations {
 }
 interface ParamsRouter {
   name_subordinate: string;
+  id_hierarchies: string;
 }
 interface DataSubordinate {
   name: string;
 }
 
+interface ResponseEvaluation {
+  factor_id: string;
+  performance_id: string;
+  result: string;
+  date: Date;
+  subordinate: string;
+  leader: string;
+  schooling: string;
+}
+
 export default function EvaluationResume() {
-  const { name_subordinate } = useParams<ParamsRouter>();
-  console.log('name_subordinate', name_subordinate);
+  const { name_subordinate, id_hierarchies } = useParams<ParamsRouter>();
   const { user } = useAuth();
   const [dataEvaluation, setDataEvaluation] = useState<Evaluations[]>([]);
   const [dataSubordinate, setdataSubordinate] = useState<DataSubordinate>();
+
+  const [schooling, setSchooling] = useState('medio');
+
+  const [selectedItems, setSelectedItems] = useState<ResponseEvaluation[]>([]);
 
   useEffect(() => {
     api.get('/factors').then(response => {
@@ -48,23 +62,62 @@ export default function EvaluationResume() {
     });
   }, [name_subordinate]);
 
-  const handleRadioSubmit = useCallback(
-    (data): any => {
-      // eslint-disable-next-line prettier/prettier
-      const { factor_id, performance_id, result } = JSON.parse(data);
-      const formatData = {
-        factor_id,
-        performance_id,
-        result,
-        leader: user.nickname,
-      };
-      console.log('data', formatData);
-    },
-    [user.nickname],
-  );
+  function handleRadioSubmit(data: any) {
+    const { factor_id, performance_id, result } = JSON.parse(data);
+    const formatData = {
+      factor_id,
+      performance_id,
+      result,
+      date: new Date(),
+      subordinate: name_subordinate,
+      hierarchies_id: id_hierarchies,
+      leader: user.nickname,
+      schooling,
+    };
+    const alreadySelected = selectedItems.findIndex(
+      item => item.factor_id === formatData.factor_id,
+    );
+
+    if (alreadySelected >= 0) {
+      // const filteredItems = selectedItems.filter(
+      //   item => item.factor_id !== formatData.factor_id,
+      // );
+      console.log('verisso', selectedItems.indexOf(formatData.factor_id));
+      const filteredItems = selectedItems.splice(alreadySelected, 1);
+      console.log('verisso2', filteredItems);
+
+      setSelectedItems(filteredItems);
+    } else {
+      console.log('caiu');
+      setSelectedItems([...selectedItems, formatData]);
+    }
+
+    // eslint-disable-next-line prettier/prettier
+    // const { factor_id, performance_id, result } = JSON.parse(data);
+    // const formatData = {
+    //   factor_id,
+    //   performance_id,
+    //   result,
+    //   date: new Date(),
+    //   subordinate: name_subordinate,
+    //   leader: user.nickname,
+    //   schooling,
+    // };
+    // if (responseEvaluation?.includes(formatData)) {
+    //   setResponseEvaluation([formatData]);
+    // }
+    // console.log('data', formatData);
+    // console.log('data', responseEvaluation);
+  }
+
+  const handleFinishEvaluation = useCallback(() => {
+    api.post('/evaluations-results', selectedItems);
+    setSchooling('medio');
+  }, [selectedItems]);
 
   return (
     <ScaleFade initialScale={0.9} in>
+      {console.log('estado', selectedItems)}
       <Flex
         w="100%"
         my="6"
@@ -125,7 +178,12 @@ export default function EvaluationResume() {
           </Box>
         ))}
 
-        <Button mt="8" size="md" colorScheme="yellow">
+        <Button
+          mt="8"
+          size="md"
+          colorScheme="yellow"
+          onClick={handleFinishEvaluation}
+        >
           Finalizar avaliação
         </Button>
       </Flex>
