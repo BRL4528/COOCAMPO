@@ -86,6 +86,7 @@
     "@types/chart.js": "^2.9.29",
     "@types/jest": "^26.0.15",
     "@types/node": "^12.0.0",
+    "@types/pdf-parse": "^1.1.1",
     "@types/prismic-dom": "^2.1.1",
     "@types/react": "^16.9.53",
     "@types/react-dom": "^16.9.8",

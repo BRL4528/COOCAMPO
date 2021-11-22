@@ -140,7 +140,7 @@ const SelectorFolders: React.FC = () => {
             {dataAnalyticModule.map(analyticModule => (
               <Link
                 key={analyticModule.id}
-                to={`/chedule-only?${analyticModule.name_schedule}`}
+                to={`/management-ppr/schedule-only?${analyticModule.name_schedule}`}
               >
                 {/* <span>
                   <h3>23 contatos</h3>

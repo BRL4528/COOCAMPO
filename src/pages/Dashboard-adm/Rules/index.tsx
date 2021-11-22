@@ -34,7 +34,6 @@ const InternalNorm: React.FC = () => {
     const prismic = getPrismicClient();
 
     if (type === 'search') {
-      console.log(type);
       await prismic
         .query(
           [
@@ -68,7 +67,6 @@ const InternalNorm: React.FC = () => {
           setNicInternal(nics);
         });
     } else if (type === 'tag') {
-      console.log(type);
       await prismic
         .query([Prismic.predicates.at('document.tags', [`${search}`])], {
           fetch: ['publication.title', 'publication.content'],
@@ -96,7 +94,6 @@ const InternalNorm: React.FC = () => {
           setNicInternal(nics);
         });
     } else if (type === 'all') {
-      console.log(type);
       await prismic
         .query([Prismic.predicates.at('document.type', 'publication')], {
           fetch: ['publication.title', 'publication.content'],
@@ -128,12 +125,10 @@ const InternalNorm: React.FC = () => {
 
   const handleSubmite = useCallback(data => {
     handlePrismic(data.search, 'search');
-    console.log('rrri');
   }, []);
 
   const handleTag = useCallback((tag, type) => {
     handlePrismic(tag, type);
-    console.log('oou');
   }, []);
 
   return (

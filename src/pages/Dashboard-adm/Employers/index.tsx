@@ -86,7 +86,6 @@ const UserManagement: React.FC = () => {
           schedule: Boolean(infoModules.find(el => el.value === 'schedule')),
         })
         .then(res => {
-          console.log(res.data);
           api
             .post('/accesses-of-sectors/create-all', {
               sectors: infoSectors,

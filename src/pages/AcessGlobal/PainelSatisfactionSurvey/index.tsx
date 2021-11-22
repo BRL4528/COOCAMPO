@@ -205,7 +205,6 @@ const PainelAnalyticModule: React.FC = () => {
 
   const handleSubmit = useCallback(async () => {
     try {
-      console.log('ver email', emailSelected);
       setLoadingButton(true);
       formRef.current?.setErrors({});
 

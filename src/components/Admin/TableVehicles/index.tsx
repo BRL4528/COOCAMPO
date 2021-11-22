@@ -113,11 +113,9 @@ const TableVehicles: React.FC<IdataTable> = () => {
   const handleEditVehicle = useCallback(
     (vehiclesInfo: Omit<IVehicles, ''>, id: string) => {
       try {
-        console.log('informações do veiculo', vehiclesInfo);
         api.put(`/vehicles?id=${id}`, vehiclesInfo).then(response => {
           setNewVehicle(response.data);
         });
-        console.log('Limpou');
         apllyToast('success', 'Sucesso ao atualizar veículo!');
       } catch (err) {
         apllyToast('warning', 'Problemas ao atualizar veículo!');
@@ -184,7 +182,6 @@ const TableVehicles: React.FC<IdataTable> = () => {
           </thead>
 
           <tbody>
-            {console.log(dataTable)}
             {dataTable?.map(item => (
               <tr key={item.id}>
                 <td>

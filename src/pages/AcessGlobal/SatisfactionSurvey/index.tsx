@@ -25,7 +25,6 @@ const SatisfactionSurvey: React.FC = () => {
   const { signOut } = useAuth();
 
   useEffect(() => {
-    console.log('saiu');
     signOut();
   }, [signOut]);
 

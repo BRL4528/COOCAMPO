@@ -154,7 +154,7 @@ const Routes: React.FC = () => (
       isAdmin
     />
     <Route
-      path="/management-ppr/chedule-only:name_schedule?"
+      path="/management-ppr/schedule-only:name_schedule?"
       component={ScheduleOnly}
       isPrivate
       isAdmin

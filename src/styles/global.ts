@@ -89,10 +89,18 @@ export default createGlobalStyle`
     color: var(--white-secondary); */
     -webkit-font-smoothing: antialiased;
 
+
     a {
   /* color: inherit; */
   text-decoration: none;
-}
+  }
+.filter {
+    /* z-index: 1; */
+
+    filter: blur(4px); /* Chrome and Opera */
+
+
+   }
   }
 
   //add agora
@@ -175,6 +183,8 @@ export default createGlobalStyle`
 .select-react {
   font-size: 10;
 }
+
+
 
 
 `;

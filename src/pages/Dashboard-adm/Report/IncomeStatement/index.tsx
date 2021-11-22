@@ -333,7 +333,6 @@ const SelectorFolders: React.FC = () => {
       return el.month_number === monthSelected;
     });
 
-    console.log('mes selecionado', result);
     return result;
   }, [monthSelected]);
 

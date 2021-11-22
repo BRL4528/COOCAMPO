@@ -1,3 +1,7 @@
+/* eslint-disable jsx-a11y/iframe-has-title */
+/* eslint-disable react/self-closing-comp */
+/* eslint-disable prettier/prettier */
+/* eslint-disable react/jsx-curly-newline */
 /* eslint-disable @typescript-eslint/no-empty-function */
 import {
   Box,
@@ -12,26 +16,36 @@ import {
   Th,
   Thead,
   Tr,
-  Text,
   useBreakpointValue,
   Tooltip,
   Badge,
+  Collapse,
 } from '@chakra-ui/react';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { RiPrinterLine, RiEyeLine, RiSurveyLine } from 'react-icons/ri';
 import { Link } from 'react-router-dom';
+import { setTimeout } from 'timers';
 import { useAuth } from '../../../../hooks/auth';
 import { api } from '../../../../services/api';
+import { ModalComponent } from '../../Modal';
 
 interface DataTable {
   id: string;
   leader: string;
   subordinate: string;
+  status: boolean;
+  result: string;
+  percentage: number;
+  file_url: string;
+  file: string;
 }
 
 export function EvaluationTable() {
   const { user } = useAuth();
-  const [dataTable, setDataTable] = useState<DataTable[]>();
+  const [dataTable, setDataTable] = useState<DataTable[]>([]);
+  const [urlFileUser, setUrlFileUser] = useState<string[]>([]);
+  const [openAlert, setOpenAlert] = useState(false);
+  const [messageAlert, setMessageAlert] = useState('');
   const isWideVersion = useBreakpointValue({
     base: false,
     lg: true,
@@ -43,6 +57,36 @@ export function EvaluationTable() {
     });
   }, [user.nickname]);
 
+  const handleSelectedUrlFile = useCallback(
+    data => {
+      const alreadySelected = urlFileUser.findIndex(item => item === data);
+
+      if (alreadySelected >= 0) {
+        const filteredItems = urlFileUser.filter(item => item !== data);
+
+        setUrlFileUser(filteredItems);
+      } else {
+        setUrlFileUser([...urlFileUser, data]);
+      }
+    },
+    [urlFileUser],
+  );
+
+  const handlePrintEvaluations = useCallback(() => {
+    setOpenAlert(true);
+    setMessageAlert('Trabalhando nos arquivos...');
+    setTimeout(() => {
+      urlFileUser.forEach(data => {
+        window.open(data);
+      });
+      setOpenAlert(false);
+    }, 3000);
+  }, [urlFileUser]);
+
+  function handleClose() {
+    setOpenAlert(!openAlert);
+  }
+
   return (
     <Box w="100%">
       <Box flex="1" borderRadius={8} bg="gray.800" p={['4', '8']}>
@@ -50,20 +94,39 @@ export function EvaluationTable() {
           <Heading size="md" fontWeight="normal">
             Lista de avaliações
           </Heading>
+
+          <Collapse in={urlFileUser.length > 0} animateOpacity>
+            <Box>
+              <Tooltip hasArrow label="Imprimir avaliação">
+                <Button
+                  colorScheme="yellow"
+                  size="sm"
+                  onClick={handlePrintEvaluations}
+                >
+                  <Icon as={RiPrinterLine} fontSize="20" />
+                </Button>
+              </Tooltip>
+            </Box>
+          </Collapse>
         </Flex>
+
+        <ModalComponent
+          title="Atenção"
+          isOpen={openAlert}
+          onClose={handleClose}
+        >
+          <Box p="15">{messageAlert}</Box>
+        </ModalComponent>
 
         <Table colorScheme="whiteAlpha">
           <Thead>
             <Tr>
-              <Th px={['2', '4', '6']} color="gray.300" width="8">
-                <Checkbox colorScheme="pink" />
-              </Th>
+              <Th px={['2', '4', '6']} color="gray.300" width="8"></Th>
               <Th>Nome</Th>
-              {isWideVersion && <Th>Data avaliação</Th>}
+
               {isWideVersion && <Th>Status</Th>}
               <Th>Resultado</Th>
 
-              {isWideVersion && <Th />}
               {isWideVersion && <Th />}
 
               <Th width="8" />
@@ -72,25 +135,30 @@ export function EvaluationTable() {
 
           <Tbody>
             {dataTable?.map(data => (
-              <Tr>
+              <Tr key={data.id}>
                 <Td px={['2', '4', '6']}>
-                  <Checkbox colorScheme="pink" />
+                  {data.file ? (
+                    <Checkbox
+                      colorScheme="blue"
+                      onChange={() => handleSelectedUrlFile(data.file_url)}
+                    />
+                  ) : (
+                    ''
+                  )}
                 </Td>
 
                 <Td>{data.subordinate}</Td>
 
                 {isWideVersion && (
                   <Td>
-                    <Text>01/12/2021</Text>
+                    {data.status ? (
+                      <Badge colorScheme="green">Avaliado</Badge>
+                    ) : (
+                      <Badge colorScheme="red">Não Avaliado</Badge>
+                    )}
                   </Td>
                 )}
-
-                {isWideVersion && (
-                  <Td>
-                    <Badge colorScheme="red">Não Avaliado</Badge>
-                  </Td>
-                )}
-                <Td>78</Td>
+                <Td>{data.status ? `${data.percentage}%` : '-'}</Td>
                 {isWideVersion && (
                   <Td>
                     <Tooltip hasArrow label="Visualizar">
@@ -105,32 +173,31 @@ export function EvaluationTable() {
                     </Tooltip>
                   </Td>
                 )}
-                {isWideVersion && (
-                  <Td>
-                    <Tooltip hasArrow label="Imprimir">
-                      <Button colorScheme="yellow" as={Link} to="/" size="sm">
-                        <Icon as={RiPrinterLine} fontSize="20" />
-                      </Button>
-                    </Tooltip>
-                  </Td>
-                )}
 
-                <Td>
-                  {isWideVersion ? (
-                    <Tooltip hasArrow label="Avaliar">
-                      <Button
-                        colorScheme="yellow"
-                        as={Link}
-                        to={`/management-ppr/evaluation-resume/${data.subordinate}/${data.id}`}
-                        size="sm"
-                      >
-                        <Icon as={RiSurveyLine} fontSize="20" />
-                      </Button>
-                    </Tooltip>
-                  ) : (
-                    ''
-                  )}
-                </Td>
+                {isWideVersion ? (
+                  <Td>
+                    {data.status ? (
+                      <Tooltip hasArrow label="Avaliar">
+                        <Button colorScheme="yellow" disabled size="sm">
+                          <Icon as={RiSurveyLine} fontSize="20" />
+                        </Button>
+                      </Tooltip>
+                    ) : (
+                      <Tooltip hasArrow label="Avaliar">
+                        <Button
+                          colorScheme="yellow"
+                          as={Link}
+                          to={`/management-ppr/evaluation-resume/${data.subordinate}/${data.id}`}
+                          size="sm"
+                        >
+                          <Icon as={RiSurveyLine} fontSize="20" />
+                        </Button>
+                      </Tooltip>
+                    )}
+                  </Td>
+                ) : (
+                  ''
+                )}
               </Tr>
             ))}
           </Tbody>

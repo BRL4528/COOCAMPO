@@ -68,7 +68,6 @@ const SelectedSector: React.FC = () => {
           <strong>{sectorSelected?.observations}</strong>
         </div>
       </CardeHeader>
-      {console.log(styleReport)}
       <div className="print-container">
         <ReportConectBI
           // styleReport={styleReport}

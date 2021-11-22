@@ -7,10 +7,16 @@ import {
   RadioGroup,
   Button,
   ScaleFade,
+  Icon,
+  Tooltip,
+  useDisclosure,
 } from '@chakra-ui/react';
-import { useParams } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router-dom';
+import { RiFileWarningLine } from 'react-icons/ri';
+import { DrawerEvaluation } from '../../../../components/_components_0.2/Drawer/DrawerEvaluation';
 import { useAuth } from '../../../../hooks/auth';
 import { api } from '../../../../services/api';
+import { apllyToast } from '../../../../components/Global/Toast2.0';
 
 interface Evaluations {
   id: string;
@@ -43,11 +49,22 @@ interface ResponseEvaluation {
   schooling: string;
 }
 
+interface ObservationsFactor {
+  id_factor: string;
+  observations: string;
+}
+
 export default function EvaluationResume() {
+  const history = useHistory();
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const { name_subordinate, id_hierarchies } = useParams<ParamsRouter>();
   const { user } = useAuth();
   const [dataEvaluation, setDataEvaluation] = useState<Evaluations[]>([]);
   const [dataSubordinate, setdataSubordinate] = useState<DataSubordinate>();
+  const [arrayObservationsFactor, setArrayObservationsFactor] = useState<
+    ObservationsFactor[]
+  >([]);
+  const [idFactor, setIdfactor] = useState('');
 
   const [schooling, setSchooling] = useState('medio');
 
@@ -74,50 +91,105 @@ export default function EvaluationResume() {
       leader: user.nickname,
       schooling,
     };
+
     const alreadySelected = selectedItems.findIndex(
       item => item.factor_id === formatData.factor_id,
     );
 
     if (alreadySelected >= 0) {
-      // const filteredItems = selectedItems.filter(
-      //   item => item.factor_id !== formatData.factor_id,
-      // );
-      console.log('verisso', selectedItems.indexOf(formatData.factor_id));
       const filteredItems = selectedItems.splice(alreadySelected, 1);
-      console.log('verisso2', filteredItems);
 
       setSelectedItems(filteredItems);
     } else {
-      console.log('caiu');
       setSelectedItems([...selectedItems, formatData]);
     }
-
-    // eslint-disable-next-line prettier/prettier
-    // const { factor_id, performance_id, result } = JSON.parse(data);
-    // const formatData = {
-    //   factor_id,
-    //   performance_id,
-    //   result,
-    //   date: new Date(),
-    //   subordinate: name_subordinate,
-    //   leader: user.nickname,
-    //   schooling,
-    // };
-    // if (responseEvaluation?.includes(formatData)) {
-    //   setResponseEvaluation([formatData]);
-    // }
-    // console.log('data', formatData);
-    // console.log('data', responseEvaluation);
   }
 
-  const handleFinishEvaluation = useCallback(() => {
-    api.post('/evaluations-results', selectedItems);
-    setSchooling('medio');
-  }, [selectedItems]);
+  const handleFinishEvaluation = useCallback(async () => {
+    try {
+      const formatedItem = selectedItems.map(item => {
+        const filtered = arrayObservationsFactor.filter(obs => {
+          return obs.id_factor === item.factor_id;
+        });
+
+        if (filtered.length > 0) {
+          const formated = {
+            ...item,
+            observations: filtered[0].observations,
+          };
+          return formated;
+        }
+        return item;
+      });
+      await api.post('/evaluations-results', formatedItem);
+      setSchooling('medio');
+      apllyToast('success', 'Sucesso ao finalizar avaliação!');
+      history.push('/management-ppr/listOf-evaluation');
+    } catch (err) {
+      console.log('err', err);
+      apllyToast('error', 'Erro ao finalizar avaliação!');
+    }
+  }, [arrayObservationsFactor, history, selectedItems]);
+
+  const handleAddObservation = useCallback(
+    id => {
+      setIdfactor(id);
+      onOpen();
+    },
+    [onOpen],
+  );
+
+  const handleSubmitObservationFactor = useCallback(
+    observation => {
+      const formatData = {
+        id_factor: idFactor,
+        observations: observation,
+      };
+      const alreadySelected = arrayObservationsFactor.findIndex(
+        item => item.id_factor === idFactor,
+      );
+      if (alreadySelected >= 0) {
+        const filteredItems = arrayObservationsFactor.filter(
+          item => item.id_factor !== idFactor,
+        );
+
+        filteredItems.push(formatData);
+        setArrayObservationsFactor(filteredItems);
+      } else {
+        setArrayObservationsFactor([...arrayObservationsFactor, formatData]);
+      }
+
+      setIdfactor('');
+      onClose();
+    },
+    [arrayObservationsFactor, idFactor, onClose],
+  );
+
+  const filterObservationsAded = useCallback(
+    id => {
+      const filterred = arrayObservationsFactor.filter(item => {
+        return item.id_factor === id;
+      });
+
+      const formated = {
+        obsAded: filterred.length > 0,
+        observation: filterred[0]?.observations,
+      };
+
+      return formated;
+    },
+    [arrayObservationsFactor],
+  );
 
   return (
     <ScaleFade initialScale={0.9} in>
-      {console.log('estado', selectedItems)}
+      <DrawerEvaluation
+        isOpen={isOpen}
+        onClose={onClose}
+        idFactor={idFactor}
+        arrayObservationsFactor={arrayObservationsFactor}
+        handleSubmitObservationFactor={handleSubmitObservationFactor}
+      />
       <Flex
         w="100%"
         my="6"
@@ -150,17 +222,38 @@ export default function EvaluationResume() {
             w="100%"
             mt="8"
           >
-            <Text fontWeight="medium" fontSize="2xl">
-              {data.name}
-            </Text>
-            <Text
-              color="gray.300"
+            <Flex
+              direction="row"
               borderBottom="1px"
               borderColor="gray.700"
-              pb="2"
+              justifyContent="space-between"
             >
-              {data.description}
-            </Text>
+              <Box>
+                <Text fontWeight="medium" fontSize="2xl">
+                  {data.name}
+                </Text>
+                <Text color="gray.300" pb="2">
+                  {data.description}
+                </Text>
+              </Box>
+              <Tooltip
+                hasArrow
+                label={
+                  filterObservationsAded(data.id).obsAded
+                    ? filterObservationsAded(data.id).observation
+                    : 'Adicionar observações'
+                }
+              >
+                <Button
+                  colorScheme={
+                    filterObservationsAded(data.id).obsAded ? 'green' : 'yellow'
+                  }
+                  onClick={() => handleAddObservation(data.id)}
+                >
+                  <Icon as={RiFileWarningLine} fontSize="20" />
+                </Button>
+              </Tooltip>
+            </Flex>
             <RadioGroup mt="8" onChange={handleRadioSubmit}>
               {data.performances?.map(dataPerformance => (
                 <Box>
@@ -177,15 +270,18 @@ export default function EvaluationResume() {
             </RadioGroup>
           </Box>
         ))}
-
-        <Button
-          mt="8"
-          size="md"
-          colorScheme="yellow"
-          onClick={handleFinishEvaluation}
-        >
-          Finalizar avaliação
-        </Button>
+        {selectedItems.length === 7 ? (
+          <Button
+            mt="8"
+            size="md"
+            colorScheme="yellow"
+            onClick={handleFinishEvaluation}
+          >
+            Finalizar avaliação
+          </Button>
+        ) : (
+          ''
+        )}
       </Flex>
     </ScaleFade>
   );

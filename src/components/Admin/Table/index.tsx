@@ -180,7 +180,6 @@ const Table: React.FC<ITableSector> = ({
                     );
 
                     const monthFormated = month.split('/')[1];
-                    console.log('RESULTADO', resultFiltered);
                     switch (monthFormated) {
                       case 'january': {
                         const responseData = {
@@ -368,7 +367,6 @@ const Table: React.FC<ITableSector> = ({
               });
 
               if (infoSector) {
-                console.log(infoSector);
                 apiGeninfo
                   .get<IGeninfo>('/metas', {
                     params: {
@@ -391,7 +389,6 @@ const Table: React.FC<ITableSector> = ({
                     },
                   })
                   .then(res => {
-                    console.log('resposta Geinfo', res.data);
                     const { response } = res.data;
                     const formatedInfoSectorGeninfo: {
                       id: string;

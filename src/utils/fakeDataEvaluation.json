@@ -1,0 +1,209 @@
+{
+  "evaluations_results": [
+    {
+      "id": "8a794af6-113a-4d7a-89ee-eefc10c2d7c6",
+      "leader": "fake.leader",
+      "subordinate": "fake.subordinate",
+      "factor_id": "6368e14c-fa03-4aeb-addc-c8697c71a094",
+      "factor": {
+        "id": "6368e14c-fa03-4aeb-addc-c8697c71a094",
+        "name": "Pontualidade/Assiduidade",
+        "description": "Presença do colaborador no local de trabalho dentro do horário estabelecido para o expediente da empresa.",
+        "status": true,
+        "created_at": "2021-11-18T21:25:44.670Z",
+        "updated_at": "2021-11-18T21:25:44.670Z"
+      },
+      "performance_id": "5b2fe28e-0455-4437-be88-8fa440cd611d",
+      "performance": {
+        "id": "5b2fe28e-0455-4437-be88-8fa440cd611d",
+        "name": "Cumpre o horário e está sempre presente, permanece depois do horário de expediente quando necessário, mostrando-se disposto a atender às necessidades de trabalho.",
+        "weight": "2.5",
+        "factor_id": "6368e14c-fa03-4aeb-addc-c8697c71a094",
+        "created_at": "2021-11-18T21:39:10.497Z",
+        "updated_at": "2021-11-18T21:39:10.497Z"
+      },
+      "date": "2021-11-21T04:00:00.000Z",
+      "result": "2.5",
+      "schooling": "medio",
+      "observations": null,
+      "created_at": "2021-11-21T16:26:15.542Z",
+      "updated_at": "2021-11-21T16:26:15.542Z"
+    },
+    {
+      "id": "0e75085c-f0e0-4458-8208-5415101f8ca8",
+      "leader": "fake.leader",
+      "subordinate": "fake.subordinate",
+      "factor_id": "7b5e94ac-b2ca-48e3-a782-036f76fee4ca",
+      "factor": {
+        "id": "7b5e94ac-b2ca-48e3-a782-036f76fee4ca",
+        "name": "Diciplina",
+        "description": "Observa sistematicamente aos regulamentos e às normas emanadas do superior imediato.",
+        "status": true,
+        "created_at": "2021-11-18T21:26:28.987Z",
+        "updated_at": "2021-11-18T21:26:28.987Z"
+      },
+      "performance_id": "26e103e9-4966-4595-9e6b-c595cb6a81d0",
+      "performance": {
+        "id": "26e103e9-4966-4595-9e6b-c595cb6a81d0",
+        "name": "Sempre cumpre as normas e deveres, além de contribuir para a manutenção da ordem no ambiente de trabalho.",
+        "weight": "7.5",
+        "factor_id": "7b5e94ac-b2ca-48e3-a782-036f76fee4ca",
+        "created_at": "2021-11-18T21:45:43.803Z",
+        "updated_at": "2021-11-18T21:45:43.803Z"
+      },
+      "date": "2021-11-21T04:00:00.000Z",
+      "result": "7.5",
+      "schooling": "medio",
+      "observations": null,
+      "created_at": "2021-11-21T16:26:15.542Z",
+      "updated_at": "2021-11-21T16:26:15.542Z"
+    },
+    {
+      "id": "a3e8342b-fe31-4a47-8123-aadc13757b3a",
+      "leader": "fake.leader",
+      "subordinate": "fake.subordinate",
+      "factor_id": "fe4fe780-2bcc-4209-9c9e-f762bd66428d",
+      "factor": {
+        "id": "fe4fe780-2bcc-4209-9c9e-f762bd66428d",
+        "name": "Atitude",
+        "description": "Adota providências em situações não definidas pela chefia ou não previstas nos procedimentos da empresa ou normas/regras de serviço.",
+        "status": true,
+        "created_at": "2021-11-18T21:27:08.481Z",
+        "updated_at": "2021-11-18T21:27:08.481Z"
+      },
+      "performance_id": "22ab34cc-83a3-4901-8cbd-d8bcbfdc20af",
+      "performance": {
+        "id": "22ab34cc-83a3-4901-8cbd-d8bcbfdc20af",
+        "name": "Tem facilidade em buscar soluções para situações imprevistas do trabalho, quando solicitado.",
+        "weight": "10",
+        "factor_id": "fe4fe780-2bcc-4209-9c9e-f762bd66428d",
+        "created_at": "2021-11-18T21:47:33.711Z",
+        "updated_at": "2021-11-18T21:47:33.711Z"
+      },
+      "date": "2021-11-21T04:00:00.000Z",
+      "result": "10",
+      "schooling": "medio",
+      "observations": null,
+      "created_at": "2021-11-21T16:26:15.542Z",
+      "updated_at": "2021-11-21T16:26:15.542Z"
+    },
+    {
+      "id": "bdef4b08-0098-45dd-8237-61a8900daefd",
+      "leader": "fake.leader",
+      "subordinate": "fake.subordinate",
+      "factor_id": "9542d59b-1188-44dc-9b1c-ca62a38b9fc8",
+      "factor": {
+        "id": "9542d59b-1188-44dc-9b1c-ca62a38b9fc8",
+        "name": "Senso de responsabilidade",
+        "description": "Condição de trabalhar sem necessidade de supervisão, adquirida pelo desenvolvimento profissional do colaborador;comprometido com suas tarefas e com metas estabelecidas pela empresa",
+        "status": true,
+        "created_at": "2021-11-18T21:28:58.461Z",
+        "updated_at": "2021-11-18T21:28:58.461Z"
+      },
+      "performance_id": "d091f67d-7e66-4bd9-8496-cd2ef39a5a9e",
+      "performance": {
+        "id": "d091f67d-7e66-4bd9-8496-cd2ef39a5a9e",
+        "name": "É pessoa de inteira confiança.Tem plenas condições para assumir maiores responsabilidades.Conhece suas atribuições e executa suas atividades acima da expectativa.",
+        "weight": "5",
+        "factor_id": "9542d59b-1188-44dc-9b1c-ca62a38b9fc8",
+        "created_at": "2021-11-18T21:49:18.196Z",
+        "updated_at": "2021-11-18T21:49:18.196Z"
+      },
+      "date": "2021-11-21T04:00:00.000Z",
+      "result": "5",
+      "schooling": "medio",
+      "observations": null,
+      "created_at": "2021-11-21T16:26:15.542Z",
+      "updated_at": "2021-11-21T16:26:15.542Z"
+    },
+    {
+      "id": "656bc640-9c17-47f9-a6fb-cebb1ebd7b71",
+      "leader": "fake.leader",
+      "subordinate": "fake.subordinate",
+      "factor_id": "c649790a-f76f-420a-9863-f6821598cdb5",
+      "factor": {
+        "id": "c649790a-f76f-420a-9863-f6821598cdb5",
+        "name": "Capacidade de aprendizagem",
+        "description": "Facilidade de compreender e reter instruções e informações.",
+        "status": true,
+        "created_at": "2021-11-18T21:29:57.029Z",
+        "updated_at": "2021-11-18T21:29:57.029Z"
+      },
+      "performance_id": "3e810263-beb7-4a24-a77a-067e487a5191",
+      "performance": {
+        "id": "3e810263-beb7-4a24-a77a-067e487a5191",
+        "name": "Aprende com rapidez surpreendente. Ótima capacidade de assimilação.",
+        "weight": "10",
+        "factor_id": "c649790a-f76f-420a-9863-f6821598cdb5",
+        "created_at": "2021-11-18T21:50:42.659Z",
+        "updated_at": "2021-11-18T21:50:42.659Z"
+      },
+      "date": "2021-11-21T04:00:00.000Z",
+      "result": "10",
+      "schooling": "medio",
+      "observations": null,
+      "created_at": "2021-11-21T16:26:15.542Z",
+      "updated_at": "2021-11-21T16:26:15.542Z"
+    },
+    {
+      "id": "d67fa7b6-4192-4c86-97d8-f3ecb397ca4b",
+      "leader": "fake.leader",
+      "subordinate": "fake.subordinate",
+      "factor_id": "43fa6630-b86f-4539-bc92-d11c83a8e859",
+      "factor": {
+        "id": "43fa6630-b86f-4539-bc92-d11c83a8e859",
+        "name": "Adaptabilidade/Flexibilidade",
+        "description": "Reage bem a mudança e procura adaptar-se a elas de forma produtiva. Tem atitudes de cooperação que evidencia no trabalho em geral.",
+        "status": true,
+        "created_at": "2021-11-18T21:31:41.482Z",
+        "updated_at": "2021-11-18T21:31:41.482Z"
+      },
+      "performance_id": "19d5cb8f-4571-4f17-954b-a87106bb4fad",
+      "performance": {
+        "id": "19d5cb8f-4571-4f17-954b-a87106bb4fad",
+        "name": "Compreende e colabora para as  mudanças estratégicas com o objetivo de agregar valor à empresa e à equipe.",
+        "weight": "10",
+        "factor_id": "43fa6630-b86f-4539-bc92-d11c83a8e859",
+        "created_at": "2021-11-18T22:47:34.703Z",
+        "updated_at": "2021-11-18T22:47:34.703Z"
+      },
+      "date": "2021-11-21T04:00:00.000Z",
+      "result": "10",
+      "schooling": "medio",
+      "observations": null,
+      "created_at": "2021-11-21T16:26:15.542Z",
+      "updated_at": "2021-11-21T16:26:15.542Z"
+    },
+    {
+      "id": "5b1b0404-235c-4893-9753-bc6972561901",
+      "leader": "fake.leader",
+      "subordinate": "fake.subordinate",
+      "factor_id": "4c75c81b-f10b-4293-ba43-5e201db5cd7c",
+      "factor": {
+        "id": "4c75c81b-f10b-4293-ba43-5e201db5cd7c",
+        "name": "Trabalho em equipe",
+        "description": "Habilidade de interagir e manter o bom relacionamento com seus pares, superiores, subordinados (se houver). Busca alternativa e contribui para a atuação positiva dos demais. Consegue lidar com as diferenças e está sempre disposto a cooperar.",
+        "status": true,
+        "created_at": "2021-11-18T21:32:24.857Z",
+        "updated_at": "2021-11-18T21:32:24.857Z"
+      },
+      "performance_id": "cb601615-1d2f-4627-91dd-1588a01e0819",
+      "performance": {
+        "id": "cb601615-1d2f-4627-91dd-1588a01e0819",
+        "name": "Grande capacidade de relacionamento, respeita as diferenças, cooperativo nas situações de conflito, grande adaptabilidade  em equipe, excelente habilidade individual na resolução de conflitos",
+        "weight": "10",
+        "factor_id": "4c75c81b-f10b-4293-ba43-5e201db5cd7c",
+        "created_at": "2021-11-18T22:49:03.424Z",
+        "updated_at": "2021-11-18T22:49:03.424Z"
+      },
+      "date": "2021-11-21T04:00:00.000Z",
+      "result": "10",
+      "schooling": "medio",
+      "observations": null,
+      "created_at": "2021-11-21T16:26:15.542Z",
+      "updated_at": "2021-11-21T16:26:15.542Z"
+    }
+  ],
+  "total": 70,
+  "percentage": "100%"
+}

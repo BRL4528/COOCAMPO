@@ -27,8 +27,6 @@ interface IUser {
 export async function handleSendEmailOpenOrderServiceAdm(data: {
   id: any;
 }): Promise<IdataTable> {
-  console.log('ver isso', data);
-
   setTimeout(() => {
     api
       .get<IdataTable>(`/services-orders/show?id=${data.id}`)
