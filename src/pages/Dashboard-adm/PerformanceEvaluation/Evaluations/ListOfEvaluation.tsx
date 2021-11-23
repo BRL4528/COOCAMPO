@@ -20,7 +20,7 @@ const ListOfEvaluation: React.FC = () => {
         >
           <header>
             <h1>Avaliação de desempenho</h1>
-            <strong>Inicie </strong>
+            {/* <strong>Inicie </strong> */}
           </header>
         </Flex>
         <Flex width="100%" maxWidth={1180} mx="auto" align="center">
