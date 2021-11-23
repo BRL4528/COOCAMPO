@@ -84,8 +84,8 @@ export const EvaluationsResumeResult: React.FC<PropsEvaluationsResumeResult> =
                 De acordo com os parâmetros utilizados na avaliação de
                 desempenho, <Tag colorScheme="green">{infoUser?.name}</Tag>{' '}
                 atingiu{' '}
-                <Tag colorScheme="green">{dataResultEvaluation?.total}</Tag>,{' '}
-                pontos alcançando um resultado de{' '}
+                <Tag colorScheme="green">{dataResultEvaluation?.total}</Tag>{' '}
+                pontos, alcançando um resultado de{' '}
                 <Tag colorScheme="green">
                   {dataResultEvaluation?.percentage}%
                 </Tag>{' '}

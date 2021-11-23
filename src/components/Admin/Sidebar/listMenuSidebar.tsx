@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
   FiBarChart,
@@ -26,6 +26,13 @@ import { GiAutoRepair } from 'react-icons/gi';
 import { useAuth } from '../../../hooks/auth';
 import { OptionList } from './styles';
 import { SetToggleThemeContext } from '../../../contexts/SetToggleThemeContext';
+import { api } from '../../../services/api';
+
+interface Hierarchies {
+  id: string;
+  result: string;
+  subordinate: string;
+}
 
 export function ManagementMiles(
   pathname: string,
@@ -127,6 +134,12 @@ export function ManagementPPR(
   },
 ) {
   const { user } = useAuth();
+  const [dataLider, setDataLider] = useState<Hierarchies[]>([]);
+  useEffect(() => {
+    api.get(`/hierarchies/show?leader=${user.nickname}`).then(response => {
+      setDataLider(response.data);
+    });
+  });
   return (
     <>
       <OptionList pathname={pathname} path="/menu" className="nav-item" visible>
@@ -242,7 +255,7 @@ export function ManagementPPR(
         pathname={pathname}
         path="/management-ppr/performance-evaluation"
         className="nav-item"
-        visible={userData.schedule}
+        visible={dataLider.length > 0}
       >
         <Link
           to={`/management-ppr/performance-evaluation/${user.nickname}`}

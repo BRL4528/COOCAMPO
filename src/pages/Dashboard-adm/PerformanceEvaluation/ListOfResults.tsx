@@ -26,6 +26,7 @@ interface EvaluationsResults {
     {
       id: string;
       result: string;
+      observations: string;
       factor: {
         name: string;
         description: string;
@@ -67,6 +68,7 @@ export const ListOfResults: React.FC<PropsListOfResults> = ({
         } else {
           setDataEvaluationsResults(response.data);
         }
+        console.log('response', response.data);
       });
   }, [handleFakeData, nick_user]);
 
@@ -138,6 +140,13 @@ export const ListOfResults: React.FC<PropsListOfResults> = ({
                       Nivel de desempenho:
                     </Text>
                     {data.performance.name}
+                  </Box>
+
+                  <Box display={data?.observations ? '' : 'none'}>
+                    <Text mt="5" fontSize="1xl" fontWeight="bold">
+                      Observações anotadas:
+                    </Text>
+                    <Text color="gray.400">{data?.observations}</Text>
                   </Box>
                 </Collapse>
               </Box>
