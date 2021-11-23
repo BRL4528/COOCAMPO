@@ -76,8 +76,8 @@ export function EvaluationTable() {
     setOpenAlert(true);
     setMessageAlert('Trabalhando nos arquivos...');
     setTimeout(() => {
-      urlFileUser.forEach(data => {
-        window.open(data);
+      urlFileUser.forEach(async data => {
+        await window.open(data);
       });
       setOpenAlert(false);
     }, 3000);
