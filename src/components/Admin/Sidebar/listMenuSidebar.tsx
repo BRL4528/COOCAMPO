@@ -139,7 +139,7 @@ export function ManagementPPR(
     api.get(`/hierarchies/show?leader=${user.nickname}`).then(response => {
       setDataLider(response.data);
     });
-  });
+  }, [user.nickname]);
   return (
     <>
       <OptionList pathname={pathname} path="/menu" className="nav-item" visible>

@@ -236,23 +236,6 @@ export default function EvaluationResume() {
                   {data.description}
                 </Text>
               </Box>
-              <Tooltip
-                hasArrow
-                label={
-                  filterObservationsAded(data.id).obsAded
-                    ? filterObservationsAded(data.id).observation
-                    : 'Adicionar observações'
-                }
-              >
-                <Button
-                  colorScheme={
-                    filterObservationsAded(data.id).obsAded ? 'green' : 'yellow'
-                  }
-                  onClick={() => handleAddObservation(data.id)}
-                >
-                  <Icon as={RiFileWarningLine} fontSize="20" />
-                </Button>
-              </Tooltip>
             </Flex>
             <RadioGroup mt="8" onChange={handleRadioSubmit}>
               {data.performances?.map(dataPerformance => (
@@ -268,6 +251,29 @@ export default function EvaluationResume() {
                 </Box>
               ))}
             </RadioGroup>
+            <Box w="100%">
+              <Tooltip
+                hasArrow
+                label={
+                  filterObservationsAded(data.id).obsAded
+                    ? filterObservationsAded(data.id).observation
+                    : 'Adicionar observações'
+                }
+              >
+                <Button
+                  colorScheme={
+                    filterObservationsAded(data.id).obsAded ? 'green' : 'yellow'
+                  }
+                  onClick={() => handleAddObservation(data.id)}
+                  w="100%"
+                >
+                  <Text>
+                    Adicione uma observação para este fator de desempenho
+                    <Icon ml="3" as={RiFileWarningLine} fontSize="20" />
+                  </Text>
+                </Button>
+              </Tooltip>
+            </Box>
           </Box>
         ))}
         {selectedItems.length === 7 ? (

@@ -121,31 +121,35 @@ export function EvaluationTable() {
         <Table colorScheme="whiteAlpha">
           <Thead>
             <Tr>
-              <Th px={['2', '4', '6']} color="gray.300" width="8"></Th>
+              {isWideVersion && (
+                <Th px={['2', '4', '6']} color="gray.300" width="8"></Th>
+              )}
               <Th>Nome</Th>
 
               {isWideVersion && <Th>Status</Th>}
               <Th>Resultado</Th>
 
-              {isWideVersion && <Th />}
+              {isWideVersion && <Th>Visualizar</Th>}
 
-              <Th width="8" />
+              <Th width="8">Avaliar</Th>
             </Tr>
           </Thead>
 
           <Tbody>
             {dataTable?.map(data => (
               <Tr key={data.id}>
-                <Td px={['2', '4', '6']}>
-                  {data.file ? (
-                    <Checkbox
-                      colorScheme="blue"
-                      onChange={() => handleSelectedUrlFile(data.file_url)}
-                    />
-                  ) : (
-                    ''
-                  )}
-                </Td>
+                {isWideVersion && (
+                  <Td px={['2', '4', '6']}>
+                    {data.file ? (
+                      <Checkbox
+                        colorScheme="blue"
+                        onChange={() => handleSelectedUrlFile(data.file_url)}
+                      />
+                    ) : (
+                      ''
+                    )}
+                  </Td>
+                )}
 
                 <Td>{data.subordinate}</Td>
 
@@ -158,13 +162,19 @@ export function EvaluationTable() {
                     )}
                   </Td>
                 )}
-                <Td>{data.status ? `${data.percentage}%` : '-'}</Td>
+                <Td>
+                  {data.status ? `${Number(data.percentage) / 10}%` : '-'}
+                </Td>
                 {isWideVersion && (
                   <Td>
-                    <Tooltip hasArrow label="Visualizar">
+                    <Tooltip
+                      hasArrow
+                      label={data.status ? 'Visualizar' : 'Não avaliado'}
+                    >
                       <Button
+                        disabled={!data.status}
                         colorScheme="yellow"
-                        as={Link}
+                        as={data.status ? Link : Button}
                         to={`/management-ppr/performance-evaluation/${data.subordinate}`}
                         size="sm"
                       >

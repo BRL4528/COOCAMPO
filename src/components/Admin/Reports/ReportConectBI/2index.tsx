@@ -2,7 +2,7 @@
 /* eslint-disable no-shadow */
 /* eslint-disable consistent-return */
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { Report, useReport } from 'powerbi-report-component';
+import { Report } from 'powerbi-report-component';
 import { useLoading, Oval } from '@agney/react-loading';
 // import Button from '../../../Global/Button';
 
@@ -10,24 +10,20 @@ import { Container } from './styles';
 import { apiPowerBI } from '../../../../services/api';
 import { useToast } from '../../../../hooks/toast';
 
-import {
-  layoutSettings,
-  layoutSettingsLandscape,
-  layoutSettingsPortrait,
-} from '../../../../utils/stylesOfReportPowerBI';
+import { layoutSettings } from '../../../../utils/stylesOfReportPowerBI';
 
-// interface PropsPowerBI {
-//   accessToken: string;
-//   expiry: string;
-//   reportId: string;
-//   embedUrl: string;
-// }
+interface PropsPowerBI {
+  accessToken: string;
+  expiry: string;
+  reportId: string;
+  embedUrl: string;
+}
 
-// interface ReportData {
-//   reportId: string;
-//   embedUrl: string;
-//   styleReport: 'window' | 'landscape' | 'portrait';
-// }
+interface ReportData {
+  reportId: string;
+  embedUrl: string;
+  // styleReport: 'window' | 'landscape' | 'portrait';
+}
 
 // interface IStyles {
 //   width?: string;
@@ -46,18 +42,18 @@ import {
 //   tokenType: 'Embed',
 // };
 
-export const ReportConectBI = ({ reportId, embedUrl, styleReport }) => {
+export const ReportConectBI = ({ reportId, embedUrl }: ReportData) => {
   const [loadSignInUser, setloadSignInUser] = useState(true);
-  const componentRef = useRef < HTMLDivElement > null;
+  const componentRef = useRef(null);
   // const [report, embed] = useReport();
 
   const { addToast } = useToast();
-  const [dataBI, setDataBI] = useState();
-  const [styles, setStyles] = useState();
+  const [dataBI, setDataBI] = useState<PropsPowerBI>();
+  // const [styles, setStyles] = useState();
 
-  // const handleLoaded = useCallback(() => {
-  //   setloadSignInUser(false);
-  // }, []);
+  const handleLoaded = useCallback(() => {
+    setloadSignInUser(false);
+  }, []);
 
   const { containerProps, indicatorEl } = useLoading({
     loading: loadSignInUser,
@@ -67,14 +63,14 @@ export const ReportConectBI = ({ reportId, embedUrl, styleReport }) => {
   // const [reportProps, setReportProps] = React.useState(initialReportProps);
   // const [isValidConfig, setIsValidConfig] = React.useState(false);
   // const [activeTab, setActiveTab] = React.useState('report');
-  const reportRef = React.useRef(null);
-  const [report, setEmbed] = useReport();
+  // const reportRef = React.useRef(null);
+  // const [report, setEmbed] = useReport();
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  const extraSettings = {
-    filterPaneEnabled: false,
-    navContentPaneEnabled: false,
-  };
+  // const extraSettings = {
+  //   filterPaneEnabled: false,
+  //   navContentPaneEnabled: false,
+  // };
 
   // const renderWithReportProps = React.useCallback(
   //   ({ reportProps }) => {
@@ -92,48 +88,48 @@ export const ReportConectBI = ({ reportId, embedUrl, styleReport }) => {
   //   setIsValidConfig(false);
   // }, [isValidConfig]);
 
-  const handleClick = () => {
-    // you can use "report" from useReport like
-    if (report) report.print();
-  };
+  // const handleClick = () => {
+  //   // you can use "report" from useReport like
+  //   if (report) report.print();
+  // };
 
-  const myReportConfig = {
-    embedType: 'report',
-    tokenType: 'Aad',
-    accessToken:
-      'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6Im5PbzNaRHJPRFhFSzFqS1doWHNsSFJfS1hFZyIsImtpZCI6Im5PbzNaRHJPRFhFSzFqS1doWHNsSFJfS1hFZyJ9.eyJhdWQiOiJodHRwczovL2FuYWx5c2lzLndpbmRvd3MubmV0L3Bvd2VyYmkvYXBpIiwiaXNzIjoiaHR0cHM6Ly9zdHMud2luZG93cy5uZXQvY2Y1ZDI0YTMtNGU3ZS00ZjgzLWIzY2QtYTk2MzkwYjE2MGFmLyIsImlhdCI6MTYyNTUwMzk2MywibmJmIjoxNjI1NTAzOTYzLCJleHAiOjE2MjU1MDc4NjMsImFjY3QiOjAsImFjciI6IjEiLCJhaW8iOiJBVlFBcS84VEFBQUFtUE5qNkJPdjY2ekFSOXVDNW40cXpsMThNdERPWTdCSThuNXlUQXp5SVJxd2svL295MlBsdjRhNnN3M3NON0J2TWF6RU90UGkwdXRmOGVBUnJqVG5uMzJQeTdzYnBLdFFmdk1wL1VEc2x4MD0iLCJhbXIiOlsicHdkIiwibWZhIl0sImFwcGlkIjoiODcxYzAxMGYtNWU2MS00ZmIxLTgzYWMtOTg2MTBhN2U5MTEwIiwiYXBwaWRhY3IiOiIyIiwiaXBhZGRyIjoiMTc3LjIwMS42Ny4xNzgiLCJuYW1lIjoiUEJJIEVtYmVkIiwib2lkIjoiYTAyZDQ0MWUtYjAzNy00OGM0LTk3ZDctNTQyZWZhNWFhZTRiIiwicHVpZCI6IjEwMDMyMDAxMTA4NjYyREUiLCJyaCI6IjAuQVZvQW95UmR6MzVPZzAtenphbGprTEZncnc4QkhJZGhYckZQZzZ5WVlRcC1rUkJhQVBZLiIsInNjcCI6InVzZXJfaW1wZXJzb25hdGlvbiIsInN1YiI6IjUwSDR0TlQ5ZU1qSDhRMGw1aEQ0SVVEdi1McERHYTI0ZnBjTndqcnpWakEiLCJ0aWQiOiJjZjVkMjRhMy00ZTdlLTRmODMtYjNjZC1hOTYzOTBiMTYwYWYiLCJ1bmlxdWVfbmFtZSI6InBiaWVtYmVkQGJydW5vZ3VpbWFyYWVzY2FydmFsaG9zZ29oby5vbm1pY3Jvc29mdC5jb20iLCJ1cG4iOiJwYmllbWJlZEBicnVub2d1aW1hcmFlc2NhcnZhbGhvc2dvaG8ub25taWNyb3NvZnQuY29tIiwidXRpIjoiMy1HYTJtNm5fVVdBRlBJa05BeldBZyIsInZlciI6IjEuMCIsIndpZHMiOlsiYjc5ZmJmNGQtM2VmOS00Njg5LTgxNDMtNzZiMTk0ZTg1NTA5Il19.V-2q4h-JkPzQDX_dpQx6petQKngP7UlVb0xReTvtrqsPPPYlJhXX-OfgnRTMzfYcZuKLZdiIz9bh0rRATXes6LzRSl69lFam-AGNkr5npW_Sf24AGDqURbvxN-C-rq0QbjdJWVMWvRepO_D3t4PlimOe1iWCo7BV9TWkqXBhYGx9YIy49hnHTkPyPaHBW7jxiyyGmNowODJx8anleojl8VKmK2QsvSaNqszg9935T3Kpq2Vdh6aS4kzkAQgIP2EsXrMfivqsxchqvjb_ln7ujHscPhrW5KUyPDu7outphWvd4PyHL5QP9sev7R1GmVoeKp9vRKtDQo0sU3LZkotXxA',
-    embedUrl:
-      'https://app.powerbi.com/reportEmbed?reportId=49601ede-66ec-4fe2-88c0-299c21f1b1af&groupId=9ab7f913-45e8-4e73-abf4-33ff01c21f9f&w=2&config=eyJjbHVzdGVyVXJsIjoiaHR0cHM6Ly9XQUJJLUJSQVpJTC1TT1VUSC1CLVBSSU1BUlktcmVkaXJlY3QuYW5hbHlzaXMud2luZG93cy5uZXQiLCJlbWJlZEZlYXR1cmVzIjp7Im1vZGVybkVtYmVkIjp0cnVlLCJjZXJ0aWZpZWRUZWxlbWV0cnlFbWJlZCI6dHJ1ZSwidXNhZ2VNZXRyaWNzVk5leHQiOnRydWV9fQ%3d%3d',
-    embedId: '49601ede-66ec-4fe2-88c0-299c21f1b1af',
-    reportMode: 'View', // "Edit"
-    permissions: 'View', // "All" (when using "Edit" mode)
-    style: { layoutSettings },
-    extraSettings: {
-      filterPaneEnabled: false,
-      navContentPaneEnabled: false,
-    },
-  };
+  // const myReportConfig = {
+  //   embedType: 'report',
+  //   tokenType: 'Aad',
+  //   accessToken:
+  //     'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6Im5PbzNaRHJPRFhFSzFqS1doWHNsSFJfS1hFZyIsImtpZCI6Im5PbzNaRHJPRFhFSzFqS1doWHNsSFJfS1hFZyJ9.eyJhdWQiOiJodHRwczovL2FuYWx5c2lzLndpbmRvd3MubmV0L3Bvd2VyYmkvYXBpIiwiaXNzIjoiaHR0cHM6Ly9zdHMud2luZG93cy5uZXQvY2Y1ZDI0YTMtNGU3ZS00ZjgzLWIzY2QtYTk2MzkwYjE2MGFmLyIsImlhdCI6MTYyNTUwMzk2MywibmJmIjoxNjI1NTAzOTYzLCJleHAiOjE2MjU1MDc4NjMsImFjY3QiOjAsImFjciI6IjEiLCJhaW8iOiJBVlFBcS84VEFBQUFtUE5qNkJPdjY2ekFSOXVDNW40cXpsMThNdERPWTdCSThuNXlUQXp5SVJxd2svL295MlBsdjRhNnN3M3NON0J2TWF6RU90UGkwdXRmOGVBUnJqVG5uMzJQeTdzYnBLdFFmdk1wL1VEc2x4MD0iLCJhbXIiOlsicHdkIiwibWZhIl0sImFwcGlkIjoiODcxYzAxMGYtNWU2MS00ZmIxLTgzYWMtOTg2MTBhN2U5MTEwIiwiYXBwaWRhY3IiOiIyIiwiaXBhZGRyIjoiMTc3LjIwMS42Ny4xNzgiLCJuYW1lIjoiUEJJIEVtYmVkIiwib2lkIjoiYTAyZDQ0MWUtYjAzNy00OGM0LTk3ZDctNTQyZWZhNWFhZTRiIiwicHVpZCI6IjEwMDMyMDAxMTA4NjYyREUiLCJyaCI6IjAuQVZvQW95UmR6MzVPZzAtenphbGprTEZncnc4QkhJZGhYckZQZzZ5WVlRcC1rUkJhQVBZLiIsInNjcCI6InVzZXJfaW1wZXJzb25hdGlvbiIsInN1YiI6IjUwSDR0TlQ5ZU1qSDhRMGw1aEQ0SVVEdi1McERHYTI0ZnBjTndqcnpWakEiLCJ0aWQiOiJjZjVkMjRhMy00ZTdlLTRmODMtYjNjZC1hOTYzOTBiMTYwYWYiLCJ1bmlxdWVfbmFtZSI6InBiaWVtYmVkQGJydW5vZ3VpbWFyYWVzY2FydmFsaG9zZ29oby5vbm1pY3Jvc29mdC5jb20iLCJ1cG4iOiJwYmllbWJlZEBicnVub2d1aW1hcmFlc2NhcnZhbGhvc2dvaG8ub25taWNyb3NvZnQuY29tIiwidXRpIjoiMy1HYTJtNm5fVVdBRlBJa05BeldBZyIsInZlciI6IjEuMCIsIndpZHMiOlsiYjc5ZmJmNGQtM2VmOS00Njg5LTgxNDMtNzZiMTk0ZTg1NTA5Il19.V-2q4h-JkPzQDX_dpQx6petQKngP7UlVb0xReTvtrqsPPPYlJhXX-OfgnRTMzfYcZuKLZdiIz9bh0rRATXes6LzRSl69lFam-AGNkr5npW_Sf24AGDqURbvxN-C-rq0QbjdJWVMWvRepO_D3t4PlimOe1iWCo7BV9TWkqXBhYGx9YIy49hnHTkPyPaHBW7jxiyyGmNowODJx8anleojl8VKmK2QsvSaNqszg9935T3Kpq2Vdh6aS4kzkAQgIP2EsXrMfivqsxchqvjb_ln7ujHscPhrW5KUyPDu7outphWvd4PyHL5QP9sev7R1GmVoeKp9vRKtDQo0sU3LZkotXxA',
+  //   embedUrl:
+  //     'https://app.powerbi.com/reportEmbed?reportId=49601ede-66ec-4fe2-88c0-299c21f1b1af&groupId=9ab7f913-45e8-4e73-abf4-33ff01c21f9f&w=2&config=eyJjbHVzdGVyVXJsIjoiaHR0cHM6Ly9XQUJJLUJSQVpJTC1TT1VUSC1CLVBSSU1BUlktcmVkaXJlY3QuYW5hbHlzaXMud2luZG93cy5uZXQiLCJlbWJlZEZlYXR1cmVzIjp7Im1vZGVybkVtYmVkIjp0cnVlLCJjZXJ0aWZpZWRUZWxlbWV0cnlFbWJlZCI6dHJ1ZSwidXNhZ2VNZXRyaWNzVk5leHQiOnRydWV9fQ%3d%3d',
+  //   embedId: '49601ede-66ec-4fe2-88c0-299c21f1b1af',
+  //   reportMode: 'View', // "Edit"
+  //   permissions: 'View', // "All" (when using "Edit" mode)
+  //   style: { layoutSettings },
+  //   extraSettings: {
+  //     filterPaneEnabled: false,
+  //     navContentPaneEnabled: false,
+  //   },
+  // };
 
-  React.useEffect(() => {
-    if (true) {
-      setEmbed(reportRef, {
-        ...myReportConfig,
-        extraSettings,
-      });
-    }
-  }, []);
+  // React.useEffect(() => {
+  //   if (true) {
+  //     setEmbed(reportRef, {
+  //       ...myReportConfig,
+  //       extraSettings,
+  //     });
+  //   }
+  // }, []);
 
   useEffect(() => {
     async function loadTokenBI() {
       try {
-        if (styleReport === 'portrait') {
-          setStyles(layoutSettingsPortrait);
-        }
-        if (styleReport === 'landscape') {
-          setStyles(layoutSettingsLandscape);
-        } else {
-          setStyles(layoutSettings);
-        }
+        // if (styleReport === 'portrait') {
+        //   setStyles(layoutSettingsPortrait);
+        // }
+        // if (styleReport === 'landscape') {
+        //   setStyles(layoutSettingsLandscape);
+        // } else {
+        //   setStyles(layoutSettings);
+        // }
 
         if (localStorage.getItem('@SamascBI:dataAccess')) {
           const dataAccessBI = localStorage.getItem('@SamascBI:dataAccess');
@@ -205,7 +201,7 @@ export const ReportConectBI = ({ reportId, embedUrl, styleReport }) => {
       }
     }
     loadTokenBI();
-  }, [addToast, embedUrl, reportId, styleReport]);
+  }, [addToast, embedUrl, reportId]);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   // const myReportConfig: any = {
@@ -266,7 +262,7 @@ export const ReportConectBI = ({ reportId, embedUrl, styleReport }) => {
         {loadSignInUser ? (
           <>
             <div className="loading" {...containerProps} ref={componentRef}>
-              <p>Trabalhando em metadados</p>
+              <p>Carregando relatório1</p>
               {indicatorEl}
             </div>
           </>
@@ -274,8 +270,8 @@ export const ReportConectBI = ({ reportId, embedUrl, styleReport }) => {
           ''
         )}
         {dataBI ? (
-          <div id="print">
-            {/* <Report
+          <div className="powerBi">
+            <Report
               tokenType="Aad" // "Aad"
               accessToken={dataBI ? dataBI.accessToken : 'sem token'}
               embedUrl={dataBI ? dataBI.embedUrl : 'sem token'}
@@ -285,7 +281,7 @@ export const ReportConectBI = ({ reportId, embedUrl, styleReport }) => {
               // datasetId={datasetId} // required for reportMode = "Create" and optional for dynamic databinding in `report` on `View` mode
               // groupId={groupId} // optional. Used when reportMode = "Create" and to chose the target workspace when the dataset is shared.
               // extraSettings={extraSettings}
-              style={styles}
+              style={layoutSettings()}
               permissions="All"
               // onRender={handleLoaded}
               onLoad={handleLoaded}
@@ -293,27 +289,10 @@ export const ReportConectBI = ({ reportId, embedUrl, styleReport }) => {
                 filterPaneEnabled: false,
                 navContentPaneEnabled: false,
               }}
-            /> */}
-
-            <button type="button" onClick={handleClick}>
-              Print report
-            </button>
-
-            <div
-              className="report"
-              style={{
-                height: '100%',
-                border: '0',
-              }}
-              ref={reportRef}
             />
           </div>
         ) : (
           ''
-          // <div className="loading" {...containerProps} ref={componentRef}>
-          //   <p>Carregando relatório</p>
-          //   {indicatorEl}
-          // </div>
         )}
       </Container>
     </>

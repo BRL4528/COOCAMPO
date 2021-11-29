@@ -87,9 +87,9 @@ export const EvaluationsResumeResult: React.FC<PropsEvaluationsResumeResult> =
                 <Tag colorScheme="green">{dataResultEvaluation?.total}</Tag>{' '}
                 pontos, alcançando um resultado de{' '}
                 <Tag colorScheme="green">
-                  {dataResultEvaluation?.percentage}%
+                  {Number(dataResultEvaluation?.percentage) / 10}%
                 </Tag>{' '}
-                de 100%.
+                de 10%.
               </Text>
             )}
           </Box>
@@ -100,7 +100,7 @@ export const EvaluationsResumeResult: React.FC<PropsEvaluationsResumeResult> =
             size="120"
           >
             <CircularProgressLabel>
-              {dataResultEvaluation?.percentage}%
+              {Number(dataResultEvaluation?.percentage) / 10}%
             </CircularProgressLabel>
           </CircularProgress>
         </Box>

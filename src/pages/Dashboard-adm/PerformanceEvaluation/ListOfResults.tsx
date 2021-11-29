@@ -120,7 +120,7 @@ export const ListOfResults: React.FC<PropsListOfResults> = ({
                   mr="-55px"
                   mt="-2"
                 >
-                  {Number(data.performance.weight) * 10}%
+                  {data.performance.weight}%
                 </Text>
                 <Progress
                   hasStripe
