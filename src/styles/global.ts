@@ -184,6 +184,16 @@ export default createGlobalStyle`
   font-size: 10;
 }
 
+.selectOpt {
+    width: 100%;
+    height: 35px;
+    margin-top: 15px;
+    color: var(--text-quarterly);
+    border-color: var(--text-primary);
+    border-radius: 4px;
+    font-family: 16px;
+  }
+
 
 
 

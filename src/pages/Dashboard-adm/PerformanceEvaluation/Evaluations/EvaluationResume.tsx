@@ -46,13 +46,23 @@ interface ResponseEvaluation {
   date: Date;
   subordinate: string;
   leader: string;
-  schooling: string;
+  // schooling: string;
 }
 
 interface ObservationsFactor {
   id_factor: string;
   observations: string;
 }
+
+const options = [
+  { value: 'Fundamental', label: 'Fundamental' },
+  { value: 'Médio', label: 'Médio' },
+  { value: 'Superior Incompleto', label: 'Superior Incompleto' },
+  { value: 'Superior', label: 'Superior' },
+  { value: 'Pós-graduado', label: 'Pós-graduado' },
+  { value: 'Mestrado', label: 'Mestrado' },
+  { value: 'Doutorado', label: 'Doutorado' },
+];
 
 export default function EvaluationResume() {
   const history = useHistory();
@@ -66,7 +76,7 @@ export default function EvaluationResume() {
   >([]);
   const [idFactor, setIdfactor] = useState('');
 
-  const [schooling, setSchooling] = useState('medio');
+  const [schooling, setSchooling] = useState('');
 
   const [selectedItems, setSelectedItems] = useState<ResponseEvaluation[]>([]);
 
@@ -89,7 +99,6 @@ export default function EvaluationResume() {
       subordinate: name_subordinate,
       hierarchies_id: id_hierarchies,
       leader: user.nickname,
-      schooling,
     };
 
     const alreadySelected = selectedItems.findIndex(
@@ -116,20 +125,25 @@ export default function EvaluationResume() {
           const formated = {
             ...item,
             observations: filtered[0].observations,
+            schooling,
           };
           return formated;
         }
-        return item;
+        const formatedSchooling = {
+          ...item,
+          schooling,
+        };
+        return formatedSchooling;
       });
       await api.post('/evaluations-results', formatedItem);
-      setSchooling('medio');
+      setSchooling('');
       apllyToast('success', 'Sucesso ao finalizar avaliação!');
       history.push('/management-ppr/listOf-evaluation');
     } catch (err) {
       console.log('err', err);
       apllyToast('error', 'Erro ao finalizar avaliação!');
     }
-  }, [arrayObservationsFactor, history, selectedItems]);
+  }, [arrayObservationsFactor, history, schooling, selectedItems]);
 
   const handleAddObservation = useCallback(
     id => {
@@ -180,6 +194,11 @@ export default function EvaluationResume() {
     },
     [arrayObservationsFactor],
   );
+
+  const handleSelect = useCallback(e => {
+    console.log('teste', e.target.value);
+    setSchooling(e.target.value);
+  }, []);
 
   return (
     <ScaleFade initialScale={0.9} in>
@@ -276,7 +295,16 @@ export default function EvaluationResume() {
             </Box>
           </Box>
         ))}
-        {selectedItems.length === 7 ? (
+        <Box mt="15">
+          <Text>Escolaridade:</Text>
+          <select className="selectOpt" onChange={handleSelect}>
+            <option>Selecione...</option>
+            {options.map(dataEmail => (
+              <option value={dataEmail.value}>{dataEmail.label}</option>
+            ))}
+          </select>
+        </Box>
+        {selectedItems.length === 7 && schooling !== '' ? (
           <Button
             mt="8"
             size="md"
