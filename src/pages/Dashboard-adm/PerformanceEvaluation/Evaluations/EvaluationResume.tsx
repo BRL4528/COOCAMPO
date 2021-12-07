@@ -55,7 +55,9 @@ interface ObservationsFactor {
 }
 
 const options = [
+  { value: 'Fundamental Incompleto', label: 'Fundamental Incompleto' },
   { value: 'Fundamental', label: 'Fundamental' },
+  { value: 'Médio Incompleto', label: 'Médio Incompleto' },
   { value: 'Médio', label: 'Médio' },
   { value: 'Superior Incompleto', label: 'Superior Incompleto' },
   { value: 'Superior', label: 'Superior' },

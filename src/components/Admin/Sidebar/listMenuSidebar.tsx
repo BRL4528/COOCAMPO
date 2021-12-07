@@ -253,14 +253,11 @@ export function ManagementPPR(
       </OptionList>
       <OptionList
         pathname={pathname}
-        path="/management-ppr/performance-evaluation"
+        path="/management-ppr/listOf-evaluation"
         className="nav-item"
         visible={dataLider.length > 0}
       >
-        <Link
-          to={`/management-ppr/performance-evaluation/${user.nickname}`}
-          className="nav-link"
-        >
+        <Link to="/management-ppr/listOf-evaluation" className="nav-link">
           <FiUserCheck color="#f2c811" size={16} />
 
           <span className="link-text">Avaliação de desempenho</span>
