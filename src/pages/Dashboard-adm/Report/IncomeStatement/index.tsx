@@ -155,13 +155,13 @@ const months = [
     month_text: 'Novembro',
     month_number: 11,
     goal: 3.95,
-    result: 3.51,
+    result: 3.71,
   },
   {
     month_text: 'Dezembro',
     month_number: 12,
     goal: 4.04,
-    result: 3.51,
+    result: 3.58,
   },
 ];
 
@@ -179,7 +179,8 @@ const SelectorFolders: React.FC = () => {
   });
 
   const [monthSelected, setMonthSelected] = useState(
-    Number(String(new Date().getMonth() + 1).padStart(2, '0')) - 1,
+    // Number(String(new Date('31/12/2021').getMonth() + 1).padStart(2, '0')) - 1,
+    12,
   );
   const [yearSelected, setYearSelected] = useState(2021);
 
@@ -329,6 +330,7 @@ const SelectorFolders: React.FC = () => {
   }, []);
 
   const handleMonthFormated = useMemo(() => {
+    console.log('VER', monthSelected);
     const result = months.filter(el => {
       return el.month_number === monthSelected;
     });
