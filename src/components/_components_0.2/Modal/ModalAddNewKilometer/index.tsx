@@ -63,8 +63,6 @@ export function ModalAddNewKilometer({
 
   const handleSubmit = useCallback(
     async (data: IKilometers) => {
-      console.log('ver isso aq', data);
-
       try {
         setLoading(true);
         formRef.current?.setErrors({});

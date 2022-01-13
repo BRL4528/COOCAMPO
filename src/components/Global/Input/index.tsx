@@ -16,7 +16,7 @@ import { Container } from './styles';
 interface InputProps extends InputPropsElement {
   name: string;
   icon?: React.ComponentType<IconBaseProps>;
-  type?: string;
+  type?: any;
 }
 
 const Input: React.FC<InputProps> = ({ name, icon: Icon, type, ...rest }) => {
