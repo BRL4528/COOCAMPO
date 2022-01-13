@@ -19,7 +19,6 @@ import {
 } from '@chakra-ui/react';
 
 import { RiPencilLine, RiAttachmentLine, RiFilter2Line } from 'react-icons/ri';
-import { api } from '../../../../services/api';
 import { FilterCollapse } from '../Filter';
 import { ModalAddNewSupply } from '../../Modal/ModalAddNewSupply/indext';
 
