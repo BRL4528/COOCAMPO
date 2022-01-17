@@ -26,7 +26,7 @@ export function ModalComponent({
     lg: true,
   });
   return (
-    <Box p="20px">
+    <Box>
       <Modal
         blockScrollOnMount={false}
         onClose={onClose}

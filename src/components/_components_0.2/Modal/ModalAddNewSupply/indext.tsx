@@ -19,6 +19,7 @@ import { apllyToast } from '../../../Global/Toast2.0';
 import getValidationErrors from '../../../../utils/getValidationErrors';
 
 import Input from '../../../Global/Input';
+import TextArea from '../../../Global/TextArea';
 import Select from '../../../Global/SelectRelease';
 import { ModalComponent } from '..';
 
@@ -49,7 +50,6 @@ export function ModalAddNewSupply({ handleAddNewSupply }: IModalProps) {
 
   const handleSubmit = useCallback(
     async (data: ISupply) => {
-      console.log('ver isso aq', data);
       try {
         setLoading(true);
         formRef.current?.setErrors({});
@@ -183,6 +183,9 @@ export function ModalAddNewSupply({ handleAddNewSupply }: IModalProps) {
 
             <p>KM do Ôdometro</p>
             <Input type="number" name="km_odometer" placeholder="Ex: 1.200" />
+
+            <p>Observações</p>
+            <TextArea name="observation" />
 
             <ModalFooter>
               <Button colorScheme="blue" mr={3} onClick={onClose}>
