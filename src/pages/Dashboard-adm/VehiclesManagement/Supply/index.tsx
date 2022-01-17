@@ -1,5 +1,5 @@
 import { useCallback, useState } from 'react';
-import { Flex, ScaleFade, Text } from '@chakra-ui/react';
+import { Flex, ScaleFade } from '@chakra-ui/react';
 
 import { HeaderUp } from '../../../../components/_components_0.2/Header_0.2';
 import { Sidebar } from '../../../../components/_components_0.2/Sidebar_0.2';
