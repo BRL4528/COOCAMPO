@@ -169,7 +169,7 @@ export function KilometerTable({ vehicleSelected }: IKilometersTableProps) {
 
           <Tbody>
             {dataTable?.kilometer.map(data => (
-              <Tr>
+              <Tr key={data.id}>
                 <Td px={['2', '4', '6']}>
                   <Checkbox colorScheme="pink" />
                 </Td>

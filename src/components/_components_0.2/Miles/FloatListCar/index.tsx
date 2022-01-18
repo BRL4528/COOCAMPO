@@ -1,3 +1,4 @@
+import React, { useCallback, useEffect, useState } from 'react';
 /* eslint-disable @typescript-eslint/no-empty-function */
 import {
   Flex,
@@ -7,12 +8,11 @@ import {
   Button,
   Icon,
   Tooltip,
-  Spinner,
-  Center,
+  Collapse,
+  ScaleFade,
 } from '@chakra-ui/react';
 
-import React, { useCallback, useEffect, useState } from 'react';
-import { RiBookmarkFill } from 'react-icons/ri';
+import { RiBookmarkFill, RiAddLine, RiCloseLine } from 'react-icons/ri';
 import { api } from '../../../../services/api';
 
 interface IVehicles {
@@ -39,7 +39,7 @@ export function ListFloatCar({ handleSelectedVehicleId }: IListFloatCarProps) {
     lg: true,
   });
 
-  const [loading, setLoading] = useState(false);
+  // const [loading, setLoading] = useState(false);
 
   const [dataVehicles, setDataVehicles] = useState<IVehicles[]>([]);
 
@@ -48,12 +48,13 @@ export function ListFloatCar({ handleSelectedVehicleId }: IListFloatCarProps) {
     useState<IVehicles>();
 
   const [selectedVehicle, setSelectedVehicle] = useState<IVehicles>();
+  const [openList, setOpenList] = useState(false);
 
   useEffect(() => {
     const favoriteVehicleLocal = localStorage.getItem(
       '@Samasc:favoriteVehicle',
     );
-    setLoading(true);
+    // setLoading(true);
 
     if (favoriteVehicleLocal) {
       setFavoriteVehicle(JSON.parse(favoriteVehicleLocal));
@@ -80,7 +81,7 @@ export function ListFloatCar({ handleSelectedVehicleId }: IListFloatCarProps) {
       }
 
       setDataVehicles(response.data);
-      setLoading(false);
+      // setLoading(false);
     });
     // setLoading(false);
   }, [handleSelectedVehicleId, updateVehicleFavorite]);
@@ -103,13 +104,35 @@ export function ListFloatCar({ handleSelectedVehicleId }: IListFloatCarProps) {
     [handleSelectedVehicleId],
   );
 
+  function hadleOpenList() {
+    setOpenList(!openList);
+  }
+
   return (
-    <>
-      {loading ? (
+    <Box w={[320, 460, 600, 950, 1100, 1135]}>
+      <Button
+        size="sm"
+        colorScheme="blue"
+        fontWeight="medium"
+        type="button"
+        onClick={hadleOpenList}
+        mb="4"
+      >
+        <ScaleFade initialScale={0.9} in>
+          {openList ? (
+            <Icon as={RiCloseLine} fontSize="20" />
+          ) : (
+            <Icon as={RiAddLine} fontSize="20" />
+          )}
+          {openList ? 'Fechar lista de veiculos' : 'Abrir lista de veiculos'}
+        </ScaleFade>
+      </Button>
+      {/* {loading ? (
         <Center>
           <Spinner mt="50" mb="50" />
         </Center>
-      ) : (
+      ) : ( */}
+      <Collapse in={openList} animateOpacity>
         <Flex
           align="center"
           flexDirection="row"
@@ -197,7 +220,8 @@ export function ListFloatCar({ handleSelectedVehicleId }: IListFloatCarProps) {
             </Box>
           ))}
         </Flex>
-      )}
-    </>
+      </Collapse>
+      {/* )} */}
+    </Box>
   );
 }

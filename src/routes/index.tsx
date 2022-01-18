@@ -36,7 +36,7 @@ import Employers from '../pages/Dashboard-adm/Employers';
 
 import Vehicles from '../pages/Dashboard-adm/Vehicles';
 
-import DashboardMiles from '../pages/Dashboard-adm/VehiclesManagement';
+import DashboardMiles from '../pages/Dashboard-adm/VehiclesManagement/Dashboard';
 import VehiclesSchedule from '../pages/Dashboard-adm/VehiclesManagement/Schedule';
 import Kilometers from '../pages/Dashboard-adm/VehiclesManagement/Kilometers';
 import KilometersVelho from '../pages/Dashboard-adm/Miles/YouMiles';

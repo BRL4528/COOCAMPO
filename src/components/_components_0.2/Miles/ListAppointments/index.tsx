@@ -110,7 +110,7 @@ export function ListAppointments({ vehicleSelected }: IPropsListAppointmens) {
 
         <Tbody>
           {appointments?.appointment.map(appointmentitem => (
-            <Tr>
+            <Tr key={appointmentitem.id}>
               <Td>
                 <Box>
                   <Text fontWeight="bold">

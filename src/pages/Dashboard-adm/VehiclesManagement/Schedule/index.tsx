@@ -35,11 +35,11 @@ export default function Schedule() {
       <Flex w="100%" my="6" maxWidth={1480} mx="auto" pb={4} px="6">
         <Sidebar />
 
-        <ScaleFade initialScale={0.9} in>
+        <Box>
           <ListFloatCar handleSelectedVehicleId={handleSelectedVehicleId} />
-
-          <SimpleGrid columns={[1, null, 2]} spacing={10} flex="1">
-            {/* <SimpleGrid
+          <ScaleFade initialScale={0.9} in>
+            <SimpleGrid columns={[1, null, 2]} spacing={10} flex="1">
+              {/* <SimpleGrid
             columns={1}
             flex="1"
             spacing={10}
@@ -66,20 +66,21 @@ export default function Schedule() {
               </Flex>
             </Flex> */}
 
-            <ListAppointments vehicleSelected={vehicleSelected} />
+              <ListAppointments vehicleSelected={vehicleSelected} />
 
-            <Box borderRadius={8} bg="gray.800" p={['4', '8']} height="470">
-              <CalendarPiker
-                vehicleSelected={vehicleSelected}
-                handleDateSelected={handleDateSelected}
-              />
-            </Box>
-          </SimpleGrid>
-          <FloatlistHours
-            vehicleSelected={vehicleSelected}
-            daySelected={daySelected}
-          />
-        </ScaleFade>
+              <Box borderRadius={8} bg="gray.800" p={['4', '8']} height="470">
+                <CalendarPiker
+                  vehicleSelected={vehicleSelected}
+                  handleDateSelected={handleDateSelected}
+                />
+              </Box>
+            </SimpleGrid>
+            <FloatlistHours
+              vehicleSelected={vehicleSelected}
+              daySelected={daySelected}
+            />
+          </ScaleFade>
+        </Box>
       </Flex>
     </Flex>
   );

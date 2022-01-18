@@ -1,5 +1,5 @@
 import { useCallback, useState } from 'react';
-import { Flex, ScaleFade } from '@chakra-ui/react';
+import { Flex, ScaleFade, Box } from '@chakra-ui/react';
 
 import { HeaderUp } from '../../../../components/_components_0.2/Header_0.2';
 import { Sidebar } from '../../../../components/_components_0.2/Sidebar_0.2';
@@ -34,11 +34,12 @@ export default function Supply() {
 
       <Flex w="100%" my="6" maxWidth={1480} mx="auto" pb={4} px="6">
         <Sidebar />
-        <ScaleFade initialScale={0.9} in>
+        <Box>
           <ListFloatCar handleSelectedVehicleId={handleSelectedVehicleId} />
-
-          <SupplyTable vehicleSelected={veicleSelected} />
-        </ScaleFade>
+          <ScaleFade initialScale={0.9} in>
+            <SupplyTable vehicleSelected={veicleSelected} />
+          </ScaleFade>
+        </Box>
       </Flex>
     </Flex>
   );
