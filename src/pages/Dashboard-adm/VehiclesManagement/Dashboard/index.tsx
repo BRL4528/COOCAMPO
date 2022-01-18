@@ -92,7 +92,7 @@ export default function Dashboard() {
     id: '',
     km: 0,
   });
-
+  console.log(veicleSelected);
   const handleSelectedVehicleId = useCallback((vehicle: Omit<IVehicle, ''>) => {
     const { id, km } = vehicle;
 
