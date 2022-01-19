@@ -1,5 +1,7 @@
 import { useEffect, useState, useCallback } from 'react';
+
 import { format } from 'date-fns';
+
 import {
   Box,
   Button,
@@ -18,11 +20,12 @@ import {
   useDisclosure,
   Tooltip,
 } from '@chakra-ui/react';
-import { RiPencilLine, RiFilter2Line } from 'react-icons/ri';
+import { RiFilter2Line } from 'react-icons/ri';
 
 import { Pagination } from '../Pagination';
 import { FilterCollapse } from '../Filter';
 import { ModalAddNewKilometer } from '../../Modal/ModalAddNewKilometer';
+import { ModalEditNewKilometer } from '../../Modal/ModalEditNewKilometer';
 
 import { useAuth } from '../../../../hooks/auth';
 
@@ -121,6 +124,27 @@ export function KilometerTable({ vehicleSelected }: IKilometersTableProps) {
     [vehicleSelected, user.id],
   );
 
+  const handleEditKilometer = useCallback(
+    async (data: Omit<IKilometers, 'e'>) => {
+      const { km_end, km_start, observations, reason, km_traveled } = data;
+
+      const formatData = {
+        km_end: Number(km_end),
+        km_start: Number(km_start),
+        observations,
+        reason,
+        km_traveled: Number(km_traveled),
+        vehicle_id: vehicleSelected.id,
+        access_id: user.id,
+      };
+      console.log('km editado', formatData);
+      // api.post('/kilometers', formatData).then(response => {
+      //   setNewRegister(response.data.id);
+      // });
+    },
+    [vehicleSelected, user.id],
+  );
+
   return (
     <Box>
       <Box flex="1" borderRadius={8} bg="gray.800" p={['4', '8']}>
@@ -193,16 +217,10 @@ export function KilometerTable({ vehicleSelected }: IKilometersTableProps) {
 
                 <Td>
                   {isWideVersion ? (
-                    <Tooltip hasArrow label="Editar">
-                      <Button
-                        size="sm"
-                        fontSize="sm"
-                        bg="gray.600"
-                        variant="ghost"
-                      >
-                        <Icon as={RiPencilLine} fontSize="20" />
-                      </Button>
-                    </Tooltip>
+                    <ModalEditNewKilometer
+                      id_kilometer={data.id}
+                      handleEditKilometer={handleEditKilometer}
+                    />
                   ) : (
                     ''
                   )}

@@ -51,6 +51,8 @@ const Input: React.FC<InputProps> = ({ name, icon: Icon, type, ...rest }) => {
             type={type}
             ref={inputRef}
             size="md"
+            color="gray.50"
+            borderColor="gray.650"
             {...rest}
           />
         </InputGroup>

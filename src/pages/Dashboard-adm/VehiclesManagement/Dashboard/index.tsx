@@ -22,7 +22,7 @@ interface IVehicle {
 const options: ApexOptions = {
   chart: {
     toolbar: {
-      show: false,
+      show: true,
     },
     zoom: {
       enabled: false,
@@ -40,18 +40,18 @@ const options: ApexOptions = {
     theme: 'dark',
   },
   xaxis: {
-    type: 'datetime',
+    type: 'category',
     axisBorder: {
       color: theme.colors.gray[600],
     },
     categories: [
-      '2021-03-18T00:00:00.000Z',
-      '2021-03-19T00:00:00.000Z',
-      '2021-03-20T00:00:00.000Z',
-      '2021-03-21T00:00:00.000Z',
-      '2021-03-22T00:00:00.000Z',
-      '2021-03-23T00:00:00.000Z',
-      '2021-03-24T00:00:00.000Z',
+      'Janeiro',
+      'Fevereiro',
+      'Março',
+      'Abril',
+      'Maio',
+      'Junho',
+      'Julho',
     ],
   },
 
