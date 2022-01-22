@@ -34,6 +34,7 @@ interface IKilometers {
   km_traveled: number;
   observations: string;
   reason: string;
+  date: string;
 }
 
 interface IModalProps {
@@ -68,6 +69,7 @@ export function ModalAddNewKilometer({
         formRef.current?.setErrors({});
 
         const schema = Yup.object().shape({
+          date: Yup.date().required('Data é obrigatória'),
           km_start: Yup.string()
             .required('Km inicial é obrigatório')
             .min(1, 'km inicial deve ser maior que zero'),
@@ -76,7 +78,7 @@ export function ModalAddNewKilometer({
             .required('Km percorrido é obrigatório')
             .positive('Km percorrido deve ser positivo'),
 
-          reason: Yup.string().required('Motivo é obrigatório'),
+          // reason: Yup.string().required('Motivo é obrigatório'),
 
           observations: Yup.string().required('Destino é obrigatório'),
         });
@@ -85,14 +87,14 @@ export function ModalAddNewKilometer({
           abortEarly: false,
         });
 
-        const { km_end, km_start, km_traveled, observations } = data;
-
+        const { km_end, km_start, km_traveled, observations, date } = data;
         const formatData = {
           km_end,
           km_start,
           km_traveled,
           observations,
           reason: reasonItem,
+          date,
         };
 
         handleAddNewKilometer(formatData);
@@ -128,10 +130,12 @@ export function ModalAddNewKilometer({
   }, []);
 
   useEffect(() => {
-    if (km_initial && km_endData > km_initial) {
-      setKm_traveled(km_endData - km_initial);
-    }
+    setKm_traveled(km_endData - km_initial);
   }, [km_endData, km_initial]);
+
+  useEffect(() => {
+    setKm_traveled(0);
+  }, [isOpen]);
 
   const handleReason = useCallback(e => {
     setReason(e);
@@ -159,6 +163,8 @@ export function ModalAddNewKilometer({
       >
         <ModalBody>
           <Form ref={formRef} onSubmit={handleSubmit}>
+            <p>Data</p>
+            <Input type="date" name="date" />
             <p>Quilometragem inicial</p>
             <Input
               value={km_initial}

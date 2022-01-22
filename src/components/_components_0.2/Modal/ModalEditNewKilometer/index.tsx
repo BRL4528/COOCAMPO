@@ -34,6 +34,7 @@ interface IKilometers {
   km_traveled: number;
   observations: string;
   reason: string;
+  date: string;
 }
 
 interface IModalProps {
@@ -84,6 +85,7 @@ export function ModalEditNewKilometer({
         formRef.current?.setErrors({});
 
         const schema = Yup.object().shape({
+          date: Yup.date().required('Data é obrigatória'),
           km_start: Yup.string()
             .required('Km inicial é obrigatório')
             .min(1, 'km inicial deve ser maior que zero'),
@@ -101,7 +103,7 @@ export function ModalEditNewKilometer({
           abortEarly: false,
         });
 
-        const { km_end, km_start, km_traveled, observations } = data;
+        const { km_end, km_start, km_traveled, observations, date } = data;
 
         const formatData = {
           km_end,
@@ -109,6 +111,7 @@ export function ModalEditNewKilometer({
           km_traveled,
           observations,
           reason: reasonItem,
+          date,
         };
 
         handleEditKilometer(formatData);
@@ -172,6 +175,8 @@ export function ModalEditNewKilometer({
       >
         <ModalBody>
           <Form ref={formRef} onSubmit={handleSubmit} initialData={initialData}>
+            <p>Data</p>
+            <Input type="string" name="date" />
             <p>Quilometragem inicial</p>
             <Input
               type="number"

@@ -70,7 +70,7 @@ export function DrawerEvaluation({
   }, []);
 
   return (
-    <DrawerComponent isOpen={isOpen} onClose={onClose}>
+    <DrawerComponent isOpen={isOpen} onClose={onClose} placement="right">
       <DrawerHeader borderBottomWidth="1px">Adicionar observação</DrawerHeader>
 
       <DrawerBody>

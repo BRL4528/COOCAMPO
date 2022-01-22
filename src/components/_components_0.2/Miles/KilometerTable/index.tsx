@@ -50,6 +50,7 @@ interface IGetKilometers {
       observations: string;
       reason: string;
       created_at: string;
+      date: string;
     },
   ];
   pagination: {
@@ -69,6 +70,7 @@ interface IKilometers {
   km_traveled?: number;
   observations: string;
   reason: string;
+  date: string;
 }
 
 export function KilometerTable({ vehicleSelected }: IKilometersTableProps) {
@@ -105,7 +107,8 @@ export function KilometerTable({ vehicleSelected }: IKilometersTableProps) {
 
   const handleAddNewKilometer = useCallback(
     async (data: Omit<IKilometers, 'e'>) => {
-      const { km_end, km_start, observations, reason, km_traveled } = data;
+      const { km_end, km_start, observations, reason, km_traveled, date } =
+        data;
 
       const formatData = {
         km_end: Number(km_end),
@@ -115,6 +118,7 @@ export function KilometerTable({ vehicleSelected }: IKilometersTableProps) {
         km_traveled: Number(km_traveled),
         vehicle_id: vehicleSelected.id,
         access_id: user.id,
+        date,
       };
 
       api.post('/kilometers', formatData).then(response => {
@@ -201,7 +205,7 @@ export function KilometerTable({ vehicleSelected }: IKilometersTableProps) {
                 <Td>
                   <Box>
                     <Text fontWeight="medium">
-                      {handleFormatDate(data.created_at)}
+                      {handleFormatDate(data.date)}
                     </Text>
                     <Text fontSize="sm" color="gray.300">
                       {handleFormatHours(data.created_at)}

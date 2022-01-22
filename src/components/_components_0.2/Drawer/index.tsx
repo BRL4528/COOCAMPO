@@ -9,14 +9,20 @@ interface PropsDrawer {
   children: any;
   isOpen: boolean;
   onClose: () => void;
+  placement: 'top' | 'left' | 'bottom' | 'right';
 }
 
-export function DrawerComponent({ children, onClose, isOpen }: PropsDrawer) {
+export function DrawerComponent({
+  children,
+  onClose,
+  isOpen,
+  placement,
+}: PropsDrawer) {
   return (
     <>
       <Drawer
         isOpen={isOpen}
-        placement="right"
+        placement={placement}
         // initialFocusRef={firstField}
         onClose={onClose}
         size="sm"

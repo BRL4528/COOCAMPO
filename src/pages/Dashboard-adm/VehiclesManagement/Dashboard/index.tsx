@@ -1,98 +1,30 @@
-import { useCallback, useState } from 'react';
-import {
-  Flex,
-  SimpleGrid,
-  Box,
-  Text,
-  theme,
-  ScaleFade,
-} from '@chakra-ui/react';
-import { ApexOptions } from 'apexcharts';
-import Chart from 'react-apexcharts';
+import { useCallback, useState, useEffect } from 'react';
+import { Flex, SimpleGrid, Box, ScaleFade } from '@chakra-ui/react';
 
 import { HeaderUp } from '../../../../components/_components_0.2/Header_0.2';
 import { Sidebar } from '../../../../components/_components_0.2/Sidebar_0.2';
 import { ListFloatCar } from '../../../../components/_components_0.2/Miles/FloatListCar';
+import { ChartMiles } from '../../../../components/_components_0.2/Charts/index';
+import { api } from '../../../../services/api';
 
 interface IVehicle {
   id: string;
   km: number;
 }
 
-const options: ApexOptions = {
-  chart: {
-    toolbar: {
-      show: true,
-    },
-    zoom: {
-      enabled: false,
-    },
-    foreColor: theme.colors.gray[500],
-  },
-  grid: {
-    show: false,
-  },
-  dataLabels: {
-    enabled: false,
-  },
-  tooltip: {
-    // enabled: false,
-    theme: 'dark',
-  },
-  xaxis: {
-    type: 'category',
-    axisBorder: {
-      color: theme.colors.gray[600],
-    },
-    categories: [
-      'Janeiro',
-      'Fevereiro',
-      'Março',
-      'Abril',
-      'Maio',
-      'Junho',
-      'Julho',
-    ],
-  },
-
-  fill: {
-    opacity: 0.3,
-    type: 'gradient',
-    gradient: {
-      shade: 'dark',
-      opacityFrom: 0.7,
-      opacityTo: 0.3,
-    },
-  },
-};
-
-const series = [
-  {
-    name: 'Taxa',
-    data: [31, 120, 10, 28, 61, 18, 109],
-  },
-];
-const veiculo = [
-  {
-    name: 'Taxa',
-    data: [31, 120, 10, 28, 61, 18, 109],
-  },
-  {
-    name: 'veiculo1',
-    data: [21, 180, 10, 68, 21, 18, 209],
-  },
-  {
-    name: 'veiculo2',
-    data: [81, 190, 20, 48, 31, 88, 309],
-  },
-];
+interface IKilometersTraveled {
+  months: [string];
+  results: [number];
+}
 
 export default function Dashboard() {
   const [veicleSelected, setVehicleSelected] = useState<IVehicle>({
     id: '',
     km: 0,
   });
-  console.log(veicleSelected);
+  const [dataKilometersTraveled, seDataKilometersTraveled] =
+    useState<IKilometersTraveled>();
+
   const handleSelectedVehicleId = useCallback((vehicle: Omit<IVehicle, ''>) => {
     const { id, km } = vehicle;
 
@@ -100,9 +32,39 @@ export default function Dashboard() {
       id,
       km,
     };
-
     setVehicleSelected(car);
   }, []);
+
+  useEffect(() => {
+    try {
+      api
+        .get(
+          `/kilometers/calc-km-traveled-month?vehicle_id=${veicleSelected.id}&start_date=2021-01-01&end_date=2022-01-31`,
+        )
+        .then(response => {
+          seDataKilometersTraveled(response.data);
+        });
+    } catch (e) {
+      console.log(e);
+    }
+  }, [veicleSelected]);
+
+  const v = [9];
+
+  const seriesExample = [
+    {
+      name: 'atualize os dados',
+      data: [0],
+    },
+  ];
+  const series = [
+    {
+      name: 'rodou',
+      data: dataKilometersTraveled?.results ?? v,
+    },
+  ];
+
+  const categories = ['atualize os dados'];
   return (
     <ScaleFade initialScale={0.9} in>
       <Flex direction="column" h="100vh">
@@ -118,77 +80,26 @@ export default function Dashboard() {
               minChildWidth={['370px', '400', '420px']}
               align="flex-start"
             >
-              <Box
-                p={['6', '8']}
-                bg="gray.800"
-                borderRadius={8}
-                pb="4"
-                height={270}
-              >
-                <Text fontSize="lg" mb="4">
-                  Taxa de utilização
-                </Text>
-
-                <Chart
-                  options={options}
-                  series={series}
-                  type="area"
-                  height={160}
-                />
-              </Box>
-
-              <Box
-                p={['6', '8']}
-                bg="gray.800"
-                borderRadius={8}
-                pb="4"
-                height={270}
-              >
-                <Text fontSize="lg" mb="4">
-                  Quilometros rodados
-                </Text>
-                <Chart
-                  options={options}
-                  series={series}
-                  type="area"
-                  height={160}
-                />
-              </Box>
-
-              <Box
-                p={['6', '8']}
-                bg="gray.800"
-                borderRadius={8}
-                pb="4"
-                height={270}
-              >
-                <Text fontSize="lg" mb="4">
-                  Média de consumo por quilometragem
-                </Text>
-                <Chart
-                  options={options}
-                  series={series}
-                  type="area"
-                  height={160}
-                />
-              </Box>
-              <Box
-                p={['6', '8']}
-                bg="gray.800"
-                borderRadius={8}
-                pb="4"
-                height={270}
-              >
-                <Text fontSize="lg" mb="4">
-                  Quilometragem por veiculo
-                </Text>
-                <Chart
-                  options={options}
-                  series={veiculo}
-                  type="area"
-                  height={160}
-                />
-              </Box>
+              <ChartMiles
+                categories={categories}
+                series={seriesExample}
+                title="Taxa de utilização"
+              />
+              <ChartMiles
+                categories={dataKilometersTraveled?.months ?? ['']}
+                series={series}
+                title="Quilometros rodados"
+              />
+              <ChartMiles
+                categories={categories}
+                series={seriesExample}
+                title="Média de consumo por quilometragem"
+              />
+              <ChartMiles
+                categories={categories}
+                series={seriesExample}
+                title="Quilometragem por veiculo"
+              />
             </SimpleGrid>
           </Box>
         </Flex>
