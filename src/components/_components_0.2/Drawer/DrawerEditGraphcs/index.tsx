@@ -31,10 +31,10 @@ export function DrawerEditGraphcs({ isOpen, onClose }: PropsDrawer) {
     setvalueInput('');
   }, [valueInput]);
 
-  const handleInputChange = useCallback(e => {
-    const inputValue = e.target.value;
-    setvalueInput(inputValue);
-  }, []);
+  // const handleInputChange = useCallback(e => {
+  //   const inputValue = e.target.value;
+  //   setvalueInput(inputValue);
+  // }, []);
 
   return (
     <DrawerComponent isOpen={isOpen} onClose={onClose} placement="left">
