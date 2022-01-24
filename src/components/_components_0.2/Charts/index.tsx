@@ -1,36 +1,48 @@
+import React, { useState, useCallback } from 'react';
 import {
   theme,
   Box,
   Text,
   Flex,
-  Menu,
-  MenuButton,
-  MenuList,
-  MenuItem,
-  IconButton,
   useDisclosure,
+  Spinner,
 } from '@chakra-ui/react';
 import { ApexOptions } from 'apexcharts';
 import Chart from 'react-apexcharts';
 
-import { FiMenu, FiMaximize, FiEdit } from 'react-icons/fi';
-
 import { FullScreen, useFullScreenHandle } from 'react-full-screen';
 import { DrawerEditGraphcs } from '../Drawer/DrawerEditGraphcs';
+import { MenuChart } from '../MenuChart';
+
+interface DateGraphicState {
+  date_start: string;
+  date_end: string;
+}
 
 interface PropsDrawer {
   title: string;
   categories: string[];
-
+  loading: boolean;
+  handleSendDataGraphic: (date: Omit<DateGraphicState, ''>) => void;
   series: {
     name: string;
     data: number[];
   }[];
 }
 
-export function ChartMiles({ title, series, categories }: PropsDrawer) {
+export function ChartMiles({
+  title,
+  series,
+  categories,
+  loading,
+  handleSendDataGraphic,
+}: PropsDrawer) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const handle = useFullScreenHandle();
+
+  const [typeGraphic, setTypeGraphic] = useState();
+  const [identificationGraphic, seIdentificationGraphic] = useState();
+
   const options: ApexOptions = {
     chart: {
       animations: {
@@ -83,51 +95,61 @@ export function ChartMiles({ title, series, categories }: PropsDrawer) {
   //     data: [0],
   //   },
   // ];
+  const handleSendTypeGraphic = useCallback(type => {
+    const typeFormated = type.split('-', 1);
+    const IdentificationFormated = type.split('-', 2);
+    seIdentificationGraphic(IdentificationFormated[1]);
+
+    setTypeGraphic(typeFormated[0]);
+  }, []);
+
+  const handleAddTitleinDateGrafic = useCallback(
+    (date: Omit<DateGraphicState, 'e'>) => {
+      const { date_end, date_start } = date;
+
+      const formatedData = {
+        date_end,
+        date_start,
+        title,
+      };
+      console.log(formatedData);
+      handleSendDataGraphic(formatedData);
+    },
+    [handleSendDataGraphic, title],
+  );
+
   return (
     <>
       <Box p={['6', '8']} bg="gray.800" borderRadius={8} pb="4" height={270}>
-        <DrawerEditGraphcs isOpen={isOpen} onClose={onClose} />
+        <DrawerEditGraphcs
+          isOpen={isOpen}
+          onClose={onClose}
+          graphicTitle={title}
+          handleSendTypeGraphic={handleSendTypeGraphic}
+          handleSendDataGraphic={handleAddTitleinDateGrafic}
+        />
         <FullScreen handle={handle}>
-          <Flex justifyContent="space-between">
-            <Text fontSize="lg" mb="4">
-              {title}
-            </Text>
+          {loading ? (
+            <Flex textAlign="center" justify="center">
+              <Spinner size="sm" />
+            </Flex>
+          ) : (
+            <>
+              <Flex justifyContent="space-between">
+                <Text fontSize="lg" mb="4">
+                  {title}
+                </Text>
 
-            <Menu>
-              <MenuButton
-                as={IconButton}
-                aria-label="Options"
-                icon={<FiMenu color={theme.colors.gray[500]} />}
-                // variant="outline"
-                colorScheme="outline"
+                <MenuChart onOpen={onOpen} handle={handle} />
+              </Flex>
+              <Chart
+                options={options}
+                series={series}
+                type={title === identificationGraphic ? typeGraphic : 'area'}
+                height={handle.active ? '95%' : 160}
               />
-              <MenuList>
-                <MenuItem
-                  i
-                  command="⌘T"
-                  onClick={handle.enter}
-                  color="gray.600"
-                  icon={<FiMaximize />}
-                >
-                  Maximize
-                </MenuItem>
-                <MenuItem
-                  command="⌘N"
-                  color="gray.600"
-                  icon={<FiEdit />}
-                  onClick={onOpen}
-                >
-                  Editar parâmetros
-                </MenuItem>
-              </MenuList>
-            </Menu>
-          </Flex>
-          <Chart
-            options={options}
-            series={series}
-            type="area"
-            height={handle.active ? '95%' : 160}
-          />
+            </>
+          )}
         </FullScreen>
       </Box>
     </>

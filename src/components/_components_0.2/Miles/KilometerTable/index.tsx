@@ -32,6 +32,7 @@ import { useAuth } from '../../../../hooks/auth';
 import { api } from '../../../../services/api';
 
 interface IKilometersTableProps {
+  handleUpdateNewKm: (id_new_vehicle: string) => void;
   vehicleSelected: {
     id: string;
     km: number;
@@ -39,8 +40,6 @@ interface IKilometersTableProps {
 }
 
 interface IGetKilometers {
-  // vehicle_id?: string;
-  // access_id?: string;
   kilometer: [
     {
       id: string;
@@ -73,7 +72,10 @@ interface IKilometers {
   date: string;
 }
 
-export function KilometerTable({ vehicleSelected }: IKilometersTableProps) {
+export function KilometerTable({
+  vehicleSelected,
+  handleUpdateNewKm,
+}: IKilometersTableProps) {
   const { user } = useAuth();
   const { onToggle, isOpen } = useDisclosure();
   const [dataTable, setDataTable] = useState<IGetKilometers>();
@@ -87,7 +89,7 @@ export function KilometerTable({ vehicleSelected }: IKilometersTableProps) {
     // setLoading(true);
     api
       .get<IGetKilometers>(
-        `/kilometers/filter?access_id=${user.id}&vehicle_id=${vehicleSelected.id}&take=6&page=1`,
+        `/kilometers/filter?conductor_id=${user.id}&vehicle_id=${vehicleSelected.id}&take=6&page=1`,
       )
       .then(response => {
         setDataTable(response.data);
@@ -117,15 +119,16 @@ export function KilometerTable({ vehicleSelected }: IKilometersTableProps) {
         reason,
         km_traveled: Number(km_traveled),
         vehicle_id: vehicleSelected.id,
-        access_id: user.id,
+        conductor_id: user.id,
         date,
       };
 
       api.post('/kilometers', formatData).then(response => {
         setNewRegister(response.data.id);
+        handleUpdateNewKm(response.data.id);
       });
     },
-    [vehicleSelected, user.id],
+    [vehicleSelected.id, user.id, handleUpdateNewKm],
   );
 
   const handleEditKilometer = useCallback(

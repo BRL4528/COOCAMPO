@@ -94,7 +94,7 @@ export function ModalEditNewKilometer({
             .required('Km percorrido é obrigatório')
             .positive('Km percorrido deve ser positivo'),
 
-          reason: Yup.string().required('Motivo é obrigatório'),
+          // reason: Yup.string().required('Motivo é obrigatório'),
 
           observations: Yup.string().required('Destino é obrigatório'),
         });

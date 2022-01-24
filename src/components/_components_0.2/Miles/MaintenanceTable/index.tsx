@@ -127,7 +127,7 @@ export function MaintenanceTable({ vehicleSelected }: IvehicleSelected) {
           description,
           reason,
           vehicle_id: vehicleSelected.id,
-          conductor: user.name,
+          conductor_id: user.id,
         };
         await api.post('/maintenance', formatData).then(response => {
           setMaintenanceAdded(response.data.id);
@@ -138,7 +138,7 @@ export function MaintenanceTable({ vehicleSelected }: IvehicleSelected) {
         apllyToast('error', 'Problemas ao adicionar nova manutenção!');
       }
     },
-    [user.name, vehicleSelected.id],
+    [user.id, vehicleSelected.id],
   );
 
   const handleVerifyDateIsNew = useCallback(date => {

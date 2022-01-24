@@ -36,7 +36,10 @@ export default function Schedule() {
         <Sidebar />
 
         <Box>
-          <ListFloatCar handleSelectedVehicleId={handleSelectedVehicleId} />
+          <ListFloatCar
+            updateNewData=""
+            handleSelectedVehicleId={handleSelectedVehicleId}
+          />
           <ScaleFade initialScale={0.9} in>
             <SimpleGrid columns={[1, null, 2]} spacing={10} flex="1">
               {/* <SimpleGrid

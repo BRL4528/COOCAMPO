@@ -35,7 +35,10 @@ export default function Maintenance() {
         <Sidebar />
 
         <Box>
-          <ListFloatCar handleSelectedVehicleId={handleSelectedVehicleId} />
+          <ListFloatCar
+            updateNewData=""
+            handleSelectedVehicleId={handleSelectedVehicleId}
+          />
           <ScaleFade initialScale={0.9} in>
             <MaintenanceTable vehicleSelected={veicleSelected} />
           </ScaleFade>

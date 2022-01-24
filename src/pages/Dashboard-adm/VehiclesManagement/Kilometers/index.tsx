@@ -12,6 +12,7 @@ interface IVehicle {
 }
 
 export default function Supply() {
+  const [updateNewKm, setUpdateNewKm] = useState<string>('');
   const [vehicleSelected, setVehicleSelected] = useState<IVehicle>({
     id: '',
     km: 0,
@@ -27,6 +28,10 @@ export default function Supply() {
     setVehicleSelected(car);
   }, []);
 
+  const handleUpdateNewKm = useCallback(id_new_vehicle => {
+    setUpdateNewKm(id_new_vehicle);
+  }, []);
+
   return (
     <Flex direction="column" h="100vh">
       <HeaderUp />
@@ -34,9 +39,15 @@ export default function Supply() {
       <Flex w="100%" my="6" maxWidth={1480} mx="auto" pb={4} px="6">
         <Sidebar />
         <ScaleFade initialScale={0.9} in>
-          <ListFloatCar handleSelectedVehicleId={handleSelectedVehicleId} />
+          <ListFloatCar
+            updateNewData={updateNewKm}
+            handleSelectedVehicleId={handleSelectedVehicleId}
+          />
 
-          <KilometerTable vehicleSelected={vehicleSelected} />
+          <KilometerTable
+            handleUpdateNewKm={handleUpdateNewKm}
+            vehicleSelected={vehicleSelected}
+          />
         </ScaleFade>
       </Flex>
     </Flex>

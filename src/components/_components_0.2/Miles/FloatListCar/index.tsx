@@ -31,9 +31,13 @@ interface IVehicles {
 
 interface IListFloatCarProps {
   handleSelectedVehicleId: (vehicle: Omit<IVehicles, ''>) => void;
+  updateNewData: string;
 }
 
-export function ListFloatCar({ handleSelectedVehicleId }: IListFloatCarProps) {
+export function ListFloatCar({
+  handleSelectedVehicleId,
+  updateNewData,
+}: IListFloatCarProps) {
   const isWideVersion = useBreakpointValue({
     base: false,
     lg: true,
@@ -84,7 +88,7 @@ export function ListFloatCar({ handleSelectedVehicleId }: IListFloatCarProps) {
       // setLoading(false);
     });
     // setLoading(false);
-  }, [handleSelectedVehicleId, updateVehicleFavorite]);
+  }, [handleSelectedVehicleId, updateVehicleFavorite, updateNewData]);
 
   const handleSetFavorite = useCallback(
     (data: IVehicles) => {

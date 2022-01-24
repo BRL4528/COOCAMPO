@@ -117,13 +117,13 @@ export function SupplyTable({ vehicleSelected }: IKilometersTableProps) {
         km_odometer,
         observation,
         vehicle_id: vehicleSelected.id,
-        conductor: user.name,
+        conductor_id: user.id,
       };
       await api.post('/supplies', formatData).then(response => {
         setSupplyAdded(response.data.id);
       });
     },
-    [user.name, vehicleSelected.id],
+    [user.id, vehicleSelected.id],
   );
 
   const handleVerifyDateIsNew = useCallback(date => {

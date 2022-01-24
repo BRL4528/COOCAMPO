@@ -1,35 +1,87 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
+import { useCallback, useState, useRef } from 'react';
 import {
   DrawerBody,
   DrawerFooter,
   DrawerHeader,
   Stack,
-  Box,
   FormLabel,
-  Textarea,
   Button,
   Tag,
   Center,
   Text,
   Flex,
+  RadioGroup,
+  Radio,
 } from '@chakra-ui/react';
-import { useCallback, useState } from 'react';
 
+import { Form } from '@unform/web';
+import * as Yup from 'yup';
+import { FormHandles } from '@unform/core';
+import Input from '../../../Global/Input';
 import { DrawerComponent } from '../index';
+import { apllyToast } from '../../../Global/Toast2.0';
+import getValidationErrors from '../../../../utils/getValidationErrors';
 
+interface DateGraphicState {
+  date_start: string;
+  date_end: string;
+}
 interface PropsDrawer {
   isOpen: boolean;
-
+  graphicTitle: string;
   onClose: () => void;
+  handleSendTypeGraphic: (type: string) => void;
+  handleSendDataGraphic: (date: Omit<DateGraphicState, ''>) => void;
 }
 
-export function DrawerEditGraphcs({ isOpen, onClose }: PropsDrawer) {
-  const [valueInput, setvalueInput] = useState('');
+export function DrawerEditGraphcs({
+  isOpen,
+  onClose,
+  graphicTitle,
+  handleSendTypeGraphic,
+  handleSendDataGraphic,
+}: PropsDrawer) {
+  const formRef = useRef<FormHandles>(null);
+  const [typeGraphic, setTypeGraphic] = useState(() => {
+    const type = localStorage.getItem(`@Samasc:type_graphic_${graphicTitle}`);
+    if (type) {
+      return type;
+    }
+    return '';
+  });
 
-  const handleSubmit = useCallback(() => {
-    console.log(valueInput);
-    setvalueInput('');
-  }, [valueInput]);
+  const handleSubmit = useCallback(
+    async (data: DateGraphicState) => {
+      try {
+        localStorage.setItem(
+          `@Samasc:type_graphic_${graphicTitle}`,
+          typeGraphic,
+        );
+        apllyToast('success', 'Informações salvas com sucesso');
+        handleSendTypeGraphic(typeGraphic);
+        if (data.date_start && data.date_end) {
+          handleSendDataGraphic(data);
+        }
+        onClose();
+      } catch (err) {
+        console.log(err);
+        apllyToast('warning', 'Problemas ao atualizar informações');
+        if (err instanceof Yup.ValidationError) {
+          const errors = getValidationErrors(err);
+
+          formRef.current?.setErrors(errors);
+        }
+      }
+    },
+    [
+      graphicTitle,
+      handleSendDataGraphic,
+      handleSendTypeGraphic,
+      onClose,
+      typeGraphic,
+    ],
+  );
 
   // const handleInputChange = useCallback(e => {
   //   const inputValue = e.target.value;
@@ -39,41 +91,61 @@ export function DrawerEditGraphcs({ isOpen, onClose }: PropsDrawer) {
   return (
     <DrawerComponent isOpen={isOpen} onClose={onClose} placement="left">
       <DrawerHeader>Editar parametros do gráfico</DrawerHeader>
+      <Form onSubmit={handleSubmit}>
+        <DrawerBody>
+          <Stack spacing="24px" mt="10">
+            <Center>
+              <Flex direction="column" align="center">
+                <Tag size="lg" colorScheme="blue">
+                  {graphicTitle}
+                </Tag>
+                <Text color="gray.300" mt="8">
+                  Editar informações do gráfico
+                </Text>
+              </Flex>
+            </Center>
 
-      <DrawerBody>
-        <Stack spacing="24px" mt="10">
-          <Center>
-            <Flex direction="column" align="center">
-              <Tag size="lg" colorScheme="yellow">
-                Taxa de utilização
-              </Tag>
-              <Text color="gray.400" mt="5">
-                teste
-              </Text>
-            </Flex>
-          </Center>
+            <FormLabel htmlFor="date_initial">Data inicial</FormLabel>
+            <Input type="date" mt={-4} name="date_start" />
 
-          <Box>
-            <FormLabel htmlFor="desc">Descrição</FormLabel>
-            <Textarea
-              id="desc"
-              placeholder="Descrava suas observações"
-              size="md"
-              rows={2}
-              resize="vertical"
-            />
-          </Box>
-        </Stack>
-      </DrawerBody>
+            <FormLabel mt="3" htmlFor="date_initial">
+              Data final
+            </FormLabel>
+            <Input type="date" mt={-4} name="date_end" />
 
-      <DrawerFooter>
-        <Button variant="outline" mr={3} onClick={() => {}}>
-          Cancelar
-        </Button>
-        <Button colorScheme="blue" onClick={handleSubmit}>
-          Salvar
-        </Button>
-      </DrawerFooter>
+            <Center>
+              <Flex direction="column" align="center">
+                <Text color="gray.300" mt="8">
+                  Editar configurações do gráfico
+                </Text>
+              </Flex>
+            </Center>
+
+            <FormLabel htmlFor="type">Tipo do gráfico</FormLabel>
+            <RadioGroup
+              onChange={setTypeGraphic}
+              value={typeGraphic}
+              name="type"
+            >
+              <Stack direction="column">
+                <Radio value={`area-${graphicTitle}`}>Área</Radio>
+                <Radio value={`bar-${graphicTitle}`}>Barra</Radio>
+                <Radio value={`line-${graphicTitle}`}>linha</Radio>
+                <Radio value={`pie-${graphicTitle}`}>Torta</Radio>
+              </Stack>
+            </RadioGroup>
+          </Stack>
+        </DrawerBody>
+
+        <DrawerFooter>
+          <Button variant="outline" mr={3} onClick={onClose}>
+            Cancelar
+          </Button>
+          <Button colorScheme="blue" type="submit">
+            Salvar
+          </Button>
+        </DrawerFooter>
+      </Form>
     </DrawerComponent>
   );
 }

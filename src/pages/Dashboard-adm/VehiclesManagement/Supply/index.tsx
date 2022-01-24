@@ -35,7 +35,10 @@ export default function Supply() {
       <Flex w="100%" my="6" maxWidth={1480} mx="auto" pb={4} px="6">
         <Sidebar />
         <Box>
-          <ListFloatCar handleSelectedVehicleId={handleSelectedVehicleId} />
+          <ListFloatCar
+            updateNewData=""
+            handleSelectedVehicleId={handleSelectedVehicleId}
+          />
           <ScaleFade initialScale={0.9} in>
             <SupplyTable vehicleSelected={veicleSelected} />
           </ScaleFade>
