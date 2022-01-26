@@ -25,7 +25,7 @@ export function DrawerComponent({
         placement={placement}
         // initialFocusRef={firstField}
         onClose={onClose}
-        size="sm"
+        // size="sm"
       >
         <DrawerOverlay />
         <DrawerContent bg="gray.800">

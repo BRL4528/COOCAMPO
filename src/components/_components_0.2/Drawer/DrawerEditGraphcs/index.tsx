@@ -91,8 +91,8 @@ export function DrawerEditGraphcs({
   return (
     <DrawerComponent isOpen={isOpen} onClose={onClose} placement="left">
       <DrawerHeader>Editar parametros do gráfico</DrawerHeader>
-      <Form onSubmit={handleSubmit}>
-        <DrawerBody>
+      <DrawerBody>
+        <Form onSubmit={handleSubmit}>
           <Stack spacing="24px" mt="10">
             <Center>
               <Flex direction="column" align="center">
@@ -135,17 +135,16 @@ export function DrawerEditGraphcs({
               </Stack>
             </RadioGroup>
           </Stack>
-        </DrawerBody>
-
-        <DrawerFooter>
-          <Button variant="outline" mr={3} onClick={onClose}>
-            Cancelar
-          </Button>
-          <Button colorScheme="blue" type="submit">
-            Salvar
-          </Button>
-        </DrawerFooter>
-      </Form>
+          <DrawerFooter>
+            <Button variant="outline" mr={3} onClick={onClose}>
+              Cancelar
+            </Button>
+            <Button colorScheme="blue" type="submit">
+              Salvar
+            </Button>
+          </DrawerFooter>
+        </Form>
+      </DrawerBody>
     </DrawerComponent>
   );
 }
