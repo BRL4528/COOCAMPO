@@ -8,7 +8,11 @@ import { SearchBox } from './SearchBox';
 import { Logo } from './Logo';
 import { useSidebarDrawer } from '../../../contexts/SidebarDrawerContext';
 
-export function HeaderUp() {
+interface Props {
+  path: 'miles' | 'bi';
+}
+
+export function HeaderUp({ path }: Props) {
   const { onOpen } = useSidebarDrawer();
 
   const isWideVersion = useBreakpointValue({
@@ -28,6 +32,16 @@ export function HeaderUp() {
       align="center"
       bg="theme"
     >
+      {path === 'bi' && (
+        <IconButton
+          aria-label="Open navigation"
+          icon={<Icon as={RiMenuLine} />}
+          fontSize="24"
+          variant="unstyled"
+          onClick={onOpen}
+          mr="2"
+        />
+      )}
       {!isWideVersion && (
         <IconButton
           aria-label="Open navigation"

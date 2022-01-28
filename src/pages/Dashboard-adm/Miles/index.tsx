@@ -3,7 +3,7 @@ import { ApexOptions } from 'apexcharts';
 import Chart from 'react-apexcharts';
 
 import { HeaderUp } from '../../../components/_components_0.2/Header_0.2';
-import { Sidebar } from '../../../components/_components_0.2/Sidebar_0.2';
+// import { Sidebar } from '../../../components/_components_0.2/Sidebar_0.2';
 
 const options: ApexOptions = {
   chart: {
@@ -76,10 +76,10 @@ const veiculo = [
 export default function Dashboard() {
   return (
     <Flex direction="column" h="100vh">
-      <HeaderUp />
+      <HeaderUp path="miles" />
 
       <Flex w="100%" my="6" maxWidth={1480} mx="auto" pb={4} px="6">
-        <Sidebar />
+        {/* <Sidebar path="miles" /> */}
 
         <SimpleGrid
           columns={2}

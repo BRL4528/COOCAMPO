@@ -46,10 +46,12 @@ const Menu: React.FC = () => {
           </Box>
 
           <Box m="5px">
-            <Link to="/management-ppr/dashboard">
+            {/* <Link to="/management-ppr/dashboard"> */}
+            <Link to="/bi-management/dashboard">
               <Content>
                 <img src={pie} alt="imagem de grafico pizza" />
-                <strong>Gerenciamento PPR</strong>
+                {/* <strong>Gerenciamento PPR</strong> */}
+                <strong>Inteligência de negócios</strong>
               </Content>
             </Link>
           </Box>

@@ -10,14 +10,18 @@ import {
 } from '@chakra-ui/react';
 
 import { useSidebarDrawer } from '../../../contexts/SidebarDrawerContext';
-import { SidebarNav } from './SidebarNav';
+import { SidebarNav } from './SideBarNav/nav_miles';
+import { SidebarNavBi } from './SideBarNav/nav_bi';
 
-export function Sidebar() {
+interface Props {
+  path: 'miles' | 'bi';
+}
+
+export function Sidebar({ path }: Props) {
   const { isOpen, onClose } = useSidebarDrawer();
-
   const isDrawerSidebar = useBreakpointValue({
-    base: true,
-    lg: false,
+    base: path === 'miles',
+    lg: path !== 'miles',
   });
 
   if (isDrawerSidebar) {
@@ -28,8 +32,8 @@ export function Sidebar() {
             <DrawerCloseButton mt="6" />
             <DrawerHeader>Navegação</DrawerHeader>
 
-            <DrawerBody>
-              <SidebarNav />
+            <DrawerBody overflow="auto">
+              {path === 'miles' ? <SidebarNav /> : <SidebarNavBi />}
             </DrawerBody>
           </DrawerContent>
         </DrawerOverlay>
@@ -39,7 +43,7 @@ export function Sidebar() {
 
   return (
     <Box as="aside" w="64" mr="8">
-      <SidebarNav />
+      {path === 'miles' ? <SidebarNav /> : <SidebarNavBi />}
     </Box>
   );
 }

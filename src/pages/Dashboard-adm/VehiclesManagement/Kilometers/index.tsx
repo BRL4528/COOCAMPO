@@ -34,10 +34,10 @@ export default function Supply() {
 
   return (
     <Flex direction="column" h="100vh">
-      <HeaderUp />
+      <HeaderUp path="miles" />
 
       <Flex w="100%" my="6" maxWidth={1480} mx="auto" pb={4} px="6">
-        <Sidebar />
+        <Sidebar path="miles" />
         <ScaleFade initialScale={0.9} in>
           <ListFloatCar
             updateNewData={updateNewKm}

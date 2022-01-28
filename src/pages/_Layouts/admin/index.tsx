@@ -22,6 +22,9 @@ const LayoutAdm: React.FC<LayoutProps> = ({ children, path }: LayoutProps) => {
   if (path.substring(0, 6) === '/miles') {
     return <>{children}</>;
   }
+  if (path.substring(0, 14) === '/bi-management') {
+    return <>{children}</>;
+  }
   return (
     <>
       <Header>

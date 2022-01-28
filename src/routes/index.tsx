@@ -8,6 +8,8 @@ import SignIn from '../pages/SignIn';
 // Routes user ADM
 import Menu from '../pages/Menu';
 import DashboardAdm from '../pages/Dashboard-adm';
+
+// PPR
 import SelectorFolders from '../pages/Dashboard-adm/GoalsSubgoals';
 import Email from '../pages/Dashboard-adm/Email';
 import Report from '../pages/Dashboard-adm/Report';
@@ -55,6 +57,8 @@ import SelectedNic from '../pages/Dashboard-adm/Rules/SelectedNic';
 import Rules from '../pages/Dashboard-adm/Rules';
 import Visio from '../pages/Dashboard-adm/Rules/Visio';
 
+import BIManagement from '../pages/Dashboard-adm/BIManagement';
+
 // Routes user no ADM
 import DashboardUser from '../pages/Dashboard-user';
 import AnalyticModuloUser from '../pages/Dashboard-user/AnalyticModule';
@@ -83,6 +87,13 @@ const Routes: React.FC = () => (
       path="/forms-order-service"
       component={FormsOrderService}
       isGlobal
+      isPrivate
+      isAdmin
+    />
+
+    <Route
+      path="/bi-management/dashboard"
+      component={BIManagement}
       isPrivate
       isAdmin
     />

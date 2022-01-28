@@ -9,8 +9,8 @@ import {
 import { BiCar, BiGasPump } from 'react-icons/bi';
 import { GiAutoRepair } from 'react-icons/gi';
 
-import { NavLink } from './NavLink';
-import { NavSection } from './NavSection';
+import { NavLink } from '../NavLink';
+import { NavSection } from '../NavSection';
 
 export function SidebarNav() {
   return (
