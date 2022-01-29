@@ -1,16 +1,133 @@
-import { Report } from 'powerbi-report-component';
+import React, { useEffect, useRef, useState, useContext } from 'react';
+import { useReport } from 'powerbi-report-component';
+import { models } from 'powerbi-client';
 
-import { layoutSettings } from '../../../../utils/stylesOfReportPowerBI';
+import { Box, Spinner, Center } from '@chakra-ui/react';
+
+import { SetToggleThemeContext } from '../../../../contexts/SetToggleThemeContext';
+import {
+  jsonDataColors,
+  layoutSettings,
+} from '../../../../utils/stylesOfReportPowerBI';
+
+const initialReportProps = {
+  type: 'report',
+  embedType: 'report',
+  tokenType: 'Aad',
+  accessToken:
+    'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6Ik1yNS1BVWliZkJpaTdOZDFqQmViYXhib1hXMCIsImtpZCI6Ik1yNS1BVWliZkJpaTdOZDFqQmViYXhib1hXMCJ9.eyJhdWQiOiJodHRwczovL2FuYWx5c2lzLndpbmRvd3MubmV0L3Bvd2VyYmkvYXBpIiwiaXNzIjoiaHR0cHM6Ly9zdHMud2luZG93cy5uZXQvZTlhNzRiNTYtYzAwOC00NDExLTk2MTYtMGE3ZjE3ZTEyZGFkLyIsImlhdCI6MTY0MzQ2NTI5NCwibmJmIjoxNjQzNDY1Mjk0LCJleHAiOjE2NDM0Njk0ODQsImFjY3QiOjAsImFjciI6IjEiLCJhaW8iOiJBU1FBMi84VEFBQUFlbXhuMGVuanFKZFkvS1VZWWpLbU1jeXlta0htK2c0WXpJVVJDMUFVQVpNPSIsImFtciI6WyJwd2QiXSwiYXBwaWQiOiIyMWI4MDE0MC0wZWE2LTQxYTQtOGQ0My01NWZmY2YxNmY1ZDMiLCJhcHBpZGFjciI6IjAiLCJnaXZlbl9uYW1lIjoiYm90X2Nvb2FzZ28iLCJpcGFkZHIiOiIxNzcuMjAxLjY3LjE3OCIsIm5hbWUiOiJib3RfY29vYXNnbyIsIm9pZCI6IjBjNDZiODk3LWUyNTItNGZhNC05ZmVlLWRjNThlYzg3MTI4YiIsInB1aWQiOiIxMDAzMjAwMTY1OTRFQjA3IiwicmgiOiIwLkFWQUFWa3VuNlFqQUVVU1dGZ3BfRi1FdHJVQUJ1Q0dtRHFSQmpVTlZfODhXOWROUUFGNC4iLCJzY3AiOiJBcHAuUmVhZC5BbGwgQ2FwYWNpdHkuUmVhZC5BbGwgQ2FwYWNpdHkuUmVhZFdyaXRlLkFsbCBDb250ZW50LkNyZWF0ZSBEYXNoYm9hcmQuUmVhZC5BbGwgRGFzaGJvYXJkLlJlYWRXcml0ZS5BbGwgRGF0YWZsb3cuUmVhZC5BbGwgRGF0YWZsb3cuUmVhZFdyaXRlLkFsbCBEYXRhc2V0LlJlYWQuQWxsIERhdGFzZXQuUmVhZFdyaXRlLkFsbCBHYXRld2F5LlJlYWQuQWxsIEdhdGV3YXkuUmVhZFdyaXRlLkFsbCBSZXBvcnQuUmVhZC5BbGwgUmVwb3J0LlJlYWRXcml0ZS5BbGwgU3RvcmFnZUFjY291bnQuUmVhZC5BbGwgU3RvcmFnZUFjY291bnQuUmVhZFdyaXRlLkFsbCBXb3Jrc3BhY2UuUmVhZC5BbGwgV29ya3NwYWNlLlJlYWRXcml0ZS5BbGwiLCJzdWIiOiJqRElBV0xOT0tpU3JlalB2ZFBOQVZ1azV3WmpXN2M2bE05NFlQcEwtOFk0IiwidGlkIjoiZTlhNzRiNTYtYzAwOC00NDExLTk2MTYtMGE3ZjE3ZTEyZGFkIiwidW5pcXVlX25hbWUiOiJjb250cm9sbGVyQG1pZGFzY29ycC5kZXYiLCJ1cG4iOiJjb250cm9sbGVyQG1pZGFzY29ycC5kZXYiLCJ1dGkiOiJvNUZCSHlLb1gwcXBRNkJaMmZsNEFRIiwidmVyIjoiMS4wIiwid2lkcyI6WyJkMjRhZWY1Ny0xNTAwLTQwNzAtODRkYi0yNjY2ZjI5Y2Y5NjYiLCJiNzlmYmY0ZC0zZWY5LTQ2ODktODE0My03NmIxOTRlODU1MDkiXX0.xngFAyWvpW52LeDAnMcXbTfLC5Y_D-CwBWDtCOndWmA0fK5NM4Qm97SkCRhaieTBhcj8PqbxN9EIJwLxLivvurKuEcJhzob3hYvwpbxxIMBdkeweBmCmJ6EFWI_rqSZm1311lUSQ6EVyABcLkbw9LcteGTewRQ_Oxa9RU-RRyq_2kiy4U_HCcTbCdNhzHoUioowFsYYDo0-IOxPOWT71vo4kyR9J9JY5kpMLo4UxBrcZCQcUT6K49z-hw356f4gG1rg3PmVAA0mGQoTF-13W-0f8HphMHz1ndsZdCUWCUCkgFr8K5U6P87-JQ_253K69h7VQAbVixN8RzTpS3-Kv9A',
+  embedUrl:
+    'https://app.powerbi.com/reportEmbed?reportId=2780625e-4cc9-464f-84cc-9d660fc73d05&config=eyJjbHVzdGVyVXJsIjoiaHR0cHM6Ly9XQUJJLUJSQVpJTC1TT1VUSC1CLVBSSU1BUlktcmVkaXJlY3QuYW5hbHlzaXMud2luZG93cy5uZXQiLCJlbWJlZEZlYXR1cmVzIjp7Im1vZGVybkVtYmVkIjp0cnVlLCJhbmd1bGFyT25seVJlcG9ydEVtYmVkIjp0cnVlLCJjZXJ0aWZpZWRUZWxlbWV0cnlFbWJlZCI6dHJ1ZSwidXNhZ2VNZXRyaWNzVk5leHQiOnRydWUsInNraXBab25lUGF0Y2giOnRydWV9fQ%3d%3d',
+  embedId: '2780625e-4cc9-464f-84cc-9d660fc73d05',
+  reportMode: 'View', // "Edit"
+  permissions: 'All', // "All" (when using "Edit" mode)
+  extraSettings: {
+    filterPaneEnabled: false,
+    navContentPaneEnabled: false,
+    visualRenderedEvents: true,
+    // theme: { themeJson: jsonDataColors[0] },
+    background: models.BackgroundType.Transparent,
+  },
+  settings: {
+    panes: {
+      filters: {
+        expanded: false,
+        visible: false,
+      },
+      pageNavigation: {
+        visible: false,
+      },
+    },
+    layoutType: models.LayoutType.Custom,
+    customLayout: {
+      displayOption: models.DisplayOption.FitToPage,
+    },
+  },
+};
 
 export const ReportBIManagement = () => {
+  const reportRef = useRef(null);
+  const [report, setEmbed] = useReport();
+  const { toggleTheme } = useContext(SetToggleThemeContext);
+  const [loadingRendered, setLoadingRendered] = useState(true);
+
+  // report.on('rendered', async function () {
+  //   if (toggleTheme === 'dark') {
+  //     console.log('toggleTheme', toggleTheme);
+  //     try {
+  //       await report.applyTheme({ themeJson: jsonDataColors[0] });
+  //       report.off('rendered');
+  //       console.log(
+  //         "Custom layout applied, to remove custom layout, reload the report using 'Reload' API.",
+  //       );
+  //     } catch (error) {
+  //       console.log('error', error);
+  //     }
+  //   }
+  // });
+
+  if (report) {
+    report.off('rendered');
+    report.on('rendered', async function () {
+      if (toggleTheme === 'dark') {
+        try {
+          await report.applyTheme({ themeJson: jsonDataColors[0] });
+          report.off('rendered');
+          setLoadingRendered(false);
+        } catch (error) {
+          console.log('error', error);
+          setLoadingRendered(false);
+        }
+      }
+      setLoadingRendered(false);
+    });
+  }
+  // async function handleTheme() {
+  //   if (toggleTheme === 'dark') {
+  //     console.log('toggleTheme', toggleTheme);
+  //     try {
+  //       await report.applyTheme({ themeJson: jsonDataColors[0] });
+  //       console.log(
+  //         "Custom layout applied, to remove custom layout, reload the report using 'Reload' API.",
+  //       );
+  //     } catch (error) {
+  //       console.log('error', error);
+  //     }
+  //   }
+  //   console.log('teste');
+  //   // });
+  // }
+
+  // console.log(report.on());
+
+  useEffect(() => {
+    setEmbed(reportRef, initialReportProps as any);
+  }, [setEmbed]);
+
+  // const handlereload = useCallback(async () => {
+  //   try {
+  //     await report.reload();
+  //   } catch (errors) {
+  //     console.log(errors);
+  //   }
+  // }, [report]);
+
   return (
     <>
-      <div className="powerBi">
-        <Report
+      {/* <button onClick={handlereload} type="button">
+        reload
+      </button> */}
+      <Center>{loadingRendered ? <Spinner /> : ''}</Center>
+      <Box
+        display={loadingRendered ? 'none' : ''}
+        style={layoutSettings()}
+        ref={reportRef}
+      />
+      {/* <Report
           tokenType="Aad" // "Aad"
-          accessToken="eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6Ik1yNS1BVWliZkJpaTdOZDFqQmViYXhib1hXMCIsImtpZCI6Ik1yNS1BVWliZkJpaTdOZDFqQmViYXhib1hXMCJ9.eyJhdWQiOiJodHRwczovL2FuYWx5c2lzLndpbmRvd3MubmV0L3Bvd2VyYmkvYXBpIiwiaXNzIjoiaHR0cHM6Ly9zdHMud2luZG93cy5uZXQvZTlhNzRiNTYtYzAwOC00NDExLTk2MTYtMGE3ZjE3ZTEyZGFkLyIsImlhdCI6MTY0MzMxNjgwMiwibmJmIjoxNjQzMzE2ODAyLCJleHAiOjE2NDMzMjE5MzcsImFjY3QiOjAsImFjciI6IjEiLCJhaW8iOiJFMlpnWUtpdzNCUjB2OEtOTDF4cnRXdWFmZHFiODNKTHQ1bk9uakNiLy9PcVUycEp6RW9BIiwiYW1yIjpbInB3ZCJdLCJhcHBpZCI6IjIxYjgwMTQwLTBlYTYtNDFhNC04ZDQzLTU1ZmZjZjE2ZjVkMyIsImFwcGlkYWNyIjoiMCIsImdpdmVuX25hbWUiOiJib3RfY29vYXNnbyIsImlwYWRkciI6IjE3Ny4yMDEuNjcuMTc4IiwibmFtZSI6ImJvdF9jb29hc2dvIiwib2lkIjoiMGM0NmI4OTctZTI1Mi00ZmE0LTlmZWUtZGM1OGVjODcxMjhiIiwicHVpZCI6IjEwMDMyMDAxNjU5NEVCMDciLCJyaCI6IjAuQVZBQVZrdW42UWpBRVVTV0ZncF9GLUV0clVBQnVDR21EcVJCalVOVl84OFc5ZE5RQUY0LiIsInNjcCI6IkFwcC5SZWFkLkFsbCBDYXBhY2l0eS5SZWFkLkFsbCBDYXBhY2l0eS5SZWFkV3JpdGUuQWxsIENvbnRlbnQuQ3JlYXRlIERhc2hib2FyZC5SZWFkLkFsbCBEYXNoYm9hcmQuUmVhZFdyaXRlLkFsbCBEYXRhZmxvdy5SZWFkLkFsbCBEYXRhZmxvdy5SZWFkV3JpdGUuQWxsIERhdGFzZXQuUmVhZC5BbGwgRGF0YXNldC5SZWFkV3JpdGUuQWxsIEdhdGV3YXkuUmVhZC5BbGwgR2F0ZXdheS5SZWFkV3JpdGUuQWxsIFJlcG9ydC5SZWFkLkFsbCBSZXBvcnQuUmVhZFdyaXRlLkFsbCBTdG9yYWdlQWNjb3VudC5SZWFkLkFsbCBTdG9yYWdlQWNjb3VudC5SZWFkV3JpdGUuQWxsIFdvcmtzcGFjZS5SZWFkLkFsbCBXb3Jrc3BhY2UuUmVhZFdyaXRlLkFsbCIsInN1YiI6ImpESUFXTE5PS2lTcmVqUHZkUE5BVnVrNXdaalc3YzZsTTk0WVBwTC04WTQiLCJ0aWQiOiJlOWE3NGI1Ni1jMDA4LTQ0MTEtOTYxNi0wYTdmMTdlMTJkYWQiLCJ1bmlxdWVfbmFtZSI6ImNvbnRyb2xsZXJAbWlkYXNjb3JwLmRldiIsInVwbiI6ImNvbnRyb2xsZXJAbWlkYXNjb3JwLmRldiIsInV0aSI6ImRkRkRaX3lqVzBDYzM0dkVjN3FWQVEiLCJ2ZXIiOiIxLjAiLCJ3aWRzIjpbImQyNGFlZjU3LTE1MDAtNDA3MC04NGRiLTI2NjZmMjljZjk2NiIsImI3OWZiZjRkLTNlZjktNDY4OS04MTQzLTc2YjE5NGU4NTUwOSJdfQ.aucd49lU81usS6CE55ChOxZtLz6bhA42APlsZ9Gz4cJHluZuzJYCfkO2APZ2_ivDGVFXxaShtGG6R_0ZfIiwzCsKTccF4GtgBf8KHmCz0R4jC4HVA1KQAmm0Ph1lPumbXx6gg3fF0FXBEqpTtlMrYwjIC-0ZHo1DNKkBCoQATlr0cqPpQFiQapTSptJMqRPoCCHxTMxF60qns-GghTZkyqsbwE73uF4QJEf8ymletGSoD9rzSKqY4MvgWMVMdmHkgASMEI2wW1km_4yyxtxup1QinY58bmYRBkPld8NsWad5IKU9FaQ1PsIuPeDs8kFRuwdXKk-aEj7kKVJRxQiqaw"
-          embedUrl="https://app.powerbi.com/reportEmbed?reportId=8b9d7c10-1ba8-4039-a8f3-b2ff2b030df3&groupId=71159839-6c48-44f6-90f3-25692a98e2ce&w=2&config=eyJjbHVzdGVyVXJsIjoiaHR0cHM6Ly9XQUJJLUJSQVpJTC1TT1VUSC1CLVBSSU1BUlktcmVkaXJlY3QuYW5hbHlzaXMud2luZG93cy5uZXQiLCJlbWJlZEZlYXR1cmVzIjp7Im1vZGVybkVtYmVkIjp0cnVlLCJjZXJ0aWZpZWRUZWxlbWV0cnlFbWJlZCI6dHJ1ZSwidXNhZ2VNZXRyaWNzVk5leHQiOnRydWV9fQ%3d%3d"
-          embedId="8b9d7c10-1ba8-4039-a8f3-b2ff2b030df3"
+          accessToken="eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6Ik1yNS1BVWliZkJpaTdOZDFqQmViYXhib1hXMCIsImtpZCI6Ik1yNS1BVWliZkJpaTdOZDFqQmViYXhib1hXMCJ9.eyJhdWQiOiJodHRwczovL2FuYWx5c2lzLndpbmRvd3MubmV0L3Bvd2VyYmkvYXBpIiwiaXNzIjoiaHR0cHM6Ly9zdHMud2luZG93cy5uZXQvZTlhNzRiNTYtYzAwOC00NDExLTk2MTYtMGE3ZjE3ZTEyZGFkLyIsImlhdCI6MTY0MzM3NzM3OSwibmJmIjoxNjQzMzc3Mzc5LCJleHAiOjE2NDMzODI1NTcsImFjY3QiOjAsImFjciI6IjEiLCJhaW8iOiJBU1FBMi84VEFBQUE1UWNicmZoaGNLZW8zL0xFRGNXbkZ5Y3NiY3dmdGUrMGN6L1paZStYRzVJPSIsImFtciI6WyJwd2QiXSwiYXBwaWQiOiIyMWI4MDE0MC0wZWE2LTQxYTQtOGQ0My01NWZmY2YxNmY1ZDMiLCJhcHBpZGFjciI6IjAiLCJnaXZlbl9uYW1lIjoiYm90X2Nvb2FzZ28iLCJpcGFkZHIiOiIxNzcuMjAxLjY3LjE3OCIsIm5hbWUiOiJib3RfY29vYXNnbyIsIm9pZCI6IjBjNDZiODk3LWUyNTItNGZhNC05ZmVlLWRjNThlYzg3MTI4YiIsInB1aWQiOiIxMDAzMjAwMTY1OTRFQjA3IiwicmgiOiIwLkFWQUFWa3VuNlFqQUVVU1dGZ3BfRi1FdHJVQUJ1Q0dtRHFSQmpVTlZfODhXOWROUUFGNC4iLCJzY3AiOiJBcHAuUmVhZC5BbGwgQ2FwYWNpdHkuUmVhZC5BbGwgQ2FwYWNpdHkuUmVhZFdyaXRlLkFsbCBDb250ZW50LkNyZWF0ZSBEYXNoYm9hcmQuUmVhZC5BbGwgRGFzaGJvYXJkLlJlYWRXcml0ZS5BbGwgRGF0YWZsb3cuUmVhZC5BbGwgRGF0YWZsb3cuUmVhZFdyaXRlLkFsbCBEYXRhc2V0LlJlYWQuQWxsIERhdGFzZXQuUmVhZFdyaXRlLkFsbCBHYXRld2F5LlJlYWQuQWxsIEdhdGV3YXkuUmVhZFdyaXRlLkFsbCBSZXBvcnQuUmVhZC5BbGwgUmVwb3J0LlJlYWRXcml0ZS5BbGwgU3RvcmFnZUFjY291bnQuUmVhZC5BbGwgU3RvcmFnZUFjY291bnQuUmVhZFdyaXRlLkFsbCBXb3Jrc3BhY2UuUmVhZC5BbGwgV29ya3NwYWNlLlJlYWRXcml0ZS5BbGwiLCJzdWIiOiJqRElBV0xOT0tpU3JlalB2ZFBOQVZ1azV3WmpXN2M2bE05NFlQcEwtOFk0IiwidGlkIjoiZTlhNzRiNTYtYzAwOC00NDExLTk2MTYtMGE3ZjE3ZTEyZGFkIiwidW5pcXVlX25hbWUiOiJjb250cm9sbGVyQG1pZGFzY29ycC5kZXYiLCJ1cG4iOiJjb250cm9sbGVyQG1pZGFzY29ycC5kZXYiLCJ1dGkiOiJwbmQ0ek1Ca0cwU1UzcHRqZ0lfYUFBIiwidmVyIjoiMS4wIiwid2lkcyI6WyJkMjRhZWY1Ny0xNTAwLTQwNzAtODRkYi0yNjY2ZjI5Y2Y5NjYiLCJiNzlmYmY0ZC0zZWY5LTQ2ODktODE0My03NmIxOTRlODU1MDkiXX0.LhHYKzx1qaJ-DQXcBSGyWH1UTXx3yIzQxIJrFLpQ875ae6oCELobBaMrhR0aLhy5xiEeVKRKdqadPi97UtxZQsBNG4NoUaTJ3ftHreGHQQsgt8o4woghO0k-lCBs-Gzhmpnu1EKf_N55PFuugT1vYbSfdxQw9qxYZm657vyN1XRZLRVKmFH1VATb5Rfrz_GkqR9MLCSsxogCvDYRdJa4rpq9nMM9L68_uukDyu52SYTteRkxotOyyR6Hx4NuzDn_RrbdLkPk4r6ZZHieSl_jsHFrhXYpOLa0-CGGf7sSB37zEOoEA1rLR70yG7X2CRCsF4l4zmdSj3AmcLAs0QIO3w"
+          embedUrl="https://app.powerbi.com/reportEmbed?reportId=2780625e-4cc9-464f-84cc-9d660fc73d05&config=eyJjbHVzdGVyVXJsIjoiaHR0cHM6Ly9XQUJJLUJSQVpJTC1TT1VUSC1CLVBSSU1BUlktcmVkaXJlY3QuYW5hbHlzaXMud2luZG93cy5uZXQiLCJlbWJlZEZlYXR1cmVzIjp7Im1vZGVybkVtYmVkIjp0cnVlLCJhbmd1bGFyT25seVJlcG9ydEVtYmVkIjp0cnVlLCJjZXJ0aWZpZWRUZWxlbWV0cnlFbWJlZCI6dHJ1ZSwidXNhZ2VNZXRyaWNzVk5leHQiOnRydWUsInNraXBab25lUGF0Y2giOnRydWV9fQ%3d%3d"
+          embedId="2780625e-4cc9-464f-84cc-9d660fc73d05"
           // pageName="Sentiment" // set as current page of the report
           reportMode="View" // open report in a particular mode View/Edit/Create
           // datasetId={datasetId} // required for reportMode = "Create" and optional for dynamic databinding in `report` on `View` mode
@@ -23,9 +140,9 @@ export const ReportBIManagement = () => {
           extraSettings={{
             filterPaneEnabled: false,
             navContentPaneEnabled: false,
+         
           }}
-        />
-      </div>
+        /> */}
     </>
   );
 };

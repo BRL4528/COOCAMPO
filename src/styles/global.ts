@@ -94,6 +94,11 @@ export default createGlobalStyle`
   /* color: inherit; */
   text-decoration: none;
   }
+
+  .displayAreaViewport {
+    background: red;
+
+  }
 .filter {
     /* z-index: 1; */
 
