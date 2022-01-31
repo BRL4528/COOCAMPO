@@ -6,6 +6,7 @@ import {
   Tooltip,
   ModalBody,
   ModalFooter,
+  InputGroup,
 } from '@chakra-ui/react';
 import * as Yup from 'yup';
 import { Form } from '@unform/web';
@@ -22,33 +23,27 @@ import { ModalComponent } from '..';
 
 import { api } from '../../../../services/api';
 
-interface IKilometers {
-  // vehicle_id?: string;
-  // access_id?: string;
-  km_start: number;
-  km_end: number;
-  km_traveled: number;
-  observations: string;
-  reason: string;
+interface IMaintenance {
   date: string;
+  type: string;
+  amount_total: number;
+  km: number;
+  description: string;
+  reason: string;
 }
 
 interface IModalProps {
-  id_kilometer: string;
-  // eslint-disable-next-line no-unused-vars
-  handleEditKilometer: (kilometer: Omit<IKilometers, ''>) => void;
+  id_maintenance: string;
+
+  handleEditAddNewMaintenance: (kilometer: Omit<IMaintenance, ''>) => void;
 }
 
-export function ModalEditNewKilometer({
-  handleEditKilometer,
-  id_kilometer,
+export function ModalEditNewMaintenance({
+  id_maintenance,
+  handleEditAddNewMaintenance,
 }: IModalProps) {
   const formRef = useRef<FormHandles>(null);
   const { onOpen, isOpen, onClose } = useDisclosure();
-  // const isWideVersion = useBreakpointValue({
-  //   base: false,
-  //   lg: true,
-  // });
 
   const componentRef = useRef<HTMLDivElement>(null);
   const [loading, setLoading] = useState(false);
@@ -58,62 +53,61 @@ export function ModalEditNewKilometer({
   // const [km_endData, setKm_end] = useState(0);
   // const [km_traveledData, setKm_traveled] = useState(0);
 
-  const [initialData, setInitialData] = useState<IKilometers>();
+  const [initialData, setInitialData] = useState<IMaintenance>();
 
   useEffect(() => {
     try {
       if (isOpen) {
-        api
-          .get<IKilometers>(`/kilometers/show?id=${id_kilometer}`)
-          .then(response => {
-            setReason(response.data.reason);
-            setInitialData(response.data);
-          });
+        api.get(`/maintenance/show?id=${id_maintenance}`).then(response => {
+          setReason(response.data.type);
+          setInitialData(response.data);
+        });
       }
     } catch (e) {
       console.log(e);
-      apllyToast('error', 'Problemas ao carregar quilometragem');
+      apllyToast('error', 'Problemas ao carregar manutenção');
     }
-  }, [id_kilometer, isOpen]);
+  }, [id_maintenance, isOpen]);
 
   const handleSubmit = useCallback(
-    async (data: IKilometers) => {
+    async (data: IMaintenance) => {
       try {
         setLoading(true);
         formRef.current?.setErrors({});
 
         const schema = Yup.object().shape({
           date: Yup.date().required('Data é obrigatória'),
-          km_start: Yup.string()
-            .required('Km inicial é obrigatório')
-            .min(1, 'km inicial deve ser maior que zero'),
-          km_end: Yup.string().required('Km final é obrigatório'),
-          km_traveled: Yup.number()
-            .required('Km percorrido é obrigatório')
-            .positive('Km percorrido deve ser positivo'),
+          // type: Yup.string().required('O tipo é obrigatório'),
+          amount_total: Yup.number()
+            .required('O valor total é obrigatório')
+            .positive('O valor deve ser positivo'),
 
-          // reason: Yup.string().required('Motivo é obrigatório'),
+          reason: Yup.string().required('O motivo é obrigatório'),
 
-          observations: Yup.string().required('Destino é obrigatório'),
+          km: Yup.number()
+            .required('KM é obrigatório')
+            .positive('KM deve ser positivo'),
+
+          // observations: Yup.string().required('Destino é obrigatório'),
         });
 
         await schema.validate(data, {
           abortEarly: false,
         });
 
-        const { km_end, km_start, km_traveled, observations, date } = data;
+        const { date, amount_total, km, description, reason } = data;
 
         const formatData = {
-          km_end,
-          km_start,
-          km_traveled,
-          observations,
-          reason: reasonItem,
           date,
+          type: reasonItem,
+          amount_total,
+          km,
+          description,
+          reason,
+          id: id_maintenance,
         };
 
-        handleEditKilometer(formatData);
-        apllyToast('success', 'Sucesso ao editar km!');
+        handleEditAddNewMaintenance(formatData);
         onClose();
 
         setLoading(false);
@@ -130,7 +124,7 @@ export function ModalEditNewKilometer({
         onClose();
       }
     },
-    [handleEditKilometer, onClose, reasonItem],
+    [handleEditAddNewMaintenance, id_maintenance, onClose, reasonItem],
   );
 
   const { containerProps, indicatorEl } = useLoading({
@@ -156,60 +150,50 @@ export function ModalEditNewKilometer({
           <Icon as={RiPencilLine} fontSize="20" color="white.100" />
         </Button>
       </Tooltip>
+
       <ModalComponent
-        title="Editar quilometragem"
+        title="Editar manutenção"
         isOpen={isOpen}
         onClose={onClose}
       >
         <ModalBody>
           <Form ref={formRef} onSubmit={handleSubmit} initialData={initialData}>
-            <p>Data</p>
-            <Input type="string" name="date" />
-            <p>Quilometragem inicial</p>
-            <Input
-              type="number"
-              name="km_start"
-              placeholder="Exemplo: 1.200"
-              // variant="filled"
-            />
-
-            <p>Quilometragem final</p>
-            <Input type="number" name="km_end" placeholder="Exemplo: 1.200" />
-
-            <p>Quilometro percorrido</p>
-            <Input
-              type="number"
-              name="km_traveled"
-              placeholder="Exemplo: 1.200"
-              // variant="filled"
-            />
+            <p>Data da manutenção</p>
+            <Input type="text" name="date" placeholder="Ex: 01/01/2022" />
 
             <Select
-              name="reason"
-              label="Qual o motivo?"
+              name="type"
+              label="Tipo da manutenção"
               value={reasonItem}
               onChange={e => {
                 handleReason(e.target.value);
               }}
               options={[
                 {
-                  value: 'Consultoria de venda',
-                  label: 'Consultoria de venda',
+                  value: 'Corretiva',
+                  label: 'Corretiva',
                 },
-                { value: 'Entrega de produto', label: 'Entrega de produto' },
-                {
-                  value: 'Deslocamento a trabalho',
-                  label: 'Deslocamento a trabalho',
-                },
-                {
-                  value: 'Uso Particular',
-                  label: 'Uso Particular',
-                },
+                { value: 'Preventiva', label: 'Preventiva' },
               ]}
             />
 
-            <p>Qual o destino?</p>
-            <TextArea name="observations" placeholder="Ex: visita técnica." />
+            <p>Custo total</p>
+            <Input type="number" name="amount_total" placeholder="Ex: 1.200" />
+
+            <p>Motivo</p>
+            <InputGroup>
+              <Input
+                type="text"
+                name="reason"
+                placeholder="Ex: data prevista para manutenção"
+              />
+            </InputGroup>
+
+            <p>KM do Ôdometro</p>
+            <Input type="number" name="km" placeholder="Ex: 1.200" />
+
+            <p>Descrição</p>
+            <TextArea name="description" />
 
             <ModalFooter>
               <Button colorScheme="blue" mr={3} onClick={onClose}>

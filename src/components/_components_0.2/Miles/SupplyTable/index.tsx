@@ -44,6 +44,7 @@ interface IKilometersTableProps {
 }
 
 interface ISupply {
+  id?: string;
   date: string;
   type: string;
   quantity: number;
@@ -164,14 +165,20 @@ export function SupplyTable({ vehicleSelected }: IKilometersTableProps) {
     setOpen('');
   }, []);
   const hadleUpdateTable = useCallback(file => {
-    console.log('ooo', file);
     setUpdateTable(file);
   }, []);
 
   const handleEditSupply = useCallback(
     async (data: Omit<ISupply, 'e'>) => {
-      const { amount_total, date, km_odometer, observation, quantity, type } =
-        data;
+      const {
+        amount_total,
+        date,
+        km_odometer,
+        observation,
+        quantity,
+        type,
+        id,
+      } = data;
 
       const formatData = {
         amount_total,
@@ -183,12 +190,16 @@ export function SupplyTable({ vehicleSelected }: IKilometersTableProps) {
         vehicle_id: vehicleSelected.id,
         access_id: user.id,
       };
-      console.log('abastecimento editado', formatData);
-      apllyToast('success', 'Sucesso ao editar abastecimento!');
 
-      // api.post('/kilometers', formatData).then(response => {
-      //   setNewRegister(response.data.id);
-      // });
+      try {
+        api.put(`/supplies?id=${id}`, formatData).then(response => {
+          setSupplyAdded(response.data.id);
+          apllyToast('success', 'Sucesso ao editar abastecimento!');
+        });
+      } catch (err) {
+        console.log(err);
+        apllyToast('warning', 'Problemas ao editar abastecimento!');
+      }
     },
     [vehicleSelected, user.id],
   );

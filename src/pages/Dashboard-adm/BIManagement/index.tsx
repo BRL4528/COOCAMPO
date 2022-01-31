@@ -1,4 +1,4 @@
-import { Flex, ScaleFade, Text } from '@chakra-ui/react';
+import { Flex, ScaleFade, Image } from '@chakra-ui/react';
 
 import { HeaderUp } from '../../../components/_components_0.2/Header_0.2';
 import { Sidebar } from '../../../components/_components_0.2/Sidebar_0.2';
@@ -10,7 +10,11 @@ export default function BIManagementDashboard() {
         <HeaderUp path="bi" />
         <Flex my="6" maxWidth={1480} mx="auto" pb={4} px="6" textAlign="center">
           <Sidebar path="bi" />
-          <Text>Dashboard</Text>
+          <Image
+            src="https://www.in1.com.br/hs-fs/hubfs/6-passos-cultura-data-literacy.png?width=600&name=6-passos-cultura-data-literacy.png"
+            alt="Dan Abramov"
+            width="480px"
+          />
         </Flex>
       </Flex>
     </ScaleFade>

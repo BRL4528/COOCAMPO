@@ -6,6 +6,7 @@ interface ContainerProps {
   isErrored: boolean;
   isFilled: boolean;
   isFocused: boolean;
+  theme: 'dark' | 'light';
 }
 
 export const Container = styled.div<ContainerProps>`
@@ -50,6 +51,12 @@ export const Container = styled.div<ContainerProps>`
     outline: 0;
     padding: 0 0.4rem;
     font: 1.6rem;
+
+    ${props =>
+      props.theme === 'light' &&
+      css`
+        color: var(--gray-900);
+      `}
   }
 
   .select-block:focus-within::after {

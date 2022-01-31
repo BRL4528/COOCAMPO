@@ -138,7 +138,11 @@ export function ModalAddNewMaintenance({
         <ModalBody>
           <Form ref={formRef} onSubmit={handleSubmit}>
             <p>Data da manutenção</p>
-            <Input type="date" name="date" placeholder="Ex: 01/01/2022" />
+            <Input
+              type="datetime-local"
+              name="date"
+              placeholder="Ex: 01/01/2022"
+            />
 
             <Select
               name="type"

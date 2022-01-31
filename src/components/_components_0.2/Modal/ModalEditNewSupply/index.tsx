@@ -63,6 +63,7 @@ export function ModalEditNewSupply({
     try {
       if (isOpen) {
         api.get(`/supplies/show?id=${id_supply}`).then(response => {
+          setReason(response.data.type);
           setInitialData(response.data);
         });
       }
@@ -81,39 +82,35 @@ export function ModalEditNewSupply({
         const schema = Yup.object().shape({
           date: Yup.date().required('Data é obrigatória'),
           // type: Yup.string().required('O tipo é obrigatório'),
-          quantity: Yup.number()
-            .required('A quantidade é obrigatória')
-            .positive('A quantidade deve ser positiva'),
+          quantity: Yup.number().required('A quantidade é obrigatória'),
+          // .positive('A quantidade deve ser positiva'),
 
-          amount_total: Yup.number()
-            .required('O valor total é obrigatório')
-            .positive('O valor deve ser positivo'),
+          amount_total: Yup.number().required('O valor total é obrigatório'),
+          // .positive('O valor deve ser positivo'),
 
-          km_odometer: Yup.number()
-            .required('KM é obrigatório')
-            .positive('KM deve ser positivo'),
+          km_odometer: Yup.number().required('KM é obrigatório'),
+          // .positive('KM deve ser positivo'),
 
           // reason: Yup.string().required('Motivo é obrigatório'),
 
-          observations: Yup.string().required('Destino é obrigatório'),
+          observation: Yup.string(),
         });
 
         await schema.validate(data, {
           abortEarly: false,
         });
 
-        const { amount_total, date, km_odometer, observation, quantity, type } =
-          data;
+        const { amount_total, date, km_odometer, observation, quantity } = data;
 
         const formatData = {
           amount_total,
           km_odometer,
           observation,
           quantity,
-          type,
           date,
+          id: id_supply,
+          type: reasonItem,
         };
-
         handleEditSupply(formatData);
         onClose();
 
@@ -131,7 +128,7 @@ export function ModalEditNewSupply({
         onClose();
       }
     },
-    [handleEditSupply, onClose],
+    [handleEditSupply, id_supply, onClose, reasonItem],
   );
 
   const { containerProps, indicatorEl } = useLoading({

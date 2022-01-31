@@ -26,15 +26,11 @@ import {
   ScaleFade,
 } from '@chakra-ui/react';
 
-import {
-  RiPencilLine,
-  RiAttachmentLine,
-  RiFilter2Line,
-  RiDraftLine,
-} from 'react-icons/ri';
+import { RiAttachmentLine, RiFilter2Line, RiDraftLine } from 'react-icons/ri';
 import { FilterCollapse } from '../Filter';
 import { ModalAddNewMaintenance } from '../../Modal/ModalAddNewMaintenance';
 import { ModalVisualizeImage } from '../../Modal/ModalVisualizeImage/index';
+import { ModalEditNewMaintenance } from '../../Modal/ModalEditNewMaintenance';
 import { apllyToast } from '../../../Global/Toast2.0';
 
 import { useAuth } from '../../../../hooks/auth';
@@ -48,6 +44,7 @@ interface IvehicleSelected {
 }
 
 interface IMaintenance {
+  id?: string;
   date: string;
   type: string;
   amount_total: number;
@@ -114,6 +111,28 @@ export function MaintenanceTable({ vehicleSelected }: IvehicleSelected) {
     getApi();
   }, [addedMaintenance, idSupplySelectedChange, updateTable, vehicleSelected]);
 
+  const handleEditAddNewMaintenance = useCallback(
+    async (data: Omit<IMaintenance, 'e'>) => {
+      const { amount_total, date, km, reason, type, description, id } = data;
+      const fomatData = {
+        amount_total,
+        date,
+        km,
+        reason,
+        type,
+        vehicle_id: vehicleSelected.id,
+        conductor: user.id,
+        description,
+      };
+      console.log('data', data);
+
+      api.put(`/maintenance?id=${id}`, fomatData).then(response => {
+        setMaintenanceAdded(response.data.id);
+      });
+    },
+    [user.id, vehicleSelected.id],
+  );
+
   const handleAddNewMaintenance = useCallback(
     async (data: Omit<IMaintenance, 'maintenance'>) => {
       try {
@@ -127,7 +146,7 @@ export function MaintenanceTable({ vehicleSelected }: IvehicleSelected) {
           description,
           reason,
           vehicle_id: vehicleSelected.id,
-          conductor_id: user.id,
+          conductor: user.id,
         };
         await api.post('/maintenance', formatData).then(response => {
           setMaintenanceAdded(response.data.id);
@@ -337,20 +356,18 @@ export function MaintenanceTable({ vehicleSelected }: IvehicleSelected) {
                           </Td>
                         )}
 
-                        {isWideVersion && (
-                          <Td>
-                            <Tooltip hasArrow label="Editar">
-                              <Button
-                                size="sm"
-                                fontSize="sm"
-                                bg="gray.600"
-                                variant="ghost"
-                              >
-                                <Icon as={RiPencilLine} fontSize="20" />
-                              </Button>
-                            </Tooltip>
-                          </Td>
-                        )}
+                        <Td>
+                          {isWideVersion ? (
+                            <ModalEditNewMaintenance
+                              id_maintenance={data.id}
+                              handleEditAddNewMaintenance={
+                                handleEditAddNewMaintenance
+                              }
+                            />
+                          ) : (
+                            ''
+                          )}
+                        </Td>
                       </Tr>
                     ))}
                   </Tbody>

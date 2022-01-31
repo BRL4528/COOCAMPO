@@ -1,14 +1,16 @@
 /* eslint-disable react/jsx-one-expression-per-line */
-import { useField } from '@unform/core';
 import React, {
   SelectHTMLAttributes,
   useCallback,
   useEffect,
   useRef,
   useState,
+  useContext,
 } from 'react';
+import { useField } from '@unform/core';
 
 import { Select as SelectChakra, Tooltip } from '@chakra-ui/react';
+import { SetToggleThemeContext } from '../../../contexts/SetToggleThemeContext';
 
 import { Container } from './styles';
 
@@ -22,6 +24,7 @@ interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
 }
 
 const Select: React.FC<SelectProps> = ({ label, name, options, ...rest }) => {
+  const { toggleTheme } = useContext(SetToggleThemeContext);
   const inputRef = useRef<HTMLSelectElement>(null);
   const [isFocused, setIsFocused] = useState(false);
   const [isFilled, setIsFilled] = useState(false);
@@ -51,6 +54,7 @@ const Select: React.FC<SelectProps> = ({ label, name, options, ...rest }) => {
       isFocused={isFocused}
       isFilled={isFilled}
       className="select-block"
+      theme={toggleTheme}
     >
       <div>
         <p>{label}</p>
