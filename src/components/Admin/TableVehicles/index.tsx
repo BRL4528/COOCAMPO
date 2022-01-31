@@ -9,7 +9,7 @@ import ptBR from 'date-fns/locale/pt-BR';
 import { FiEdit } from 'react-icons/fi';
 import { apllyToast } from '../../Global/Toast2.0';
 
-import ModalEditVehicle from '../../../pages/Dashboard-adm/Vehicles/ModalEditVehicle';
+import ModalEditVehicle from '../../../pages/Dashboard-adm/VehiclesManagement/Vehicles/ModalEditVehicle';
 
 // import ModalBoxItemTable from './ModalBoxItemTable';
 

@@ -6,6 +6,7 @@ import {
   Tooltip,
   ModalBody,
   ModalFooter,
+  InputGroup,
 } from '@chakra-ui/react';
 import * as Yup from 'yup';
 import { Form } from '@unform/web';
@@ -22,26 +23,24 @@ import { ModalComponent } from '..';
 
 import { api } from '../../../../services/api';
 
-interface IKilometers {
-  // vehicle_id?: string;
-  // access_id?: string;
-  km_start: number;
-  km_end: number;
-  km_traveled: number;
-  observations: string;
-  reason: string;
+interface ISupply {
   date: string;
+  type: string;
+  quantity: number;
+  amount_total: number;
+  km_odometer: number;
+  observation: string;
 }
 
 interface IModalProps {
-  id_kilometer: string;
+  id_supply: string;
   // eslint-disable-next-line no-unused-vars
-  handleEditKilometer: (kilometer: Omit<IKilometers, ''>) => void;
+  handleEditSupply: (kilometer: Omit<ISupply, ''>) => void;
 }
 
-export function ModalEditNewKilometer({
-  handleEditKilometer,
-  id_kilometer,
+export function ModalEditNewSupply({
+  handleEditSupply,
+  id_supply,
 }: IModalProps) {
   const formRef = useRef<FormHandles>(null);
   const { onOpen, isOpen, onClose } = useDisclosure();
@@ -58,12 +57,12 @@ export function ModalEditNewKilometer({
   // const [km_endData, setKm_end] = useState(0);
   // const [km_traveledData, setKm_traveled] = useState(0);
 
-  const [initialData, setInitialData] = useState<IKilometers>();
+  const [initialData, setInitialData] = useState<ISupply>();
 
   useEffect(() => {
     try {
       if (isOpen) {
-        api.get(`/kilometers/show?id=${id_kilometer}`).then(response => {
+        api.get(`/supplies/show?id=${id_supply}`).then(response => {
           setInitialData(response.data);
         });
       }
@@ -71,23 +70,28 @@ export function ModalEditNewKilometer({
       console.log(e);
       apllyToast('error', 'Problemas ao carregar quilometragem');
     }
-  }, [id_kilometer, isOpen]);
+  }, [id_supply, isOpen]);
 
   const handleSubmit = useCallback(
-    async (data: IKilometers) => {
+    async (data: ISupply) => {
       try {
         setLoading(true);
         formRef.current?.setErrors({});
 
         const schema = Yup.object().shape({
           date: Yup.date().required('Data é obrigatória'),
-          km_start: Yup.string()
-            .required('Km inicial é obrigatório')
-            .min(1, 'km inicial deve ser maior que zero'),
-          km_end: Yup.string().required('Km final é obrigatório'),
-          km_traveled: Yup.number()
-            .required('Km percorrido é obrigatório')
-            .positive('Km percorrido deve ser positivo'),
+          // type: Yup.string().required('O tipo é obrigatório'),
+          quantity: Yup.number()
+            .required('A quantidade é obrigatória')
+            .positive('A quantidade deve ser positiva'),
+
+          amount_total: Yup.number()
+            .required('O valor total é obrigatório')
+            .positive('O valor deve ser positivo'),
+
+          km_odometer: Yup.number()
+            .required('KM é obrigatório')
+            .positive('KM deve ser positivo'),
 
           // reason: Yup.string().required('Motivo é obrigatório'),
 
@@ -98,19 +102,19 @@ export function ModalEditNewKilometer({
           abortEarly: false,
         });
 
-        const { km_end, km_start, km_traveled, observations, date } = data;
+        const { amount_total, date, km_odometer, observation, quantity, type } =
+          data;
 
         const formatData = {
-          km_end,
-          km_start,
-          km_traveled,
-          observations,
-          reason: reasonItem,
+          amount_total,
+          km_odometer,
+          observation,
+          quantity,
+          type,
           date,
         };
 
-        handleEditKilometer(formatData);
-        apllyToast('success', 'Sucesso ao editar km!');
+        handleEditSupply(formatData);
         onClose();
 
         setLoading(false);
@@ -127,7 +131,7 @@ export function ModalEditNewKilometer({
         onClose();
       }
     },
-    [handleEditKilometer, onClose, reasonItem],
+    [handleEditSupply, onClose],
   );
 
   const { containerProps, indicatorEl } = useLoading({
@@ -145,7 +149,6 @@ export function ModalEditNewKilometer({
         <Button
           size="sm"
           fontSize="sm"
-          bg="gray.650"
           // variant="ghost"
           onClick={onOpen}
           cursor="pointer"
@@ -154,59 +157,56 @@ export function ModalEditNewKilometer({
         </Button>
       </Tooltip>
       <ModalComponent
-        title="Editar quilometragem"
+        title="Editar abastecimento"
         isOpen={isOpen}
         onClose={onClose}
       >
         <ModalBody>
           <Form ref={formRef} onSubmit={handleSubmit} initialData={initialData}>
-            <p>Data</p>
-            <Input type="string" name="date" />
-            <p>Quilometragem inicial</p>
-            <Input
-              type="number"
-              name="km_start"
-              placeholder="Exemplo: 1.200"
-              // variant="filled"
-            />
-
-            <p>Quilometragem final</p>
-            <Input type="number" name="km_end" placeholder="Exemplo: 1.200" />
-
-            <p>Quilometro percorrido</p>
-            <Input
-              type="number"
-              name="km_traveled"
-              placeholder="Exemplo: 1.200"
-              // variant="filled"
-            />
+            <p>Data do abastecimento</p>
+            <Input type="text" name="date" placeholder="Ex: 01/01/2022" />
 
             <Select
-              name="reason"
-              label="Qual o motivo?"
+              name="type"
+              label="Tipo de combustível"
               value={reasonItem}
               onChange={e => {
                 handleReason(e.target.value);
               }}
               options={[
                 {
-                  value: 'Consultoria de venda',
-                  label: 'Consultoria de venda',
+                  value: 'Gasolina',
+                  label: 'Gasolina',
                 },
-                { value: 'Entrega de produto', label: 'Entrega de produto' },
+                { value: 'Álcool', label: 'Álcool' },
                 {
-                  value: 'Deslocamento a trabalho',
-                  label: 'Deslocamento a trabalho',
+                  value: 'Diesel S500',
+                  label: 'Diesel S500',
                 },
                 {
-                  value: 'Uso Particular',
-                  label: 'Uso Particular',
+                  value: 'Diesel S10',
+                  label: 'Diesel S10',
                 },
               ]}
             />
 
-            <p>Qual o destino?</p>
-            <TextArea name="observations" placeholder="Ex: visita técnica." />
+            <p>Quantidade abastecido</p>
+            <Input type="number" name="quantity" placeholder="Ex: 1.200" />
+
+            <p>Custo total</p>
+            <InputGroup>
+              <Input
+                type="number"
+                name="amount_total"
+                placeholder="Ex: 1.200"
+              />
+            </InputGroup>
+
+            <p>KM do Ôdometro</p>
+            <Input type="number" name="km_odometer" placeholder="Ex: 1.200" />
+
+            <p>Observações</p>
+            <TextArea name="observation" />
 
             <ModalFooter>
               <Button colorScheme="blue" mr={3} onClick={onClose}>

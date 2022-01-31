@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 /* eslint-disable react/jsx-no-target-blank */
 import React, {
   ChangeEvent,
@@ -14,12 +13,12 @@ import { FiX, FiPlus, FiCamera } from 'react-icons/fi';
 
 import { Form, DivLeft, AvatarInput } from './styles';
 
-import Input from '../../../../components/Global/Input';
-import Button from '../../../../components/Global/Button';
-import TextArea from '../../../../components/Global/TextArea';
+import Input from '../../../../../components/Global/Input';
+import Button from '../../../../../components/Global/Button';
+import TextArea from '../../../../../components/Global/TextArea';
 
-import Modal from '../../../../components/Admin/Modal';
-import { api } from '../../../../services/api';
+import Modal from '../../../../../components/Admin/Modal';
+import { api } from '../../../../../services/api';
 
 interface IVehicles {
   id: string;

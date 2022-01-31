@@ -35,17 +35,18 @@ export function SidebarNavBi() {
             borderWidth="1px"
             bg="gray.900"
             borderColor="gray.800"
-            _hover={{ bg: 'gray.800' }}
+            _hover={{ bg: 'gray.650' }}
             _expanded={{ bg: 'blue.400' }}
             _focus={{ boxShadow: 'outline' }}
             rightIcon={<BiChevronDown />}
+            fontWeight="500"
           >
             Administração
           </MenuButton>
 
           <MenuList bg="gray.800">
             <MenuItem
-              _hover={{ bg: 'gray.600' }}
+              _hover={{ bg: 'gray.650' }}
               as={Link}
               to="/management-ppr/dashboard"
             >
@@ -54,9 +55,9 @@ export function SidebarNavBi() {
 
             <MenuDivider />
             <MenuItem
-              _hover={{ bg: 'gray.600' }}
+              _hover={{ bg: 'gray.650' }}
               as={Link}
-              to="/miles/schedule"
+              to="/bi-management/energy"
             >
               Energia
             </MenuItem>
@@ -76,16 +77,17 @@ export function SidebarNavBi() {
             borderWidth="1px"
             bg="gray.900"
             borderColor="gray.800"
-            _hover={{ bg: 'gray.800' }}
+            _hover={{ bg: 'gray.650' }}
             _expanded={{ bg: 'blue.400' }}
             _focus={{ boxShadow: 'outline' }}
             rightIcon={<BiChevronDown />}
+            fontWeight="500"
           >
             Suinocultura
           </MenuButton>
           <MenuList bg="gray.800">
             <MenuItem
-              _hover={{ bg: 'gray.600' }}
+              _hover={{ bg: 'gray.650' }}
               as={Link}
               to="/miles/schedule"
             >
@@ -105,16 +107,17 @@ export function SidebarNavBi() {
             borderWidth="1px"
             bg="gray.900"
             borderColor="gray.800"
-            _hover={{ bg: 'gray.800' }}
+            _hover={{ bg: 'gray.650' }}
             _expanded={{ bg: 'blue.400' }}
             _focus={{ boxShadow: 'outline' }}
             rightIcon={<BiChevronDown />}
+            fontWeight="500"
           >
             Agropecuária
           </MenuButton>
           <MenuList bg="gray.800">
             <MenuItem
-              _hover={{ bg: 'gray.600' }}
+              _hover={{ bg: 'gray.650' }}
               as={Link}
               to="/miles/schedule"
             >
@@ -122,7 +125,7 @@ export function SidebarNavBi() {
             </MenuItem>
             <MenuDivider />
             <MenuItem
-              _hover={{ bg: 'gray.600' }}
+              _hover={{ bg: 'gray.650' }}
               as={Link}
               to="/miles/schedule"
             >
@@ -130,7 +133,7 @@ export function SidebarNavBi() {
             </MenuItem>
             <MenuDivider />
             <MenuItem
-              _hover={{ bg: 'gray.600' }}
+              _hover={{ bg: 'gray.650' }}
               as={Link}
               to="/miles/schedule"
             >
@@ -138,7 +141,7 @@ export function SidebarNavBi() {
             </MenuItem>
             <MenuDivider />
             <MenuItem
-              _hover={{ bg: 'gray.600' }}
+              _hover={{ bg: 'gray.650' }}
               as={Link}
               to="/miles/schedule"
             >
@@ -155,16 +158,17 @@ export function SidebarNavBi() {
             borderWidth="1px"
             bg="gray.900"
             borderColor="gray.800"
-            _hover={{ bg: 'gray.800' }}
+            _hover={{ bg: 'gray.650' }}
             _expanded={{ bg: 'blue.400' }}
             _focus={{ boxShadow: 'outline' }}
             rightIcon={<BiChevronDown />}
+            fontWeight="500"
           >
             Supermercado
           </MenuButton>
           <MenuList bg="gray.800">
             <MenuItem
-              _hover={{ bg: 'gray.600' }}
+              _hover={{ bg: 'gray.650' }}
               as={Link}
               to="/miles/schedule"
             >
@@ -172,7 +176,7 @@ export function SidebarNavBi() {
             </MenuItem>
             <MenuDivider />
             <MenuItem
-              _hover={{ bg: 'gray.600' }}
+              _hover={{ bg: 'gray.650' }}
               as={Link}
               to="/miles/schedule"
             >
@@ -180,7 +184,7 @@ export function SidebarNavBi() {
             </MenuItem>
             <MenuDivider />
             <MenuItem
-              _hover={{ bg: 'gray.600' }}
+              _hover={{ bg: 'gray.650' }}
               as={Link}
               to="/miles/schedule"
             >
@@ -188,7 +192,7 @@ export function SidebarNavBi() {
             </MenuItem>
             <MenuDivider />
             <MenuItem
-              _hover={{ bg: 'gray.600' }}
+              _hover={{ bg: 'gray.650' }}
               as={Link}
               to="/miles/schedule"
             >
@@ -204,16 +208,17 @@ export function SidebarNavBi() {
             borderWidth="1px"
             bg="gray.900"
             borderColor="gray.800"
-            _hover={{ bg: 'gray.800' }}
+            _hover={{ bg: 'gray.650' }}
             _expanded={{ bg: 'blue.400' }}
             _focus={{ boxShadow: 'outline' }}
             rightIcon={<BiChevronDown />}
+            fontWeight="500"
           >
             Insumos Agrícola
           </MenuButton>
           <MenuList bg="gray.800">
             <MenuItem
-              _hover={{ bg: 'gray.600' }}
+              _hover={{ bg: 'gray.650' }}
               as={Link}
               to="/miles/schedule"
             >
@@ -221,7 +226,7 @@ export function SidebarNavBi() {
             </MenuItem>
             <MenuDivider />
             <MenuItem
-              _hover={{ bg: 'gray.600' }}
+              _hover={{ bg: 'gray.650' }}
               as={Link}
               to="/miles/schedule"
             >
@@ -229,7 +234,7 @@ export function SidebarNavBi() {
             </MenuItem>
             <MenuDivider />
             <MenuItem
-              _hover={{ bg: 'gray.600' }}
+              _hover={{ bg: 'gray.650' }}
               as={Link}
               to="/miles/schedule"
             >
@@ -237,7 +242,7 @@ export function SidebarNavBi() {
             </MenuItem>
             <MenuDivider />
             <MenuItem
-              _hover={{ bg: 'gray.600' }}
+              _hover={{ bg: 'gray.650' }}
               as={Link}
               to="/miles/schedule"
             >
@@ -253,16 +258,17 @@ export function SidebarNavBi() {
             borderWidth="1px"
             bg="gray.900"
             borderColor="gray.800"
-            _hover={{ bg: 'gray.800' }}
+            _hover={{ bg: 'gray.650' }}
             _expanded={{ bg: 'blue.400' }}
             _focus={{ boxShadow: 'outline' }}
             rightIcon={<BiChevronDown />}
+            fontWeight="500"
           >
             Ração Suína
           </MenuButton>
           <MenuList bg="gray.800">
             <MenuItem
-              _hover={{ bg: 'gray.600' }}
+              _hover={{ bg: 'gray.650' }}
               as={Link}
               to="/miles/schedule"
             >
@@ -270,7 +276,7 @@ export function SidebarNavBi() {
             </MenuItem>
             <MenuDivider />
             <MenuItem
-              _hover={{ bg: 'gray.600' }}
+              _hover={{ bg: 'gray.650' }}
               as={Link}
               to="/miles/schedule"
             >
@@ -278,7 +284,7 @@ export function SidebarNavBi() {
             </MenuItem>
             <MenuDivider />
             <MenuItem
-              _hover={{ bg: 'gray.600' }}
+              _hover={{ bg: 'gray.650' }}
               as={Link}
               to="/miles/schedule"
             >
@@ -286,7 +292,7 @@ export function SidebarNavBi() {
             </MenuItem>
             <MenuDivider />
             <MenuItem
-              _hover={{ bg: 'gray.600' }}
+              _hover={{ bg: 'gray.650' }}
               as={Link}
               to="/miles/schedule"
             >

@@ -1,8 +1,8 @@
 import React, { useCallback, useState } from 'react';
-import TableVehicles from '../../../components/Admin/TableVehicles';
-import Button from '../../../components/Global/Button';
-import { apllyToast } from '../../../components/Global/Toast2.0/index';
-import { api } from '../../../services/api';
+import TableVehicles from '../../../../components/Admin/TableVehicles';
+import Button from '../../../../components/Global/Button';
+import { apllyToast } from '../../../../components/Global/Toast2.0/index';
+import { api } from '../../../../services/api';
 import ModalCreateVehicle from './ModalCreateVehicle';
 
 import { CardButton, Container, CardeHeader } from './styles';

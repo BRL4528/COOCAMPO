@@ -164,7 +164,7 @@ export function ModalAddNewKilometer({
         <ModalBody>
           <Form ref={formRef} onSubmit={handleSubmit}>
             <p>Data</p>
-            <Input type="date" name="date" />
+            <Input type="datetime-local" name="date" />
             <p>Quilometragem inicial</p>
             <Input
               value={km_initial}

@@ -36,7 +36,7 @@ import Schedule from '../pages/Dashboard-adm/Schedule';
 import ScheduleOnly from '../pages/Dashboard-adm/Schedule/ScheduleUnic';
 import Employers from '../pages/Dashboard-adm/Employers';
 
-import Vehicles from '../pages/Dashboard-adm/Vehicles';
+import Vehicles from '../pages/Dashboard-adm/VehiclesManagement/Vehicles';
 
 import DashboardMiles from '../pages/Dashboard-adm/VehiclesManagement/Dashboard';
 import VehiclesSchedule from '../pages/Dashboard-adm/VehiclesManagement/Schedule';
@@ -57,11 +57,13 @@ import SelectedNic from '../pages/Dashboard-adm/Rules/SelectedNic';
 import Rules from '../pages/Dashboard-adm/Rules';
 import Visio from '../pages/Dashboard-adm/Rules/Visio';
 
-import BIManagement from '../pages/Dashboard-adm/BIManagement';
-
 // Routes user no ADM
 import DashboardUser from '../pages/Dashboard-user';
 import AnalyticModuloUser from '../pages/Dashboard-user/AnalyticModule';
+
+// BI
+import BIManagement from '../pages/Dashboard-adm/BIManagement';
+import BIEnergY from '../pages/Dashboard-adm/BIManagement/energiBi';
 
 import Error404 from '../pages/error/404';
 
@@ -87,13 +89,6 @@ const Routes: React.FC = () => (
       path="/forms-order-service"
       component={FormsOrderService}
       isGlobal
-      isPrivate
-      isAdmin
-    />
-
-    <Route
-      path="/bi-management/dashboard"
-      component={BIManagement}
       isPrivate
       isAdmin
     />
@@ -285,6 +280,21 @@ const Routes: React.FC = () => (
     <Route path="/rules" component={Rules} isPrivate isUser isAdmin />
 
     <Route path="/visio" component={Visio} isPrivate isUser isAdmin />
+
+    {/* BI */}
+    <Route
+      path="/bi-management/dashboard"
+      component={BIManagement}
+      isPrivate
+      isAdmin
+    />
+
+    <Route
+      path="/bi-management/energy"
+      component={BIEnergY}
+      isPrivate
+      isAdmin
+    />
 
     <Route path="/error404-1" component={Error404} isPrivate isUser isAdmin />
     <Route path="/error404-2" component={Error404} isPrivate isUser isAdmin />

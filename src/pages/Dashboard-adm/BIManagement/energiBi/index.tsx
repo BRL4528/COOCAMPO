@@ -1,7 +1,8 @@
-import { Flex, ScaleFade, Text } from '@chakra-ui/react';
+import { Flex, ScaleFade } from '@chakra-ui/react';
+import { ReportBIManagement } from '../../../../components/Admin/Reports/ReportBIManagement';
 
-import { HeaderUp } from '../../../components/_components_0.2/Header_0.2';
-import { Sidebar } from '../../../components/_components_0.2/Sidebar_0.2';
+import { HeaderUp } from '../../../../components/_components_0.2/Header_0.2';
+import { Sidebar } from '../../../../components/_components_0.2/Sidebar_0.2';
 
 export default function BIManagementDashboard() {
   return (
@@ -10,7 +11,7 @@ export default function BIManagementDashboard() {
         <HeaderUp path="bi" />
         <Flex my="6" maxWidth={1480} mx="auto" pb={4} px="6" textAlign="center">
           <Sidebar path="bi" />
-          <Text>Dashboard</Text>
+          <ReportBIManagement />
         </Flex>
       </Flex>
     </ScaleFade>

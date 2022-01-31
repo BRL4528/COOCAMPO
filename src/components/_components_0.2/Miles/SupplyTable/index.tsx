@@ -26,14 +26,10 @@ import {
   ScaleFade,
 } from '@chakra-ui/react';
 
-import {
-  RiPencilLine,
-  RiAttachmentLine,
-  RiFilter2Line,
-  RiDraftLine,
-} from 'react-icons/ri';
+import { RiAttachmentLine, RiFilter2Line, RiDraftLine } from 'react-icons/ri';
 import { FilterCollapse } from '../Filter';
 import { ModalAddNewSupply } from '../../Modal/ModalAddNewSupply/indext';
+import { ModalEditNewSupply } from '../../Modal/ModalEditNewSupply';
 import { ModalVisualizeImage } from '../../Modal/ModalVisualizeImage/index';
 import { apllyToast } from '../../../Global/Toast2.0';
 
@@ -172,6 +168,31 @@ export function SupplyTable({ vehicleSelected }: IKilometersTableProps) {
     setUpdateTable(file);
   }, []);
 
+  const handleEditSupply = useCallback(
+    async (data: Omit<ISupply, 'e'>) => {
+      const { amount_total, date, km_odometer, observation, quantity, type } =
+        data;
+
+      const formatData = {
+        amount_total,
+        date,
+        km_odometer,
+        observation,
+        quantity,
+        type,
+        vehicle_id: vehicleSelected.id,
+        access_id: user.id,
+      };
+      console.log('abastecimento editado', formatData);
+      apllyToast('success', 'Sucesso ao editar abastecimento!');
+
+      // api.post('/kilometers', formatData).then(response => {
+      //   setNewRegister(response.data.id);
+      // });
+    },
+    [vehicleSelected, user.id],
+  );
+
   return (
     <Box>
       <Box flex="1" borderRadius={8} bg="gray.800" p={['4', '8']}>
@@ -243,100 +264,105 @@ export function SupplyTable({ vehicleSelected }: IKilometersTableProps) {
 
                   <Tbody>
                     {dataTable.map(data => (
-                      <Tr key={data.id}>
-                        <Td px={['2', '4', '6']}>
-                          <Box mb="2">
-                            {handleVerifyDateIsNew(data.created_at) ? (
-                              <Badge colorScheme="green">Novo</Badge>
-                            ) : (
-                              ''
-                            )}
-                          </Box>
-                          <Checkbox colorScheme="pink" />
-                        </Td>
+                      <>
+                        <Tr key={data.id}>
+                          <Td px={['2', '4', '6']}>
+                            <Box mb="2">
+                              {handleVerifyDateIsNew(data.created_at) ? (
+                                <Badge colorScheme="green">Novo</Badge>
+                              ) : (
+                                ''
+                              )}
+                            </Box>
+                            <Checkbox colorScheme="pink" />
+                          </Td>
 
-                        <Td>
-                          <Box>
-                            <Text fontWeight="medium">
-                              {format(new Date(data.date), "dd 'de' MMMM", {
-                                locale: ptBR,
-                              })}
-                            </Text>
-                          </Box>
-                        </Td>
-
-                        {isWideVersion && <Td>{data.type}</Td>}
-                        {isWideVersion && <Td>{data.quantity}</Td>}
-                        {isWideVersion && <Td>{data.amount_total}</Td>}
-                        <Td>{data.km_odometer}</Td>
-                        {isWideVersion && <Td>{data.observation}</Td>}
-                        {isWideVersion && (
                           <Td>
-                            {data.file ? (
-                              <Tooltip hasArrow label="Visualizar comprovante">
-                                <Box>
-                                  <Button
-                                    onClick={() => handleOpenImage(data.id)}
-                                    onContextMenu={() => console.log('teste')}
-                                    size="sm"
-                                    fontSize="sm"
-                                    bg="green.500"
-                                  >
-                                    <Icon as={RiAttachmentLine} fontSize="20" />
-                                    <ModalVisualizeImage
-                                      url={data.file_url}
-                                      open={open === data.id}
-                                      handleCloseImage={handleCloseImage}
-                                      idSupply={data.id}
-                                      hadleUpdateTable={hadleUpdateTable}
-                                    />
-                                  </Button>
-                                </Box>
-                              </Tooltip>
-                            ) : (
-                              <Tooltip hasArrow label="Adicionar comprovante">
-                                <Box
-                                  as="label"
-                                  px="3"
-                                  py="1.5"
-                                  borderRadius="6"
-                                  htmlFor={data.id}
-                                  bg="tomato"
-                                  cursor="pointer"
+                            <Box>
+                              <Text fontWeight="medium">
+                                {format(new Date(data.date), "dd 'de' MMMM", {
+                                  locale: ptBR,
+                                })}
+                              </Text>
+                            </Box>
+                          </Td>
+
+                          {isWideVersion && <Td>{data.type}</Td>}
+                          {isWideVersion && <Td>{data.quantity}</Td>}
+                          {isWideVersion && <Td>{data.amount_total}</Td>}
+                          <Td>{data.km_odometer}</Td>
+                          {isWideVersion && <Td>{data.observation}</Td>}
+                          {isWideVersion && (
+                            <Td>
+                              {data.file ? (
+                                <Tooltip
+                                  hasArrow
+                                  label="Visualizar comprovante"
                                 >
-                                  {loading && loadingId === data.id ? (
-                                    <Spinner size="sm" />
-                                  ) : (
-                                    <Icon as={RiAttachmentLine} fontSize="20" />
-                                  )}
+                                  <Box>
+                                    <Button
+                                      onClick={() => handleOpenImage(data.id)}
+                                      onContextMenu={() => console.log('teste')}
+                                      size="sm"
+                                      fontSize="sm"
+                                      bg="green.500"
+                                    >
+                                      <Icon
+                                        as={RiAttachmentLine}
+                                        fontSize="20"
+                                      />
+                                      <ModalVisualizeImage
+                                        url={data.file_url}
+                                        open={open === data.id}
+                                        handleCloseImage={handleCloseImage}
+                                        idSupply={data.id}
+                                        hadleUpdateTable={hadleUpdateTable}
+                                      />
+                                    </Button>
+                                  </Box>
+                                </Tooltip>
+                              ) : (
+                                <Tooltip hasArrow label="Adicionar comprovante">
                                   <Box
-                                    display="none"
-                                    as="input"
-                                    type="file"
-                                    id={data.id}
-                                    onChange={handleReceiptChange}
-                                  />
-                                </Box>
-                              </Tooltip>
-                            )}
-                          </Td>
-                        )}
+                                    as="label"
+                                    px="3"
+                                    py="1.5"
+                                    borderRadius="6"
+                                    htmlFor={data.id}
+                                    bg="tomato"
+                                    cursor="pointer"
+                                  >
+                                    {loading && loadingId === data.id ? (
+                                      <Spinner size="sm" />
+                                    ) : (
+                                      <Icon
+                                        as={RiAttachmentLine}
+                                        fontSize="20"
+                                      />
+                                    )}
+                                    <Box
+                                      display="none"
+                                      as="input"
+                                      type="file"
+                                      id={data.id}
+                                      onChange={handleReceiptChange}
+                                    />
+                                  </Box>
+                                </Tooltip>
+                              )}
+                            </Td>
+                          )}
 
-                        {isWideVersion && (
-                          <Td>
-                            <Tooltip hasArrow label="Editar">
-                              <Button
-                                size="sm"
-                                fontSize="sm"
-                                bg="gray.600"
-                                variant="ghost"
-                              >
-                                <Icon as={RiPencilLine} fontSize="20" />
-                              </Button>
-                            </Tooltip>
-                          </Td>
-                        )}
-                      </Tr>
+                          {isWideVersion && (
+                            <Td>
+                              <ModalEditNewSupply
+                                id_supply={data.id}
+                                handleEditSupply={handleEditSupply}
+                              />
+                            </Td>
+                          )}
+                        </Tr>
+                      </>
                     ))}
                   </Tbody>
                 </Table>

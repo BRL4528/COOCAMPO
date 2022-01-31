@@ -8,11 +8,11 @@ import { FiX, FiPlus } from 'react-icons/fi';
 
 import { Form, DivLeft } from './styles';
 
-import Input from '../../../../components/Global/Input';
-import Button from '../../../../components/Global/Button';
-import TextArea from '../../../../components/Global/TextArea';
+import Input from '../../../../../components/Global/Input';
+import Button from '../../../../../components/Global/Button';
+import TextArea from '../../../../../components/Global/TextArea';
 
-import Modal from '../../../../components/Admin/Modal';
+import Modal from '../../../../../components/Admin/Modal';
 
 interface IVehicles {
   id: string;
