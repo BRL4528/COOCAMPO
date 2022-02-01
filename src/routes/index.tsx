@@ -64,6 +64,8 @@ import AnalyticModuloUser from '../pages/Dashboard-user/AnalyticModule';
 // BI
 import BIManagement from '../pages/Dashboard-adm/BIManagement';
 import BIEnergY from '../pages/Dashboard-adm/BIManagement/energiBi';
+import BIFleet from '../pages/Dashboard-adm/BIManagement/fleetBi';
+import BIOrders from '../pages/Dashboard-adm/BIManagement/ordersBi';
 
 import Error404 from '../pages/error/404';
 
@@ -295,6 +297,14 @@ const Routes: React.FC = () => (
       isPrivate
       isAdmin
     />
+    <Route
+      path="/bi-management/orders"
+      component={BIOrders}
+      isPrivate
+      isAdmin
+    />
+
+    <Route path="/bi-management/fleet" component={BIFleet} isPrivate isAdmin />
 
     <Route path="/error404-1" component={Error404} isPrivate isUser isAdmin />
     <Route path="/error404-2" component={Error404} isPrivate isUser isAdmin />

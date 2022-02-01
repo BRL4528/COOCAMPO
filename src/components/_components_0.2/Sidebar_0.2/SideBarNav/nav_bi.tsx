@@ -65,7 +65,7 @@ export function SidebarNavBi() {
             <MenuItem
               _hover={{ bg: 'gray.650' }}
               as={Link}
-              to="/bi-management/energy"
+              to="/bi-management/orders"
             >
               Ordens de serviço(TI)
             </MenuItem>
@@ -73,7 +73,7 @@ export function SidebarNavBi() {
             <MenuItem
               _hover={{ bg: 'gray.650' }}
               as={Link}
-              to="/bi-management/energy"
+              to="/bi-management/fleet"
             >
               Controle de frotas
             </MenuItem>

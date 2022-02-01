@@ -9,42 +9,25 @@ import {
   jsonDataColors,
   layoutSettings,
 } from '../../../../utils/stylesOfReportPowerBI';
+import { apiPowerBI } from '../../../../services/api';
 
-const initialReportProps = {
-  type: 'report',
-  embedType: 'report',
-  tokenType: 'Aad',
-  accessToken:
-    'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6Ik1yNS1BVWliZkJpaTdOZDFqQmViYXhib1hXMCIsImtpZCI6Ik1yNS1BVWliZkJpaTdOZDFqQmViYXhib1hXMCJ9.eyJhdWQiOiJodHRwczovL2FuYWx5c2lzLndpbmRvd3MubmV0L3Bvd2VyYmkvYXBpIiwiaXNzIjoiaHR0cHM6Ly9zdHMud2luZG93cy5uZXQvZTlhNzRiNTYtYzAwOC00NDExLTk2MTYtMGE3ZjE3ZTEyZGFkLyIsImlhdCI6MTY0MzYzNzYzOSwibmJmIjoxNjQzNjM3NjM5LCJleHAiOjE2NDM2NDI4NDcsImFjY3QiOjAsImFjciI6IjEiLCJhaW8iOiJBVFFBeS84VEFBQUFQNC90NGxzZ1BUWTVPSisveXE3RU5LczlSOXlLRzFDYmNQazFPWUN1d0JlQjllNXFRK1UvQjdkUlVkWlN6RVBEIiwiYW1yIjpbInB3ZCJdLCJhcHBpZCI6Ijg3MWMwMTBmLTVlNjEtNGZiMS04M2FjLTk4NjEwYTdlOTExMCIsImFwcGlkYWNyIjoiMiIsImdpdmVuX25hbWUiOiJib3RfY29vYXNnbyIsImlwYWRkciI6IjQ1LjE3NC4xNTYuNDAiLCJuYW1lIjoiYm90X2Nvb2FzZ28iLCJvaWQiOiIwYzQ2Yjg5Ny1lMjUyLTRmYTQtOWZlZS1kYzU4ZWM4NzEyOGIiLCJwdWlkIjoiMTAwMzIwMDE2NTk0RUIwNyIsInJoIjoiMC5BVkFBVmt1bjZRakFFVVNXRmdwX0YtRXRyUThCSElkaFhyRlBnNnlZWVFwLWtSQlFBRjQuIiwic2NwIjoidXNlcl9pbXBlcnNvbmF0aW9uIiwic3ViIjoiakRJQVdMTk9LaVNyZWpQdmRQTkFWdWs1d1pqVzdjNmxNOTRZUHBMLThZNCIsInRpZCI6ImU5YTc0YjU2LWMwMDgtNDQxMS05NjE2LTBhN2YxN2UxMmRhZCIsInVuaXF1ZV9uYW1lIjoiY29udHJvbGxlckBtaWRhc2NvcnAuZGV2IiwidXBuIjoiY29udHJvbGxlckBtaWRhc2NvcnAuZGV2IiwidXRpIjoiVW0zZl83ZkJtMEdPNTh4elR1b2hBUSIsInZlciI6IjEuMCIsIndpZHMiOlsiZDI0YWVmNTctMTUwMC00MDcwLTg0ZGItMjY2NmYyOWNmOTY2IiwiYjc5ZmJmNGQtM2VmOS00Njg5LTgxNDMtNzZiMTk0ZTg1NTA5Il19.Phwv6dVw6yV7HL7jwF7rNl1xnZ6OvR95GxKeHA77TYt5foLaqDYGf29BEM2pc-PuJVTWE-blVlxETXtlupi3PhoheYX8q9ety9QNTYKVlemgiujO6fiqMlyebmM_cqzJGxtcc1sioK2qpXr8OnRC_JOkpm8iBmJ6diEJP_19q6Wku_15-dvjT-eLDzUrlql7KP8NIkIGbN8m8OX54GIE5aXtSyVV7yvqBxpwlJoSWvIvr5IvgiJDFI9doBRtP1gXSCEa55z2HsUTKBM7QFExdVxNd0-yvnnik2jsJAeqMTmSqShh_JV-jzkwpvY_ls6UWZa84z9EdKQDlLw2FsuvOw',
-  embedUrl:
-    'https://app.powerbi.com/reportEmbed?reportId=2780625e-4cc9-464f-84cc-9d660fc73d05&config=eyJjbHVzdGVyVXJsIjoiaHR0cHM6Ly9XQUJJLUJSQVpJTC1TT1VUSC1CLVBSSU1BUlktcmVkaXJlY3QuYW5hbHlzaXMud2luZG93cy5uZXQiLCJlbWJlZEZlYXR1cmVzIjp7Im1vZGVybkVtYmVkIjp0cnVlLCJhbmd1bGFyT25seVJlcG9ydEVtYmVkIjp0cnVlLCJjZXJ0aWZpZWRUZWxlbWV0cnlFbWJlZCI6dHJ1ZSwidXNhZ2VNZXRyaWNzVk5leHQiOnRydWUsInNraXBab25lUGF0Y2giOnRydWV9fQ%3d%3d',
-  embedId: '2780625e-4cc9-464f-84cc-9d660fc73d05',
-  reportMode: 'View', // "Edit"
-  permissions: 'All', // "All" (when using "Edit" mode)
-  extraSettings: {
-    filterPaneEnabled: false,
-    navContentPaneEnabled: false,
-    visualRenderedEvents: true,
-    background: models.BackgroundType.Transparent,
-  },
-  settings: {
-    panes: {
-      filters: {
-        expanded: false,
-        visible: false,
-      },
-      pageNavigation: {
-        visible: false,
-      },
-    },
-    layoutType: models.LayoutType.Custom,
-    customLayout: {
-      displayOption: models.DisplayOption.FitToPage,
-    },
-  },
-};
+interface Props {
+  embedId: string;
+  embedUrl: string;
+  reportLoading: string;
+}
+interface PropsPowerBI {
+  accessToken: string;
+  expiry: string;
+  reportId: string;
+  embedUrl: string;
+}
 
-export const ReportBIManagement = () => {
+export const ReportBIManagement = ({
+  embedId,
+  embedUrl,
+  reportLoading,
+}: Props) => {
   const reportRef = useRef(null);
   const [report, setEmbed] = useReport();
   const { toggleTheme } = useContext(SetToggleThemeContext);
@@ -64,6 +47,52 @@ export const ReportBIManagement = () => {
   //     }
   //   }
   // });
+  useEffect(() => {
+    async function loadTokenBI(): Promise<void> {
+      try {
+        await apiPowerBI
+          .get<PropsPowerBI>(`/get-embed-token?reportId=${reportLoading}`)
+          .then(response => {
+            const initialReportProps = {
+              type: 'report',
+              embedType: 'report',
+              tokenType: 'Aad',
+              accessToken: response.data.accessToken,
+              embedUrl,
+              embedId,
+              reportMode: 'View', // "Edit"
+              permissions: 'All', // "All" (when using "Edit" mode)
+              extraSettings: {
+                filterPaneEnabled: false,
+                navContentPaneEnabled: false,
+                visualRenderedEvents: true,
+                background: models.BackgroundType.Transparent,
+              },
+              settings: {
+                panes: {
+                  filters: {
+                    expanded: false,
+                    visible: false,
+                  },
+                  pageNavigation: {
+                    visible: false,
+                  },
+                },
+                layoutType: models.LayoutType.Custom,
+                customLayout: {
+                  displayOption: models.DisplayOption.FitToPage,
+                },
+              },
+            };
+
+            setEmbed(reportRef, initialReportProps as any);
+          });
+      } catch (err) {
+        console.log('problemas', err);
+      }
+    }
+    loadTokenBI();
+  }, [embedId, embedUrl, reportLoading, setEmbed]);
 
   if (report) {
     report.off('rendered');
@@ -99,13 +128,13 @@ export const ReportBIManagement = () => {
 
   // console.log(report.on());
 
-  useEffect(() => {
-    try {
-      setEmbed(reportRef, initialReportProps as any);
-    } catch (err) {
-      console.log('errrrooor');
-    }
-  }, [setEmbed]);
+  // useEffect(() => {
+  //   try {
+  //     setEmbed(reportRef, initialReportProps as any);
+  //   } catch (err) {
+  //     console.log('errrrooor');
+  //   }
+  // }, [setEmbed]);
 
   // const handlereload = useCallback(async () => {
   //   try {
