@@ -300,8 +300,8 @@ export function SupplyTable({ vehicleSelected }: IKilometersTableProps) {
 
                           {isWideVersion && <Td>{data.type}</Td>}
                           {isWideVersion && <Td>{data.quantity}</Td>}
-                          {isWideVersion && <Td>{data.amount_total}</Td>}
-                          <Td>{data.km_odometer}</Td>
+                          <Td>{data.amount_total}</Td>
+                          {isWideVersion && <Td>{data.km_odometer}</Td>}
                           {isWideVersion && <Td>{data.observation}</Td>}
                           {isWideVersion && (
                             <Td>
