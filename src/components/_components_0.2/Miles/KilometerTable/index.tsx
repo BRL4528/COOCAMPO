@@ -230,14 +230,14 @@ export function KilometerTable({
                 {isWideVersion && <Td>{data.reason}</Td>}
 
                 <Td>
-                  {isWideVersion ? (
-                    <ModalEditNewKilometer
-                      id_kilometer={data.id}
-                      handleEditKilometer={handleEditKilometer}
-                    />
-                  ) : (
+                  {/* {isWideVersion ? ( */}
+                  <ModalEditNewKilometer
+                    id_kilometer={data.id}
+                    handleEditKilometer={handleEditKilometer}
+                  />
+                  {/* ) : (
                     ''
-                  )}
+                  )} */}
                 </Td>
               </Tr>
             ))}
