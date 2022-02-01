@@ -26,7 +26,7 @@ import {
   ScaleFade,
 } from '@chakra-ui/react';
 
-import { RiAttachmentLine, RiFilter2Line, RiDraftLine } from 'react-icons/ri';
+import { RiAttachmentLine, RiDraftLine } from 'react-icons/ri';
 import { FilterCollapse } from '../Filter';
 import { ModalAddNewMaintenance } from '../../Modal/ModalAddNewMaintenance';
 import { ModalVisualizeImage } from '../../Modal/ModalVisualizeImage/index';
@@ -73,7 +73,7 @@ interface SupplyAdded {
 
 export function MaintenanceTable({ vehicleSelected }: IvehicleSelected) {
   const { user } = useAuth();
-  const { onToggle, isOpen } = useDisclosure();
+  const { isOpen } = useDisclosure();
   const isWideVersion = useBreakpointValue({
     base: false,
     lg: true,
@@ -219,7 +219,7 @@ export function MaintenanceTable({ vehicleSelected }: IvehicleSelected) {
           </Flex>
 
           <Box>
-            <Tooltip hasArrow label="Filtro">
+            {/* <Tooltip hasArrow label="Filtro">
               <Button
                 size="sm"
                 mr="2"
@@ -229,7 +229,7 @@ export function MaintenanceTable({ vehicleSelected }: IvehicleSelected) {
               >
                 <Icon as={RiFilter2Line} fontSize="20" />
               </Button>
-            </Tooltip>
+            </Tooltip> */}
 
             <ModalAddNewMaintenance
               handleAddNewMaintenance={handleAddNewMaintenance}

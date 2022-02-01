@@ -110,10 +110,10 @@ export function ModalEditNewKilometer({
           observations,
           reason: reasonItem,
           date,
+          id: id_kilometer,
         };
 
         handleEditKilometer(formatData);
-        apllyToast('success', 'Sucesso ao editar km!');
         onClose();
 
         setLoading(false);
@@ -126,11 +126,10 @@ export function ModalEditNewKilometer({
 
           return;
         }
-        apllyToast('warning', 'Problemas ao editar km!');
         onClose();
       }
     },
-    [handleEditKilometer, onClose, reasonItem],
+    [handleEditKilometer, id_kilometer, onClose, reasonItem],
   );
 
   const { containerProps, indicatorEl } = useLoading({

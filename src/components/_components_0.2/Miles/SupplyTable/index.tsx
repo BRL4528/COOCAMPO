@@ -26,7 +26,7 @@ import {
   ScaleFade,
 } from '@chakra-ui/react';
 
-import { RiAttachmentLine, RiFilter2Line, RiDraftLine } from 'react-icons/ri';
+import { RiAttachmentLine, RiDraftLine } from 'react-icons/ri';
 import { FilterCollapse } from '../Filter';
 import { ModalAddNewSupply } from '../../Modal/ModalAddNewSupply/indext';
 import { ModalEditNewSupply } from '../../Modal/ModalEditNewSupply';
@@ -74,7 +74,7 @@ interface SupplyAdded {
 
 export function SupplyTable({ vehicleSelected }: IKilometersTableProps) {
   const { user } = useAuth();
-  const { onToggle, isOpen } = useDisclosure();
+  const { isOpen } = useDisclosure();
   const isWideVersion = useBreakpointValue({
     base: false,
     lg: true,
@@ -218,7 +218,7 @@ export function SupplyTable({ vehicleSelected }: IKilometersTableProps) {
           </Flex>
 
           <Box>
-            <Tooltip hasArrow label="Filtro">
+            {/* <Tooltip hasArrow label="Filtro">
               <Button
                 size="sm"
                 mr="2"
@@ -228,7 +228,7 @@ export function SupplyTable({ vehicleSelected }: IKilometersTableProps) {
               >
                 <Icon as={RiFilter2Line} fontSize="20" />
               </Button>
-            </Tooltip>
+            </Tooltip> */}
 
             <ModalAddNewSupply handleAddNewSupply={handleAddNewSupply} />
           </Box>

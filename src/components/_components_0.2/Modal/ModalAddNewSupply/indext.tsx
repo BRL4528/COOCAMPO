@@ -158,10 +158,14 @@ export function ModalAddNewSupply({ handleAddNewSupply }: IModalProps) {
               }}
               options={[
                 {
-                  value: 'Gasolina',
-                  label: 'Gasolina',
+                  value: 'Gasolina comum',
+                  label: 'Gasolina comum',
                 },
-                { value: 'Álcool', label: 'Álcool' },
+                {
+                  value: 'Gasolina aditivada',
+                  label: 'Gasolina aditivada',
+                },
+                { value: 'Etanol', label: 'Etanol' },
                 {
                   value: 'Diesel S500',
                   label: 'Diesel S500',
