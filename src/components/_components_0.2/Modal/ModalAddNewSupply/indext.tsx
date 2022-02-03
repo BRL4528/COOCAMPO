@@ -158,10 +158,14 @@ export function ModalAddNewSupply({ handleAddNewSupply }: IModalProps) {
               }}
               options={[
                 {
-                  value: 'Gasolina',
-                  label: 'Gasolina',
+                  value: 'Gasolina comum',
+                  label: 'Gasolina comum',
                 },
-                { value: 'Álcool', label: 'Álcool' },
+                {
+                  value: 'Gasolina aditivada',
+                  label: 'Gasolina aditivada',
+                },
+                { value: 'Etanol', label: 'Etanol' },
                 {
                   value: 'Diesel S500',
                   label: 'Diesel S500',
@@ -174,19 +178,25 @@ export function ModalAddNewSupply({ handleAddNewSupply }: IModalProps) {
             />
 
             <p>Quantidade abastecido</p>
-            <Input type="number" name="quantity" placeholder="Ex: 1.200" />
+            <Input
+              type="number"
+              step="0.01"
+              name="quantity"
+              placeholder="Ex: 1.200"
+            />
 
             <p>Custo total</p>
             <InputGroup>
               <Input
                 type="number"
+                step="0.01"
                 name="amount_total"
                 placeholder="Ex: 1.200"
               />
             </InputGroup>
 
             <p>KM do Ôdometro</p>
-            <Input type="number" name="km_odometer" placeholder="Ex: 1.200" />
+            <Input type="number" name="km_odometer" placeholder="Ex: 1200" />
 
             <p>Observações</p>
             <TextArea name="observation" />

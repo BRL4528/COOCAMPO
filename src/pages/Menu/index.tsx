@@ -36,7 +36,7 @@ const Menu: React.FC = () => {
           align="flex-start"
           mt={isWideVersion ? '0' : '10rem'}
         >
-          <Box className={user.tag === 'admin' ? '' : 'disabled'} m="5px">
+          <Box m="5px">
             <Link to="/miles/dashboard">
               <Content>
                 <img src={destin} alt="imagem de destino" />

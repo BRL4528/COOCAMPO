@@ -4,11 +4,11 @@ import { format } from 'date-fns';
 
 import {
   Box,
-  Button,
+  // Button,
   Checkbox,
   Flex,
   Heading,
-  Icon,
+  // Icon,
   Table,
   Tbody,
   Td,
@@ -18,9 +18,9 @@ import {
   Text,
   useBreakpointValue,
   useDisclosure,
-  Tooltip,
+  // Tooltip,
 } from '@chakra-ui/react';
-import { RiFilter2Line } from 'react-icons/ri';
+// import { RiFilter2Line } from 'react-icons/ri';
 
 import { Pagination } from '../Pagination';
 import { FilterCollapse } from '../Filter';
@@ -30,6 +30,7 @@ import { ModalEditNewKilometer } from '../../Modal/ModalEditNewKilometer';
 import { useAuth } from '../../../../hooks/auth';
 
 import { api } from '../../../../services/api';
+import { apllyToast } from '../../../Global/Toast2.0';
 
 interface IKilometersTableProps {
   handleUpdateNewKm: (id_new_vehicle: string) => void;
@@ -77,7 +78,7 @@ export function KilometerTable({
   handleUpdateNewKm,
 }: IKilometersTableProps) {
   const { user } = useAuth();
-  const { onToggle, isOpen } = useDisclosure();
+  const { isOpen } = useDisclosure();
   const [dataTable, setDataTable] = useState<IGetKilometers>();
   const [newRegister, setNewRegister] = useState<string>();
   const isWideVersion = useBreakpointValue({
@@ -133,7 +134,7 @@ export function KilometerTable({
 
   const handleEditKilometer = useCallback(
     async (data: Omit<IKilometers, 'e'>) => {
-      const { km_end, km_start, observations, reason, km_traveled } = data;
+      const { km_end, km_start, observations, reason, km_traveled, id } = data;
 
       const formatData = {
         km_end: Number(km_end),
@@ -145,9 +146,15 @@ export function KilometerTable({
         access_id: user.id,
       };
       console.log('km editado', formatData);
-      // api.post('/kilometers', formatData).then(response => {
-      //   setNewRegister(response.data.id);
-      // });
+      try {
+        api.put(`/kilometers?id=${id}`, formatData).then(response => {
+          setNewRegister(response.data.id);
+          apllyToast('success', 'Sucesso ao editar quilometragem!');
+        });
+      } catch (err) {
+        console.log(err);
+        apllyToast('warning', 'Problemas ao editar quilometragem!');
+      }
     },
     [vehicleSelected, user.id],
   );
@@ -161,7 +168,7 @@ export function KilometerTable({
           </Heading>
 
           <Box>
-            <Tooltip hasArrow label="Filtro">
+            {/* <Tooltip hasArrow label="Filtro">
               <Button
                 size="sm"
                 mr="2"
@@ -171,7 +178,7 @@ export function KilometerTable({
               >
                 <Icon as={RiFilter2Line} fontSize="20" />
               </Button>
-            </Tooltip>
+            </Tooltip> */}
 
             <ModalAddNewKilometer
               km_initial={vehicleSelected.km || 0}
@@ -223,14 +230,14 @@ export function KilometerTable({
                 {isWideVersion && <Td>{data.reason}</Td>}
 
                 <Td>
-                  {isWideVersion ? (
-                    <ModalEditNewKilometer
-                      id_kilometer={data.id}
-                      handleEditKilometer={handleEditKilometer}
-                    />
-                  ) : (
+                  {/* {isWideVersion ? ( */}
+                  <ModalEditNewKilometer
+                    id_kilometer={data.id}
+                    handleEditKilometer={handleEditKilometer}
+                  />
+                  {/* ) : (
                     ''
-                  )}
+                  )} */}
                 </Td>
               </Tr>
             ))}

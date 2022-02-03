@@ -2,11 +2,11 @@ import { Stack } from '@chakra-ui/react';
 import {
   RiMenu2Fill,
   RiDashboardLine,
-  RiCalendarCheckLine,
+  // RiCalendarCheckLine,
   RiCompass3Line,
 } from 'react-icons/ri';
 
-import { BiCar, BiGasPump } from 'react-icons/bi';
+import { BiGasPump } from 'react-icons/bi';
 import { GiAutoRepair } from 'react-icons/gi';
 
 import { NavLink } from '../NavLink';
@@ -26,9 +26,9 @@ export function SidebarNav() {
       </NavSection>
 
       <NavSection title="GESTÃO DE FROTA">
-        <NavLink to="/miles/schedule" icon={RiCalendarCheckLine}>
+        {/* <NavLink  to="/miles/schedule" icon={RiCalendarCheckLine}>
           Agenda
-        </NavLink>
+        </NavLink> */}
 
         <NavLink to="/miles/kilometers" icon={RiCompass3Line}>
           Quilometragem
@@ -40,9 +40,9 @@ export function SidebarNav() {
         <NavLink to="/miles/maintenance" icon={GiAutoRepair}>
           Manutenção
         </NavLink>
-        <NavLink to="/vehicles" icon={BiCar}>
+        {/* <NavLink to="/vehicles" icon={BiCar}>
           Veiculos
-        </NavLink>
+        </NavLink> */}
       </NavSection>
     </Stack>
   );
