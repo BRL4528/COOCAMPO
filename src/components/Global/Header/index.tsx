@@ -1,6 +1,6 @@
 /* eslint-disable react/require-default-props */
 import React, { useContext } from 'react';
-
+import { useBreakpointValue } from '@chakra-ui/react';
 import { FiLogOut } from 'react-icons/fi';
 import { RiMoonFill, RiSunFill } from 'react-icons/ri';
 
@@ -21,6 +21,10 @@ const Header: React.FC<HeaderProps> = ({
   size = 'large',
   children,
 }: HeaderProps) => {
+  const isWideVersion = useBreakpointValue({
+    base: false,
+    lg: true,
+  });
   const { signOut, user } = useAuth();
   const { handleToggleTheme, toggleTheme } = useContext(SetToggleThemeContext);
 
@@ -31,10 +35,14 @@ const Header: React.FC<HeaderProps> = ({
         <div>
           {/* <img src={Logo} alt="GoFinances" /> */}
 
-          <Profile>
-            <span>Bem-vindo,</span>
-            <strong>{user.name}</strong>
-          </Profile>
+          {isWideVersion ? (
+            <Profile>
+              <span>Bem-vindo,</span>
+              <strong>{user.name}</strong>
+            </Profile>
+          ) : (
+            ''
+          )}
 
           <section>
             <button type="button" onClick={() => handleToggleTheme()}>

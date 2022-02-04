@@ -1,5 +1,5 @@
 import React, { useCallback, useRef, useState } from 'react';
-import { Center } from '@chakra-ui/react';
+import { Center, useBreakpointValue, Image } from '@chakra-ui/react';
 import { FiUser, FiLock } from 'react-icons/fi';
 import { FormHandles } from '@unform/core';
 import { Form } from '@unform/web';
@@ -8,15 +8,15 @@ import * as Yup from 'yup';
 import { useLoading, Oval } from '@agney/react-loading';
 
 import { useAuth } from '../../hooks/auth';
-import { useToast } from '../../hooks/toast';
 import getValidationErrors from '../../utils/getValidationErrors';
 
-import logoImg from '../../assets/logo.svg';
+import logoImg from '../../assets/logoatual.png';
 
 import Input from '../../components/Global/Input';
 import Button from '../../components/Global/Button';
 
 import { Container, Content, ContainerCard } from './styles';
+import { apllyToast } from '../../components/Global/Toast2.0';
 
 interface SignInFormData {
   nickname: string;
@@ -24,13 +24,16 @@ interface SignInFormData {
 }
 
 const SignIn: React.FC = () => {
+  const isWideVersion = useBreakpointValue({
+    base: false,
+    lg: true,
+  });
   const formRef = useRef<FormHandles>(null);
   const componentRef = useRef<HTMLDivElement>(null);
 
   const [loadSignInUser, setloadSignInUser] = useState(false);
 
   const { signIn } = useAuth();
-  const { addToast } = useToast();
 
   const handleSubmit = useCallback(
     async (data: SignInFormData) => {
@@ -61,15 +64,15 @@ const SignIn: React.FC = () => {
           return;
         }
 
-        addToast({
-          type: 'info',
-          title: 'Erro na autenticação',
-          description: 'Ocorreu um erro ao fazer login, cheque as credenciais.',
-        });
+        apllyToast(
+          'error',
+          'Ocorreu um erro ao fazer login, cheque as credenciais.',
+          'top-right',
+        );
         setloadSignInUser(false);
       }
     },
-    [signIn, addToast],
+    [signIn],
   );
 
   const { containerProps, indicatorEl } = useLoading({
@@ -79,23 +82,28 @@ const SignIn: React.FC = () => {
 
   return (
     <ContainerCard>
-      <div className="infohome">
-        <header>
-          <h1>Portal Cooasgo</h1>
-        </header>
+      {isWideVersion ? (
+        <div className="infohome">
+          <header>
+            <h1>Portal Cooasgo</h1>
+          </header>
 
-        <div>
-          <h3>Facilidade</h3>
-          <p>
-            Em um único lugar e com o mesmo usuário, você tem acesso
-            centralizado aos sistemas Web da Cooasgo. Seja bem-vindo e fique a
-            vontade.
-          </p>
+          <div>
+            <h3>Facilidade</h3>
+            <p>
+              Em um único lugar e com o mesmo usuário, você tem acesso
+              centralizado aos sistemas Web da Cooasgo. Seja bem-vindo e fique a
+              vontade.
+            </p>
+          </div>
         </div>
-      </div>
+      ) : (
+        ''
+      )}
+
       <Container>
         <Content>
-          <img src={logoImg} alt="Samasc" />
+          <Image boxSize="200px" src={logoImg} alt="cooasgo+somoscoop" />
 
           <Form ref={formRef} onSubmit={handleSubmit}>
             <h2>Realize seu login</h2>
@@ -121,7 +129,7 @@ const SignIn: React.FC = () => {
               </Center>
             </Button>
 
-            <a href="forgot">Recuperar senha</a>
+            {/* <a href="forgot">Recuperar senha</a> */}
           </Form>
         </Content>
       </Container>

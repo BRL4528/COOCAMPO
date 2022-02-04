@@ -6,66 +6,62 @@ import Route from './Route';
 import SignIn from '../pages/SignIn';
 
 // Routes user ADM
-import Menu from '../pages/Menu';
-import DashboardAdm from '../pages/Dashboard-adm';
+import Dashboard from '../pages/Dashboard';
+import DashboardPPR from '../pages/Dashboard/ppr_management/Dashboard';
 
 // PPR
-import SelectorFolders from '../pages/Dashboard-adm/GoalsSubgoals';
-import Email from '../pages/Dashboard-adm/Email';
-import Report from '../pages/Dashboard-adm/Report';
-import IcomeStatement from '../pages/Dashboard-adm/Report/IncomeStatement';
+import SelectorFolders from '../pages/Dashboard/ppr_management/GoalsSubgoals';
+import Email from '../pages/Dashboard/ppr_management/Email';
+import Report from '../pages/Dashboard/ppr_management/Report';
+import IcomeStatement from '../pages/Dashboard/ppr_management/Report/IncomeStatement';
 
-import PainelSatisfactionSurveyResult from '../pages/Dashboard-adm/Report/PainelSatisfactionSurveyResult';
+import PainelSatisfactionSurveyResult from '../pages/Dashboard/ppr_management/Report/PainelSatisfactionSurveyResult';
 
-import Sector from '../pages/Dashboard-adm/Sector';
-import SectorSelected from '../pages/Dashboard-adm/Sector/SelectedSector';
-import SectorResume from '../pages/Dashboard-adm/Sector/SectorResume';
-import AnalyticModuloAdm from '../pages/Dashboard-adm/AnalyticModule';
-import PainelAnalyticModulo from '../pages/Dashboard-adm/PainelAnalyticModule';
+import Sector from '../pages/Dashboard/ppr_management/Sector';
+import SectorSelected from '../pages/Dashboard/ppr_management/Sector/SelectedSector';
+import SectorResume from '../pages/Dashboard/ppr_management/Sector/SectorResume';
+import AnalyticModuloAdm from '../pages/Dashboard/ppr_management/AnalyticModule';
+import PainelAnalyticModulo from '../pages/Dashboard/ppr_management/PainelAnalyticModule';
 
-import PerformanceEvaluation from '../pages/Dashboard-adm/PerformanceEvaluation';
-import ListOfEvaluation from '../pages/Dashboard-adm/PerformanceEvaluation/Evaluations/ListOfEvaluation';
-import EvaluationResume from '../pages/Dashboard-adm/PerformanceEvaluation/Evaluations/EvaluationResume';
+import PerformanceEvaluation from '../pages/Dashboard/ppr_management/PerformanceEvaluation';
+import ListOfEvaluation from '../pages/Dashboard/ppr_management/PerformanceEvaluation/Evaluations/ListOfEvaluation';
+import EvaluationResume from '../pages/Dashboard/ppr_management/PerformanceEvaluation/Evaluations/EvaluationResume';
 
 import PainelSatisfactionSurvey from '../pages/AcessGlobal/PainelSatisfactionSurvey';
 
 import SatisfactionSurvey from '../pages/AcessGlobal/SatisfactionSurvey';
 
-import Import from '../pages/Dashboard-adm/Imports';
-import Schedule from '../pages/Dashboard-adm/Schedule';
-import ScheduleOnly from '../pages/Dashboard-adm/Schedule/ScheduleUnic';
-import Employers from '../pages/Dashboard-adm/Employers';
+import Import from '../pages/Dashboard/ppr_management/Imports';
+import Schedule from '../pages/Dashboard/ppr_management/Schedule';
+import ScheduleOnly from '../pages/Dashboard/ppr_management/Schedule/ScheduleUnic';
+import Employers from '../pages/Dashboard/ppr_management/Employers';
 
-import Vehicles from '../pages/Dashboard-adm/VehiclesManagement/Vehicles';
+import Vehicles from '../pages/Dashboard/vehicles_management/Vehicles';
 
-import DashboardMiles from '../pages/Dashboard-adm/VehiclesManagement/Dashboard';
-import VehiclesSchedule from '../pages/Dashboard-adm/VehiclesManagement/Schedule';
-import Kilometers from '../pages/Dashboard-adm/VehiclesManagement/Kilometers';
-import KilometersVelho from '../pages/Dashboard-adm/Miles/YouMiles';
-import VehiclesSupply from '../pages/Dashboard-adm/VehiclesManagement/Supply';
-import VehiclesMaintenance from '../pages/Dashboard-adm/VehiclesManagement/Maintenance';
+import DashboardMiles from '../pages/Dashboard/vehicles_management/Dashboard';
+import VehiclesSchedule from '../pages/Dashboard/vehicles_management/Schedule';
+import Kilometers from '../pages/Dashboard/vehicles_management/Kilometers';
+import KilometersVelho from '../pages/Dashboard/Miles-velho/YouMiles';
+import VehiclesSupply from '../pages/Dashboard/vehicles_management/Supply';
+import VehiclesMaintenance from '../pages/Dashboard/vehicles_management/Maintenance';
 
 import FormsOrderService from '../components/Admin/FormsOrderService';
 
-import ServicesOrders from '../pages/Dashboard-adm/ServiceOrders/UserServiceOrders';
-import PainelServicesOrders from '../pages/Dashboard-adm/ServiceOrders/PainelServiceOrders';
-import ServiceIntegrity from '../pages/Dashboard-adm/ServiceOrders/ServiceIntegrity';
-import Monitoring from '../pages/Dashboard-adm/ServiceOrders/Monitoring';
+import ServicesOrders from '../pages/Dashboard/service_orders/UserServiceOrders';
+import PainelServicesOrders from '../pages/Dashboard/service_orders/PainelServiceOrders';
+import ServiceIntegrity from '../pages/Dashboard/service_orders/ServiceIntegrity';
+import Monitoring from '../pages/Dashboard/service_orders/Monitoring';
 
-import SelectedNic from '../pages/Dashboard-adm/Rules/SelectedNic';
+import SelectedNic from '../pages/Dashboard/ppr_management/Rules/SelectedNic';
 
-import Rules from '../pages/Dashboard-adm/Rules';
-import Visio from '../pages/Dashboard-adm/Rules/Visio';
-
-// Routes user no ADM
-import DashboardUser from '../pages/Dashboard-user';
-import AnalyticModuloUser from '../pages/Dashboard-user/AnalyticModule';
+import Rules from '../pages/Dashboard/ppr_management/Rules';
+import Visio from '../pages/Dashboard/ppr_management/Rules/Visio';
 
 // BI
-import BIManagement from '../pages/Dashboard-adm/BIManagement';
-import BIEnergY from '../pages/Dashboard-adm/BIManagement/energiBi';
-import BIFleet from '../pages/Dashboard-adm/BIManagement/fleetBi';
-import BIOrders from '../pages/Dashboard-adm/BIManagement/ordersBi';
+import BIManagement from '../pages/Dashboard/BIManagement';
+import BIEnergY from '../pages/Dashboard/BIManagement/energiBi';
+import BIFleet from '../pages/Dashboard/BIManagement/fleetBi';
+import BIOrders from '../pages/Dashboard/BIManagement/ordersBi';
 
 import Error404 from '../pages/error/404';
 
@@ -97,12 +93,12 @@ const Routes: React.FC = () => (
 
     <Route
       path="/management-ppr/dashboard"
-      component={DashboardAdm}
+      component={DashboardPPR}
       isPrivate
       isAdmin
     />
 
-    <Route path="/menu" component={Menu} isPrivate isAdmin />
+    <Route path="/menu" component={Dashboard} isPrivate isAdmin />
 
     <Route
       path="/management-ppr/goals-subgoals"
@@ -265,15 +261,6 @@ const Routes: React.FC = () => (
     <Route
       path="/management-ppr/painel-module-analytical/:analyticId?"
       component={PainelAnalyticModulo}
-      isPrivate
-      isUser
-      isAdmin
-    />
-
-    <Route path="/user" component={DashboardUser} isPrivate isUser />
-    <Route
-      path="/management-ppr/analytic-module-user"
-      component={AnalyticModuloUser}
       isPrivate
       isUser
       isAdmin

@@ -28,7 +28,7 @@ export const Container = styled.div`
   background: #ffff;
   width: 400px;
   height: 500px;
-  padding: 25px;
+  /* padding: 25px; */
   display: flex;
   border-radius: 6px;
   align-items: stretch;
@@ -54,7 +54,7 @@ export const Content = styled.div`
   }
 
   form {
-    margin: 50px 0;
+    /* margin: 15px 0; */
     width: 340px;
     text-align: center;
 

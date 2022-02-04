@@ -10,14 +10,14 @@ export const Container = styled.div<Prps>`
   z-index: 1;
   position: fixed;
   overflow: hidden;
-  width: 100vw;
+  width: 100%;
   top: 0;
 
   /* background: var(--white-secondary); */
   background: ${({ theme }) => (theme === 'light' ? '#fff' : '#1F2029')};
 
   transition: var(--transition-speed);
-  padding: 5px 0;
+  padding: 20px 0;
   border-bottom: ${({ theme }) =>
     theme === 'light' ? '2px solid var(--text-tertiary)' : ''}; ;
 `;
@@ -48,8 +48,8 @@ export const HeaderContent = styled.div<Prps>`
       width: 60px;
       justify-content: space-between;
 
-      & + button {
-        margin: 0 20px 0 0;
+      button {
+        margin: 0 40px 0 0;
       }
     }
 
@@ -120,6 +120,7 @@ export const Profile = styled.div`
     color: var(--white-tertiary);
   }
   strong {
+    text-overflow: ellipsis;
     color: var(--color-theme-primary);
   }
 `;
