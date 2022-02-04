@@ -121,7 +121,7 @@ export function MaintenanceTable({ vehicleSelected }: IvehicleSelected) {
         reason,
         type,
         vehicle_id: vehicleSelected.id,
-        conductor: user.id,
+        conductor_id: user.id,
         description,
       };
       console.log('data', data);
