@@ -85,12 +85,12 @@ const ModalEditVehicle: React.FC<IModalProps> = ({
   );
 
   const handleDocumentChange = useCallback(
-    (e: ChangeEvent<HTMLInputElement>) => {
+    async (e: ChangeEvent<HTMLInputElement>) => {
       if (e.target.files) {
         const data = new FormData();
 
         data.append('document', e.target.files[0]);
-        api
+        await api
           .patch(`/vehicles/upload/document?id=${dataEditVehicle}`, data)
           .then(response => {
             setDataVehicle(response.data);
