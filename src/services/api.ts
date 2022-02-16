@@ -3,7 +3,7 @@ import axios from 'axios';
 export const api = axios.create({
   // baseURL: process.env.REACT_APP_API_URL,
   // baseURL: 'http://localhost:3333',
-  baseURL: 'https://digitalocean.samasc.site',
+  baseURL: 'https://deploy.cooasgo.samasc.com.br',
 });
 
 export const apiPowerBI = axios.create({
