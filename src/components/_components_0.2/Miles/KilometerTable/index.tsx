@@ -40,6 +40,17 @@ interface IKilometersTableProps {
   };
 }
 
+interface Kilometers {
+  id: string;
+  km_start: number;
+  km_end: number;
+  km_traveled: number;
+  observations: string;
+  reason: string;
+  created_at: string;
+  date: string;
+}
+
 interface IGetKilometers {
   kilometer: [
     {
@@ -79,7 +90,7 @@ export function KilometerTable({
 }: IKilometersTableProps) {
   const { user } = useAuth();
   const { isOpen } = useDisclosure();
-  const [dataTable, setDataTable] = useState<IGetKilometers>();
+  const [dataTable, setDataTable] = useState<Kilometers[]>();
   const [newRegister, setNewRegister] = useState<string>();
   const isWideVersion = useBreakpointValue({
     base: false,
@@ -90,10 +101,16 @@ export function KilometerTable({
     // setLoading(true);
     api
       .get<IGetKilometers>(
-        `/kilometers/filter?conductor_id=${user.id}&vehicle_id=${vehicleSelected.id}&take=6&page=1`,
+        `/kilometers/filter?conductor_id=${user.id}&vehicle_id=${vehicleSelected.id}&take=100&page=1`,
       )
       .then(response => {
-        setDataTable(response.data);
+        const formatKilometer = response.data.kilometer.sort(function (a, b) {
+          return (
+            new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+          );
+        });
+        setDataTable(formatKilometer);
+        console.log('ver isso', formatKilometer);
         // setLoading(false);
       });
   }, [user.id, vehicleSelected, newRegister]);
@@ -206,7 +223,7 @@ export function KilometerTable({
           </Thead>
 
           <Tbody>
-            {dataTable?.kilometer.map(data => (
+            {dataTable?.map(data => (
               <Tr key={data.id}>
                 <Td px={['2', '4', '6']}>
                   <Checkbox colorScheme="pink" />
