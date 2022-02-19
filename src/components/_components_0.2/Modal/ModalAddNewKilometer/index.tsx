@@ -141,6 +141,15 @@ export function ModalAddNewKilometer({
     setReason(e);
   }, []);
 
+  const handleOpenModal = useCallback(() => {
+    console.log(km_initial);
+    if (km_initial !== 0) {
+      onOpen();
+    } else {
+      apllyToast('warning', 'Selecione um veiculo!');
+    }
+  }, [km_initial, onOpen]);
+
   return (
     <>
       <Tooltip hasArrow label="Novo Km">
@@ -149,7 +158,7 @@ export function ModalAddNewKilometer({
           size="sm"
           colorScheme="blue"
           fontWeight="medium"
-          onClick={onOpen}
+          onClick={handleOpenModal}
           cursor="pointer"
         >
           <Icon as={RiAddLine} fontSize="20" />

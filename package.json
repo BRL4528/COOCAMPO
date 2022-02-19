@@ -24,7 +24,6 @@
     "date-fns": "^2.17.0",
     "filesize": "^6.1.0",
     "framer-motion": "^4.1.17",
-    "node-sass": "^4.0.0",
     "polished": "^4.0.5",
     "powerbi-client": "^2.17.2",
     "powerbi-client-react": "^1.3.0",

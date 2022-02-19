@@ -14,7 +14,7 @@ import React, {
 
 import SwiperCore, { Navigation, Pagination, Scrollbar, A11y } from 'swiper';
 // import * as Yup from 'yup';
-// import MultiSelect from 'react-multi-select-component';
+
 import { Swiper, SwiperSlide } from 'swiper/react';
 
 import UseAnimations from 'react-useanimations';
@@ -26,7 +26,7 @@ import ptBR from 'date-fns/locale/pt-BR';
 // import enUS from 'date-fns/locale/en-US';
 
 import DayPicker, { DayModifiers } from 'react-day-picker';
-import 'react-day-picker/lib/style.css';
+// import 'react-day-picker/lib/style.css';
 
 import { useLoading, Oval } from '@agney/react-loading';
 
@@ -51,10 +51,10 @@ import {
   CardIntro,
   // CardIntro,
 } from './styles';
-import 'swiper/swiper.scss';
-import 'swiper/components/navigation/navigation.scss';
-import 'swiper/components/pagination/pagination.scss';
-import 'swiper/components/scrollbar/scrollbar.scss';
+// import 'swiper/swiper.scss';
+// import 'swiper/components/navigation/navigation.scss';
+// import 'swiper/components/pagination/pagination.scss';
+// import 'swiper/components/scrollbar/scrollbar.scss';
 
 // import RadioInput from '../../../components/Global/Radio';
 import Button from '../../../components/Global/Button';

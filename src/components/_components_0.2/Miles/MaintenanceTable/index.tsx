@@ -233,6 +233,7 @@ export function MaintenanceTable({ vehicleSelected }: IvehicleSelected) {
 
             <ModalAddNewMaintenance
               handleAddNewMaintenance={handleAddNewMaintenance}
+              vehicleSelected={vehicleSelected.id}
             />
           </Box>
         </Flex>

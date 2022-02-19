@@ -34,10 +34,12 @@ interface IMaintenance {
 
 interface IModalProps {
   handleAddNewMaintenance: (kilometer: Omit<IMaintenance, ''>) => void;
+  vehicleSelected: string;
 }
 
 export function ModalAddNewMaintenance({
   handleAddNewMaintenance,
+  vehicleSelected,
 }: IModalProps) {
   const formRef = useRef<FormHandles>(null);
   const { onOpen, isOpen, onClose } = useDisclosure();
@@ -119,6 +121,15 @@ export function ModalAddNewMaintenance({
     setReason(e);
   }, []);
 
+  const handleOpenModal = useCallback(() => {
+    console.log(vehicleSelected);
+    if (vehicleSelected) {
+      onOpen();
+    } else {
+      apllyToast('warning', 'Selecione um veiculo!');
+    }
+  }, [vehicleSelected, onOpen]);
+
   return (
     <>
       <Tooltip hasArrow label="Novo Km">
@@ -127,7 +138,7 @@ export function ModalAddNewMaintenance({
           size="sm"
           colorScheme="blue"
           fontWeight="medium"
-          onClick={onOpen}
+          onClick={handleOpenModal}
           cursor="pointer"
         >
           <Icon as={RiAddLine} fontSize="20" />

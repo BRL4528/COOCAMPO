@@ -12,7 +12,7 @@ export default function BIManagementDashboard() {
         <Flex my="6" maxWidth={1480} mx="auto" pb={4} px="6" textAlign="center">
           <Sidebar path="bi" />
           <ReportBIManagement
-            reportLoading="8b9d7c10-1ba8-4039-a8f3-b2ff2b030df3"
+            reportLoading="28d30525-270a-495c-8fb6-52af3af7284b"
             embedId="2780625e-4cc9-464f-84cc-9d660fc73d05"
             embedUrl="https://app.powerbi.com/reportEmbed?reportId=2780625e-4cc9-464f-84cc-9d660fc73d05&config=eyJjbHVzdGVyVXJsIjoiaHR0cHM6Ly9XQUJJLUJSQVpJTC1TT1VUSC1CLVBSSU1BUlktcmVkaXJlY3QuYW5hbHlzaXMud2luZG93cy5uZXQiLCJlbWJlZEZlYXR1cmVzIjp7Im1vZGVybkVtYmVkIjp0cnVlLCJhbmd1bGFyT25seVJlcG9ydEVtYmVkIjp0cnVlLCJjZXJ0aWZpZWRUZWxlbWV0cnlFbWJlZCI6dHJ1ZSwidXNhZ2VNZXRyaWNzVk5leHQiOnRydWUsInNraXBab25lUGF0Y2giOnRydWV9fQ%3d%3d"
           />

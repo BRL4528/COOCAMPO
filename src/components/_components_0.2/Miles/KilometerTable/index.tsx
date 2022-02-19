@@ -110,7 +110,6 @@ export function KilometerTable({
           );
         });
         setDataTable(formatKilometer);
-        console.log('ver isso', formatKilometer);
         // setLoading(false);
       });
   }, [user.id, vehicleSelected, newRegister]);

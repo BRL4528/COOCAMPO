@@ -34,9 +34,13 @@ interface ISupply {
 
 interface IModalProps {
   handleAddNewSupply: (kilometer: Omit<ISupply, ''>) => void;
+  vehicleSelected: string;
 }
 
-export function ModalAddNewSupply({ handleAddNewSupply }: IModalProps) {
+export function ModalAddNewSupply({
+  handleAddNewSupply,
+  vehicleSelected,
+}: IModalProps) {
   const formRef = useRef<FormHandles>(null);
   const { onOpen, isOpen, onClose } = useDisclosure();
   const isWideVersion = useBreakpointValue({
@@ -89,7 +93,6 @@ export function ModalAddNewSupply({ handleAddNewSupply }: IModalProps) {
 
         handleAddNewSupply(formatData);
 
-        apllyToast('success', 'Sucesso ao adicionar abastecimento!');
         onClose();
         setReason('');
 
@@ -120,6 +123,15 @@ export function ModalAddNewSupply({ handleAddNewSupply }: IModalProps) {
     setReason(e);
   }, []);
 
+  const handleOpenModal = useCallback(() => {
+    console.log(vehicleSelected);
+    if (vehicleSelected) {
+      onOpen();
+    } else {
+      apllyToast('warning', 'Selecione um veiculo!');
+    }
+  }, [vehicleSelected, onOpen]);
+
   return (
     <>
       <Tooltip hasArrow label="Novo Km">
@@ -128,7 +140,7 @@ export function ModalAddNewSupply({ handleAddNewSupply }: IModalProps) {
           size="sm"
           colorScheme="blue"
           fontWeight="medium"
-          onClick={onOpen}
+          onClick={handleOpenModal}
           cursor="pointer"
         >
           <Icon as={RiAddLine} fontSize="20" />

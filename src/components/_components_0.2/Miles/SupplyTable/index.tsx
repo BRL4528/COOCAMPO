@@ -54,6 +54,36 @@ interface ISupply {
 }
 
 interface IGetSupply {
+  supplies: [
+    {
+      id: string;
+      date: string;
+      type: string;
+      quantity: string;
+      amount_total: string;
+      km_odometer: string;
+      conductor: string;
+      observation: string;
+      file: boolean;
+      file_url: string;
+      vehicle_id: string;
+      created_at: string;
+    },
+  ];
+
+  pagination: {
+    page: number;
+    take: number;
+    total: number;
+    totalPages: number;
+  };
+}
+
+interface SupplyAdded {
+  id: string;
+}
+
+interface Supply {
   id: string;
   date: string;
   type: string;
@@ -68,10 +98,6 @@ interface IGetSupply {
   created_at: string;
 }
 
-interface SupplyAdded {
-  id: string;
-}
-
 export function SupplyTable({ vehicleSelected }: IKilometersTableProps) {
   const { user } = useAuth();
   const { isOpen } = useDisclosure();
@@ -80,7 +106,7 @@ export function SupplyTable({ vehicleSelected }: IKilometersTableProps) {
     lg: true,
   });
 
-  const [dataTable, setDataTable] = useState<IGetSupply[]>([]);
+  const [dataTable, setDataTable] = useState<Supply[]>();
   const [addedSupply, setSupplyAdded] = useState<SupplyAdded>();
   const [idSupplySelectedChange, setIdSupplySelectedChange] = useState('');
   const [loading, setLoading] = useState(false);
@@ -93,32 +119,46 @@ export function SupplyTable({ vehicleSelected }: IKilometersTableProps) {
     if (vehicleSelected.id !== '') {
       setLoadingTable(true);
       api
-        .get<IGetSupply[]>(`/supplies/show?vehicle_id=${vehicleSelected.id}`)
+        .get<IGetSupply>(
+          `/supplies/filter?conductor_id=${user.id}&vehicle_id=${vehicleSelected.id}&take=100&page=1`,
+        )
         .then(response => {
-          setDataTable(response.data);
+          setDataTable(response.data.supplies);
           setLoadingTable(false);
         });
     }
-  }, [addedSupply, idSupplySelectedChange, updateTable, vehicleSelected]);
+  }, [
+    addedSupply,
+    idSupplySelectedChange,
+    updateTable,
+    user.id,
+    vehicleSelected,
+  ]);
 
   const handleAddNewSupply = useCallback(
     async (data: Omit<ISupply, 'supply'>) => {
-      const { date, type, quantity, amount_total, km_odometer, observation } =
-        data;
+      try {
+        const { date, type, quantity, amount_total, km_odometer, observation } =
+          data;
 
-      const formatData = {
-        date,
-        type,
-        quantity,
-        amount_total,
-        km_odometer,
-        observation,
-        vehicle_id: vehicleSelected.id,
-        conductor_id: user.id,
-      };
-      await api.post('/supplies', formatData).then(response => {
-        setSupplyAdded(response.data.id);
-      });
+        const formatData = {
+          date,
+          type,
+          quantity,
+          amount_total,
+          km_odometer,
+          observation,
+          vehicle_id: vehicleSelected.id,
+          conductor_id: user.id,
+        };
+        await api.post('/supplies', formatData).then(response => {
+          setSupplyAdded(response.data.id);
+          apllyToast('success', 'Sucesso ao adicionar abastecimento');
+        });
+      } catch (err) {
+        console.log(err);
+        apllyToast('error', 'Problemas ao adicionar abastecimento');
+      }
     },
     [user.id, vehicleSelected.id],
   );
@@ -192,7 +232,7 @@ export function SupplyTable({ vehicleSelected }: IKilometersTableProps) {
       };
 
       try {
-        api.put(`/supplies?id=${id}`, formatData).then(response => {
+        await api.put(`/supplies?id=${id}`, formatData).then(response => {
           setSupplyAdded(response.data.id);
           apllyToast('success', 'Sucesso ao editar abastecimento!');
         });
@@ -213,7 +253,7 @@ export function SupplyTable({ vehicleSelected }: IKilometersTableProps) {
               Abastecimento
             </Heading>
             <Text color="gray.400" fontSize="xs" ml="2" mt="1">
-              (total de registro: {dataTable.length})
+              (total de registro: {dataTable?.length})
             </Text>
           </Flex>
 
@@ -230,7 +270,10 @@ export function SupplyTable({ vehicleSelected }: IKilometersTableProps) {
               </Button>
             </Tooltip> */}
 
-            <ModalAddNewSupply handleAddNewSupply={handleAddNewSupply} />
+            <ModalAddNewSupply
+              handleAddNewSupply={handleAddNewSupply}
+              vehicleSelected={vehicleSelected.id}
+            />
           </Box>
         </Flex>
 
@@ -243,7 +286,7 @@ export function SupplyTable({ vehicleSelected }: IKilometersTableProps) {
           </ScaleFade>
         ) : (
           <>
-            {dataTable.length <= 0 ? (
+            {dataTable && dataTable?.length <= 0 ? (
               <ScaleFade initialScale={0.9} in>
                 <Center>
                   <Flex flexDirection="row">
@@ -274,7 +317,7 @@ export function SupplyTable({ vehicleSelected }: IKilometersTableProps) {
                   </Thead>
 
                   <Tbody>
-                    {dataTable.map(data => (
+                    {dataTable?.map(data => (
                       <>
                         <Tr key={data.id}>
                           <Td px={['2', '4', '6']}>

@@ -15,10 +15,10 @@ import notion from '../../../assets/notion.svg';
 import logo from '../../../assets/logo.svg';
 
 import { Container, ContainerMaster, CardIntro } from './styles';
-import 'swiper/swiper.scss';
-import 'swiper/components/navigation/navigation.scss';
-import 'swiper/components/pagination/pagination.scss';
-import 'swiper/components/scrollbar/scrollbar.scss';
+// import 'swiper/swiper.scss';
+// import 'swiper/components/navigation/navigation.scss';
+// import 'swiper/components/pagination/pagination.scss';
+// import 'swiper/components/scrollbar/scrollbar.scss';
 
 const SatisfactionSurvey: React.FC = () => {
   SwiperCore.use([Navigation, Pagination, Scrollbar, A11y]);
