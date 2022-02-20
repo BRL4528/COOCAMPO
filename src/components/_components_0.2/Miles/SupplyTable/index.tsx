@@ -32,6 +32,7 @@ import { ModalAddNewSupply } from '../../Modal/ModalAddNewSupply/indext';
 import { ModalEditNewSupply } from '../../Modal/ModalEditNewSupply';
 import { ModalVisualizeImage } from '../../Modal/ModalVisualizeImage/index';
 import { apllyToast } from '../../../Global/Toast2.0';
+import { Pagination } from '../../Pagination';
 
 import { useAuth } from '../../../../hooks/auth';
 import { api } from '../../../../services/api';
@@ -84,18 +85,29 @@ interface SupplyAdded {
 }
 
 interface Supply {
-  id: string;
-  date: string;
-  type: string;
-  quantity: string;
-  amount_total: string;
-  km_odometer: string;
-  conductor: string;
-  observation: string;
-  file: boolean;
-  file_url: string;
-  vehicle_id: string;
-  created_at: string;
+  supplies: [
+    {
+      id: string;
+      date: string;
+      type: string;
+      quantity: string;
+      amount_total: string;
+      km_odometer: string;
+      conductor: string;
+      observation: string;
+      file: boolean;
+      file_url: string;
+      vehicle_id: string;
+      created_at: string;
+    },
+  ];
+
+  pagination: {
+    page: number;
+    take: number;
+    total: number;
+    totalPages: number;
+  };
 }
 
 export function SupplyTable({ vehicleSelected }: IKilometersTableProps) {
@@ -106,7 +118,7 @@ export function SupplyTable({ vehicleSelected }: IKilometersTableProps) {
     lg: true,
   });
 
-  const [dataTable, setDataTable] = useState<Supply[]>();
+  const [dataTable, setDataTable] = useState<Supply>();
   const [addedSupply, setSupplyAdded] = useState<SupplyAdded>();
   const [idSupplySelectedChange, setIdSupplySelectedChange] = useState('');
   const [loading, setLoading] = useState(false);
@@ -114,22 +126,34 @@ export function SupplyTable({ vehicleSelected }: IKilometersTableProps) {
   const [loadingTable, setLoadingTable] = useState(false);
   const [open, setOpen] = useState('');
   const [updateTable, setUpdateTable] = useState<string>('');
+  const [page, setPage] = useState(1);
 
   useEffect(() => {
     if (vehicleSelected.id !== '') {
-      setLoadingTable(true);
-      api
-        .get<IGetSupply>(
-          `/supplies/filter?conductor_id=${user.id}&vehicle_id=${vehicleSelected.id}&take=100&page=1`,
-        )
-        .then(response => {
-          setDataTable(response.data.supplies);
-          setLoadingTable(false);
-        });
+      try {
+        setLoadingTable(true);
+        api
+          .get<IGetSupply>(`/supplies/filter`, {
+            params: {
+              conductor_id: user.id,
+              vehicle_id: vehicleSelected.id,
+              take: 6,
+              page,
+            },
+          })
+          .then(response => {
+            setDataTable(response.data);
+            setLoadingTable(false);
+          });
+      } catch (err) {
+        console.log(err);
+        apllyToast('error', 'Problemas ao carregar abastecimento');
+      }
     }
   }, [
     addedSupply,
     idSupplySelectedChange,
+    page,
     updateTable,
     user.id,
     vehicleSelected,
@@ -157,7 +181,7 @@ export function SupplyTable({ vehicleSelected }: IKilometersTableProps) {
         });
       } catch (err) {
         console.log(err);
-        apllyToast('error', 'Problemas ao adicionar abastecimento');
+        apllyToast('warning', 'Problemas ao adicionar abastecimento');
       }
     },
     [user.id, vehicleSelected.id],
@@ -253,7 +277,7 @@ export function SupplyTable({ vehicleSelected }: IKilometersTableProps) {
               Abastecimento
             </Heading>
             <Text color="gray.400" fontSize="xs" ml="2" mt="1">
-              (total de registro: {dataTable?.length})
+              (total de registro: {dataTable?.pagination.total})
             </Text>
           </Flex>
 
@@ -286,7 +310,7 @@ export function SupplyTable({ vehicleSelected }: IKilometersTableProps) {
           </ScaleFade>
         ) : (
           <>
-            {dataTable && dataTable?.length <= 0 ? (
+            {dataTable && dataTable?.supplies.length <= 0 ? (
               <ScaleFade initialScale={0.9} in>
                 <Center>
                   <Flex flexDirection="row">
@@ -296,131 +320,144 @@ export function SupplyTable({ vehicleSelected }: IKilometersTableProps) {
                 </Center>
               </ScaleFade>
             ) : (
-              <ScaleFade initialScale={0.9} in>
-                <Table colorScheme="whiteAlpha">
-                  <Thead>
-                    <Tr>
-                      <Th px={['2', '4', '6']} color="gray.300" width="8">
-                        <Checkbox colorScheme="pink" />
-                      </Th>
+              <>
+                <ScaleFade initialScale={0.9} in>
+                  <Table colorScheme="whiteAlpha">
+                    <Thead>
+                      <Tr>
+                        <Th px={['2', '4', '6']} color="gray.300" width="8">
+                          <Checkbox colorScheme="pink" />
+                        </Th>
 
-                      <Th>Data</Th>
-                      {isWideVersion && <Th>Tipo do Combustível</Th>}
-                      {isWideVersion && <Th>Quantidade</Th>}
-                      <Th>Valor Total</Th>
-                      {isWideVersion && <Th>KM Odômetro</Th>}
-                      {isWideVersion && <Th>Observações</Th>}
-                      {isWideVersion && <Th>Anexo</Th>}
+                        <Th>Data</Th>
+                        {isWideVersion && <Th>Tipo do Combustível</Th>}
+                        {isWideVersion && <Th>Quantidade</Th>}
+                        <Th>Valor Total</Th>
+                        {isWideVersion && <Th>KM Odômetro</Th>}
+                        {isWideVersion && <Th>Observações</Th>}
+                        {isWideVersion && <Th>Anexo</Th>}
 
-                      {isWideVersion && <Th width="8">Editar</Th>}
-                    </Tr>
-                  </Thead>
+                        {isWideVersion && <Th width="8">Editar</Th>}
+                      </Tr>
+                    </Thead>
 
-                  <Tbody>
-                    {dataTable?.map(data => (
-                      <>
-                        <Tr key={data.id}>
-                          <Td px={['2', '4', '6']}>
-                            <Box mb="2">
-                              {handleVerifyDateIsNew(data.created_at) ? (
-                                <Badge colorScheme="green">Novo</Badge>
-                              ) : (
-                                ''
-                              )}
-                            </Box>
-                            <Checkbox colorScheme="pink" />
-                          </Td>
+                    <Tbody>
+                      {dataTable?.supplies.map(data => (
+                        <>
+                          <Tr key={data.id}>
+                            <Td px={['2', '4', '6']}>
+                              <Box mb="2">
+                                {handleVerifyDateIsNew(data.created_at) ? (
+                                  <Badge colorScheme="green">Novo</Badge>
+                                ) : (
+                                  ''
+                                )}
+                              </Box>
+                              <Checkbox colorScheme="pink" />
+                            </Td>
 
-                          <Td>
-                            <Box>
-                              <Text fontWeight="medium">
-                                {format(new Date(data.date), "dd 'de' MMMM", {
-                                  locale: ptBR,
-                                })}
-                              </Text>
-                            </Box>
-                          </Td>
-
-                          {isWideVersion && <Td>{data.type}</Td>}
-                          {isWideVersion && <Td>{data.quantity}</Td>}
-                          <Td>{data.amount_total}</Td>
-                          {isWideVersion && <Td>{data.km_odometer}</Td>}
-                          {isWideVersion && <Td>{data.observation}</Td>}
-                          {isWideVersion && (
                             <Td>
-                              {data.file ? (
-                                <Tooltip
-                                  hasArrow
-                                  label="Visualizar comprovante"
-                                >
-                                  <Box>
-                                    <Button
-                                      onClick={() => handleOpenImage(data.id)}
-                                      onContextMenu={() => console.log('teste')}
-                                      size="sm"
-                                      fontSize="sm"
-                                      bg="green.500"
-                                    >
-                                      <Icon
-                                        as={RiAttachmentLine}
-                                        fontSize="20"
-                                      />
-                                      <ModalVisualizeImage
-                                        url={data.file_url}
-                                        open={open === data.id}
-                                        handleCloseImage={handleCloseImage}
-                                        idSupply={data.id}
-                                        hadleUpdateTable={hadleUpdateTable}
-                                      />
-                                    </Button>
-                                  </Box>
-                                </Tooltip>
-                              ) : (
-                                <Tooltip hasArrow label="Adicionar comprovante">
-                                  <Box
-                                    as="label"
-                                    px="3"
-                                    py="1.5"
-                                    borderRadius="6"
-                                    htmlFor={data.id}
-                                    bg="tomato"
-                                    cursor="pointer"
+                              <Box>
+                                <Text fontWeight="medium">
+                                  {format(new Date(data.date), "dd 'de' MMMM", {
+                                    locale: ptBR,
+                                  })}
+                                </Text>
+                              </Box>
+                            </Td>
+
+                            {isWideVersion && <Td>{data.type}</Td>}
+                            {isWideVersion && <Td>{data.quantity}</Td>}
+                            <Td>{data.amount_total}</Td>
+                            {isWideVersion && <Td>{data.km_odometer}</Td>}
+                            {isWideVersion && <Td>{data.observation}</Td>}
+                            {isWideVersion && (
+                              <Td>
+                                {data.file ? (
+                                  <Tooltip
+                                    hasArrow
+                                    label="Visualizar comprovante"
                                   >
-                                    {loading && loadingId === data.id ? (
-                                      <Spinner size="sm" />
-                                    ) : (
-                                      <Icon
-                                        as={RiAttachmentLine}
-                                        fontSize="20"
-                                      />
-                                    )}
+                                    <Box>
+                                      <Button
+                                        onClick={() => handleOpenImage(data.id)}
+                                        // onContextMenu={() =>
+                                        //   console.log('teste')
+                                        // }
+                                        size="sm"
+                                        fontSize="sm"
+                                        bg="green.500"
+                                      >
+                                        <Icon
+                                          as={RiAttachmentLine}
+                                          fontSize="20"
+                                        />
+                                        <ModalVisualizeImage
+                                          url={data.file_url}
+                                          open={open === data.id}
+                                          handleCloseImage={handleCloseImage}
+                                          idSupply={data.id}
+                                          hadleUpdateTable={hadleUpdateTable}
+                                        />
+                                      </Button>
+                                    </Box>
+                                  </Tooltip>
+                                ) : (
+                                  <Tooltip
+                                    hasArrow
+                                    label="Adicionar comprovante"
+                                  >
                                     <Box
-                                      display="none"
-                                      as="input"
-                                      type="file"
-                                      id={data.id}
-                                      onChange={handleReceiptChange}
-                                    />
-                                  </Box>
-                                </Tooltip>
-                              )}
-                            </Td>
-                          )}
+                                      as="label"
+                                      px="3"
+                                      py="1.5"
+                                      borderRadius="6"
+                                      htmlFor={data.id}
+                                      bg="tomato"
+                                      cursor="pointer"
+                                    >
+                                      {loading && loadingId === data.id ? (
+                                        <Spinner size="sm" />
+                                      ) : (
+                                        <Icon
+                                          as={RiAttachmentLine}
+                                          fontSize="20"
+                                        />
+                                      )}
+                                      <Box
+                                        display="none"
+                                        as="input"
+                                        type="file"
+                                        id={data.id}
+                                        onChange={handleReceiptChange}
+                                      />
+                                    </Box>
+                                  </Tooltip>
+                                )}
+                              </Td>
+                            )}
 
-                          {isWideVersion && (
-                            <Td>
-                              <ModalEditNewSupply
-                                id_supply={data.id}
-                                handleEditSupply={handleEditSupply}
-                              />
-                            </Td>
-                          )}
-                        </Tr>
-                      </>
-                    ))}
-                  </Tbody>
-                </Table>
-              </ScaleFade>
+                            {isWideVersion && (
+                              <Td>
+                                <ModalEditNewSupply
+                                  id_supply={data.id}
+                                  handleEditSupply={handleEditSupply}
+                                />
+                              </Td>
+                            )}
+                          </Tr>
+                        </>
+                      ))}
+                    </Tbody>
+                  </Table>
+                </ScaleFade>
+                <Pagination
+                  totalCountOfRegisters={dataTable?.pagination.total || 0}
+                  currentPage={page}
+                  onPageChange={setPage}
+                  registersPerPage={dataTable?.pagination.take || 0}
+                />
+              </>
             )}
           </>
         )}

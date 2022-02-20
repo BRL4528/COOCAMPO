@@ -1,4 +1,5 @@
-import { useEffect, useState, useCallback } from 'react';
+/* eslint-disable @typescript-eslint/no-empty-function */
+import React, { useEffect, useState, useCallback } from 'react';
 
 import { format } from 'date-fns';
 
@@ -18,11 +19,16 @@ import {
   Text,
   useBreakpointValue,
   useDisclosure,
+  Center,
+  Spinner,
+  ScaleFade,
+  Icon,
   // Tooltip,
 } from '@chakra-ui/react';
 // import { RiFilter2Line } from 'react-icons/ri';
 
-import { Pagination } from '../Pagination';
+import { RiDraftLine } from 'react-icons/ri';
+import { Pagination } from '../../Pagination';
 import { FilterCollapse } from '../Filter';
 import { ModalAddNewKilometer } from '../../Modal/ModalAddNewKilometer';
 import { ModalEditNewKilometer } from '../../Modal/ModalEditNewKilometer';
@@ -38,17 +44,6 @@ interface IKilometersTableProps {
     id: string;
     km: number;
   };
-}
-
-interface Kilometers {
-  id: string;
-  km_start: number;
-  km_end: number;
-  km_traveled: number;
-  observations: string;
-  reason: string;
-  created_at: string;
-  date: string;
 }
 
 interface IGetKilometers {
@@ -88,31 +83,49 @@ export function KilometerTable({
   vehicleSelected,
   handleUpdateNewKm,
 }: IKilometersTableProps) {
+  const [page, setPage] = useState(1);
   const { user } = useAuth();
   const { isOpen } = useDisclosure();
-  const [dataTable, setDataTable] = useState<Kilometers[]>();
+  const [dataTable, setDataTable] = useState<IGetKilometers>();
   const [newRegister, setNewRegister] = useState<string>();
+  const [loading, setLoading] = useState(false);
   const isWideVersion = useBreakpointValue({
     base: false,
     lg: true,
   });
 
   useEffect(() => {
-    // setLoading(true);
-    api
-      .get<IGetKilometers>(
-        `/kilometers/filter?conductor_id=${user.id}&vehicle_id=${vehicleSelected.id}&take=100&page=1`,
-      )
-      .then(response => {
-        const formatKilometer = response.data.kilometer.sort(function (a, b) {
-          return (
-            new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
-          );
+    try {
+      setLoading(true);
+      api
+        .get<IGetKilometers>('/kilometers/filter', {
+          params: {
+            conductor_id: user.id,
+            vehicle_id: vehicleSelected.id,
+            take: 6,
+            page,
+          },
+        })
+        .then(response => {
+          const formatKilometer = response.data.kilometer.sort(function (a, b) {
+            return (
+              new Date(b.created_at).getTime() -
+              new Date(a.created_at).getTime()
+            );
+          });
+
+          const obj = {
+            kilometer: formatKilometer,
+            pagination: response.data.pagination,
+          };
+          setDataTable(obj);
+          setLoading(false);
         });
-        setDataTable(formatKilometer);
-        // setLoading(false);
-      });
-  }, [user.id, vehicleSelected, newRegister]);
+    } catch (err) {
+      console.log(err);
+      apllyToast('error', 'Problemas ao carregar quilometragens!');
+    }
+  }, [user.id, vehicleSelected, newRegister, page]);
 
   const handleFormatDate = useCallback((data: string) => {
     const dataFormadet = format(new Date(data), 'dd/MM/yyyy');
@@ -126,24 +139,30 @@ export function KilometerTable({
 
   const handleAddNewKilometer = useCallback(
     async (data: Omit<IKilometers, 'e'>) => {
-      const { km_end, km_start, observations, reason, km_traveled, date } =
-        data;
+      try {
+        const { km_end, km_start, observations, reason, km_traveled, date } =
+          data;
 
-      const formatData = {
-        km_end: Number(km_end),
-        km_start: Number(km_start),
-        observations,
-        reason,
-        km_traveled: Number(km_traveled),
-        vehicle_id: vehicleSelected.id,
-        conductor_id: user.id,
-        date,
-      };
+        const formatData = {
+          km_end: Number(km_end),
+          km_start: Number(km_start),
+          observations,
+          reason,
+          km_traveled: Number(km_traveled),
+          vehicle_id: vehicleSelected.id,
+          conductor_id: user.id,
+          date,
+        };
 
-      api.post('/kilometers', formatData).then(response => {
-        setNewRegister(response.data.id);
-        handleUpdateNewKm(response.data.id);
-      });
+        api.post('/kilometers', formatData).then(response => {
+          setNewRegister(response.data.id);
+          handleUpdateNewKm(response.data.id);
+          apllyToast('success', 'Sucesso ao editar quilometragem!');
+        });
+      } catch (err) {
+        console.log(err);
+        apllyToast('warning', 'Problemas ao atualizar qulimetragem');
+      }
     },
     [vehicleSelected.id, user.id, handleUpdateNewKm],
   );
@@ -203,64 +222,92 @@ export function KilometerTable({
           </Box>
         </Flex>
         <FilterCollapse isOpen={isOpen} />
+        {loading ? (
+          <ScaleFade initialScale={0.9} in>
+            <Center>
+              <Spinner size="sm" />
+            </Center>
+          </ScaleFade>
+        ) : (
+          <>
+            {dataTable && dataTable?.kilometer.length <= 0 ? (
+              <ScaleFade initialScale={0.9} in>
+                <Center>
+                  <Flex flexDirection="row">
+                    <Icon as={RiDraftLine} fontSize="20" mr="2" />
+                    <Text>Sem resgistro para este veiculo</Text>
+                  </Flex>
+                </Center>
+              </ScaleFade>
+            ) : (
+              <>
+                <ScaleFade initialScale={0.9} in>
+                  <Table colorScheme="whiteAlpha">
+                    <Thead>
+                      <Tr>
+                        <Th px={['2', '4', '6']} color="gray.300" width="8">
+                          <Checkbox colorScheme="pink" />
+                        </Th>
+                        <Th>Data</Th>
+                        {isWideVersion && <Th>KM Inicial</Th>}
+                        {isWideVersion && <Th>KM Final</Th>}
+                        <Th>KM Percorrido</Th>
+                        {isWideVersion && <Th>Destino</Th>}
+                        {isWideVersion && <Th>Motivo</Th>}
 
-        <Table colorScheme="whiteAlpha">
-          <Thead>
-            <Tr>
-              <Th px={['2', '4', '6']} color="gray.300" width="8">
-                <Checkbox colorScheme="pink" />
-              </Th>
-              <Th>Data</Th>
-              {isWideVersion && <Th>KM Inicial</Th>}
-              {isWideVersion && <Th>KM Final</Th>}
-              <Th>KM Percorrido</Th>
-              {isWideVersion && <Th>Destino</Th>}
-              {isWideVersion && <Th>Motivo</Th>}
+                        <Th width="8" />
+                      </Tr>
+                    </Thead>
 
-              <Th width="8" />
-            </Tr>
-          </Thead>
+                    <Tbody>
+                      {dataTable?.kilometer.map(data => (
+                        <Tr key={data.id}>
+                          <Td px={['2', '4', '6']}>
+                            <Checkbox colorScheme="pink" />
+                          </Td>
 
-          <Tbody>
-            {dataTable?.map(data => (
-              <Tr key={data.id}>
-                <Td px={['2', '4', '6']}>
-                  <Checkbox colorScheme="pink" />
-                </Td>
+                          <Td>
+                            <Box>
+                              <Text fontWeight="medium">
+                                {handleFormatDate(data.date)}
+                              </Text>
+                              <Text fontSize="sm" color="gray.300">
+                                {handleFormatHours(data.created_at)}
+                              </Text>
+                            </Box>
+                          </Td>
 
-                <Td>
-                  <Box>
-                    <Text fontWeight="medium">
-                      {handleFormatDate(data.date)}
-                    </Text>
-                    <Text fontSize="sm" color="gray.300">
-                      {handleFormatHours(data.created_at)}
-                    </Text>
-                  </Box>
-                </Td>
+                          {isWideVersion && <Td>{data.km_start} km</Td>}
+                          {isWideVersion && <Td>{data.km_end} km</Td>}
+                          <Td>{data.km_traveled} km</Td>
+                          {isWideVersion && <Td>{data.observations}</Td>}
+                          {isWideVersion && <Td>{data.reason}</Td>}
 
-                {isWideVersion && <Td>{data.km_start} km</Td>}
-                {isWideVersion && <Td>{data.km_end} km</Td>}
-                <Td>{data.km_traveled} km</Td>
-                {isWideVersion && <Td>{data.observations}</Td>}
-                {isWideVersion && <Td>{data.reason}</Td>}
-
-                <Td>
-                  {/* {isWideVersion ? ( */}
-                  <ModalEditNewKilometer
-                    id_kilometer={data.id}
-                    handleEditKilometer={handleEditKilometer}
-                  />
-                  {/* ) : (
-                    ''
-                  )} */}
-                </Td>
-              </Tr>
-            ))}
-          </Tbody>
-        </Table>
-
-        <Pagination />
+                          <Td>
+                            {/* {isWideVersion ? ( */}
+                            <ModalEditNewKilometer
+                              id_kilometer={data.id}
+                              handleEditKilometer={handleEditKilometer}
+                            />
+                            {/* ) : (
+                      ''
+                    )} */}
+                          </Td>
+                        </Tr>
+                      ))}
+                    </Tbody>
+                  </Table>
+                </ScaleFade>
+                <Pagination
+                  totalCountOfRegisters={dataTable?.pagination.total || 0}
+                  currentPage={page}
+                  onPageChange={setPage}
+                  registersPerPage={dataTable?.pagination.take || 0}
+                />
+              </>
+            )}
+          </>
+        )}
       </Box>
     </Box>
   );

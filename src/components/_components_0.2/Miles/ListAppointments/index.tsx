@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-empty-function */
 import { useCallback, useEffect, useState } from 'react';
 // eslint-disable-next-line import/no-duplicates
 import { differenceInSeconds, format } from 'date-fns';
@@ -28,7 +29,7 @@ import {
   Badge,
 } from '@chakra-ui/react';
 import { RiChatSmile3Line } from 'react-icons/ri';
-import { Pagination } from '../Pagination';
+import { Pagination } from '../../Pagination';
 import { api } from '../../../../services/api';
 
 interface IPropsListAppointmens {
@@ -58,10 +59,17 @@ interface Appointments {
       };
     },
   ];
+  pagination: {
+    page: number;
+    take: number;
+    total: number;
+    totalPages: number;
+  };
 }
 
 export function ListAppointments({ vehicleSelected }: IPropsListAppointmens) {
   const [appointments, setListAppointments] = useState<Appointments>();
+  const [page, setPage] = useState(1);
 
   useEffect(() => {
     api
@@ -69,13 +77,14 @@ export function ListAppointments({ vehicleSelected }: IPropsListAppointmens) {
         params: {
           vehicle_id: vehicleSelected,
           take: 3,
-          page: 1,
+          page,
         },
       })
       .then(response => {
+        console.log('response', response.data);
         setListAppointments(response.data);
       });
-  }, [vehicleSelected]);
+  }, [page, vehicleSelected]);
 
   const handleVerifyDateIsNew = useCallback(date => {
     if (differenceInSeconds(new Date(), new Date(date)) < 600) {
@@ -161,7 +170,12 @@ export function ListAppointments({ vehicleSelected }: IPropsListAppointmens) {
           ))}
         </Tbody>
       </Table>
-      <Pagination />
+      <Pagination
+        totalCountOfRegisters={appointments?.pagination.total || 0}
+        currentPage={page}
+        onPageChange={setPage}
+        registersPerPage={appointments?.pagination.take || 0}
+      />
     </Box>
   );
 }

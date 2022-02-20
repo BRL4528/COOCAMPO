@@ -32,6 +32,7 @@ import { ModalAddNewMaintenance } from '../../Modal/ModalAddNewMaintenance';
 import { ModalVisualizeImage } from '../../Modal/ModalVisualizeImage/index';
 import { ModalEditNewMaintenance } from '../../Modal/ModalEditNewMaintenance';
 import { apllyToast } from '../../../Global/Toast2.0';
+import { Pagination } from '../../Pagination';
 
 import { useAuth } from '../../../../hooks/auth';
 import { api } from '../../../../services/api';
@@ -54,17 +55,27 @@ interface IMaintenance {
 }
 
 interface IGetMaintenance {
-  id: string;
-  date: string;
-  type: string;
-  amount_total: string;
-  km: string;
-  conductor: string;
-  description: string;
-  file: boolean;
-  file_url: string;
-  vehicle_id: string;
-  created_at: string;
+  maintenance: [
+    {
+      id: string;
+      date: string;
+      type: string;
+      amount_total: string;
+      km: string;
+      conductor: string;
+      description: string;
+      file: boolean;
+      file_url: string;
+      vehicle_id: string;
+      created_at: string;
+    },
+  ];
+  pagination: {
+    page: number;
+    take: number;
+    total: number;
+    totalPages: number;
+  };
 }
 
 interface SupplyAdded {
@@ -79,7 +90,7 @@ export function MaintenanceTable({ vehicleSelected }: IvehicleSelected) {
     lg: true,
   });
 
-  const [dataTable, setDataTable] = useState<IGetMaintenance[]>([]);
+  const [dataTable, setDataTable] = useState<IGetMaintenance>();
   const [addedMaintenance, setMaintenanceAdded] = useState<SupplyAdded>();
   const [idSupplySelectedChange, setIdSupplySelectedChange] = useState('');
   const [loading, setLoading] = useState(false);
@@ -87,6 +98,7 @@ export function MaintenanceTable({ vehicleSelected }: IvehicleSelected) {
   const [loadingTable, setLoadingTable] = useState(false);
   const [open, setOpen] = useState('');
   const [updateTable, setUpdateTable] = useState<string>('');
+  const [page, setPage] = useState(1);
 
   useEffect(() => {
     async function getApi() {
@@ -94,9 +106,14 @@ export function MaintenanceTable({ vehicleSelected }: IvehicleSelected) {
         if (vehicleSelected.id !== '') {
           setLoadingTable(true);
           await api
-            .get<IGetMaintenance[]>(
-              `/maintenance/show?vehicle_id=${vehicleSelected.id}`,
-            )
+            .get<IGetMaintenance>(`/maintenance/filter`, {
+              params: {
+                conductor_id: user.id,
+                vehicle_id: vehicleSelected.id,
+                take: 6,
+                page,
+              },
+            })
             .then(response => {
               setDataTable(response.data);
               setLoadingTable(false);
@@ -109,26 +126,38 @@ export function MaintenanceTable({ vehicleSelected }: IvehicleSelected) {
       }
     }
     getApi();
-  }, [addedMaintenance, idSupplySelectedChange, updateTable, vehicleSelected]);
+  }, [
+    addedMaintenance,
+    idSupplySelectedChange,
+    page,
+    updateTable,
+    user.id,
+    vehicleSelected,
+  ]);
 
   const handleEditAddNewMaintenance = useCallback(
     async (data: Omit<IMaintenance, 'e'>) => {
-      const { amount_total, date, km, reason, type, description, id } = data;
-      const fomatData = {
-        amount_total,
-        date,
-        km,
-        reason,
-        type,
-        vehicle_id: vehicleSelected.id,
-        conductor_id: user.id,
-        description,
-      };
-      console.log('data', data);
+      try {
+        const { amount_total, date, km, reason, type, description, id } = data;
+        const fomatData = {
+          amount_total,
+          date,
+          km,
+          reason,
+          type,
+          vehicle_id: vehicleSelected.id,
+          conductor_id: user.id,
+          description,
+        };
 
-      api.put(`/maintenance?id=${id}`, fomatData).then(response => {
-        setMaintenanceAdded(response.data.id);
-      });
+        api.put(`/maintenance?id=${id}`, fomatData).then(response => {
+          setMaintenanceAdded(response.data.id);
+          apllyToast('warning', 'Problemas ao atualizar manutenção!');
+        });
+      } catch (err) {
+        console.log(err);
+        apllyToast('warning', 'Problemas ao atualizar manutenção!');
+      }
     },
     [user.id, vehicleSelected.id],
   );
@@ -154,7 +183,7 @@ export function MaintenanceTable({ vehicleSelected }: IvehicleSelected) {
         });
       } catch (err) {
         console.log(err);
-        apllyToast('error', 'Problemas ao adicionar nova manutenção!');
+        apllyToast('warning', 'Problemas ao adicionar nova manutenção!');
       }
     },
     [user.id, vehicleSelected.id],
@@ -214,7 +243,7 @@ export function MaintenanceTable({ vehicleSelected }: IvehicleSelected) {
               Manutenções
             </Heading>
             <Text color="gray.400" fontSize="xs" ml="2" mt="1">
-              (total de registro: {dataTable.length})
+              (total de registro: {dataTable?.maintenance.length})
             </Text>
           </Flex>
 
@@ -247,7 +276,7 @@ export function MaintenanceTable({ vehicleSelected }: IvehicleSelected) {
           </ScaleFade>
         ) : (
           <>
-            {dataTable.length <= 0 ? (
+            {dataTable && dataTable?.maintenance.length <= 0 ? (
               <ScaleFade initialScale={0.9} in>
                 <Center>
                   <Flex flexDirection="row">
@@ -257,123 +286,140 @@ export function MaintenanceTable({ vehicleSelected }: IvehicleSelected) {
                 </Center>
               </ScaleFade>
             ) : (
-              <ScaleFade initialScale={0.9} in>
-                <Table colorScheme="whiteAlpha">
-                  <Thead>
-                    <Tr>
-                      <Th px={['2', '4', '6']} color="gray.300" width="8">
-                        <Checkbox colorScheme="pink" />
-                      </Th>
+              <>
+                <ScaleFade initialScale={0.9} in>
+                  <Table colorScheme="whiteAlpha">
+                    <Thead>
+                      <Tr>
+                        <Th px={['2', '4', '6']} color="gray.300" width="8">
+                          <Checkbox colorScheme="pink" />
+                        </Th>
 
-                      <Th>Data</Th>
-                      {isWideVersion && <Th>KM Odômetro</Th>}
-                      <Th>Valor Total</Th>
-                      {isWideVersion && <Th>Tipo</Th>}
-                      {isWideVersion && <Th>Descrição da manutenção</Th>}
-                      {isWideVersion && <Th>Anexo</Th>}
+                        <Th>Data</Th>
+                        {isWideVersion && <Th>KM Odômetro</Th>}
+                        <Th>Valor Total</Th>
+                        {isWideVersion && <Th>Tipo</Th>}
+                        {isWideVersion && <Th>Descrição da manutenção</Th>}
+                        {isWideVersion && <Th>Anexo</Th>}
 
-                      {isWideVersion && <Th width="8">Editar</Th>}
-                    </Tr>
-                  </Thead>
+                        {isWideVersion && <Th width="8">Editar</Th>}
+                      </Tr>
+                    </Thead>
 
-                  <Tbody>
-                    {dataTable.map(data => (
-                      <Tr key={data.id}>
-                        <Td px={['2', '4', '6']}>
-                          <Box mb="2">
-                            {handleVerifyDateIsNew(data.created_at) ? (
-                              <Badge colorScheme="green">Novo</Badge>
+                    <Tbody>
+                      {dataTable?.maintenance.map(data => (
+                        <Tr key={data.id}>
+                          <Td px={['2', '4', '6']}>
+                            <Box mb="2">
+                              {handleVerifyDateIsNew(data.created_at) ? (
+                                <Badge colorScheme="green">Novo</Badge>
+                              ) : (
+                                ''
+                              )}
+                            </Box>
+                            <Checkbox colorScheme="pink" />
+                          </Td>
+
+                          <Td>
+                            <Box>
+                              <Text fontWeight="medium">
+                                {format(new Date(data.date), "dd 'de' MMMM", {
+                                  locale: ptBR,
+                                })}
+                              </Text>
+                            </Box>
+                          </Td>
+
+                          <Td>{data.km}</Td>
+                          {isWideVersion && <Td>{data.amount_total}</Td>}
+                          {isWideVersion && <Td>{data.type}</Td>}
+
+                          {isWideVersion && <Td>{data.description}</Td>}
+                          {isWideVersion && (
+                            <Td>
+                              {data.file ? (
+                                <Tooltip
+                                  hasArrow
+                                  label="Visualizar comprovante"
+                                >
+                                  <Box>
+                                    <Button
+                                      onClick={() => handleOpenImage(data.id)}
+                                      onContextMenu={() => console.log('teste')}
+                                      size="sm"
+                                      fontSize="sm"
+                                      bg="green.500"
+                                    >
+                                      <Icon
+                                        as={RiAttachmentLine}
+                                        fontSize="20"
+                                      />
+                                      <ModalVisualizeImage
+                                        url={data.file_url}
+                                        open={open === data.id}
+                                        handleCloseImage={handleCloseImage}
+                                        idSupply={data.id}
+                                        hadleUpdateTable={hadleUpdateTable}
+                                      />
+                                    </Button>
+                                  </Box>
+                                </Tooltip>
+                              ) : (
+                                <Tooltip hasArrow label="Adicionar comprovante">
+                                  <Box
+                                    as="label"
+                                    px="3"
+                                    py="1.5"
+                                    borderRadius="6"
+                                    htmlFor={data.id}
+                                    bg="tomato"
+                                    cursor="pointer"
+                                  >
+                                    {loading && loadingId === data.id ? (
+                                      <Spinner size="sm" />
+                                    ) : (
+                                      <Icon
+                                        as={RiAttachmentLine}
+                                        fontSize="20"
+                                      />
+                                    )}
+                                    <Box
+                                      display="none"
+                                      as="input"
+                                      type="file"
+                                      id={data.id}
+                                      onChange={handleReceiptChange}
+                                    />
+                                  </Box>
+                                </Tooltip>
+                              )}
+                            </Td>
+                          )}
+
+                          <Td>
+                            {isWideVersion ? (
+                              <ModalEditNewMaintenance
+                                id_maintenance={data.id}
+                                handleEditAddNewMaintenance={
+                                  handleEditAddNewMaintenance
+                                }
+                              />
                             ) : (
                               ''
                             )}
-                          </Box>
-                          <Checkbox colorScheme="pink" />
-                        </Td>
-
-                        <Td>
-                          <Box>
-                            <Text fontWeight="medium">
-                              {format(new Date(data.date), "dd 'de' MMMM", {
-                                locale: ptBR,
-                              })}
-                            </Text>
-                          </Box>
-                        </Td>
-
-                        <Td>{data.km}</Td>
-                        {isWideVersion && <Td>{data.amount_total}</Td>}
-                        {isWideVersion && <Td>{data.type}</Td>}
-
-                        {isWideVersion && <Td>{data.description}</Td>}
-                        {isWideVersion && (
-                          <Td>
-                            {data.file ? (
-                              <Tooltip hasArrow label="Visualizar comprovante">
-                                <Box>
-                                  <Button
-                                    onClick={() => handleOpenImage(data.id)}
-                                    onContextMenu={() => console.log('teste')}
-                                    size="sm"
-                                    fontSize="sm"
-                                    bg="green.500"
-                                  >
-                                    <Icon as={RiAttachmentLine} fontSize="20" />
-                                    <ModalVisualizeImage
-                                      url={data.file_url}
-                                      open={open === data.id}
-                                      handleCloseImage={handleCloseImage}
-                                      idSupply={data.id}
-                                      hadleUpdateTable={hadleUpdateTable}
-                                    />
-                                  </Button>
-                                </Box>
-                              </Tooltip>
-                            ) : (
-                              <Tooltip hasArrow label="Adicionar comprovante">
-                                <Box
-                                  as="label"
-                                  px="3"
-                                  py="1.5"
-                                  borderRadius="6"
-                                  htmlFor={data.id}
-                                  bg="tomato"
-                                  cursor="pointer"
-                                >
-                                  {loading && loadingId === data.id ? (
-                                    <Spinner size="sm" />
-                                  ) : (
-                                    <Icon as={RiAttachmentLine} fontSize="20" />
-                                  )}
-                                  <Box
-                                    display="none"
-                                    as="input"
-                                    type="file"
-                                    id={data.id}
-                                    onChange={handleReceiptChange}
-                                  />
-                                </Box>
-                              </Tooltip>
-                            )}
                           </Td>
-                        )}
-
-                        <Td>
-                          {isWideVersion ? (
-                            <ModalEditNewMaintenance
-                              id_maintenance={data.id}
-                              handleEditAddNewMaintenance={
-                                handleEditAddNewMaintenance
-                              }
-                            />
-                          ) : (
-                            ''
-                          )}
-                        </Td>
-                      </Tr>
-                    ))}
-                  </Tbody>
-                </Table>
-              </ScaleFade>
+                        </Tr>
+                      ))}
+                    </Tbody>
+                  </Table>
+                </ScaleFade>
+                <Pagination
+                  totalCountOfRegisters={dataTable?.pagination.total || 0}
+                  currentPage={page}
+                  onPageChange={setPage}
+                  registersPerPage={dataTable?.pagination.take || 0}
+                />
+              </>
             )}
           </>
         )}
