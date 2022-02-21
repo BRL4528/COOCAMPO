@@ -31,6 +31,10 @@ interface IDateAvailable {
   date: string;
   available: boolean;
 }
+interface DestinyInfos {
+  destiny: string;
+  description: string;
+}
 
 export function FloatlistHours({
   daySelected,
@@ -55,29 +59,34 @@ export function FloatlistHours({
 
   useEffect(() => {
     if (vehicleSelected !== 'Nenhum veiculo selecionado') {
-      setLoading(true);
-      const dayFormated =
-        daySelected === '' ? new Date() : new Date(daySelected);
-      api
-        .get(`/appointments/vehicle`, {
-          params: {
-            vehicle_id: vehicleSelected,
+      try {
+        setLoading(true);
+        const dayFormated =
+          daySelected === '' ? new Date() : new Date(daySelected);
+        api
+          .get(`/appointments/vehicle`, {
+            params: {
+              vehicle_id: vehicleSelected,
 
-            day: dayFormated.getDate(),
+              day: dayFormated.getDate(),
 
-            year: dayFormated.getFullYear(),
+              year: dayFormated.getFullYear(),
 
-            month: dayFormated.getMonth() + 1,
-          },
-        })
-        .then(response => {
-          const dateFormated = createArayHoursFormated(
-            response.data,
-            daySelected,
-          );
-          setHoursAvailable(dateFormated);
-          setLoading(false);
-        });
+              month: dayFormated.getMonth() + 1,
+            },
+          })
+          .then(response => {
+            const dateFormated = createArayHoursFormated(
+              response.data,
+              daySelected,
+            );
+            setHoursAvailable(dateFormated);
+            setLoading(false);
+          });
+      } catch (err) {
+        console.log(err);
+        apllyToast('warning', 'Problemas ao editar quilometragem!');
+      }
     }
   }, [daySelected, vehicleSelected, reloadComponent]);
 
@@ -88,7 +97,6 @@ export function FloatlistHours({
         : format(new Date(daySelected), 'yyyy-MM-dd');
     const daySelectedFormated = `${dayFormated} 12:00:00`;
 
-    console.log('teste');
     return hoursAvailable
       .filter(({ date }) => new Date(date) < new Date(daySelectedFormated))
       .map(({ date, available }) => {
@@ -138,24 +146,27 @@ export function FloatlistHours({
     [handleButtonStatus, start_date],
   );
 
-  const handleSubmitScheduleVehicle = useCallback(() => {
-    try {
-      api.post('/appointments', {
-        vehicle_id: vehicleSelected,
-        date: format(new Date(start_date), 'yyyy-MM-dd'),
-        start_date,
-        end_date,
-      });
-
-      onClose();
-      apllyToast('success', 'Solicitação enviado com sucesso');
-      handleCleanAppointment();
-    } catch (err) {
-      apllyToast('error', 'Erro ao confirmar solicitação');
-      handleCleanAppointment();
-      console.log(err);
-    }
-  }, [end_date, handleCleanAppointment, onClose, start_date, vehicleSelected]);
+  const handleSubmitScheduleVehicle = useCallback(
+    (data: DestinyInfos) => {
+      try {
+        api.post('/appointments', {
+          vehicle_id: vehicleSelected,
+          date: format(new Date(start_date), 'yyyy-MM-dd'),
+          start_date,
+          end_date,
+        });
+        console.log('data', data);
+        onClose();
+        apllyToast('success', 'Solicitação enviado com sucesso');
+        handleCleanAppointment();
+      } catch (err) {
+        apllyToast('error', 'Erro ao confirmar solicitação');
+        handleCleanAppointment();
+        console.log(err);
+      }
+    },
+    [end_date, handleCleanAppointment, onClose, start_date, vehicleSelected],
+  );
 
   const formateDateStartAppointments = useMemo(() => {
     if (start_date !== '') {
@@ -165,6 +176,7 @@ export function FloatlistHours({
     }
     return '';
   }, [start_date]);
+
   const formateDateEndAppointments = useMemo(() => {
     if (end_date !== '') {
       return format(new Date(end_date), `d 'de' MMMM yyyy - HH:mm:ss`, {
@@ -279,11 +291,11 @@ export function FloatlistHours({
                       m="2"
                     >
                       {hour.hourFormated}
-                      {console.log(hour)}
                     </Checkbox>
                   ))}
                 </SimpleGrid>
               </Box>
+
               <Box>
                 <Button
                   onClick={handleCleanAppointment}

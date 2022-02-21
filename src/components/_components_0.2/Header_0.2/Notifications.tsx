@@ -1,11 +1,6 @@
 import React, { useContext } from 'react';
 import { HStack, Icon } from '@chakra-ui/react';
-import {
-  RiNotificationLine,
-  RiUserAddLine,
-  RiMoonFill,
-  RiSunFill,
-} from 'react-icons/ri';
+import { RiNotificationLine, RiMoonFill, RiSunFill } from 'react-icons/ri';
 
 import { SetToggleThemeContext } from '../../../contexts/SetToggleThemeContext';
 
@@ -29,7 +24,6 @@ export function NotificationNav() {
         )}
       </button>
       <Icon as={RiNotificationLine} fontSize="20" />
-      <Icon as={RiUserAddLine} fontSize="20" />
     </HStack>
   );
 }

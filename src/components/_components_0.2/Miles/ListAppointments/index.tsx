@@ -14,21 +14,10 @@ import {
   Th,
   Tbody,
   Td,
-  Button,
   Heading,
-  Icon,
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
-  PopoverHeader,
-  PopoverBody,
-  PopoverFooter,
-  PopoverArrow,
-  PopoverCloseButton,
-  ButtonGroup,
   Badge,
 } from '@chakra-ui/react';
-import { RiChatSmile3Line } from 'react-icons/ri';
+// import { RiChatSmile3Line } from 'react-icons/ri';
 import { Pagination } from '../../Pagination';
 import { api } from '../../../../services/api';
 
@@ -103,7 +92,7 @@ export function ListAppointments({ vehicleSelected }: IPropsListAppointmens) {
     >
       <Flex mb="8" justify="space-between" align="center">
         <Heading size="md" fontWeight="normal">
-          Fila de saida
+          Seus agedamentos
         </Heading>
       </Flex>
 
@@ -122,13 +111,13 @@ export function ListAppointments({ vehicleSelected }: IPropsListAppointmens) {
             <Tr key={appointmentitem.id}>
               <Td>
                 <Box>
+                  {handleVerifyDateIsNew(appointmentitem.created_at) ? (
+                    <Badge colorScheme="green">New</Badge>
+                  ) : (
+                    ''
+                  )}
                   <Text fontWeight="bold">
                     {appointmentitem.conductor.name}{' '}
-                    {handleVerifyDateIsNew(appointmentitem.created_at) ? (
-                      <Badge colorScheme="green">Novo</Badge>
-                    ) : (
-                      ''
-                    )}
                   </Text>
                   <Text fontSize="sm" color="gray.300">
                     {appointmentitem.vehicle.name}
@@ -138,12 +127,16 @@ export function ListAppointments({ vehicleSelected }: IPropsListAppointmens) {
 
               <Td>
                 {' '}
-                {format(new Date(appointmentitem.start_date), "dd 'de' MMMM", {
-                  locale: ptBR,
-                })}{' '}
+                {format(
+                  new Date(appointmentitem.start_date),
+                  'dd/MM/yyyy HH:mm:ss',
+                  {
+                    locale: ptBR,
+                  },
+                )}{' '}
               </Td>
               <Td>
-                <Popover>
+                {/* <Popover>
                   <PopoverTrigger>
                     <Button as="a" size="sm" fontSize="sm" colorScheme="blue">
                       <Icon as={RiChatSmile3Line} fontSize="20" />
@@ -164,7 +157,7 @@ export function ListAppointments({ vehicleSelected }: IPropsListAppointmens) {
                       </ButtonGroup>
                     </PopoverFooter>
                   </PopoverContent>
-                </Popover>
+                </Popover> */}
               </Td>
             </Tr>
           ))}

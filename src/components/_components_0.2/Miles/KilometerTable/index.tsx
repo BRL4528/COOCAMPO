@@ -107,18 +107,7 @@ export function KilometerTable({
           },
         })
         .then(response => {
-          const formatKilometer = response.data.kilometer.sort(function (a, b) {
-            return (
-              new Date(b.created_at).getTime() -
-              new Date(a.created_at).getTime()
-            );
-          });
-
-          const obj = {
-            kilometer: formatKilometer,
-            pagination: response.data.pagination,
-          };
-          setDataTable(obj);
+          setDataTable(response.data);
           setLoading(false);
         });
     } catch (err) {
