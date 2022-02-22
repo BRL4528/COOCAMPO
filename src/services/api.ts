@@ -8,8 +8,8 @@ export const api = axios.create({
 
 export const apiPowerBI = axios.create({
   // baseURL: process.env.REACT_APP_API_URL,
-  baseURL: 'http://177.201.67.182:3333/',
-  // baseURL: 'https://powerbi.cooasgo.samasc.com.br/',
+  // baseURL: 'http://177.201.67.182:3333/',
+  baseURL: 'https://powerbi.cooasgo.samasc.com.br/',
 });
 
 export const apiGeninfo = axios.create({
