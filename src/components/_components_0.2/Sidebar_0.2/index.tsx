@@ -20,11 +20,11 @@ interface Props {
 export function Sidebar({ path }: Props) {
   const { isOpen, onClose } = useSidebarDrawer();
   const isDrawerSidebar = useBreakpointValue({
-    base: path === 'miles',
-    lg: path !== 'miles',
+    base: true,
+    lg: false,
   });
-
-  if (isDrawerSidebar) {
+  console.log(isDrawerSidebar);
+  if (isDrawerSidebar || path === 'bi') {
     return (
       <Drawer isOpen={isOpen} placement="left" onClose={onClose}>
         <DrawerOverlay>
@@ -33,7 +33,8 @@ export function Sidebar({ path }: Props) {
             <DrawerHeader>Navegação</DrawerHeader>
 
             <DrawerBody overflow="auto">
-              {path === 'miles' ? <SidebarNav /> : <SidebarNavBi />}
+              {path === 'miles' && <SidebarNav />}
+              {path === 'bi' && <SidebarNavBi />}
             </DrawerBody>
           </DrawerContent>
         </DrawerOverlay>
@@ -43,7 +44,8 @@ export function Sidebar({ path }: Props) {
 
   return (
     <Box as="aside" w="64" mr="8">
-      {path === 'miles' ? <SidebarNav /> : <SidebarNavBi />}
+      {path === 'miles' && <SidebarNav />}
+      {/* {path === 'bi' && <SidebarNavBi />} */}
     </Box>
   );
 }

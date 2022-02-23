@@ -82,7 +82,7 @@ export const ReportBIManagement = ({
                     visible: false,
                   },
                 },
-                layoutType: models.LayoutType.Custom,
+                layoutType: models.LayoutType.MobilePortrait,
                 customLayout: {
                   displayOption: models.DisplayOption.FitToPage,
                 },

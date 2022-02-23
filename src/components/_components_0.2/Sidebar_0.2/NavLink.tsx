@@ -7,7 +7,7 @@ import {
 import { ElementType } from 'react';
 
 import { Link as ReachLink } from 'react-router-dom';
-import { ActiveLink } from '../ActiveLink';
+import { ActiveLink } from './ActiveLink';
 
 interface PropsNavLink extends ChakraLinkProps {
   icon: ElementType;
