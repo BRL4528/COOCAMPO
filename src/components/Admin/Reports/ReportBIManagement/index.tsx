@@ -49,6 +49,22 @@ export const ReportBIManagement = ({
   //     }
   //   }
   // });
+
+  function checkDevice() {
+    if (
+      navigator.userAgent.match(/Android/i) ||
+      navigator.userAgent.match(/webOS/i) ||
+      navigator.userAgent.match(/iPhone/i) ||
+      navigator.userAgent.match(/iPad/i) ||
+      navigator.userAgent.match(/iPod/i) ||
+      navigator.userAgent.match(/BlackBerry/i) ||
+      navigator.userAgent.match(/Windows Phone/i)
+    ) {
+      return true; // está utilizando celular
+    }
+
+    return false; // não é celular
+  }
   useEffect(() => {
     async function loadTokenBI(): Promise<void> {
       try {
@@ -66,13 +82,16 @@ export const ReportBIManagement = ({
               embedId,
               reportMode: 'View', // "Edit"
               permissions: 'All', // "All" (when using "Edit" mode)
+
               extraSettings: {
                 filterPaneEnabled: false,
                 navContentPaneEnabled: false,
                 visualRenderedEvents: true,
                 background: models.BackgroundType.Transparent,
-              },
-              settings: {
+                layoutType: checkDevice()
+                  ? models.LayoutType.MobileLandscape
+                  : models.LayoutType.Custom,
+
                 panes: {
                   filters: {
                     expanded: false,
@@ -82,7 +101,6 @@ export const ReportBIManagement = ({
                     visible: false,
                   },
                 },
-                layoutType: models.LayoutType.Custom,
                 customLayout: {
                   displayOption: models.DisplayOption.FitToPage,
                 },
