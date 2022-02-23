@@ -23,7 +23,7 @@ export function Sidebar({ path }: Props) {
     base: true,
     lg: false,
   });
-  console.log(isDrawerSidebar);
+
   if (isDrawerSidebar || path === 'bi') {
     return (
       <Drawer isOpen={isOpen} placement="left" onClose={onClose}>

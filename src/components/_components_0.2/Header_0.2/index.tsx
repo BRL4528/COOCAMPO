@@ -42,6 +42,7 @@ export function HeaderUp({ path }: Props) {
           mr="2"
         />
       )}
+
       {!isWideVersion && (
         <IconButton
           aria-label="Open navigation"
@@ -49,6 +50,7 @@ export function HeaderUp({ path }: Props) {
           fontSize="24"
           variant="unstyled"
           onClick={onOpen}
+          display={path === 'bi' ? 'none' : ''}
           mr="2"
         />
       )}
