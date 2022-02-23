@@ -49,7 +49,7 @@ export const ReportBIManagement = ({
   //     }
   //   }
   // });
-
+  console.log(models.LayoutType.MobilePortrait);
   function checkDevice() {
     if (
       navigator.userAgent.match(/Android/i) ||
@@ -60,10 +60,10 @@ export const ReportBIManagement = ({
       navigator.userAgent.match(/BlackBerry/i) ||
       navigator.userAgent.match(/Windows Phone/i)
     ) {
-      return true; // está utilizando celular
+      return 2; // está utilizando celular
     }
 
-    return false; // não é celular
+    return 1; // não é celular
   }
   useEffect(() => {
     async function loadTokenBI(): Promise<void> {
@@ -88,9 +88,7 @@ export const ReportBIManagement = ({
                 navContentPaneEnabled: false,
                 visualRenderedEvents: true,
                 background: models.BackgroundType.Transparent,
-                layoutType: checkDevice()
-                  ? models.LayoutType.MobileLandscape
-                  : models.LayoutType.Custom,
+                layoutType: checkDevice(),
 
                 panes: {
                   filters: {
