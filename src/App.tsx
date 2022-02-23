@@ -18,7 +18,7 @@ import Routes from './routes';
 
 const App: React.FC = () => {
   const { toggleTheme } = useContext(SetToggleThemeContext);
-  console.log(toggleTheme);
+
   return (
     <BrowserRouter>
       <AuthContext>

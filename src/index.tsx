@@ -3,11 +3,14 @@ import ReactDOM from 'react-dom';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { SetToggleTheme } from './contexts/SetToggleThemeContext';
+import { CheckDevice } from './contexts/DeviceContext';
 
 ReactDOM.render(
   <React.StrictMode>
     <SetToggleTheme>
-      <App />
+      <CheckDevice>
+        <App />
+      </CheckDevice>
     </SetToggleTheme>
   </React.StrictMode>,
   document.getElementById('root'),

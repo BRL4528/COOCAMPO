@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState, useContext } from 'react';
 import { useReport } from 'powerbi-report-component';
-import { models } from 'powerbi-client';
 
 import { Box, Spinner, Center, ScaleFade } from '@chakra-ui/react';
 
@@ -10,6 +9,8 @@ import {
   layoutSettings,
 } from '../../../../utils/stylesOfReportPowerBI';
 import { apiPowerBI } from '../../../../services/api';
+import reportProps from '../../../../utils/reportProps';
+import { DeviceContext } from '../../../../contexts/DeviceContext';
 
 interface Props {
   embedId: string;
@@ -33,6 +34,7 @@ export const ReportBIManagement = ({
   const reportRef = useRef(null);
   const [report, setEmbed] = useReport();
   const { toggleTheme } = useContext(SetToggleThemeContext);
+  const { window } = useContext(DeviceContext);
   const [loadingRendered, setLoadingRendered] = useState(true);
 
   // report.on('rendered', async function () {
@@ -49,22 +51,7 @@ export const ReportBIManagement = ({
   //     }
   //   }
   // });
-  console.log(models.LayoutType.MobilePortrait);
-  function checkDevice() {
-    if (
-      navigator.userAgent.match(/Android/i) ||
-      navigator.userAgent.match(/webOS/i) ||
-      navigator.userAgent.match(/iPhone/i) ||
-      navigator.userAgent.match(/iPad/i) ||
-      navigator.userAgent.match(/iPod/i) ||
-      navigator.userAgent.match(/BlackBerry/i) ||
-      navigator.userAgent.match(/Windows Phone/i)
-    ) {
-      return 2; // está utilizando celular
-    }
 
-    return 1; // não é celular
-  }
   useEffect(() => {
     async function loadTokenBI(): Promise<void> {
       try {
@@ -73,37 +60,13 @@ export const ReportBIManagement = ({
             `/get-embed-token?reportId=${reportLoading}&workspaceId=${workspaceId}`,
           )
           .then(response => {
-            const initialReportProps = {
-              type: 'report',
-              embedType: 'report',
-              tokenType: 'Aad',
-              accessToken: response.data.accessToken,
-              embedUrl,
+            const formated = {
               embedId,
-              reportMode: 'View', // "Edit"
-              permissions: 'All', // "All" (when using "Edit" mode)
-
-              extraSettings: {
-                filterPaneEnabled: false,
-                navContentPaneEnabled: false,
-                visualRenderedEvents: true,
-                background: models.BackgroundType.Transparent,
-                layoutType: checkDevice(),
-
-                panes: {
-                  filters: {
-                    expanded: false,
-                    visible: false,
-                  },
-                  pageNavigation: {
-                    visible: false,
-                  },
-                },
-                customLayout: {
-                  displayOption: models.DisplayOption.FitToPage,
-                },
-              },
+              embedUrl,
+              window,
+              accessToken: response.data.accessToken,
             };
+            const { initialReportProps } = reportProps(formated);
 
             setEmbed(reportRef, initialReportProps as any);
           });
@@ -112,7 +75,7 @@ export const ReportBIManagement = ({
       }
     }
     loadTokenBI();
-  }, [embedId, embedUrl, reportLoading, setEmbed, workspaceId]);
+  }, [embedId, embedUrl, reportLoading, setEmbed, window, workspaceId]);
 
   if (report) {
     report.off('rendered');
