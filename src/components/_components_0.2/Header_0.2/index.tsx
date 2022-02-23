@@ -42,7 +42,7 @@ export function HeaderUp({ path }: Props) {
           mr="2"
         />
       )}
-      {/* {!isWideVersion && (
+      {!isWideVersion && (
         <IconButton
           aria-label="Open navigation"
           icon={<Icon as={RiMenuLine} />}
@@ -51,7 +51,7 @@ export function HeaderUp({ path }: Props) {
           onClick={onOpen}
           mr="2"
         />
-      )} */}
+      )}
       <Logo />
       {isWideVersion && <SearchBox />}
 
