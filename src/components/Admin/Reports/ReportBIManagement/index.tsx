@@ -15,6 +15,7 @@ interface Props {
   embedId: string;
   embedUrl: string;
   reportLoading: string;
+  workspaceId: string;
 }
 interface PropsPowerBI {
   accessToken: string;
@@ -27,6 +28,7 @@ export const ReportBIManagement = ({
   embedId,
   embedUrl,
   reportLoading,
+  workspaceId,
 }: Props) => {
   const reportRef = useRef(null);
   const [report, setEmbed] = useReport();
@@ -51,7 +53,9 @@ export const ReportBIManagement = ({
     async function loadTokenBI(): Promise<void> {
       try {
         await apiPowerBI
-          .get<PropsPowerBI>(`/get-embed-token?reportId=${reportLoading}`)
+          .get<PropsPowerBI>(
+            `/get-embed-token?reportId=${reportLoading}&workspaceId=${workspaceId}`,
+          )
           .then(response => {
             const initialReportProps = {
               type: 'report',
@@ -92,7 +96,7 @@ export const ReportBIManagement = ({
       }
     }
     loadTokenBI();
-  }, [embedId, embedUrl, reportLoading, setEmbed]);
+  }, [embedId, embedUrl, reportLoading, setEmbed, workspaceId]);
 
   if (report) {
     report.off('rendered');
