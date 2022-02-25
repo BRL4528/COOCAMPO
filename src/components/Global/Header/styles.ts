@@ -45,7 +45,7 @@ export const HeaderContent = styled.div<Prps>`
     section {
       display: flex;
       flex-direction: row;
-      width: 60px;
+      width: 120px;
       justify-content: space-between;
 
       button {

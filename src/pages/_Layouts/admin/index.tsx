@@ -25,6 +25,9 @@ const LayoutAdm: React.FC<LayoutProps> = ({ children, path }: LayoutProps) => {
   if (path.substring(0, 14) === '/bi-management') {
     return <>{children}</>;
   }
+  if (path.substring(0, 14) === '/profile') {
+    return <>{children}</>;
+  }
   return (
     <>
       <Header>

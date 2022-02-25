@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { Flex, Icon, IconButton, useBreakpointValue } from '@chakra-ui/react';
 import { RiMenuLine } from 'react-icons/ri';
 import { Profile } from './Profile';
@@ -9,7 +7,7 @@ import { Logo } from './Logo';
 import { useSidebarDrawer } from '../../../contexts/SidebarDrawerContext';
 
 interface Props {
-  path: 'miles' | 'bi';
+  path: 'miles' | 'bi' | 'profile';
 }
 
 export function HeaderUp({ path }: Props) {
@@ -32,7 +30,7 @@ export function HeaderUp({ path }: Props) {
       align="center"
       bg="theme"
     >
-      {path === 'bi' && (
+      {path !== 'miles' && (
         <IconButton
           aria-label="Open navigation"
           icon={<Icon as={RiMenuLine} />}
@@ -50,7 +48,7 @@ export function HeaderUp({ path }: Props) {
           fontSize="24"
           variant="unstyled"
           onClick={onOpen}
-          display={path === 'bi' ? 'none' : ''}
+          display={path !== 'miles' ? 'none' : ''}
           mr="2"
         />
       )}
@@ -59,7 +57,7 @@ export function HeaderUp({ path }: Props) {
 
       <Flex align="center" ml="auto">
         <NotificationNav />
-        <Profile showProfileData={isWideVersion} />
+        <Profile showProfileData={isWideVersion} path={path} />
       </Flex>
     </Flex>
   );

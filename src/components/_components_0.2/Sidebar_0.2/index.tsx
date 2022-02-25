@@ -12,9 +12,10 @@ import {
 import { useSidebarDrawer } from '../../../contexts/SidebarDrawerContext';
 import { SidebarNav } from './SideBarNav/nav_miles';
 import { SidebarNavBi } from './SideBarNav/nav_bi';
+import { SidebarNavProfile } from './SideBarNav/nav_profile';
 
 interface Props {
-  path: 'miles' | 'bi';
+  path: 'miles' | 'bi' | 'profile';
 }
 
 export function Sidebar({ path }: Props) {
@@ -24,7 +25,7 @@ export function Sidebar({ path }: Props) {
     lg: false,
   });
 
-  if (isDrawerSidebar || path === 'bi') {
+  if (isDrawerSidebar || path === 'bi' || path === 'profile') {
     return (
       <Drawer isOpen={isOpen} placement="left" onClose={onClose}>
         <DrawerOverlay>
@@ -35,6 +36,7 @@ export function Sidebar({ path }: Props) {
             <DrawerBody overflow="auto">
               {path === 'miles' && <SidebarNav />}
               {path === 'bi' && <SidebarNavBi />}
+              {path === 'profile' && <SidebarNavProfile />}
             </DrawerBody>
           </DrawerContent>
         </DrawerOverlay>

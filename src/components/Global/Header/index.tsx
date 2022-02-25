@@ -1,8 +1,9 @@
 /* eslint-disable react/require-default-props */
 import React, { useContext } from 'react';
 import { useBreakpointValue } from '@chakra-ui/react';
-import { FiLogOut } from 'react-icons/fi';
+import { FiLogOut, FiUser } from 'react-icons/fi';
 import { RiMoonFill, RiSunFill } from 'react-icons/ri';
+import { useHistory } from 'react-router-dom';
 
 import { Container, Profile, HeaderContent } from './styles';
 
@@ -25,6 +26,7 @@ const Header: React.FC<HeaderProps> = ({
     base: false,
     lg: true,
   });
+  const history = useHistory();
   const { signOut, user } = useAuth();
   const { handleToggleTheme, toggleTheme } = useContext(SetToggleThemeContext);
 
@@ -45,6 +47,10 @@ const Header: React.FC<HeaderProps> = ({
           )}
 
           <section>
+            <button type="button" onClick={() => history.push('/profile')}>
+              <FiUser />
+            </button>
+
             <button type="button" onClick={() => handleToggleTheme()}>
               {toggleTheme === 'light' ? (
                 <RiMoonFill size={20} />

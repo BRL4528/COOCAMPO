@@ -63,11 +63,16 @@ import BIEnergY from '../pages/Dashboard/BIManagement/energiBi';
 import BIFleet from '../pages/Dashboard/BIManagement/fleetBi';
 import BIOrders from '../pages/Dashboard/BIManagement/ordersBi';
 
+// Profile
+import Profile from '../pages/Dashboard/_Profile';
+
 import Error404 from '../pages/error/404';
 
 const Routes: React.FC = () => (
   <Switch>
     <Route path="/" exact component={SignIn} />
+
+    <Route isPrivate isAdmin path="/profile" component={Profile} />
     <Route
       path="/painel-module-satisfaction/:analyticId?"
       component={PainelSatisfactionSurvey}
