@@ -103,7 +103,17 @@ export const CardeHeader = styled.div`
   align-items: center;
   justify-content: space-between;
   padding: 80px 80px 40px 80px;
-  /* margin-bottom: 40px; */
+  margin-top: 40px;
+  div {
+    h2 {
+      display: flex;
+      flex-direction: row;
+
+      svg {
+        margin-left: 4px;
+      }
+    }
+  }
   strong {
     color: var(--text-primary);
     font-size: 14px;

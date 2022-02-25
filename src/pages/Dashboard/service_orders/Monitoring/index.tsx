@@ -23,7 +23,7 @@ const Reports: React.FC = () => {
             </Link>
           </h2>
           <strong>
-            Acompanhe em tempo real as orndes de serviços da cooperativa
+            Acompanhe em tempo real as ordens de serviços da cooperativa
           </strong>
         </div>
       </CardeHeader>

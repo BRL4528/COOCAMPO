@@ -149,7 +149,17 @@ export const CardeHeader = styled.div<Iprops>`
   align-items: center;
   justify-content: space-between;
 
-  margin-bottom: 40px;
+  margin-top: 40px;
+  div {
+    h2 {
+      display: flex;
+      flex-direction: row;
+
+      svg {
+        margin-left: 4px;
+      }
+    }
+  }
 `;
 
 export const CardButton = styled.div`
