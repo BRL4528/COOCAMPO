@@ -34,7 +34,7 @@ export function ModalComponent({
         isCentered
         motionPreset="slideInBottom"
         size={isWideVersion ? 'lg' : 'full'}
-        scrollBehavior="inside"
+        scrollBehavior="outside"
       >
         <ModalOverlay />
         <ModalContent bg="gray.700">

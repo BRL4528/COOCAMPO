@@ -71,7 +71,7 @@ export function ModalScheduleConfirmationAppointment({
           </Box>
 
           <Box mt="5">
-            <Badge colorScheme="red">Retornoando</Badge>
+            <Badge colorScheme="red">Retornando</Badge>
             <Text>{formateDateEndAppointments} </Text>
           </Box>
 

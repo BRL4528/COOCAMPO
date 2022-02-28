@@ -6,6 +6,18 @@ export const api = axios.create({
   baseURL: 'https://deploy.cooasgo.samasc.com.br',
 });
 
+// api.interceptors.response.use(response => {
+//   return response;
+// }, (error: AxiosError) => {
+//   if(error.response?.status === 401) {
+//     if(error.response.data?.message === 'Invalid JWT token')
+
+//   } else {
+
+//   }
+
+// })
+
 export const apiPowerBI = axios.create({
   // baseURL: process.env.REACT_APP_API_URL,
   // baseURL: 'http://177.201.67.182:3333/',
