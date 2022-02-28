@@ -1,5 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
-/* eslint-disable @typescript-eslint/no-empty-function */
+import { useCallback, useEffect, useState } from 'react';
 import {
   Flex,
   Box,
@@ -10,6 +9,7 @@ import {
   Tooltip,
   Collapse,
   ScaleFade,
+  Text,
 } from '@chakra-ui/react';
 
 import { RiBookmarkFill, RiAddLine, RiCloseLine } from 'react-icons/ri';
@@ -159,37 +159,59 @@ export function ListFloatCar({
                 selectedVehicle?.id === vehicle.id ? 'green.400' : 'gray.700'
               }
               mr="5"
-              minWidth="230"
-              maxHeight="230px"
-              // minHeight="214px"
+              minWidth={isWideVersion ? '230px' : '300px'}
+              maxHeight={isWideVersion ? '207px' : '60px'}
+              minHeight={isWideVersion ? '207px' : '60px'}
               flexDirection="row"
               position="relative"
             >
               <Box
                 onClick={() => handleSelectedVehicle(vehicle)}
                 bg="none"
-                textAlign="center"
+                textAlign={isWideVersion ? 'center' : 'initial'}
                 w="100%"
                 cursor="pointer"
+                overflow="hidden"
+                textOverflow="ellipsis"
+                ml={isWideVersion ? '' : '25px'}
               >
-                <Box>
-                  {isWideVersion && (
+                <Box display={isWideVersion ? '' : 'flex'}>
+                  {isWideVersion ? (
                     <Image
                       borderTopRadius={4}
                       borderColor="gray.700"
                       boxSize="250"
                       maxHeight="140"
-                      alt="carrro"
+                      alt="veículo"
                       src={vehicle.image_url}
+                      opacity={selectedVehicle?.id === vehicle.id ? '0.5' : ''}
+                    />
+                  ) : (
+                    <Image
+                      borderRadius={100}
+                      borderColor="gray.700"
+                      boxSize="50"
+                      maxHeight="50"
+                      alt="veículo"
+                      src={vehicle.image_url}
+                      mt="3px"
                       opacity={selectedVehicle?.id === vehicle.id ? '0.5' : ''}
                     />
                   )}
 
-                  <Box>
-                    <p>
+                  <Box
+                    overflow="hidden"
+                    textOverflow="ellipsis"
+                    ml={isWideVersion ? '' : '15px'}
+                  >
+                    <Text
+                      overflow="hidden"
+                      textOverflow="ellipsis"
+                      fontSize="sm"
+                    >
                       {vehicle.name} - placa {vehicle.plate}
-                    </p>
-                    <p>{vehicle.km} KM rodados até agora</p>
+                    </Text>
+                    <Text fontSize="sm">{vehicle.km} KM rodados</Text>
                   </Box>
                 </Box>
               </Box>
