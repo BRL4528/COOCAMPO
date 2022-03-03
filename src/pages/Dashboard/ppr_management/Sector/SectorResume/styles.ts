@@ -35,7 +35,7 @@ export const Container = styled.div`
 `;
 
 export const CardeHeader = styled.div`
-  margin-top: 75px;
+  margin-top: 105px;
   margin-left: 8%;
   margin-right: 8%;
   color: #433f59;

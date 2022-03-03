@@ -37,7 +37,9 @@ export const ReportConectBI: React.FC<ReportData> = ({
   useEffect(() => {
     async function loadTokenBI(): Promise<void> {
       await apiPowerBI
-        .get<PropsPowerBI>(`/get-embed-token?reportId=${reportId}`)
+        .get<PropsPowerBI>(
+          `/get-embed-token?workspaceId=71159839-6c48-44f6-90f3-25692a98e2ce&reportId=${reportId}`,
+        )
         .then(response => {
           const initialReportProps = {
             type: 'report',
