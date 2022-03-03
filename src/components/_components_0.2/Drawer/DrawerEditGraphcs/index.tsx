@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
-import { useCallback, useState, useRef } from 'react';
+import { useCallback, useState, useRef, useEffect } from 'react';
 import {
   DrawerBody,
   DrawerFooter,
@@ -50,6 +50,35 @@ export function DrawerEditGraphcs({
     }
     return '';
   });
+  const [dateGraphic, setDateGraphic] = useState(() => {
+    const date = localStorage.getItem(`@Samasc:date_graphic_${graphicTitle}`);
+    if (date) {
+      console.log(date);
+    }
+    return '';
+  });
+
+  useEffect(() => {
+    const type = localStorage.getItem(`@Samasc:type_graphic_${graphicTitle}`);
+    const date = localStorage.getItem(`@Samasc:date_graphic_${graphicTitle}`);
+    try {
+      if (type) {
+        console.log(type);
+        handleSendTypeGraphic(type);
+      }
+      if (date) {
+        // handleSendDataGraphic(dateGraphic);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  }, [
+    dateGraphic,
+    graphicTitle,
+    handleSendDataGraphic,
+    handleSendTypeGraphic,
+    typeGraphic,
+  ]);
 
   const handleSubmit = useCallback(
     async (data: DateGraphicState) => {
@@ -62,6 +91,8 @@ export function DrawerEditGraphcs({
         handleSendTypeGraphic(typeGraphic);
         if (data.date_start && data.date_end) {
           handleSendDataGraphic(data);
+          setDateGraphic(String(data));
+          localStorage.setItem(`@Samasc:date_graphic_${data}`, typeGraphic);
         }
         onClose();
       } catch (err) {

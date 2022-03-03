@@ -64,13 +64,12 @@ export function ListAppointments({ vehicleSelected }: IPropsListAppointmens) {
     api
       .get('/appointments/filter', {
         params: {
-          vehicle_id: vehicleSelected,
+          // vehicle_id: vehicleSelected,
           take: 3,
           page,
         },
       })
       .then(response => {
-        console.log('response', response.data);
         setListAppointments(response.data);
       });
   }, [page, vehicleSelected]);

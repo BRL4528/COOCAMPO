@@ -63,8 +63,12 @@ export function ListFloatCar({
     if (favoriteVehicleLocal) {
       setFavoriteVehicle(JSON.parse(favoriteVehicleLocal));
       setSelectedVehicle(JSON.parse(favoriteVehicleLocal));
+      setOpenList(false);
 
       // setLoading(false);
+    }
+    if (!favoriteVehicleLocal) {
+      setOpenList(true);
     }
 
     api.get('/vehicles').then(response => {
@@ -113,7 +117,7 @@ export function ListFloatCar({
   }
 
   return (
-    <Box w={[320, 460, 600, 950, 1100, 1135]}>
+    <Box w={[370, 460, 600, 950, 1100, 1200]}>
       <Button
         size="sm"
         colorScheme="blue"
@@ -142,7 +146,7 @@ export function ListFloatCar({
           flexDirection="row"
           mt="15"
           pb="5"
-          w={[320, 460, 600, 950, 1100, 1135]}
+          w={[370, 460, 600, 950, 1100, 1200]}
           overflowX="scroll"
           flexWrap="nowrap"
           mb="8"

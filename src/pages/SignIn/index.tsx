@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState } from 'react';
+import React, { useCallback, useContext, useRef, useState } from 'react';
 import { Center, useBreakpointValue, Image } from '@chakra-ui/react';
 import { FiUser, FiLock } from 'react-icons/fi';
 import { FormHandles } from '@unform/core';
@@ -17,6 +17,7 @@ import Button from '../../components/Global/Button';
 
 import { Container, Content, ContainerCard } from './styles';
 import { apllyToast } from '../../components/Global/Toast2.0';
+import { SetToggleThemeContext } from '../../contexts/SetToggleThemeContext';
 
 interface SignInFormData {
   nickname: string;
@@ -28,6 +29,7 @@ const SignIn: React.FC = () => {
     base: false,
     lg: true,
   });
+  const { toggleTheme } = useContext(SetToggleThemeContext);
   const formRef = useRef<FormHandles>(null);
   const componentRef = useRef<HTMLDivElement>(null);
 
@@ -101,7 +103,7 @@ const SignIn: React.FC = () => {
         ''
       )}
 
-      <Container>
+      <Container theme={toggleTheme}>
         <Content>
           <Image boxSize="200px" src={logoImg} alt="cooasgo+somoscoop" />
 

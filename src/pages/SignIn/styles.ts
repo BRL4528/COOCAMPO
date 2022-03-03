@@ -1,6 +1,10 @@
 import styled from 'styled-components';
 import { shade } from 'polished';
 
+interface PropsContainer {
+  theme: 'light' | 'dark';
+}
+
 export const ContainerCard = styled.div`
   display: flex;
   align-items: center;
@@ -24,8 +28,10 @@ export const ContainerCard = styled.div`
   }
 `;
 
-export const Container = styled.div`
-  background: #ffff;
+export const Container = styled.div<PropsContainer>`
+  background: ${({ theme }: PropsContainer): string =>
+    theme === 'light' ? '#ffff' : ''};
+
   width: 400px;
   height: 500px;
   /* padding: 25px; */

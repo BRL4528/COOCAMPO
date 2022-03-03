@@ -77,6 +77,14 @@ export function SidebarNavBi() {
             >
               Controle de frotas
             </MenuItem>
+            <MenuDivider />
+            <MenuItem
+              _hover={{ bg: 'gray.650' }}
+              as={Link}
+              to="/bi-management/results"
+            >
+              Distribuição de resultados
+            </MenuItem>
             {/* <MenuItem>Create a Copy</MenuItem>
             <MenuItem>Mark as Draft</MenuItem>
             <MenuItem>Delete</MenuItem>

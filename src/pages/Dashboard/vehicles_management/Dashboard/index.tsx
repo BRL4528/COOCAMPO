@@ -1,11 +1,10 @@
 import { useCallback, useState, useEffect } from 'react';
-import { Flex, SimpleGrid, Box, ScaleFade } from '@chakra-ui/react';
+import { Flex, SimpleGrid, ScaleFade } from '@chakra-ui/react';
 
 import { format } from 'date-fns';
 
 import { HeaderUp } from '../../../../components/_components_0.2/Header_0.2';
 import { Sidebar } from '../../../../components/_components_0.2/Sidebar_0.2';
-import { ListFloatCar } from '../../../../components/_components_0.2/Miles/FloatListCar';
 import { ChartMiles } from '../../../../components/_components_0.2/Charts/index';
 import { apllyToast } from '../../../../components/Global/Toast2.0';
 import callApiAccordingToTheGraphic from '../../../../utils/callApiAccordingToTheGraphic';
@@ -27,7 +26,7 @@ interface IKilometersTraveled {
 }
 
 export default function Dashboard() {
-  const [veicleSelected, setVehicleSelected] = useState<IVehicle>({
+  const [veicleSelected] = useState<IVehicle>({
     id: '',
     km: 0,
   });
@@ -45,16 +44,6 @@ export default function Dashboard() {
     date_start: format(new Date('01-06-2021'), 'yyyy-dd-MM'),
     date_end: String(format(new Date(), 'yyyy-MM-dd')),
   });
-
-  const handleSelectedVehicleId = useCallback((vehicle: Omit<IVehicle, ''>) => {
-    const { id, km } = vehicle;
-
-    const car = {
-      id,
-      km,
-    };
-    setVehicleSelected(car);
-  }, []);
 
   useEffect(() => {
     try {
@@ -89,68 +78,63 @@ export default function Dashboard() {
         <HeaderUp path="miles" />
         <Flex w="100%" my="6" maxWidth={1480} mx="auto" pb={4} px="6">
           <Sidebar path="miles" />
-          <Box>
-            <ListFloatCar
-              updateNewData=""
-              handleSelectedVehicleId={handleSelectedVehicleId}
+
+          <SimpleGrid
+            columns={2}
+            flex="1"
+            spacing={10}
+            minChildWidth={['370px', '400', '420px']}
+            align="flex-start"
+          >
+            <ChartMiles
+              categories={dataUsageFee?.months ?? ['']}
+              series={[
+                {
+                  name: 'Utilizou',
+                  data: dataUsageFee?.results ?? [9],
+                },
+              ]}
+              title="Taxa de utilização"
+              loading={loadingOne}
+              handleSendDataGraphic={handleSendDataGraphic}
             />
-            <SimpleGrid
-              columns={2}
-              flex="1"
-              spacing={10}
-              minChildWidth={['370px', '400', '420px']}
-              align="flex-start"
-            >
-              <ChartMiles
-                categories={dataUsageFee?.months ?? ['']}
-                series={[
-                  {
-                    name: 'Utilizou',
-                    data: dataUsageFee?.results ?? [9],
-                  },
-                ]}
-                title="Taxa de utilização"
-                loading={loadingOne}
-                handleSendDataGraphic={handleSendDataGraphic}
-              />
-              <ChartMiles
-                categories={dataKilometersTraveled?.months ?? ['']}
-                series={[
-                  {
-                    name: 'Rdou',
-                    data: dataKilometersTraveled?.results ?? [9],
-                  },
-                ]}
-                title="Quilometros rodados"
-                loading={loadingTwo}
-                handleSendDataGraphic={handleSendDataGraphic}
-              />
-              <ChartMiles
-                categories={dataConsumption?.months ?? ['']}
-                series={[
-                  {
-                    name: 'Média de',
-                    data: dataConsumption?.results ?? [9],
-                  },
-                ]}
-                title="Média de consumo por quilometragem"
-                loading={loadingThree}
-                handleSendDataGraphic={handleSendDataGraphic}
-              />
-              <ChartMiles
-                categories={monthlyConsumption?.months ?? ['']}
-                series={[
-                  {
-                    name: 'Consumiu',
-                    data: monthlyConsumption?.results ?? [9],
-                  },
-                ]}
-                title="Consumo mensal"
-                loading={loadingFour}
-                handleSendDataGraphic={handleSendDataGraphic}
-              />
-            </SimpleGrid>
-          </Box>
+            <ChartMiles
+              categories={dataKilometersTraveled?.months ?? ['']}
+              series={[
+                {
+                  name: 'Rdou',
+                  data: dataKilometersTraveled?.results ?? [9],
+                },
+              ]}
+              title="Quilometros rodados"
+              loading={loadingTwo}
+              handleSendDataGraphic={handleSendDataGraphic}
+            />
+            <ChartMiles
+              categories={dataConsumption?.months ?? ['']}
+              series={[
+                {
+                  name: 'Média de',
+                  data: dataConsumption?.results ?? [9],
+                },
+              ]}
+              title="Média de consumo por quilometragem"
+              loading={loadingThree}
+              handleSendDataGraphic={handleSendDataGraphic}
+            />
+            <ChartMiles
+              categories={monthlyConsumption?.months ?? ['']}
+              series={[
+                {
+                  name: 'Consumiu',
+                  data: monthlyConsumption?.results ?? [9],
+                },
+              ]}
+              title="Consumo mensal"
+              loading={loadingFour}
+              handleSendDataGraphic={handleSendDataGraphic}
+            />
+          </SimpleGrid>
         </Flex>
       </Flex>
     </ScaleFade>

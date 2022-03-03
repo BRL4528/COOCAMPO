@@ -109,7 +109,7 @@ export function ListFloatCar({ handleSelectedVehicleId }: IListFloatCarProps) {
   }
 
   return (
-    <Box w={[320, 460, 600, 950, 1100, 1135]}>
+    <Box w={[420, 460, 600, 950, 1100, 1135]}>
       <Button
         size="sm"
         colorScheme="blue"
@@ -138,7 +138,8 @@ export function ListFloatCar({ handleSelectedVehicleId }: IListFloatCarProps) {
           flexDirection="row"
           mt="15"
           pb="5"
-          w={[320, 460, 600, 950, 1100, 1135]}
+          w={[370, 460, 600, 950, 1100, 1135]}
+          minWidth="370px"
           overflowX="scroll"
           flexWrap="nowrap"
           mb="8"
@@ -155,7 +156,7 @@ export function ListFloatCar({ handleSelectedVehicleId }: IListFloatCarProps) {
                 selectedVehicle?.id === vehicle.id ? 'green.400' : 'gray.700'
               }
               mr="5"
-              minWidth="230"
+              minWidth="370px"
               maxHeight="230px"
               // minHeight="214px"
               flexDirection="row"

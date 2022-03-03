@@ -1,4 +1,11 @@
-import React, { createContext, useCallback, useState, useContext } from 'react';
+import React, {
+  createContext,
+  useCallback,
+  useState,
+  useContext,
+  useEffect,
+} from 'react';
+// import { useCookies } from 'react-cookie';
 import { api } from '../services/api';
 
 interface User {
@@ -40,6 +47,8 @@ interface AuthContextData {
 
 const AuthContext = createContext<AuthContextData>({} as AuthContextData);
 
+const authChannels = new BroadcastChannel('auth');
+
 const AuthProvider: React.FC = ({ children }) => {
   const [data, setData] = useState<AuthState>(() => {
     const token = localStorage.getItem('@Samasc:token');
@@ -58,22 +67,38 @@ const AuthProvider: React.FC = ({ children }) => {
       nickname,
       password,
     });
-    const { token, access } = response.data;
+    const { token, refresh_token, access } = response.data;
     const user = access;
     localStorage.setItem('@Samasc:token', token);
+    localStorage.setItem('@Samasc:refresh_token', refresh_token);
     localStorage.setItem('@Samasc:user', JSON.stringify(user));
 
-    api.defaults.headers.authorization = `Bearer ${token}`;
+    // api.defaults.headers.authorization = `Bearer ${token}`;
 
     setData({ token, user });
   }, []);
 
   const signOut = useCallback(() => {
     localStorage.removeItem('@Samasc:token');
+    localStorage.removeItem('@Samasc:refresh_token');
     localStorage.removeItem('@Samasc:user');
+
+    authChannels.postMessage('signOut');
 
     setData({} as AuthState);
   }, []);
+
+  useEffect(() => {
+    authChannels.onmessage = message => {
+      switch (message.data) {
+        case 'signOut':
+          signOut();
+          break;
+        default:
+          break;
+      }
+    };
+  }, [signOut]);
 
   const updateUser = useCallback(
     (user: User) => {
