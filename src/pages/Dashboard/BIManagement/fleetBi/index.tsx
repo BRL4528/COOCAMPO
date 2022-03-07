@@ -12,10 +12,10 @@ export default function BIManagementDashboard() {
         <Flex my="6" maxWidth={1480} mx="auto" pb={4} px="6" textAlign="center">
           <Sidebar path="bi" />
           <ReportBIManagement
-            reportLoading="8b9d7c10-1ba8-4039-a8f3-b2ff2b030df3"
-            embedId="dc5c46a0-45ce-4550-af13-405b122d8bf4"
-            embedUrl="https://app.powerbi.com/reportEmbed?reportId=dc5c46a0-45ce-4550-af13-405b122d8bf4&groupId=99dac3b3-6af1-4445-a13e-ff16882c296d&w=2&config=eyJjbHVzdGVyVXJsIjoiaHR0cHM6Ly9XQUJJLUJSQVpJTC1TT1VUSC1CLVBSSU1BUlktcmVkaXJlY3QuYW5hbHlzaXMud2luZG93cy5uZXQiLCJlbWJlZEZlYXR1cmVzIjp7Im1vZGVybkVtYmVkIjp0cnVlLCJhbmd1bGFyT25seVJlcG9ydEVtYmVkIjp0cnVlLCJjZXJ0aWZpZWRUZWxlbWV0cnlFbWJlZCI6dHJ1ZSwidXNhZ2VNZXRyaWNzVk5leHQiOnRydWUsInNraXBab25lUGF0Y2giOnRydWV9fQ%3d%3d"
-            workspaceId="99dac3b3-6af1-4445-a13e-ff16882c296d"
+            reportLoading="50d7867d-fe88-4684-8647-206ae38ecdee"
+            embedId="50d7867d-fe88-4684-8647-206ae38ecdee"
+            embedUrl="https://app.powerbi.com/reportEmbed?reportId=50d7867d-fe88-4684-8647-206ae38ecdee&groupId=a47600b6-b86d-40b3-bed0-ceca18041576&w=2&config=eyJjbHVzdGVyVXJsIjoiaHR0cHM6Ly9XQUJJLVVTLUNFTlRSQUwtQS1QUklNQVJZLXJlZGlyZWN0LmFuYWx5c2lzLndpbmRvd3MubmV0IiwiZW1iZWRGZWF0dXJlcyI6eyJtb2Rlcm5FbWJlZCI6dHJ1ZSwiYW5ndWxhck9ubHlSZXBvcnRFbWJlZCI6dHJ1ZSwiY2VydGlmaWVkVGVsZW1ldHJ5RW1iZWQiOnRydWUsInVzYWdlTWV0cmljc1ZOZXh0Ijp0cnVlLCJza2lwWm9uZVBhdGNoIjp0cnVlfX0%3d"
+            workspaceId="a47600b6-b86d-40b3-bed0-ceca18041576"
           />
         </Flex>
       </Flex>
