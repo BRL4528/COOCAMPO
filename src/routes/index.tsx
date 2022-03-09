@@ -62,6 +62,7 @@ import BIManagement from '../pages/Dashboard/BIManagement';
 import BIEnergY from '../pages/Dashboard/BIManagement/energiBi';
 import BIFleet from '../pages/Dashboard/BIManagement/fleetBi';
 import BIOrders from '../pages/Dashboard/BIManagement/ordersBi';
+import BPPRS from '../pages/Dashboard/BIManagement/pprBi';
 
 // Profile
 import Profile from '../pages/Dashboard/_Profile';
@@ -297,6 +298,7 @@ const Routes: React.FC = () => (
     />
 
     <Route path="/bi-management/fleet" component={BIFleet} isPrivate isAdmin />
+    <Route path="/bi-management/pprs" component={BPPRS} isPrivate isAdmin />
 
     <Route path="/error404-1" component={Error404} isPrivate isUser isAdmin />
     <Route path="/error404-2" component={Error404} isPrivate isUser isAdmin />

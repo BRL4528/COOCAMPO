@@ -48,7 +48,8 @@ export function SidebarNavBi() {
             <MenuItem
               _hover={{ bg: 'gray.650' }}
               as={Link}
-              to="/management-ppr/dashboard"
+              // to="/management-ppr/dashboard"
+              to="/bi-management/pprs"
             >
               PPRS
             </MenuItem>

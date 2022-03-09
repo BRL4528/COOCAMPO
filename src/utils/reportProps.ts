@@ -24,7 +24,18 @@ export default function reportProps({
     permissions: 'All', // "All" (when using "Edit" mode)
 
     extraSettings: {
-      filterPaneEnabled: false,
+      // filterPaneEnabled: false,
+      filterType: models.FilterType.Basic,
+      requireSingleSelection: true,
+      // logicalOperator: 'In',
+      // filters: [{
+      //       $schema: 'http://powerbi.com/product/schema#basic',
+      //     target: { table: 'Resumo geral', column: 'painel' },
+      //     operator: 'In',
+      //     values: ['PPR Controladoria'],
+
+      // }]
+      hideErrors: true,
       navContentPaneEnabled: false,
       visualRenderedEvents: true,
       background: models.BackgroundType.Transparent,

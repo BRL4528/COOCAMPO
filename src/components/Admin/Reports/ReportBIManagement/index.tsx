@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState, useContext } from 'react';
 import { useReport } from 'powerbi-report-component';
+import { models } from 'powerbi-client';
 
 import { Box, Spinner, Center, ScaleFade } from '@chakra-ui/react';
 
@@ -11,6 +12,7 @@ import {
 import { apiPowerBI } from '../../../../services/api';
 import reportProps from '../../../../utils/reportProps';
 import { DeviceContext } from '../../../../contexts/DeviceContext';
+import { apllyToast } from '../../../Global/Toast2.0';
 
 interface Props {
   embedId: string;
@@ -51,6 +53,10 @@ export const ReportBIManagement = ({
   //     }
   //   }
   // });
+  // setTimeout(() => {
+  //   const load = progress + 10;
+  //   setProgress(load);
+  // }, 1000);
 
   useEffect(() => {
     async function loadTokenBI(): Promise<void> {
@@ -72,15 +78,73 @@ export const ReportBIManagement = ({
           });
       } catch (err) {
         console.log('problemas', err);
+        apllyToast(
+          'error',
+          'Problemas ao carregar relatório, consulte o administrador.',
+        );
+        setLoadingRendered(false);
       }
     }
     loadTokenBI();
   }, [embedId, embedUrl, reportLoading, setEmbed, window, workspaceId]);
 
+  useEffect(() => {
+    if (report) {
+      report.off('loaded');
+      report.on('loaded', async function () {
+        const filtersArray = [
+          {
+            values: ['PPR Controladoria'],
+            operator: 'In',
+            target: { table: 'Resumo geral', column: 'painel' },
+          },
+        ];
+
+        const page = await report.getPages();
+        const filter = await page[0].getFilters();
+        console.log('pagina', page);
+        await page[0].updateFilters(
+          models.FiltersOperations.ReplaceAll,
+          filtersArray,
+        );
+        //  report.switchMode('edit');
+        console.log('filtro', filter);
+        // setProgress(50);
+      });
+    }
+  }, [report]);
+
+  useEffect(() => {
+    if (report) {
+      report.off('rendered');
+      report.on('rendered', function () {
+        // setProgress(100);
+        setLoadingRendered(false);
+      });
+    }
+  }, [report]);
+
   if (report) {
     report.off('rendered');
     report.on('rendered', async function () {
       if (toggleTheme === 'dark') {
+        // const filtersArray = [
+        //   {
+        //     values: ['PPR Controladoria'],
+        //     operator: 'In',
+        //     target: { table: 'Resumo geral', column: 'painel' },
+        //   },
+        // ];
+
+        // const page = await report.getPages();
+        // const filter = await page[0].getFilters();
+        // console.log('pagina', page);
+        // await page[0].updateFilters(
+        //   models.FiltersOperations.ReplaceAll,
+        //   filtersArray,
+        // );
+        // // report.switchMode('edit');
+        // console.log('filtro', filter);
         try {
           await report.applyTheme({ themeJson: jsonDataColors[0] });
           report.off('rendered');
