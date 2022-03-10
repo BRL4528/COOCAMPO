@@ -1,5 +1,13 @@
-import { useCallback, useRef } from 'react';
-import { Flex, Box, ScaleFade, Button, Avatar } from '@chakra-ui/react';
+import { useCallback, useRef, useState } from 'react';
+import {
+  Flex,
+  Box,
+  ScaleFade,
+  Button,
+  Avatar,
+  Spinner,
+  Text,
+} from '@chakra-ui/react';
 import { Form } from '@unform/web';
 import { FormHandles } from '@unform/core';
 import { FiUser, FiLock } from 'react-icons/fi';
@@ -14,9 +22,11 @@ import { api } from '../../../../../services/api';
 
 export default function ProfileEdit() {
   const formRef = useRef<FormHandles>(null);
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = useCallback(async data => {
     try {
+      setLoading(true);
       formRef.current?.setErrors({});
 
       const schema = Yup.object().shape({
@@ -39,7 +49,7 @@ export default function ProfileEdit() {
         abortEarly: false,
       });
 
-      api
+      await api
         .post('/password/reset', {
           password: data.password,
           password_confirmation: data.password_confirmation,
@@ -47,21 +57,21 @@ export default function ProfileEdit() {
         })
         .then(() => {
           apllyToast('success', 'Operação realizada com sucesso', 'top-right');
+          setLoading(false);
         });
     } catch (err) {
-      if (err instanceof Yup.ValidationError) {
-        const errors = getValidationErrors(err);
-
-        formRef.current?.setErrors(errors);
-
-        return;
-      }
-
       apllyToast(
         'error',
         'Ocorreu um erro ao realizar operação, cheque as credenciais.',
         'top-right',
       );
+      setLoading(false);
+      if (err instanceof Yup.ValidationError) {
+        const errors = getValidationErrors(err);
+
+        formRef.current?.setErrors(errors);
+        setLoading(false);
+      }
     }
   }, []);
 
@@ -100,8 +110,19 @@ export default function ProfileEdit() {
                 </Box>
               </Flex>
 
-              <Button type="submit" mt="5" colorScheme="yellow" color="white">
-                Confirmar mudanças
+              <Button
+                type="submit"
+                mt="5"
+                disabled={loading}
+                colorScheme="yellow"
+                color="white"
+                w={60}
+              >
+                {loading ? (
+                  <Spinner size="sm" />
+                ) : (
+                  <Text>Confirmar mudanças</Text>
+                )}
               </Button>
             </Form>
           </Flex>

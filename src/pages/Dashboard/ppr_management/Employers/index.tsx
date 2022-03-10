@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { Box, Text, Flex, Button as ButtonChakra } from '@chakra-ui/react';
 
 import { Link } from 'react-router-dom';
+import { FiUserPlus, FiKey } from 'react-icons/fi';
 import { api } from '../../../../services/api';
 import ModalCreateUser from './ModalCreateUser';
 
@@ -108,15 +109,17 @@ const UserManagement: React.FC = () => {
 
           <CardButton>
             <ButtonChakra
+              leftIcon={<FiUserPlus />}
               onClick={toggleModal}
               type="button"
               colorScheme="yellow"
               color="white"
             >
-              Adicionar novo usuário
+              Adicionar usuário
             </ButtonChakra>
             <div>
               <ButtonChakra
+                leftIcon={<FiKey />}
                 as={Link}
                 to="/administrator/set-data-user"
                 onClick={toggleModal}
