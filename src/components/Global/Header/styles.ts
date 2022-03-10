@@ -23,6 +23,7 @@ export const Container = styled.div<Prps>`
 `;
 export const HeaderContent = styled.div<Prps>`
   width: 100%;
+  /* height: 25px; */
   margin: 0 auto;
   padding: ${({ size }) => (size === 'small' ? '0 15px ' : '0 50px 0px')};
   display: flex;
