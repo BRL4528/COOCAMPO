@@ -1,13 +1,5 @@
 import { useCallback, useRef, useState } from 'react';
-import {
-  Flex,
-  Box,
-  ScaleFade,
-  Button,
-  Avatar,
-  Spinner,
-  Text,
-} from '@chakra-ui/react';
+import { Flex, Box, ScaleFade, Button, Avatar, Text } from '@chakra-ui/react';
 import { Form } from '@unform/web';
 import { FormHandles } from '@unform/core';
 import { FiUser, FiLock } from 'react-icons/fi';
@@ -113,16 +105,12 @@ export default function ProfileEdit() {
               <Button
                 type="submit"
                 mt="5"
-                disabled={loading}
+                isLoading={loading}
                 colorScheme="yellow"
                 color="white"
                 w={60}
               >
-                {loading ? (
-                  <Spinner size="sm" />
-                ) : (
-                  <Text>Confirmar mudanças</Text>
-                )}
+                <Text>Confirmar mudanças</Text>
               </Button>
             </Form>
           </Flex>
