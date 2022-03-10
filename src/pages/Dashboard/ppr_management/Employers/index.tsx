@@ -1,19 +1,13 @@
 import React, { useCallback, useEffect, useState } from 'react';
+import { Box, Text, Flex, Button as ButtonChakra } from '@chakra-ui/react';
 
-import Button from '../../../../components/Global/Button';
+import { Link } from 'react-router-dom';
 import { api } from '../../../../services/api';
 import ModalCreateUser from './ModalCreateUser';
 
 import { apllyToast } from '../../../../components/Global/Toast2.0';
 
-import {
-  CardButton,
-  Container,
-  CardeHeader,
-  CardGraphic,
-  GraphicTitle,
-  CardGraphicText,
-} from './styles';
+import { CardButton, Container, CardeHeader } from './styles';
 
 interface IUser {
   id?: string;
@@ -113,27 +107,59 @@ const UserManagement: React.FC = () => {
           </div>
 
           <CardButton>
+            <ButtonChakra
+              onClick={toggleModal}
+              type="button"
+              colorScheme="yellow"
+              color="white"
+            >
+              Adicionar novo usuário
+            </ButtonChakra>
             <div>
-              <Button onClick={toggleModal} type="button">
-                Adicionar novo usuário
-              </Button>
+              <ButtonChakra
+                as={Link}
+                to="/administrator/set-data-user"
+                onClick={toggleModal}
+                type="button"
+                colorScheme="yellow"
+                color="white"
+              >
+                Atualizar senha
+              </ButtonChakra>
             </div>
           </CardButton>
         </CardeHeader>
 
         {dataAccess.map(users => (
-          <CardGraphic key={users.id}>
-            <CardGraphicText>
-              <GraphicTitle>
-                <h3>{users.name}</h3>
+          <Box
+            key={users.id}
+            bg="gray.800"
+            p="10px"
+            borderRadius="6px"
+            mb="10px"
+          >
+            {/* <CardGraphicText>
+              <GraphicTitle> */}
 
-                <p>
+            <h2>{users.name}</h2>
+
+            <Flex flexDirection="column">
+              <Flex flexDirection="row" align="center">
+                <Text fontWeight="medium" color="gray.650" mr="10px">
+                  Usuário:
+                </Text>
+                <Text>{users.nickname}</Text>
+              </Flex>
+              <Flex flexDirection="row" align="center">
+                <Text fontWeight="medium" color="gray.650" mr="10px">
                   E-mail:
-                  {users.email}
-                </p>
-              </GraphicTitle>
-            </CardGraphicText>
-          </CardGraphic>
+                </Text>
+                <Text>{users.email}</Text>
+              </Flex>
+            </Flex>
+            {/* </GraphicTitle>
+            </CardGraphicText> */}
+          </Box>
         ))}
       </Container>
       <ModalCreateUser

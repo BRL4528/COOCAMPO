@@ -3,8 +3,9 @@ import styled from 'styled-components';
 export const Container = styled.div`
   /* display: flex; */
   /* align-items: stretch; */
-  margin-top: 60px;
+  margin-top: 120px;
   margin-left: 8%;
+  max-width: 1200px;
 
   color: #433f59;
 
@@ -58,7 +59,7 @@ export const CardButton = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin: 0 30px;
+  /* margin: 0 30px; */
 
   div {
     min-width: 200px;

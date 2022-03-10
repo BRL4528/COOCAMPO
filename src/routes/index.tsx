@@ -35,6 +35,7 @@ import Import from '../pages/Dashboard/ppr_management/Imports';
 import Schedule from '../pages/Dashboard/ppr_management/Schedule';
 import ScheduleOnly from '../pages/Dashboard/ppr_management/Schedule/ScheduleUnic';
 import Employers from '../pages/Dashboard/ppr_management/Employers';
+import EmployersEdit from '../pages/Dashboard/ppr_management/Employers/EditProfile';
 
 import Vehicles from '../pages/Dashboard/vehicles_management/Vehicles';
 
@@ -198,6 +199,12 @@ const Routes: React.FC = () => (
     <Route
       path="/administrator/employers"
       component={Employers}
+      isPrivate
+      isAdmin
+    />
+    <Route
+      path="/administrator/set-data-user"
+      component={EmployersEdit}
       isPrivate
       isAdmin
     />
