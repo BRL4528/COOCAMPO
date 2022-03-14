@@ -175,7 +175,7 @@ export function MaintenanceTable({ vehicleSelected }: IvehicleSelected) {
           description,
           reason,
           vehicle_id: vehicleSelected.id,
-          conductor: user.id,
+          conductor_id: user.id,
         };
         await api.post('/maintenance', formatData).then(response => {
           setMaintenanceAdded(response.data.id);
