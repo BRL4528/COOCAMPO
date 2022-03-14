@@ -25,6 +25,7 @@ import Input from '../../../Global/Input';
 import TextArea from '../../../Global/TextArea';
 import Select from '../../../Global/SelectRelease';
 import { ModalComponent } from '..';
+import { api } from '../../../../services/api';
 
 interface IKilometers {
   // vehicle_id?: string;
@@ -37,16 +38,21 @@ interface IKilometers {
   date: string;
 }
 
+interface IVehicles {
+  km: number;
+}
+
 interface IModalProps {
-  km_initial: number;
+  vehicle_initial: string;
   // eslint-disable-next-line no-unused-vars
   handleAddNewKilometer: (kilometer: Omit<IKilometers, ''>) => void;
 }
 
 export function ModalAddNewKilometer({
   handleAddNewKilometer,
-  km_initial,
+  vehicle_initial,
 }: IModalProps) {
+  const [km_initial, setKm_initial] = useState(0);
   const formRef = useRef<FormHandles>(null);
   const { onOpen, isOpen, onClose } = useDisclosure();
   const isWideVersion = useBreakpointValue({
@@ -61,6 +67,14 @@ export function ModalAddNewKilometer({
   // const [km_start, setKm_start] = useState(0);
   const [km_endData, setKm_end] = useState(0);
   const [km_traveledData, setKm_traveled] = useState(0);
+
+  useEffect(() => {
+    api
+      .get<IVehicles>(`/vehicles/show?id=${vehicle_initial}`)
+      .then(response => {
+        setKm_initial(response.data.km ? response.data.km : 0);
+      });
+  }, [vehicle_initial, isOpen]);
 
   const handleSubmit = useCallback(
     async (data: IKilometers) => {
@@ -99,7 +113,6 @@ export function ModalAddNewKilometer({
 
         handleAddNewKilometer(formatData);
         setKm_traveled(0);
-        apllyToast('success', 'Sucesso ao adicionar km!');
         onClose();
 
         setLoading(false);
@@ -113,7 +126,6 @@ export function ModalAddNewKilometer({
           return;
         }
         setKm_traveled(0);
-        apllyToast('warning', 'Problemas ao adicionar km!');
         onClose();
       }
     },

@@ -146,11 +146,11 @@ export function KilometerTable({
         api.post('/kilometers', formatData).then(response => {
           setNewRegister(response.data.id);
           handleUpdateNewKm(response.data.id);
-          apllyToast('success', 'Sucesso ao editar quilometragem!');
+          apllyToast('success', 'Sucesso ao adicionar km!');
         });
       } catch (err) {
         console.log(err);
-        apllyToast('warning', 'Problemas ao atualizar qulimetragem');
+        apllyToast('warning', 'Problemas ao adicionar km');
       }
     },
     [vehicleSelected.id, user.id, handleUpdateNewKm],
@@ -173,11 +173,11 @@ export function KilometerTable({
       try {
         api.put(`/kilometers?id=${id}`, formatData).then(response => {
           setNewRegister(response.data.id);
-          apllyToast('success', 'Sucesso ao editar quilometragem!');
+          apllyToast('success', 'Sucesso ao editar km!');
         });
       } catch (err) {
         console.log(err);
-        apllyToast('warning', 'Problemas ao editar quilometragem!');
+        apllyToast('warning', 'Problemas ao editar km!');
       }
     },
     [vehicleSelected, user.id],
@@ -205,7 +205,7 @@ export function KilometerTable({
             </Tooltip> */}
 
             <ModalAddNewKilometer
-              km_initial={vehicleSelected.km || 0}
+              vehicle_initial={vehicleSelected.id || ''}
               handleAddNewKilometer={handleAddNewKilometer}
             />
           </Box>
