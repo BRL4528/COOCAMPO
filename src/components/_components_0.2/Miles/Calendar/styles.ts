@@ -21,7 +21,7 @@ export const Calendar = styled.div`
   }
   .DayPicker-Day {
     width: 40px;
-    height: 40px;
+    height: 60px;
   }
   .DayPicker-Day--available:not(.DayPicker-Day--outside) {
     background: #3e3b47;

@@ -148,12 +148,16 @@ export function FloatlistHours({
 
   const handleSubmitScheduleVehicle = useCallback(
     (data: DestinyInfos) => {
+      console.log('data', data);
       try {
         api.post('/appointments', {
           vehicle_id: vehicleSelected,
           date: format(new Date(start_date), 'yyyy-MM-dd'),
           start_date,
           end_date,
+          route: data.destiny,
+          description: data.description,
+          status: 'Pendente',
         });
         console.log('data', data);
         onClose();

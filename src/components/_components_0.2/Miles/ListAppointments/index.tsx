@@ -16,6 +16,8 @@ import {
   Td,
   Heading,
   Badge,
+  Tag,
+  TagLabel,
 } from '@chakra-ui/react';
 // import { RiChatSmile3Line } from 'react-icons/ri';
 import { Pagination } from '../../Pagination';
@@ -35,6 +37,7 @@ interface Appointments {
       end_date: string;
       date: string;
       route: string;
+      description: string;
       status: string;
       created_at: string;
       updated_at: string;
@@ -65,7 +68,7 @@ export function ListAppointments({ vehicleSelected }: IPropsListAppointmens) {
       .get('/appointments/filter', {
         params: {
           // vehicle_id: vehicleSelected,
-          take: 3,
+          take: 6,
           page,
         },
       })
@@ -75,7 +78,7 @@ export function ListAppointments({ vehicleSelected }: IPropsListAppointmens) {
   }, [page, vehicleSelected]);
 
   const handleVerifyDateIsNew = useCallback(date => {
-    if (differenceInSeconds(new Date(), new Date(date)) < 600) {
+    if (differenceInSeconds(new Date(date), new Date()) > 13800) {
       return true;
     }
     return false;
@@ -87,9 +90,9 @@ export function ListAppointments({ vehicleSelected }: IPropsListAppointmens) {
       borderRadius={8}
       bg="gray.800"
       p={['4', '8']}
-      height="470"
+      // height="450"
     >
-      <Flex mb="8" justify="space-between" align="center">
+      <Flex justify="space-between" align="center">
         <Heading size="md" fontWeight="normal">
           Seus agedamentos
         </Heading>
@@ -99,7 +102,11 @@ export function ListAppointments({ vehicleSelected }: IPropsListAppointmens) {
         <Thead>
           <Tr>
             <Th>Usuários</Th>
-            <Th>Horario S-H</Th>
+            <Th>Data e hora de sai</Th>
+            <Th>Data e hora de retorno</Th>
+            <Th>Rota</Th>
+            <Th>Descrição</Th>
+            <Th>Status</Th>
 
             <Th width="8" />
           </Tr>
@@ -109,18 +116,27 @@ export function ListAppointments({ vehicleSelected }: IPropsListAppointmens) {
           {appointments?.appointment.map(appointmentitem => (
             <Tr key={appointmentitem.id}>
               <Td>
-                <Box>
+                <Box display="flex" alignItens="center" flexDirection="row">
                   {handleVerifyDateIsNew(appointmentitem.created_at) ? (
-                    <Badge colorScheme="green">New</Badge>
+                    <Badge
+                      position="absolute"
+                      fontSize="x-small"
+                      colorScheme="green"
+                      ml="-10"
+                    >
+                      New
+                    </Badge>
                   ) : (
                     ''
                   )}
-                  <Text fontWeight="bold">
-                    {appointmentitem.conductor.name}{' '}
-                  </Text>
-                  <Text fontSize="sm" color="gray.300">
-                    {appointmentitem.vehicle.name}
-                  </Text>
+                  <Box>
+                    <Text fontWeight="bold">
+                      {appointmentitem.conductor.name}{' '}
+                    </Text>
+                    <Text fontSize="sm" color="gray.300">
+                      {appointmentitem.vehicle.name}
+                    </Text>
+                  </Box>
                 </Box>
               </Td>
 
@@ -133,6 +149,23 @@ export function ListAppointments({ vehicleSelected }: IPropsListAppointmens) {
                     locale: ptBR,
                   },
                 )}{' '}
+              </Td>
+              <Td>
+                {' '}
+                {format(
+                  new Date(appointmentitem.end_date),
+                  'dd/MM/yyyy HH:mm:ss',
+                  {
+                    locale: ptBR,
+                  },
+                )}{' '}
+              </Td>
+              <Td> {appointmentitem.route}</Td>
+              <Td> {appointmentitem.description}</Td>
+              <Td>
+                <Tag colorScheme="red" borderRadius="full">
+                  <TagLabel>{appointmentitem.status}</TagLabel>
+                </Tag>
               </Td>
               <Td>
                 {/* <Popover>

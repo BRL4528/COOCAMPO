@@ -1,3 +1,9 @@
+/* eslint-disable react/jsx-indent */
+/* eslint-disable react/no-array-index-key */
+/* eslint-disable prettier/prettier */
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+/* eslint-disable no-shadow */
+/* eslint-disable no-multi-assign */
 import { Text, Center } from '@chakra-ui/react';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 // import { format, parseISO } from 'date-fns';
@@ -87,6 +93,47 @@ export function CalendarPiker({
   //   );
   // }, [appointments]);
 
+  const birthdays = [
+    {
+      name: 'joaõ-foop',
+      day: 14,
+    },
+    {
+      name: 'joaõ-foop',
+      day: 10,
+    },
+    {
+      name: 'joaõ-foop',
+      day: 9,
+    },
+  ];
+
+  function renderDay(day: Date) {
+    const date = day.getDate();
+    console.log(day);
+    const d = birthdays.filter(q => {
+      return q.day === date;
+    });
+    console.log('d', d);
+    return (
+      <div>
+        <div>{date}</div>
+        <div>
+          🎁{' '}
+          {d.map(e => {
+            return e.name;
+          })}
+        </div>
+        {/* {birthdays.day === date
+          ? birthdays.map((name: void) => (
+              <div>
+                <Tooltip label="agendamento">🎁 {name}</Tooltip>
+              </div>
+            ))
+          : ''} */}
+      </div>
+    );
+  }
   return (
     <Calendar>
       {vehicleSelected === 'Nenhum veiculo selecionado' ? (
@@ -100,6 +147,7 @@ export function CalendarPiker({
           onMonthChange={handleMonthChange}
           selectedDays={selectedDate}
           disabledDays={[{ daysOfWeek: [0, 6] }, ...disabledDays]}
+          renderDay={renderDay}
           modifiers={{
             available: { daysOfWeek: [1, 2, 3, 4, 5] },
           }}
