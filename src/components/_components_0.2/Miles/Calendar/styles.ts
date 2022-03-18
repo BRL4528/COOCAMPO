@@ -40,7 +40,9 @@ export const Calendar = styled.div`
     background: transparent !important;
   }
   .DayPicker-Day--selected {
-    background: #3182ce !important;
+    /* background: #3182ce !important; */
+    border-top: 4px solid #3182ce !important;
+
     border-radius: 10px;
     color: #fff !important;
   }

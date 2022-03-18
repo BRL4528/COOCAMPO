@@ -1,12 +1,5 @@
-/* eslint-disable react/jsx-indent */
-/* eslint-disable react/no-array-index-key */
-/* eslint-disable prettier/prettier */
-/* eslint-disable @typescript-eslint/ban-ts-comment */
-/* eslint-disable no-shadow */
-/* eslint-disable no-multi-assign */
-import { Text, Center } from '@chakra-ui/react';
+import { Text, Center, Tooltip, Flex } from '@chakra-ui/react';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-// import { format, parseISO } from 'date-fns';
 
 import DayPicker, { DayModifiers } from 'react-day-picker';
 import { Calendar } from './styles';
@@ -28,6 +21,13 @@ interface monthAvailabilityIem {
 //   };
 // }
 
+interface Appointments {
+  id: string;
+  date: string;
+  status: string;
+  day: number;
+}
+
 interface ICalendarProps {
   vehicleSelected: any;
   handleDateSelected: (day: Omit<string, ''>) => void;
@@ -40,9 +40,29 @@ export function CalendarPiker({
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [currentMonth, setCurrentMonth] = useState(new Date());
 
+  const [appointments, setAppointments] = useState<Appointments[]>();
+
   const [monthAvailability, setMonthAvalability] = useState<
     monthAvailabilityIem[]
   >([]);
+
+  useEffect(() => {
+    api.get<Appointments[]>('/appointments').then(resonse => {
+      const formatedData = resonse.data
+        .filter(
+          data =>
+            new Date(data.date).getMonth() + 1 === currentMonth.getMonth() + 1,
+        )
+        .map(appontent => {
+          return {
+            ...appontent,
+            day: new Date(appontent.date).getDate() + 1,
+          };
+        });
+
+      setAppointments(formatedData);
+    });
+  }, [currentMonth]);
 
   const handleDateChange = useCallback(
     (day: Date, modifiers: DayModifiers) => {
@@ -87,41 +107,32 @@ export function CalendarPiker({
     return dates;
   }, [currentMonth, monthAvailability]);
 
-  // const nextAppointments = useMemo(() => {
-  //   return appointments.find(appointment =>
-  //     isAfter(parseISO(appointment.date), new Date()),
-  //   );
-  // }, [appointments]);
-
-  const birthdays = [
-    {
-      name: 'joaõ-foop',
-      day: 14,
-    },
-    {
-      name: 'joaõ-foop',
-      day: 10,
-    },
-    {
-      name: 'joaõ-foop',
-      day: 9,
-    },
-  ];
-
   function renderDay(day: Date) {
     const date = day.getDate();
-    console.log(day);
-    const d = birthdays.filter(q => {
-      return q.day === date;
+    const appointmentsFiltred = appointments?.filter(appointmentsDay => {
+      return appointmentsDay.day === date;
     });
-    console.log('d', d);
     return (
       <div>
         <div>{date}</div>
         <div>
-          🎁{' '}
-          {d.map(e => {
-            return e.name;
+          {appointmentsFiltred?.map(e => {
+            return (
+              <Tooltip hasArrow label={e.date}>
+                <Flex
+                  alignItems="center"
+                  flexDirection="row"
+                  borderRadius="4px"
+                  bg="#4e79f060"
+                  maxHeight="3"
+                  mb="2"
+                  cursor="pointer"
+                  fontSize="9"
+                >
+                  {e.id}
+                </Flex>
+              </Tooltip>
+            );
           })}
         </div>
         {/* {birthdays.day === date
