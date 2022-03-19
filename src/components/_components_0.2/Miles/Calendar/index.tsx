@@ -1,10 +1,11 @@
-import { Text, Center, Tooltip, Flex } from '@chakra-ui/react';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { Text, Center, useBreakpointValue } from '@chakra-ui/react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import DayPicker, { DayModifiers } from 'react-day-picker';
 import { Calendar } from './styles';
 import 'react-day-picker/lib/style.css';
 import { api } from '../../../../services/api';
+import PopoverComp from '../../Popover';
 
 interface monthAvailabilityIem {
   day: number;
@@ -24,11 +25,21 @@ interface monthAvailabilityIem {
 interface Appointments {
   id: string;
   date: string;
+  start_date: string;
+  end_date: string;
   status: string;
+  route: string;
+  vehicle: {
+    name: string;
+  };
   day: number;
+  conductor: {
+    name: string;
+  };
 }
 
 interface ICalendarProps {
+  newAppointment: string;
   vehicleSelected: any;
   handleDateSelected: (day: Omit<string, ''>) => void;
 }
@@ -36,15 +47,22 @@ interface ICalendarProps {
 export function CalendarPiker({
   vehicleSelected,
   handleDateSelected,
+  newAppointment,
 }: ICalendarProps) {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [currentMonth, setCurrentMonth] = useState(new Date());
+  const [newDeleted, setNewDeleted] = useState();
 
   const [appointments, setAppointments] = useState<Appointments[]>();
 
   const [monthAvailability, setMonthAvalability] = useState<
     monthAvailabilityIem[]
   >([]);
+
+  const isWideVersion = useBreakpointValue({
+    base: false,
+    lg: true,
+  });
 
   useEffect(() => {
     api.get<Appointments[]>('/appointments').then(resonse => {
@@ -62,7 +80,7 @@ export function CalendarPiker({
 
       setAppointments(formatedData);
     });
-  }, [currentMonth]);
+  }, [currentMonth, newDeleted, newAppointment]);
 
   const handleDateChange = useCallback(
     (day: Date, modifiers: DayModifiers) => {
@@ -107,34 +125,32 @@ export function CalendarPiker({
     return dates;
   }, [currentMonth, monthAvailability]);
 
-  function renderDay(day: Date) {
+  const handleletedAppointments = useCallback(event => {
+    setNewDeleted(event);
+  }, []);
+
+  function renderDay(day: Date, modifiers: DayModifiers) {
     const date = day.getDate();
     const appointmentsFiltred = appointments?.filter(appointmentsDay => {
       return appointmentsDay.day === date;
     });
     return (
-      <div>
-        <div>{date}</div>
-        <div>
-          {appointmentsFiltred?.map(e => {
-            return (
-              <Tooltip hasArrow label={e.date}>
-                <Flex
-                  alignItems="center"
-                  flexDirection="row"
-                  borderRadius="4px"
-                  bg="#4e79f060"
-                  maxHeight="3"
-                  mb="2"
-                  cursor="pointer"
-                  fontSize="9"
-                >
-                  {e.id}
-                </Flex>
-              </Tooltip>
-            );
-          })}
-        </div>
+      <div className="card">
+        <span>{date}</span>
+        {isWideVersion && (
+          <div>
+            {appointmentsFiltred?.map(e => {
+              return (
+                <PopoverComp
+                  handleletedAppointments={handleletedAppointments}
+                  hassPass={!modifiers.disabled ?? true}
+                  conductor={e.conductor.name}
+                  appointments={e}
+                />
+              );
+            })}
+          </div>
+        )}
         {/* {birthdays.day === date
           ? birthdays.map((name: void) => (
               <div>

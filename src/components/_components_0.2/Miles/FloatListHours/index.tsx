@@ -25,6 +25,7 @@ import { ModalScheduleConfirmationAppointment } from '../../Modal/ModalScheduleC
 interface FloatlistHoursProps {
   daySelected: string;
   vehicleSelected: string;
+  handleAddedNewAppointment: (newAp: any) => void;
 }
 
 interface IDateAvailable {
@@ -39,6 +40,7 @@ interface DestinyInfos {
 export function FloatlistHours({
   daySelected,
   vehicleSelected,
+  handleAddedNewAppointment,
 }: FloatlistHoursProps) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [loading, setLoading] = useState(false);
@@ -147,29 +149,39 @@ export function FloatlistHours({
   );
 
   const handleSubmitScheduleVehicle = useCallback(
-    (data: DestinyInfos) => {
+    async (data: DestinyInfos) => {
       console.log('data', data);
       try {
-        api.post('/appointments', {
-          vehicle_id: vehicleSelected,
-          date: format(new Date(start_date), 'yyyy-MM-dd'),
-          start_date,
-          end_date,
-          route: data.destiny,
-          description: data.description,
-          status: 'Pendente',
-        });
-        console.log('data', data);
-        onClose();
-        apllyToast('success', 'Solicitação enviado com sucesso');
-        handleCleanAppointment();
+        await api
+          .post('/appointments', {
+            vehicle_id: vehicleSelected,
+            date: format(new Date(start_date), 'yyyy-MM-dd'),
+            start_date,
+            end_date,
+            route: data.destiny,
+            description: data.description,
+            status: 'Pendente',
+          })
+          .then(response => {
+            onClose();
+            apllyToast('success', 'Solicitação enviado com sucesso');
+            handleCleanAppointment();
+            handleAddedNewAppointment(response.data);
+          });
       } catch (err) {
         apllyToast('error', 'Erro ao confirmar solicitação');
         handleCleanAppointment();
         console.log(err);
       }
     },
-    [end_date, handleCleanAppointment, onClose, start_date, vehicleSelected],
+    [
+      end_date,
+      handleAddedNewAppointment,
+      handleCleanAppointment,
+      onClose,
+      start_date,
+      vehicleSelected,
+    ],
   );
 
   const formateDateStartAppointments = useMemo(() => {

@@ -18,7 +18,6 @@ import {
   Badge,
   Tag,
   TagLabel,
-  Checkbox,
 } from '@chakra-ui/react';
 // import { RiChatSmile3Line } from 'react-icons/ri';
 import { Pagination } from '../../Pagination';
@@ -26,8 +25,6 @@ import { api } from '../../../../services/api';
 
 interface IPropsListAppointmens {
   vehicleSelected: string;
-  month: number;
-  statusFilter: string;
 }
 
 interface Appointments {
@@ -62,40 +59,25 @@ interface Appointments {
   };
 }
 
-export function ListAppointments({
+export function ListYouAppointments({
   vehicleSelected,
-  month,
-  statusFilter,
 }: IPropsListAppointmens) {
   const [appointments, setListAppointments] = useState<Appointments>();
   const [page, setPage] = useState(1);
-  // const [loading, setLoading] = useState(false);
-  // const [fetting, setFetting] = useState(false);
 
-  const [checkedItems, setCheckedItems] = useState([true]);
-
-  const allChecked = checkedItems.every(Boolean);
-  const isIndeterminate = checkedItems.some(Boolean) && !allChecked;
-  console.log('checkedItems', checkedItems);
   useEffect(() => {
     api
-      .get<Appointments>('/appointments/filter', {
+      .get('/appointments/filter', {
         params: {
           // vehicle_id: vehicleSelected,
-          month: `${month < 10 ? '0' : ''}${month}-2022`,
-          status: statusFilter,
           take: 6,
           page,
         },
       })
       .then(response => {
         setListAppointments(response.data);
-
-        const arrayCheckbox = response.data.appointment.map(data => !data.id);
-        console.log(arrayCheckbox);
-        setCheckedItems(arrayCheckbox);
       });
-  }, [month, page, statusFilter, vehicleSelected]);
+  }, [page, vehicleSelected]);
 
   const handleVerifyDateIsNew = useCallback(date => {
     if (differenceInSeconds(new Date(date), new Date()) > 13800) {
@@ -127,25 +109,14 @@ export function ListAppointments({
     >
       <Flex justify="space-between" align="center">
         <Heading size="md" fontWeight="normal">
-          Acompanhe todos os agendamentos
+          Seus agedamentos
         </Heading>
       </Flex>
 
       <Table colorScheme="whiteAlpha">
         <Thead>
           <Tr>
-            <Th>
-              <Checkbox
-                isChecked={allChecked}
-                isIndeterminate={isIndeterminate}
-                onChange={
-                  e => setCheckedItems([e.target.checked])
-                  // eslint-disable-next-line react/jsx-curly-newline
-                }
-              />
-            </Th>
             <Th>Usuários</Th>
-            <Th>Data solicitação</Th>
             <Th>Data e hora de sai</Th>
             <Th>Data e hora de retorno</Th>
             <Th>Rota</Th>
@@ -157,20 +128,9 @@ export function ListAppointments({
         </Thead>
 
         <Tbody>
-          {appointments?.appointment.map((appointmentitem, index) => (
-            <Tr key={appointmentitem.id} fontSize="sm">
-              {console.log(index)}
+          {appointments?.appointment.map(appointmentitem => (
+            <Tr key={appointmentitem.id}>
               <Td>
-                <Checkbox
-                  isChecked={checkedItems[index]}
-                  onChange={
-                    e =>
-                      setCheckedItems([checkedItems[index], e.target.checked])
-                    // eslint-disable-next-line react/jsx-curly-newline
-                  }
-                />
-              </Td>
-              <Td w="100%">
                 <Box display="flex" alignItens="center" flexDirection="row">
                   {handleVerifyDateIsNew(appointmentitem.created_at) ? (
                     <Badge
@@ -188,23 +148,13 @@ export function ListAppointments({
                     <Text fontWeight="bold">
                       {appointmentitem.conductor.name}{' '}
                     </Text>
-                    <Text fontSize="x-small" color="gray.300">
+                    <Text fontSize="sm" color="gray.300">
                       {appointmentitem.vehicle.name}
                     </Text>
                   </Box>
                 </Box>
               </Td>
 
-              <Td>
-                {' '}
-                {format(
-                  new Date(appointmentitem.created_at),
-                  'dd/MM/yyyy HH:mm:ss',
-                  {
-                    locale: ptBR,
-                  },
-                )}{' '}
-              </Td>
               <Td>
                 {' '}
                 {format(

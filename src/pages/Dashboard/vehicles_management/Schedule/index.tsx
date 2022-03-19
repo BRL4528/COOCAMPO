@@ -18,7 +18,8 @@ import { Sidebar } from '../../../../components/_components_0.2/Sidebar_0.2';
 import { CalendarPiker } from '../../../../components/_components_0.2/Miles/Calendar';
 import { ListFloatCar } from '../../../../components/_components_0.2/Miles/FloatListCar';
 import { FloatlistHours } from '../../../../components/_components_0.2/Miles/FloatListHours';
-import { ListAppointments } from '../../../../components/_components_0.2/Miles/ListAppointments';
+import { ListYouAppointments } from '../../../../components/_components_0.2/Miles/ListYouAppointments';
+import { ListAllAppointments } from './ListAllAppointments';
 
 interface IVehicle {
   id: string;
@@ -29,6 +30,7 @@ export default function Schedule() {
     'Nenhum veiculo selecionado',
   );
   const [daySelected, setDaySelected] = useState('');
+  const [newAppointment, setNewAppointment] = useState('');
 
   const handleSelectedVehicleId = useCallback((vehicle: Omit<IVehicle, ''>) => {
     setVehicleSelected(vehicle.id);
@@ -36,6 +38,10 @@ export default function Schedule() {
 
   const handleDateSelected = useCallback((day: Omit<string, ''>) => {
     setDaySelected(String(day));
+  }, []);
+
+  const handleAddedNewAppointment = useCallback(newAp => {
+    setNewAppointment(newAp);
   }, []);
 
   return (
@@ -96,12 +102,14 @@ export default function Schedule() {
                     <CalendarPiker
                       vehicleSelected={vehicleSelected}
                       handleDateSelected={handleDateSelected}
+                      newAppointment={newAppointment}
                     />
                   </Box>
                 </SimpleGrid>
                 <FloatlistHours
                   vehicleSelected={vehicleSelected}
                   daySelected={daySelected}
+                  handleAddedNewAppointment={handleAddedNewAppointment}
                 />
               </ScaleFade>
             </TabPanel>
@@ -113,9 +121,18 @@ export default function Schedule() {
               />
               <ScaleFade initialScale={0.9} in>
                 <SimpleGrid columns={[1]} spacing={10} flex="1">
-                  <ListAppointments vehicleSelected={vehicleSelected} />
+                  <ListYouAppointments vehicleSelected={vehicleSelected} />
                 </SimpleGrid>
               </ScaleFade>
+            </TabPanel>
+
+            <TabPanel>
+              {/* <ListFloatCar
+                updateNewData=""
+                handleSelectedVehicleId={handleSelectedVehicleId}
+              /> */}
+
+              <ListAllAppointments vehicleSelected={vehicleSelected} />
             </TabPanel>
           </TabPanels>
         </Tabs>

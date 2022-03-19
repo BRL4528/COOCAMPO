@@ -124,7 +124,8 @@ export function ListFloatCar({
         fontWeight="medium"
         type="button"
         onClick={hadleOpenList}
-        mb="4"
+        mb="14"
+        mt="8"
       >
         <ScaleFade initialScale={0.9} in>
           {openList ? (

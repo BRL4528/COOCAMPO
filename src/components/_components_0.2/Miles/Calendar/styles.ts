@@ -19,9 +19,28 @@ export const Calendar = styled.div`
     border-spacing: 8px;
     margin: 16px;
   }
+
+  .card {
+    overflow-y: visible;
+  }
+
   .DayPicker-Day {
     width: 40px;
     height: 60px;
+    padding: 2px;
+    text-align: left;
+    border-top: 4px solid transparent !important;
+
+    > div {
+      height: 100%;
+      span {
+        top: 0;
+      }
+
+      > div {
+        margin-top: 10px;
+      }
+    }
   }
   .DayPicker-Day--available:not(.DayPicker-Day--outside) {
     background: #3e3b47;
