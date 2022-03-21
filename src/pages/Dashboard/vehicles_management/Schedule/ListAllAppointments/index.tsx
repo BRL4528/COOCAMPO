@@ -14,10 +14,14 @@ import { MonthList } from './MonthList';
 
 interface IPropsListAppointmens {
   vehicleSelected: string;
+  tabFocus: number;
+  // handleSetFocusTab: (tab: number) => void;
 }
 
 export function ListAllAppointments({
   vehicleSelected,
+  // handleSetFocusTab,
+  tabFocus,
 }: IPropsListAppointmens) {
   const [statusFilter, setStatusFilter] = useState('Aprovado');
   const [month, setMonth] = useState(new Date().getMonth() + 1);
@@ -82,9 +86,12 @@ export function ListAllAppointments({
       </Box>
 
       <ListAppointments
+        tabFocus={tabFocus}
         month={month}
         statusFilter={statusFilter}
         vehicleSelected={vehicleSelected}
+        // handleSetFocusTab={handleSetFocusTab}
+        handleSetStatusFilter={handleSetStatusFilter}
       />
     </>
   );

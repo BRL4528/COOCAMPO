@@ -18,7 +18,7 @@ import {
   Tr,
   Text,
   useBreakpointValue,
-  useDisclosure,
+  // useDisclosure,
   Center,
   Spinner,
   ScaleFade,
@@ -29,7 +29,7 @@ import {
 
 import { RiDraftLine } from 'react-icons/ri';
 import { Pagination } from '../../Pagination';
-import { FilterCollapse } from '../Filter';
+// import { FilterCollapse } from '../Filter';
 import { ModalAddNewKilometer } from '../../Modal/ModalAddNewKilometer';
 import { ModalEditNewKilometer } from '../../Modal/ModalEditNewKilometer';
 
@@ -85,7 +85,7 @@ export function KilometerTable({
 }: IKilometersTableProps) {
   const [page, setPage] = useState(1);
   const { user } = useAuth();
-  const { isOpen } = useDisclosure();
+  // const { isOpen } = useDisclosure();
   const [dataTable, setDataTable] = useState<IGetKilometers>();
   const [newRegister, setNewRegister] = useState<string>();
   const [loading, setLoading] = useState(false);
@@ -210,7 +210,7 @@ export function KilometerTable({
             />
           </Box>
         </Flex>
-        <FilterCollapse isOpen={isOpen} />
+        {/* <FilterCollapse isOpen={isOpen} > */}
         {loading ? (
           <ScaleFade initialScale={0.9} in>
             <Center>

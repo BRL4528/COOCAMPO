@@ -170,6 +170,12 @@ export default function PopoverComp({
               </Tooltip>
               <Text>{appointments.route} </Text>
             </Box>
+            <Box mt="2">
+              <Tooltip bg="gray.100" hasArrow label="Destino da viagem">
+                <Badge colorScheme="cyan">Veículo</Badge>
+              </Tooltip>
+              <Text>{appointments.vehicle.name} </Text>
+            </Box>
           </Flex>
         </PopoverBody>
         {user.name === conductor && hassPass && (

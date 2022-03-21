@@ -19,7 +19,6 @@ import {
   Tooltip,
   Icon,
   Text,
-  useDisclosure,
   Badge,
   Spinner,
   Center,
@@ -27,7 +26,6 @@ import {
 } from '@chakra-ui/react';
 
 import { RiAttachmentLine, RiDraftLine } from 'react-icons/ri';
-import { FilterCollapse } from '../Filter';
 import { ModalAddNewMaintenance } from '../../Modal/ModalAddNewMaintenance';
 import { ModalVisualizeImage } from '../../Modal/ModalVisualizeImage/index';
 import { ModalEditNewMaintenance } from '../../Modal/ModalEditNewMaintenance';
@@ -84,7 +82,6 @@ interface SupplyAdded {
 
 export function MaintenanceTable({ vehicleSelected }: IvehicleSelected) {
   const { user } = useAuth();
-  const { isOpen } = useDisclosure();
   const isWideVersion = useBreakpointValue({
     base: false,
     lg: true,
@@ -267,7 +264,6 @@ export function MaintenanceTable({ vehicleSelected }: IvehicleSelected) {
           </Box>
         </Flex>
 
-        <FilterCollapse isOpen={isOpen} />
         {loadingTable ? (
           <ScaleFade initialScale={0.9} in>
             <Center>

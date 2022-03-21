@@ -1,5 +1,5 @@
 /* eslint-disable no-shadow */
-import { useCallback, useState } from 'react';
+import { SetStateAction, useCallback, useState } from 'react';
 import {
   Flex,
   ScaleFade,
@@ -31,6 +31,7 @@ export default function Schedule() {
   );
   const [daySelected, setDaySelected] = useState('');
   const [newAppointment, setNewAppointment] = useState('');
+  const [tabFocus, setTabFocus] = useState(0);
 
   const handleSelectedVehicleId = useCallback((vehicle: Omit<IVehicle, ''>) => {
     setVehicleSelected(vehicle.id);
@@ -44,6 +45,19 @@ export default function Schedule() {
     setNewAppointment(newAp);
   }, []);
 
+  // const handleSetFocusTab = useCallback(tab => {
+  //   console.log(tab);
+  //   setTabFocus(tab);
+  // }, []);
+
+  // const handleSliderChange = event => {
+  //   setTabFocus(parseInt(event.target.value, 10));
+  // };
+
+  const handleTabsChange = (index: SetStateAction<number>) => {
+    setTabFocus(index);
+  };
+
   return (
     <Flex direction="column" h="100vh">
       <HeaderUp path="miles" />
@@ -51,7 +65,7 @@ export default function Schedule() {
       <Flex w="100%" my="6" maxWidth={1480} mx="auto" pb={4} px="6">
         <Sidebar path="miles" />
 
-        <Tabs>
+        <Tabs index={tabFocus} onChange={handleTabsChange}>
           <TabList>
             <Tab>Novo agendamento</Tab>
             <Tab>Seus agendamentos</Tab>
@@ -132,7 +146,11 @@ export default function Schedule() {
                 handleSelectedVehicleId={handleSelectedVehicleId}
               /> */}
 
-              <ListAllAppointments vehicleSelected={vehicleSelected} />
+              <ListAllAppointments
+                tabFocus={tabFocus}
+                // handleSetFocusTab={handleSetFocusTab}
+                vehicleSelected={vehicleSelected}
+              />
             </TabPanel>
           </TabPanels>
         </Tabs>

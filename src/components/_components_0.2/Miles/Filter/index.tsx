@@ -1,22 +1,15 @@
+import React from 'react';
 import { Collapse, Box } from '@chakra-ui/react';
 
 interface IPropsFilter {
   isOpen: boolean;
+  children: React.ReactChild;
 }
 
-export function FilterCollapse({ isOpen }: IPropsFilter) {
+export function FilterCollapse({ isOpen, children }: IPropsFilter) {
   return (
     <Collapse in={isOpen} animateOpacity>
-      <Box
-        p="40px"
-        color="white"
-        // mt="4"
-        bg="gray.700"
-        rounded="md"
-        shadow="md"
-      >
-        Teste
-      </Box>
+      <Box>{children}</Box>
     </Collapse>
   );
 }

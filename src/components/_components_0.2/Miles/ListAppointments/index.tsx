@@ -19,15 +19,24 @@ import {
   Tag,
   TagLabel,
   Checkbox,
+  Tooltip,
+  Button,
+  Icon,
 } from '@chakra-ui/react';
 // import { RiChatSmile3Line } from 'react-icons/ri';
+import { RiCheckLine, RiCloseLine } from 'react-icons/ri';
 import { Pagination } from '../../Pagination';
 import { api } from '../../../../services/api';
+import { FilterCollapse } from '../Filter';
+import { apllyToast } from '../../../Global/Toast2.0';
 
 interface IPropsListAppointmens {
   vehicleSelected: string;
   month: number;
+  tabFocus: number;
   statusFilter: string;
+  // handleSetFocusTab: (tab: number) => void;
+  handleSetStatusFilter: (newStatus: string) => void;
 }
 
 interface Appointments {
@@ -62,21 +71,56 @@ interface Appointments {
   };
 }
 
+interface AppointmentsItem {
+  id: string;
+  conductor_id: string;
+  vehicle_id: string;
+  start_date: string;
+  end_date: string;
+  date: string;
+  route: string;
+  description: string;
+  status: string;
+  created_at: string;
+  updated_at: string;
+}
+
 export function ListAppointments({
   vehicleSelected,
   month,
+  tabFocus,
   statusFilter,
+  handleSetStatusFilter,
 }: IPropsListAppointmens) {
   const [appointments, setListAppointments] = useState<Appointments>();
   const [page, setPage] = useState(1);
   // const [loading, setLoading] = useState(false);
   // const [fetting, setFetting] = useState(false);
+  const [selectedItems, setSelectedItems] = useState<string[]>([]);
+  const [isIndeterminate, setIsindeterminate] = useState<boolean>();
 
-  const [checkedItems, setCheckedItems] = useState([true]);
+  const [updateSatus, setUpdateSatatus] = useState();
 
-  const allChecked = checkedItems.every(Boolean);
-  const isIndeterminate = checkedItems.some(Boolean) && !allChecked;
-  console.log('checkedItems', checkedItems);
+  // const [checkedItems, setCheckedItems] = useState([true]);
+
+  const [allChecked, setAllChecked] = useState<boolean>();
+
+  useEffect(() => {
+    if (allChecked) {
+      setIsindeterminate(false);
+    } else {
+      setIsindeterminate(selectedItems.length > 0);
+    }
+  }, [allChecked, selectedItems, statusFilter]);
+
+  useEffect(() => {
+    if (appointments?.appointment.length) {
+      setAllChecked(selectedItems.length === appointments?.appointment.length);
+    } else {
+      setAllChecked(false);
+    }
+  }, [appointments?.appointment.length, selectedItems]);
+
   useEffect(() => {
     api
       .get<Appointments>('/appointments/filter', {
@@ -91,11 +135,10 @@ export function ListAppointments({
       .then(response => {
         setListAppointments(response.data);
 
-        const arrayCheckbox = response.data.appointment.map(data => !data.id);
-        console.log(arrayCheckbox);
-        setCheckedItems(arrayCheckbox);
+        // const arrayCheckbox = response.data.appointment.map(data => !data.id);
+        // setCheckedItems(arrayCheckbox);
       });
-  }, [month, page, statusFilter, vehicleSelected]);
+  }, [month, page, statusFilter, vehicleSelected, updateSatus, tabFocus]);
 
   const handleVerifyDateIsNew = useCallback(date => {
     if (differenceInSeconds(new Date(date), new Date()) > 13800) {
@@ -116,6 +159,58 @@ export function ListAppointments({
     }
     return '';
   }, []);
+  const handleUpdateSatatus = useCallback(
+    async status => {
+      try {
+        await api
+          .put('appointments/all', selectedItems, {
+            params: {
+              status,
+            },
+          })
+          .then(response => {
+            setUpdateSatatus(response.data);
+            apllyToast('success', 'Sucesso ao atualizar status');
+            setSelectedItems([]);
+            handleSetStatusFilter('Aprovado');
+          });
+      } catch (err) {
+        console.log(err);
+        apllyToast('error', 'Problemas ao atualizar status');
+      }
+    },
+    [handleSetStatusFilter, selectedItems],
+  );
+
+  const handleSelectItem = useCallback(
+    (id: string) => {
+      const alreadySelected = selectedItems.findIndex(item => item === id);
+
+      if (alreadySelected >= 0) {
+        const filteredItems = selectedItems.filter(item => item !== id);
+
+        setSelectedItems(filteredItems);
+      } else {
+        setSelectedItems([...selectedItems, id]);
+      }
+    },
+    [selectedItems],
+  );
+
+  const handleSelectAllItem = useCallback(
+    (ids: AppointmentsItem[] | undefined) => {
+      if (ids) {
+        console.log('ids', ids);
+        if (selectedItems.length > 0) {
+          setSelectedItems([]);
+        } else {
+          const filteredItems = ids.map(item => item.id);
+          setSelectedItems(filteredItems);
+        }
+      }
+    },
+    [selectedItems.length],
+  );
 
   return (
     <Box
@@ -129,6 +224,45 @@ export function ListAppointments({
         <Heading size="md" fontWeight="normal">
           Acompanhe todos os agendamentos
         </Heading>
+
+        <FilterCollapse
+          isOpen={selectedItems.length > 0 && statusFilter !== 'Aprovado'}
+        >
+          <Box>
+            <Tooltip
+              hasArrow
+              label={selectedItems.length > 1 ? 'Aprovar todos' : 'Aprovar'}
+            >
+              <Button
+                size="sm"
+                mr="2"
+                colorScheme="green"
+                fontWeight="medium"
+                onClick={() => handleUpdateSatatus('Aprovado')}
+              >
+                <Icon as={RiCheckLine} fontSize="20" />
+              </Button>
+            </Tooltip>
+            {statusFilter !== 'Recusado' ? (
+              <Tooltip
+                hasArrow
+                label={selectedItems.length > 1 ? 'Recusar todos' : 'Recusar'}
+              >
+                <Button
+                  size="sm"
+                  mr="2"
+                  colorScheme="red"
+                  fontWeight="medium"
+                  onClick={() => handleUpdateSatatus('Recusado')}
+                >
+                  <Icon as={RiCloseLine} fontSize="20" />
+                </Button>
+              </Tooltip>
+            ) : (
+              ''
+            )}
+          </Box>
+        </FilterCollapse>
       </Flex>
 
       <Table colorScheme="whiteAlpha">
@@ -138,10 +272,7 @@ export function ListAppointments({
               <Checkbox
                 isChecked={allChecked}
                 isIndeterminate={isIndeterminate}
-                onChange={
-                  e => setCheckedItems([e.target.checked])
-                  // eslint-disable-next-line react/jsx-curly-newline
-                }
+                onChange={() => handleSelectAllItem(appointments?.appointment)}
               />
             </Th>
             <Th>Usuários</Th>
@@ -157,17 +288,12 @@ export function ListAppointments({
         </Thead>
 
         <Tbody>
-          {appointments?.appointment.map((appointmentitem, index) => (
+          {appointments?.appointment.map(appointmentitem => (
             <Tr key={appointmentitem.id} fontSize="sm">
-              {console.log(index)}
               <Td>
                 <Checkbox
-                  isChecked={checkedItems[index]}
-                  onChange={
-                    e =>
-                      setCheckedItems([checkedItems[index], e.target.checked])
-                    // eslint-disable-next-line react/jsx-curly-newline
-                  }
+                  isChecked={selectedItems.includes(appointmentitem.id)}
+                  onChange={() => handleSelectItem(appointmentitem.id)}
                 />
               </Td>
               <Td w="100%">

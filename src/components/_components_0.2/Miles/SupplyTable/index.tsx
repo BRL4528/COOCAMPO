@@ -19,7 +19,6 @@ import {
   Tooltip,
   Icon,
   Text,
-  useDisclosure,
   Badge,
   Spinner,
   Center,
@@ -27,7 +26,6 @@ import {
 } from '@chakra-ui/react';
 
 import { RiAttachmentLine, RiDraftLine } from 'react-icons/ri';
-import { FilterCollapse } from '../Filter';
 import { ModalAddNewSupply } from '../../Modal/ModalAddNewSupply/indext';
 import { ModalEditNewSupply } from '../../Modal/ModalEditNewSupply';
 import { ModalVisualizeImage } from '../../Modal/ModalVisualizeImage/index';
@@ -112,7 +110,6 @@ interface Supply {
 
 export function SupplyTable({ vehicleSelected }: IKilometersTableProps) {
   const { user } = useAuth();
-  const { isOpen } = useDisclosure();
   const isWideVersion = useBreakpointValue({
     base: false,
     lg: true,
@@ -301,7 +298,6 @@ export function SupplyTable({ vehicleSelected }: IKilometersTableProps) {
           </Box>
         </Flex>
 
-        <FilterCollapse isOpen={isOpen} />
         {loadingTable ? (
           <ScaleFade initialScale={0.9} in>
             <Center>
