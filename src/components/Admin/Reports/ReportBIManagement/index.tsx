@@ -1,8 +1,25 @@
-import React, { useEffect, useRef, useState, useContext } from 'react';
+import React, {
+  useEffect,
+  useRef,
+  useState,
+  useContext,
+  useCallback,
+} from 'react';
 import { useReport } from 'powerbi-report-component';
 import { models } from 'powerbi-client';
 
-import { Box, Spinner, Center, ScaleFade } from '@chakra-ui/react';
+import {
+  Box,
+  Spinner,
+  Center,
+  ScaleFade,
+  MenuButton,
+  MenuItem,
+  Menu,
+  MenuList,
+  Button,
+} from '@chakra-ui/react';
+import { BiChevronDown } from 'react-icons/bi';
 
 import { SetToggleThemeContext } from '../../../../contexts/SetToggleThemeContext';
 import {
@@ -58,6 +75,13 @@ export const ReportBIManagement = ({
   //   setProgress(load);
   // }, 1000);
 
+  const handleSetPage = useCallback(
+    (pageName: string) => {
+      report.setPage(pageName);
+    },
+    [report],
+  );
+
   useEffect(() => {
     async function loadTokenBI(): Promise<void> {
       try {
@@ -101,6 +125,7 @@ export const ReportBIManagement = ({
         ];
 
         const page = await report.getPages();
+
         const filter = await page[0].getFilters();
         console.log('pagina', page);
         await page[0].updateFilters(
@@ -197,7 +222,34 @@ export const ReportBIManagement = ({
         reload
       </button> */}
       <Center>{loadingRendered ? <Spinner /> : ''}</Center>
+
       <ScaleFade initialScale={0.9} in>
+        <Box width="100%" display="flex" alignItems="end">
+          <Menu>
+            <MenuButton
+              colorScheme="blue"
+              as={Button}
+              rightIcon={<BiChevronDown />}
+            >
+              Painés
+            </MenuButton>
+            <MenuList>
+              <MenuItem onClick={() => handleSetPage('ReportSection')}>
+                Geral
+              </MenuItem>
+              <MenuItem
+                onClick={
+                  () => handleSetPage('ReportSection508aa3c580e043c3deb1')
+                  // eslint-disable-next-line react/jsx-curly-newline
+                }
+              >
+                Média de consumo
+              </MenuItem>
+              <MenuItem>Abastecimentos</MenuItem>
+              <MenuItem>Manutenções</MenuItem>
+            </MenuList>
+          </Menu>
+        </Box>
         <Box
           display={loadingRendered ? 'none' : ''}
           style={layoutSettings()}
