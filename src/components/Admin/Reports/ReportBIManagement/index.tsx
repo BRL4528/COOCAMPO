@@ -224,7 +224,11 @@ export const ReportBIManagement = ({
       <Center>{loadingRendered ? <Spinner /> : ''}</Center>
 
       <ScaleFade initialScale={0.9} in>
-        <Box width="100%" display="flex" alignItems="end">
+        <Box
+          width="100%"
+          alignItems="end"
+          display={loadingRendered ? 'none' : 'flex'}
+        >
           <Menu>
             <MenuButton
               colorScheme="blue"
