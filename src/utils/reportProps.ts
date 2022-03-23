@@ -51,7 +51,7 @@ export default function reportProps({
         },
       },
       customLayout: {
-        displayOption: models.DisplayOption.FitToPage,
+        // displayOption: models.DisplayOption.FitToPage,
       },
     },
   };
