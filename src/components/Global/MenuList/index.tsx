@@ -67,7 +67,8 @@ const MenuList: React.FC = () => {
           </Box>
           {/* </div> */}
 
-          <Box className={user.tag === 'admin' ? '' : 'disabled'} m="5px">
+          {/* <Box className={user.tag === 'admin' ? '' : 'disabled'} m="5px"> */}
+          <Box m="5px">
             <Link to="/rules">
               <Content>
                 <img src={fluxo} alt="imagem de fluxo grama" />
@@ -75,6 +76,7 @@ const MenuList: React.FC = () => {
               </Content>
             </Link>
           </Box>
+          {/* </Box> */}
           <Box className={user.tag === 'admin' ? '' : 'disabled'} m="5px">
             <Link to="/administrator/employers">
               <Content>

@@ -1,9 +1,10 @@
 /* eslint-disable prettier/prettier */
 /* eslint-disable react/no-danger */
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { RichText } from 'prismic-dom';
 import { getPrismicClient } from '../../../../services/prismic';
+import { SetToggleThemeContext } from '../../../../contexts/SetToggleThemeContext';
 
 import { Container, Nic } from './styles';
 
@@ -15,6 +16,7 @@ interface PropsNic {
 }
 
 const SelectedNic: React.FC = () => {
+  const { toggleTheme } = useContext(SetToggleThemeContext);
   const parsed = window.location.search;
   const [nic, setNic] = useState<PropsNic>();
 
@@ -47,7 +49,7 @@ const SelectedNic: React.FC = () => {
 
   return (
     <Container>
-      <Nic>
+      <Nic theme={toggleTheme}>
         <h1>{nic?.title}</h1>
         <time>{nic?.updateAt}</time>
         <div
