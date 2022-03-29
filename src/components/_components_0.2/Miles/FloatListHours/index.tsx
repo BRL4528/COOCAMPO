@@ -15,12 +15,14 @@ import {
   Spinner,
   Flex,
   useDisclosure,
+  Tooltip,
 } from '@chakra-ui/react';
 
 import { createArayHoursFormated } from '../../../../utils/createArayHoursFormated';
 import { api } from '../../../../services/api';
 import { apllyToast } from '../../../Global/Toast2.0';
 import { ModalScheduleConfirmationAppointment } from '../../Modal/ModalScheduleConfirmationAppointment';
+import { handleSendEmailNewAppointments } from '../../../../services/sendEmailNewApointments';
 
 interface FloatlistHoursProps {
   daySelected: string;
@@ -87,6 +89,7 @@ export function FloatlistHours({
           });
       } catch (err) {
         console.log(err);
+        setLoading(false);
         apllyToast('warning', 'Problemas ao editar quilometragem!');
       }
     }
@@ -150,7 +153,7 @@ export function FloatlistHours({
 
   const handleSubmitScheduleVehicle = useCallback(
     async (data: DestinyInfos) => {
-      console.log('data', data);
+      setLoading(true);
       try {
         await api
           .post('/appointments', {
@@ -167,10 +170,16 @@ export function FloatlistHours({
             apllyToast('success', 'Solicitação enviado com sucesso');
             handleCleanAppointment();
             handleAddedNewAppointment(response.data);
+            handleSendEmailNewAppointments(
+              'miles-schedule-group',
+              response.data,
+            );
+            setLoading(false);
           });
       } catch (err) {
         apllyToast('error', 'Erro ao confirmar solicitação');
         handleCleanAppointment();
+        setLoading(false);
         console.log(err);
       }
     },
@@ -210,6 +219,7 @@ export function FloatlistHours({
   return (
     <Center flexDirection="column" mt="8">
       <ModalScheduleConfirmationAppointment
+        loading={loading}
         isOpen={isOpen}
         onClose={onClose}
         handleSubmitScheduleVehicle={handleSubmitScheduleVehicle}
@@ -234,23 +244,31 @@ export function FloatlistHours({
           ) : (
             <Center flexDirection="column">
               <Flex mb="30px">
-                <Button
-                  colorScheme="teal"
-                  bg={handleButtonStatus === 'start' ? 'green.500' : 'blue.500'}
-                  onClick={() => {}}
-                >
-                  Partida
-                </Button>
+                <Tooltip hasArrow label="Horário de partida">
+                  <Button
+                    bg={handleButtonStatus === 'start' ? 'green.500' : 'grey'}
+                    onClick={() => {}}
+                    cursor={
+                      handleButtonStatus === 'start' ? 'pointer' : 'not-allowed'
+                    }
+                  >
+                    Partida
+                  </Button>
+                </Tooltip>
                 <Text>.............</Text>
-                <Button
-                  colorScheme="teal"
-                  bg={
-                    handleButtonStatus === 'return' ? 'green.500' : 'blue.500'
-                  }
-                  onClick={() => {}}
-                >
-                  Retorno
-                </Button>
+                <Tooltip hasArrow label="Horário de retorno">
+                  <Button
+                    bg={handleButtonStatus === 'return' ? 'green.500' : 'grey'}
+                    onClick={() => {}}
+                    cursor={
+                      handleButtonStatus === 'return'
+                        ? 'pointer'
+                        : 'not-allowed'
+                    }
+                  >
+                    Retorno
+                  </Button>
+                </Tooltip>
               </Flex>
               <Box>
                 <Text>Manhã</Text>

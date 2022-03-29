@@ -3,7 +3,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react';
 import { RichText } from 'prismic-dom';
-import { getPrismicClient } from '../../../../../services/prismic';
+import { getPrismicClient } from '../../../../services/prismic';
 
 import { Container, Nic } from './styles';
 

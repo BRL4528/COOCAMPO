@@ -1,11 +1,12 @@
 import { Text, Center, useBreakpointValue } from '@chakra-ui/react';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState, useContext } from 'react';
 
 import DayPicker, { DayModifiers } from 'react-day-picker';
 import { Calendar } from './styles';
 import 'react-day-picker/lib/style.css';
 import { api } from '../../../../services/api';
 import PopoverComp from '../../Popover';
+import { SetToggleThemeContext } from '../../../../contexts/SetToggleThemeContext';
 
 interface monthAvailabilityIem {
   day: number;
@@ -36,6 +37,9 @@ interface Appointments {
   conductor: {
     name: string;
   };
+  leader: {
+    name: string;
+  };
 }
 
 interface ICalendarProps {
@@ -58,7 +62,7 @@ export function CalendarPiker({
   const [monthAvailability, setMonthAvalability] = useState<
     monthAvailabilityIem[]
   >([]);
-
+  const { toggleTheme } = useContext(SetToggleThemeContext);
   const isWideVersion = useBreakpointValue({
     base: false,
     lg: true,
@@ -146,6 +150,7 @@ export function CalendarPiker({
                   hassPass={!modifiers.disabled ?? true}
                   conductor={e.conductor.name}
                   appointments={e}
+                  theme={toggleTheme}
                 />
               );
             })}
@@ -162,21 +167,34 @@ export function CalendarPiker({
     );
   }
   return (
-    <Calendar>
+    <Calendar theme={toggleTheme}>
       {vehicleSelected === 'Nenhum veiculo selecionado' ? (
         <Center>
           <Text>{vehicleSelected}</Text>
         </Center>
       ) : (
         <DayPicker
-          weekdaysShort={['D', 'S', 'T', 'Q', 'Q', 'S', 'S']}
+          weekdaysShort={
+            isWideVersion
+              ? [
+                  'Domingo',
+                  'Segunda',
+                  'Terça',
+                  'Quarta',
+                  'Quinta',
+                  'Sexta',
+                  'Sábado',
+                ]
+              : ['D', 'S', 'T', 'Q', 'Q', 'S', 'S']
+          }
           fromMonth={new Date()}
           onMonthChange={handleMonthChange}
           selectedDays={selectedDate}
-          disabledDays={[{ daysOfWeek: [0, 6] }, ...disabledDays]}
+          disabledDays={[...disabledDays]}
+          // disabledDays={[{ daysOfWeek: [0, 6] }, ...disabledDays]}
           renderDay={renderDay}
           modifiers={{
-            available: { daysOfWeek: [1, 2, 3, 4, 5] },
+            available: { daysOfWeek: [0, 1, 2, 3, 4, 5, 6] },
           }}
           onDayClick={handleDateChange}
           months={[

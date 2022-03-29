@@ -1,6 +1,10 @@
 import shade from 'polished/lib/color/shade';
 import styled from 'styled-components';
 
+interface Iprops {
+  theme: string;
+}
+
 export const Calendar = styled.div`
   .DayPicker {
     border-radius: 4px;
@@ -43,13 +47,17 @@ export const Calendar = styled.div`
     }
   }
   .DayPicker-Day--available:not(.DayPicker-Day--outside) {
-    background: #3e3b47;
+    ${({ theme }: Iprops): string =>
+      theme === 'light' ? 'background: #2B6CB0' : 'background: #3e3b47'};
     border-radius: 4px;
     color: #fff;
   }
   .DayPicker:not(.DayPicker--interactionDisabled)
     .DayPicker-Day:not(.DayPicker-Day--disabled):not(.DayPicker-Day--selected):not(.DayPicker-Day--outside):hover {
-    background: ${shade(0.2, '#3e3b47')};
+    ${({ theme }: Iprops): string =>
+      theme === 'light'
+        ? `background: ${shade(0.2, '#2B6CB0')}`
+        : `background: ${shade(0.2, '#3e3b47')}`};
   }
   .DayPicker-Day--today {
     font-weight: normal;
@@ -61,6 +69,10 @@ export const Calendar = styled.div`
   .DayPicker-Day--selected {
     /* background: #3182ce !important; */
     border-top: 4px solid #3182ce !important;
+    ${({ theme }: Iprops): string =>
+      theme === 'light'
+        ? 'border-top: 4px solid #1d3557 !important;'
+        : 'border-top: 4px solid #3182ce !important;'};
 
     border-radius: 10px;
     color: #fff !important;

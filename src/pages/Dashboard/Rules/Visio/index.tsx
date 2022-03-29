@@ -3,12 +3,12 @@
 /* eslint-disable jsx-a11y/iframe-has-title */
 import React, { useCallback, useState, useEffect } from 'react';
 
-import ModalAddGoals from '../../../../../components/Admin/Modal/ModalAddSector';
-import ModalEditGoals from '../../../../../components/Admin/Modal/ModalEditSector';
+import ModalAddGoals from '../../../../components/Admin/Modal/ModalAddSector';
+import ModalEditGoals from '../../../../components/Admin/Modal/ModalEditSector';
 
 import { Container, CardeHeader } from './styles';
-import { api } from '../../../../../services/api';
-import { useAuth } from '../../../../../hooks/auth';
+import { api } from '../../../../services/api';
+import { useAuth } from '../../../../hooks/auth';
 
 interface ISector {
   id: string;

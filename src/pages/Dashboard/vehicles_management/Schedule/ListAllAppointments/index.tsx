@@ -16,11 +16,13 @@ interface IPropsListAppointmens {
   vehicleSelected: string;
   tabFocus: number;
   // handleSetFocusTab: (tab: number) => void;
+  handleUpdateAppointment: (updateAp: string) => void;
 }
 
 export function ListAllAppointments({
   vehicleSelected,
   // handleSetFocusTab,
+  handleUpdateAppointment,
   tabFocus,
 }: IPropsListAppointmens) {
   const [statusFilter, setStatusFilter] = useState('Aprovado');
@@ -92,6 +94,7 @@ export function ListAllAppointments({
         vehicleSelected={vehicleSelected}
         // handleSetFocusTab={handleSetFocusTab}
         handleSetStatusFilter={handleSetStatusFilter}
+        handleUpdateAppointment={handleUpdateAppointment}
       />
     </>
   );

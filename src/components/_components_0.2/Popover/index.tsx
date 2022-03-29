@@ -30,6 +30,7 @@ interface Props {
   handleletedAppointments: (event: any) => void;
   conductor: string;
   hassPass: boolean;
+  theme: string;
   appointments: {
     id: string;
     start_date: string;
@@ -39,10 +40,14 @@ interface Props {
     vehicle: {
       name: string;
     };
+    leader: {
+      name: string;
+    };
   };
 }
 
 export default function PopoverComp({
+  theme,
   conductor,
   hassPass,
   appointments,
@@ -50,7 +55,7 @@ export default function PopoverComp({
 }: Props) {
   const { user } = useAuth();
   const [loading, setLoading] = useState(false);
-
+  console.log('isLoading={loadingUpdate}', appointments);
   const formateDateStartAppointments = useMemo(() => {
     if (appointments.start_date !== '') {
       return format(
@@ -112,14 +117,15 @@ export default function PopoverComp({
           mb="1"
           flexDirection="row"
           borderRadius="4px"
-          bg="#4e79f060"
+          // bg="#4e79f060"
+          bg={theme === 'light' ? '#1d3557' : '#4e79f060'}
           maxHeight="3"
           fontSize="9"
           w="100%"
           p="0"
           textAlign="left"
         >
-          <Tooltip hasArrow placement="right" label={conductor}>
+          <Tooltip hasArrow placement="right" label={conductor} bg="gray.650">
             <Text
               m="0"
               w="100%"
@@ -133,7 +139,11 @@ export default function PopoverComp({
           </Tooltip>
         </Button>
       </PopoverTrigger>
-      <PopoverContent bg="gray.700" color="white" disabled>
+      <PopoverContent
+        bg={theme === 'light' ? 'gray.200' : 'gray.700'}
+        color="white"
+        disabled
+      >
         <PopoverArrow />
         <PopoverCloseButton />
         <PopoverHeader>
@@ -176,6 +186,16 @@ export default function PopoverComp({
               </Tooltip>
               <Text>{appointments.vehicle.name} </Text>
             </Box>
+            {appointments.leader ? (
+              <Box mt="2">
+                <Tooltip bg="gray.100" hasArrow label="Autorizado por:">
+                  <Badge colorScheme="cyan">Autorizado por</Badge>
+                </Tooltip>
+                <Text>{appointments.leader.name} </Text>
+              </Box>
+            ) : (
+              ''
+            )}
           </Flex>
         </PopoverBody>
         {user.name === conductor && hassPass && (

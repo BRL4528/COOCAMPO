@@ -71,7 +71,7 @@ const MenuList: React.FC = () => {
             <Link to="/rules">
               <Content>
                 <img src={fluxo} alt="imagem de fluxo grama" />
-                <strong>Normas interna</strong>
+                <strong>Normas e manuais</strong>
               </Content>
             </Link>
           </Box>

@@ -2,7 +2,7 @@ import { Flex, Icon, IconButton, useBreakpointValue } from '@chakra-ui/react';
 import { RiMenuLine } from 'react-icons/ri';
 import { Profile } from './Profile';
 import { NotificationNav } from './Notifications';
-// import { SearchBox } from './SearchBox';
+import { SearchBox } from './SearchBox';
 import { Logo } from './Logo';
 import { useSidebarDrawer } from '../../../contexts/SidebarDrawerContext';
 
@@ -53,7 +53,7 @@ export function HeaderUp({ path }: Props) {
         />
       )}
       <Logo />
-      {/* {isWideVersion && <SearchBox />} */}
+      {isWideVersion && <SearchBox />}
 
       <Flex align="center" ml="auto">
         <NotificationNav />

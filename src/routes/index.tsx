@@ -37,26 +37,28 @@ import ScheduleOnly from '../pages/Dashboard/ppr_management/Schedule/ScheduleUni
 import Employers from '../pages/Dashboard/ppr_management/Employers';
 import EmployersEdit from '../pages/Dashboard/ppr_management/Employers/EditProfile';
 
+// Miles
 import Vehicles from '../pages/Dashboard/vehicles_management/Vehicles';
-
 import DashboardMiles from '../pages/Dashboard/vehicles_management/Dashboard';
 import VehiclesSchedule from '../pages/Dashboard/vehicles_management/Schedule';
 import Kilometers from '../pages/Dashboard/vehicles_management/Kilometers';
 import KilometersVelho from '../pages/Dashboard/Miles-velho/YouMiles';
 import VehiclesSupply from '../pages/Dashboard/vehicles_management/Supply';
 import VehiclesMaintenance from '../pages/Dashboard/vehicles_management/Maintenance';
+import FastQuilometer from '../pages/Dashboard/vehicles_management/FastQuilometer';
+import FormFastQuilometer from '../pages/Dashboard/vehicles_management/FastQuilometer/FormFastQuilometer';
 
+// Service order
 import FormsOrderService from '../components/Admin/FormsOrderService';
-
 import ServicesOrders from '../pages/Dashboard/service_orders/UserServiceOrders';
 import PainelServicesOrders from '../pages/Dashboard/service_orders/PainelServiceOrders';
 import ServiceIntegrity from '../pages/Dashboard/service_orders/ServiceIntegrity';
 import Monitoring from '../pages/Dashboard/service_orders/Monitoring';
 
-import SelectedNic from '../pages/Dashboard/ppr_management/Rules/SelectedNic';
+import SelectedNic from '../pages/Dashboard/Rules/SelectedNic';
 
-import Rules from '../pages/Dashboard/ppr_management/Rules';
-import Visio from '../pages/Dashboard/ppr_management/Rules/Visio';
+import Rules from '../pages/Dashboard/Rules';
+import Visio from '../pages/Dashboard/Rules/Visio';
 
 // BI
 import BIManagement from '../pages/Dashboard/BIManagement';
@@ -269,6 +271,20 @@ const Routes: React.FC = () => (
       component={VehiclesMaintenance}
       isPrivate
       isAdmin
+    />
+
+    <Route
+      path="/miles/fast-quilometer"
+      component={FastQuilometer}
+      isPrivate
+      isAdmin
+    />
+    <Route
+      path="/miles/formFastQuilometer"
+      component={FormFastQuilometer}
+      isPrivate
+      isAdmin
+      exact
     />
 
     <Route

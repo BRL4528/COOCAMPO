@@ -24,11 +24,16 @@ import {
   Icon,
 } from '@chakra-ui/react';
 // import { RiChatSmile3Line } from 'react-icons/ri';
-import { RiCheckLine, RiCloseLine } from 'react-icons/ri';
+import { RiCheckLine, RiCloseLine, RiMailSendLine } from 'react-icons/ri';
 import { Pagination } from '../../Pagination';
 import { api } from '../../../../services/api';
 import { FilterCollapse } from '../Filter';
 import { apllyToast } from '../../../Global/Toast2.0';
+import {
+  handleResendEmailAppointments,
+  handleSendEmailForRequesterAppointments,
+} from '../../../../services/sendEmailNewApointments';
+import { useAuth } from '../../../../hooks/auth';
 
 interface IPropsListAppointmens {
   vehicleSelected: string;
@@ -37,6 +42,7 @@ interface IPropsListAppointmens {
   statusFilter: string;
   // handleSetFocusTab: (tab: number) => void;
   handleSetStatusFilter: (newStatus: string) => void;
+  handleUpdateAppointment: (updateAp: string) => void;
 }
 
 interface Appointments {
@@ -91,7 +97,9 @@ export function ListAppointments({
   tabFocus,
   statusFilter,
   handleSetStatusFilter,
+  handleUpdateAppointment,
 }: IPropsListAppointmens) {
+  const { user } = useAuth();
   const [appointments, setListAppointments] = useState<Appointments>();
   const [page, setPage] = useState(1);
   // const [loading, setLoading] = useState(false);
@@ -104,6 +112,8 @@ export function ListAppointments({
   // const [checkedItems, setCheckedItems] = useState([true]);
 
   const [allChecked, setAllChecked] = useState<boolean>();
+  const [loadingResend, setLoadingResend] = useState(false);
+  const [loadingUpdate, setLoadingUpdate] = useState(false);
 
   useEffect(() => {
     if (allChecked) {
@@ -162,24 +172,36 @@ export function ListAppointments({
   const handleUpdateSatatus = useCallback(
     async status => {
       try {
+        setLoadingUpdate(true);
         await api
           .put('appointments/all', selectedItems, {
             params: {
               status,
+              leader_id: user.id,
             },
           })
           .then(response => {
             setUpdateSatatus(response.data);
-            apllyToast('success', 'Sucesso ao atualizar status');
+            handleSendEmailForRequesterAppointments(user.email, status);
             setSelectedItems([]);
-            handleSetStatusFilter('Aprovado');
+            handleSetStatusFilter(status);
+            handleUpdateAppointment(response.data);
+            apllyToast('success', 'Sucesso ao atualizar status');
+            setLoadingUpdate(false);
           });
       } catch (err) {
         console.log(err);
         apllyToast('error', 'Problemas ao atualizar status');
+        setLoadingUpdate(false);
       }
     },
-    [handleSetStatusFilter, selectedItems],
+    [
+      handleSetStatusFilter,
+      handleUpdateAppointment,
+      selectedItems,
+      user.email,
+      user.id,
+    ],
   );
 
   const handleSelectItem = useCallback(
@@ -212,6 +234,19 @@ export function ListAppointments({
     [selectedItems.length],
   );
 
+  const hadleResendEmail = useCallback(async () => {
+    try {
+      setLoadingResend(true);
+      await handleResendEmailAppointments('miles-schedule-group');
+      setLoadingResend(false);
+      apllyToast('info', 'Solicitação reenviada com sucesso');
+    } catch (err) {
+      console.log(err);
+      apllyToast('error', 'Problemas ao reenviar solicitação');
+      setLoadingResend(false);
+    }
+  }, []);
+
   return (
     <Box
       overflow="auto"
@@ -230,10 +265,32 @@ export function ListAppointments({
         >
           <Box>
             <Tooltip
+              bg="gray.650"
+              hasArrow
+              label={
+                selectedItems.length > 1
+                  ? 'Reencaminhar todas solicitações'
+                  : 'Reencaminhar solicitação'
+              }
+            >
+              <Button
+                isLoading={loadingResend}
+                size="sm"
+                mr="2"
+                colorScheme="blue"
+                fontWeight="medium"
+                onClick={hadleResendEmail}
+              >
+                <Icon as={RiMailSendLine} fontSize="20" />
+              </Button>
+            </Tooltip>
+            <Tooltip
+              bg="gray.650"
               hasArrow
               label={selectedItems.length > 1 ? 'Aprovar todos' : 'Aprovar'}
             >
               <Button
+                isLoading={loadingUpdate}
                 size="sm"
                 mr="2"
                 colorScheme="green"
@@ -245,10 +302,12 @@ export function ListAppointments({
             </Tooltip>
             {statusFilter !== 'Recusado' ? (
               <Tooltip
+                bg="gray.650"
                 hasArrow
                 label={selectedItems.length > 1 ? 'Recusar todos' : 'Recusar'}
               >
                 <Button
+                  isLoading={loadingUpdate}
                   size="sm"
                   mr="2"
                   colorScheme="red"

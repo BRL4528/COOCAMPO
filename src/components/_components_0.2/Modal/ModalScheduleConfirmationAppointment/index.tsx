@@ -17,6 +17,7 @@ interface DestinyInfos {
 interface IpropsModal {
   formateDateStartAppointments: string;
   formateDateEndAppointments: string;
+  loading: boolean;
   isOpen: boolean;
   onClose: () => void;
   handleSubmitScheduleVehicle: (data: DestinyInfos) => void;
@@ -28,6 +29,7 @@ export function ModalScheduleConfirmationAppointment({
   formateDateEndAppointments,
   isOpen,
   onClose,
+  loading,
 }: IpropsModal) {
   const formRef = useRef<FormHandles>(null);
 
@@ -102,10 +104,10 @@ export function ModalScheduleConfirmationAppointment({
           </Flex>
         </Flex>
         <ModalFooter>
-          <Button onClick={onClose} bg="gray.600" mr={3}>
+          <Button onClick={onClose} isLoading={loading} bg="gray.600" mr={3}>
             Cancelar
           </Button>
-          <Button colorScheme="blue" type="submit">
+          <Button colorScheme="blue" isLoading={loading} type="submit">
             Confirmar
           </Button>
         </ModalFooter>

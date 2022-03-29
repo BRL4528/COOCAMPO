@@ -20,12 +20,14 @@ import { ListFloatCar } from '../../../../components/_components_0.2/Miles/Float
 import { FloatlistHours } from '../../../../components/_components_0.2/Miles/FloatListHours';
 import { ListYouAppointments } from '../../../../components/_components_0.2/Miles/ListYouAppointments';
 import { ListAllAppointments } from './ListAllAppointments';
+import { useAuth } from '../../../../hooks/auth';
 
 interface IVehicle {
   id: string;
 }
 
 export default function Schedule() {
+  const { user } = useAuth();
   const [vehicleSelected, setVehicleSelected] = useState(
     'Nenhum veiculo selecionado',
   );
@@ -43,6 +45,9 @@ export default function Schedule() {
 
   const handleAddedNewAppointment = useCallback(newAp => {
     setNewAppointment(newAp);
+  }, []);
+  const handleUpdateAppointment = useCallback(updateAp => {
+    setNewAppointment(updateAp);
   }, []);
 
   // const handleSetFocusTab = useCallback(tab => {
@@ -69,8 +74,8 @@ export default function Schedule() {
           <TabList>
             <Tab>Novo agendamento</Tab>
             <Tab>Seus agendamentos</Tab>
-            <Tab>Lista de agendamentos</Tab>
-            <Tab>Solicitações</Tab>
+            {user.schedule ? <Tab>Lista de agendamentos</Tab> : ''}
+            {/* <Tab>Solicitações</Tab> */}
           </TabList>
           <TabPanels>
             <TabPanel>
@@ -149,6 +154,7 @@ export default function Schedule() {
               <ListAllAppointments
                 tabFocus={tabFocus}
                 // handleSetFocusTab={handleSetFocusTab}
+                handleUpdateAppointment={handleUpdateAppointment}
                 vehicleSelected={vehicleSelected}
               />
             </TabPanel>

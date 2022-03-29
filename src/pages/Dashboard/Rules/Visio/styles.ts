@@ -1,6 +1,6 @@
 import styled, { css } from 'styled-components';
 
-import Tooltip from '../../../../../components/Global/Tooltip';
+import Tooltip from '../../../../components/Global/Tooltip';
 
 interface PrpsTrade {
   trendUp?: boolean;

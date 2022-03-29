@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable react/jsx-indent */
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useRef, useState, useContext } from 'react';
+import { Image, ScaleFade, Flex, Box, Spinner, Tag } from '@chakra-ui/react';
 
 import Prismic from '@prismicio/client';
 import { RichText } from 'prismic-dom';
@@ -10,12 +11,15 @@ import { Form } from '@unform/web';
 
 import { FiSearch } from 'react-icons/fi';
 import { FormHandles } from '@unform/core';
-import Input from '../../../../components/Global/Input';
-import { getPrismicClient } from '../../../../services/prismic';
+import { SetToggleThemeContext } from '../../../contexts/SetToggleThemeContext';
+import Input from '../../../components/Global/Input';
+import { getPrismicClient } from '../../../services/prismic';
 
 import { Container, NicList } from './styles';
 
-import nic_logo from '../../../../assets/nic_logo.png';
+import nic_logo from '../../../assets/nic_logo.svg';
+import nic_logo_dark from '../../../assets/nic_logo_dark.svg';
+import emoji from '../../../assets/emoji.svg';
 
 interface NicsProps {
   slug: string | undefined;
@@ -27,11 +31,13 @@ interface NicsProps {
 const InternalNorm: React.FC = () => {
   const [nicInternal, setNicInternal] = useState<NicsProps[]>([]);
   const formRef = useRef<FormHandles>(null);
-
-  useEffect(() => {}, []);
+  const [loading, setLoading] = useState(false);
+  const [searchLoad, setSearch] = useState(false);
+  const { toggleTheme } = useContext(SetToggleThemeContext);
 
   async function handlePrismic(search: string, type: string) {
     const prismic = getPrismicClient();
+    setLoading(true);
 
     if (type === 'search') {
       await prismic
@@ -121,6 +127,8 @@ const InternalNorm: React.FC = () => {
           setNicInternal(nics);
         });
     }
+    setLoading(false);
+    setSearch(true);
   }
 
   const handleSubmite = useCallback(data => {
@@ -134,56 +142,107 @@ const InternalNorm: React.FC = () => {
   return (
     <Container>
       <NicList>
-        <div>
-          <img src={nic_logo} alt="logo search" />
+        <ScaleFade initialScale={0.9} in>
+          <Flex flexDirection="column" alignItems="center">
+            <Box>
+              {toggleTheme === 'light' ? (
+                <Image src={nic_logo} alt="logo search" />
+              ) : (
+                <Image src={nic_logo_dark} alt="logo search" />
+              )}
+            </Box>
 
-          <Form ref={formRef} onSubmit={handleSubmite}>
-            <Input
-              name="search"
-              type="text"
-              icon={FiSearch}
-              placeholder="Pesquisar"
-            />
-          </Form>
+            <Form ref={formRef} onSubmit={handleSubmite}>
+              <Input
+                name="search"
+                type="text"
+                icon={FiSearch}
+                placeholder="Pesquisar"
+              />
+            </Form>
 
-          <section>
-            <button type="button" onClick={() => handleTag('manual', 'tag')}>
-              Manuais
-            </button>
-            <button type="button" onClick={() => handleTag('standards', 'tag')}>
-              Normas
-            </button>
-            <button
-              type="button"
-              onClick={() => handleTag('step-by-step', 'tag')}
-            >
-              Passo a Passo
-            </button>
-            <button type="button" onClick={() => handleTag('flowchart', 'tag')}>
-              Fluxogramas
-            </button>
+            <section>
+              <button type="button" onClick={() => handleTag('manual', 'tag')}>
+                Manuais
+              </button>
 
-            <button type="button" onClick={() => handleTag('gescooper', 'tag')}>
-              Gescooper
-            </button>
-
-            <button type="button" onClick={() => handleTag('all', 'all')}>
-              Todos
-            </button>
-          </section>
-        </div>
-        {nicInternal
-          ? nicInternal.map(nic => (
-              <Link
-                key={nic.slug}
-                to={`/rules/sector-resume-rules?${nic.slug}`}
+              <button
+                type="button"
+                onClick={() => handleTag('step-by-step', 'tag')}
               >
-                <time>{nic.updateAt}</time>
-                <strong>{nic.title}</strong>
-                <p>{nic.excerpt}</p>
-              </Link>
+                Passo a Passo
+              </button>
+              {/* <button
+                type="button"
+                onClick={() => handleTag('flowchart', 'tag')}
+              >
+                Fluxogramas
+              </button> */}
+
+              <button
+                type="button"
+                onClick={() => handleTag('gescooper', 'tag')}
+              >
+                Gescooper
+              </button>
+
+              <button
+                type="button"
+                onClick={() => handleTag('schedule_vehicle', 'tag')}
+              >
+                <Tag
+                  ize="lg"
+                  colorScheme="green"
+                  position="absolute"
+                  mt="-22px"
+                >
+                  new
+                </Tag>
+                Agenda de veiculos
+              </button>
+
+              <button type="button" onClick={() => handleTag('all', 'all')}>
+                Todos
+              </button>
+            </section>
+          </Flex>
+        </ScaleFade>
+        <ScaleFade initialScale={0.9} in>
+          {loading ? <Spinner /> : ''}
+          {nicInternal.length !== 0 ? (
+            nicInternal.map(nic => (
+              <Box
+                bg="white"
+                mb="15px"
+                p="15px"
+                borderRadius="6px"
+                className="result"
+              >
+                <Link
+                  key={nic.slug}
+                  to={`/rules/sector-resume-rules?${nic.slug}`}
+                >
+                  <time>{nic.updateAt}</time>
+                  <strong>{nic.title}</strong>
+                  <p>{nic.excerpt}</p>
+                </Link>
+              </Box>
             ))
-          : ''}
+          ) : (
+            <Flex
+              alignItems="center"
+              flexDirection="column"
+              display={searchLoad ? 'flex' : 'none'}
+            >
+              <Image src={emoji} fontSize="20" />
+              <p>Infelizmente nada foi encontrado.</p>
+              <p>
+                Mas não se preucupe estamos trabalhando para adicionar novas
+                informações.
+              </p>
+            </Flex>
+          )}
+        </ScaleFade>
       </NicList>
     </Container>
   );

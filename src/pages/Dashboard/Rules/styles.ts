@@ -7,6 +7,14 @@ export const Container = styled.main`
   margin: 0 auto;
   margin-top: 10rem;
   padding: 0 2rem 3rem;
+  transition: box-shadow 0.5s;
+
+  .result {
+    :hover {
+      transition: box-shadow 0.5s;
+      box-shadow: 8px 5px 5px rgba(0, 0, 0, 0.07);
+    }
+  }
 `;
 
 export const NicList = styled.div`
@@ -23,7 +31,7 @@ export const NicList = styled.div`
       margin: 2rem 0 2rem 0;
     }
     img {
-      width: 300px;
+      max-width: 400px;
     }
 
     section {
@@ -35,6 +43,8 @@ export const NicList = styled.div`
         padding: 10px;
         background: var(--color-theme-primary);
         border: none;
+        font-weight: bold;
+
         transition: var(--transition-speed);
 
         :hover {

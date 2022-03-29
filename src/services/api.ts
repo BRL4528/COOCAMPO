@@ -43,9 +43,7 @@ api.interceptors.response.use(
   },
   (error: AxiosError) => {
     if (error.response?.status === 401) {
-      console.log('Erro 401');
       if (error.response.data?.code === 'token.expired') {
-        console.log('Token expirou');
         const token_refresh = localStorage.getItem('@Samasc:refresh_token');
         const originalConfig = error.config;
 
