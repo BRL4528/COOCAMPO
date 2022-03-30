@@ -112,7 +112,6 @@ export function ChartMiles({
         date_start,
         title,
       };
-      console.log(formatedData);
       handleSendDataGraphic(formatedData);
     },
     [handleSendDataGraphic, title],

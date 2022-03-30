@@ -169,7 +169,6 @@ export function KilometerTable({
         vehicle_id: vehicleSelected.id,
         access_id: user.id,
       };
-      console.log('km editado', formatData);
       try {
         api.put(`/kilometers?id=${id}`, formatData).then(response => {
           setNewRegister(response.data.id);

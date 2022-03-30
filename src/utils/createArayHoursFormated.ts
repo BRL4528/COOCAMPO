@@ -3,6 +3,7 @@ import { format, isPast } from 'date-fns';
 interface IAvailable {
   start_date: string;
   end_date: string;
+  status: string;
 }
 
 export function createArayHoursFormated(
@@ -37,7 +38,7 @@ export function createArayHoursFormated(
 
         return t;
       })
-      .map(date => date.start_date !== '');
+      .map(date => date.start_date !== '' && date.status !== 'Recusado');
 
     // console.log('ver isso', dateAvailable);
 

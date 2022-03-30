@@ -31,19 +31,27 @@ interface Appointments {
 
 export async function handleSendEmailNewAppointments(
   schedule: string,
+  leader: string,
   appointments: Appointments,
 ) {
   try {
     await api
       .get<IAnalyticModule[]>(`/schedules/show?name_schedule=${schedule}`)
       .then(response => {
-        const addresFormated = response.data.map(data => {
-          return {
-            name: data.name,
-            address: data.address,
-          };
-        });
-        console.log('appointments', appointments);
+        const ivonei = {
+          name: 'Ivonei Scotton',
+          address: 'ivonei.scotton@cooasgo.com.br',
+        };
+        const addresFormated = response.data
+          .filter(data => data.name === leader)
+          .map(data => {
+            return {
+              name: data.name,
+              address: data.address,
+            };
+          });
+        addresFormated.push(ivonei);
+
         const bodyEmail = {
           leader: true,
           conductor: appointments.conductor.name,
@@ -51,8 +59,8 @@ export async function handleSendEmailNewAppointments(
           subject: `Agendamento do ${appointments.vehicle.name}`,
           to: addresFormated,
         };
-        console.log(bodyEmail);
-        api.post('/send-email-appointment', bodyEmail);
+        console.log('bodyEmail', bodyEmail);
+        // api.post('/send-email-appointment', bodyEmail);
       });
   } catch (err) {
     console.log(err);
@@ -81,7 +89,7 @@ export async function handleResendEmailAppointments(schedule: string) {
           to: addresFormated,
         };
         console.log(bodyEmail);
-        api.post('/send-email-appointment', bodyEmail);
+        // api.post('/send-email-appointment', bodyEmail);
       });
   } catch (err) {
     console.log(err);
@@ -104,7 +112,7 @@ export async function handleSendEmailForRequesterAppointments(
       to: [appointments.conductor.email],
     };
     console.log(bodyEmail);
-    await api.post('/send-email-appointment', bodyEmail);
+    // await api.post('/send-email-appointment', bodyEmail);
   } catch (err) {
     console.log(err);
   }

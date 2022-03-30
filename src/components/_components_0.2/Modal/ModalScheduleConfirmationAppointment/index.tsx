@@ -3,15 +3,17 @@ import { Flex, Box, Badge, Text, ModalFooter, Button } from '@chakra-ui/react';
 import { Form } from '@unform/web';
 import { FormHandles } from '@unform/core';
 import * as Yup from 'yup';
-import { useRef, useCallback } from 'react';
+import { useRef, useCallback, useState } from 'react';
 import { ModalComponent } from '..';
 import Input from '../../../Global/Input';
 import TextArea from '../../../Global/TextArea';
+import Select from '../../../Global/SelectRelease';
 import getValidationErrors from '../../../../utils/getValidationErrors';
 
 interface DestinyInfos {
   destiny: string;
   description: string;
+  leader: string;
 }
 
 interface IpropsModal {
@@ -23,6 +25,25 @@ interface IpropsModal {
   handleSubmitScheduleVehicle: (data: DestinyInfos) => void;
 }
 
+const options = [
+  {
+    label: 'Ivonei Scotton',
+    value: 'Ivonei Scotton',
+  },
+  {
+    label: 'Marcos Piaia',
+    value: 'Marcos Piaia',
+  },
+  {
+    label: 'Marcos Angelo Piaia',
+    value: 'Marcos Angelo Piaia',
+  },
+  {
+    label: 'Cesário Teixeira Pereira',
+    value: 'Cesário Teixeira Pereira',
+  },
+];
+
 export function ModalScheduleConfirmationAppointment({
   handleSubmitScheduleVehicle,
   formateDateStartAppointments,
@@ -32,6 +53,7 @@ export function ModalScheduleConfirmationAppointment({
   loading,
 }: IpropsModal) {
   const formRef = useRef<FormHandles>(null);
+  const [reasonItem, setReason] = useState('');
 
   const handleSubmit = useCallback(
     async (data: DestinyInfos) => {
@@ -47,7 +69,14 @@ export function ModalScheduleConfirmationAppointment({
         await schema.validate(data, {
           abortEarly: false,
         });
-        handleSubmitScheduleVehicle(data);
+
+        const { description, destiny } = data;
+        const formateData = {
+          description,
+          destiny,
+          leader: reasonItem,
+        };
+        handleSubmitScheduleVehicle(formateData);
       } catch (err) {
         console.log(err);
         if (err instanceof Yup.ValidationError) {
@@ -57,8 +86,11 @@ export function ModalScheduleConfirmationAppointment({
         }
       }
     },
-    [handleSubmitScheduleVehicle],
+    [handleSubmitScheduleVehicle, reasonItem],
   );
+  const handleReason = useCallback(e => {
+    setReason(e);
+  }, []);
   return (
     <ModalComponent
       title="Confirmar solicitação de agendamento"
@@ -99,6 +131,21 @@ export function ModalScheduleConfirmationAppointment({
               <TextArea
                 name="description"
                 placeholder="Levar veiculo para revisão manutençao preventiva de 10.000 km"
+              />
+            </Box>
+
+            <Box>
+              <Text fontSize="15" fontWeight="600" mt="2">
+                Selecione um autorizador
+              </Text>
+
+              <Select
+                name="authorizing"
+                onChange={e => {
+                  handleReason(e.target.value);
+                }}
+                label=""
+                options={options}
               />
             </Box>
           </Flex>

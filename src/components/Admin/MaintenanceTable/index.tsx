@@ -76,7 +76,6 @@ const MaintenanceTable: React.FC<IdataTable> = ({
     setLoading(true);
     api.get<Itemp[]>(`maintenance`).then(response => {
       setDataTable(response.data);
-      console.log('Manutenções', response.data);
       setLoading(false);
     });
   }, [access_id, vehicle_id, newRegister]);

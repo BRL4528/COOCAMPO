@@ -154,7 +154,6 @@ export function ModalAddNewKilometer({
   }, []);
 
   const handleOpenModal = useCallback(() => {
-    console.log(km_initial);
     if (km_initial !== 0) {
       onOpen();
     } else {

@@ -122,7 +122,6 @@ export function ModalAddNewMaintenance({
   }, []);
 
   const handleOpenModal = useCallback(() => {
-    console.log(vehicleSelected);
     if (vehicleSelected) {
       onOpen();
     } else {

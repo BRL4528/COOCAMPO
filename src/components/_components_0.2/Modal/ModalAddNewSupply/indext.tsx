@@ -124,7 +124,6 @@ export function ModalAddNewSupply({
   }, []);
 
   const handleOpenModal = useCallback(() => {
-    console.log(vehicleSelected);
     if (vehicleSelected) {
       onOpen();
     } else {

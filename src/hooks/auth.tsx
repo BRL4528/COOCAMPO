@@ -73,7 +73,7 @@ const AuthProvider: React.FC = ({ children }) => {
     localStorage.setItem('@Samasc:refresh_token', refresh_token);
     localStorage.setItem('@Samasc:user', JSON.stringify(user));
 
-    // api.defaults.headers.authorization = `Bearer ${token}`;
+    api.defaults.headers.authorization = `Bearer ${token}`;
 
     setData({ token, user });
   }, []);
@@ -83,7 +83,7 @@ const AuthProvider: React.FC = ({ children }) => {
     localStorage.removeItem('@Samasc:refresh_token');
     localStorage.removeItem('@Samasc:user');
 
-    authChannels.postMessage('signOut');
+    // await authChannels.postMessage('signOut');
 
     setData({} as AuthState);
   }, []);

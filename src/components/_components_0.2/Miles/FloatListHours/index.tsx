@@ -37,6 +37,7 @@ interface IDateAvailable {
 interface DestinyInfos {
   destiny: string;
   description: string;
+  leader: string;
 }
 
 export function FloatlistHours({
@@ -172,6 +173,7 @@ export function FloatlistHours({
             handleAddedNewAppointment(response.data);
             handleSendEmailNewAppointments(
               'miles-schedule-group',
+              data.leader,
               response.data,
             );
             setLoading(false);

@@ -216,7 +216,6 @@ export function ListAppointments({
   const handleSelectAllItem = useCallback(
     (ids: AppointmentsItem[] | undefined) => {
       if (ids) {
-        console.log('ids', ids);
         if (selectedItems.length > 0) {
           setSelectedItems([]);
         } else {

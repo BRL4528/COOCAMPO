@@ -3,6 +3,7 @@ import axios, { AxiosError } from 'axios';
 import { useAuth } from '../hooks/auth';
 
 const tokenGlobal = localStorage.getItem('@Samasc:token');
+console.log('tokenGlobal', tokenGlobal);
 let isRefreshing = false;
 let failedRequestsQueue: {
   onSuccess: (token: string) => void;
@@ -39,6 +40,7 @@ export const apiPowerBiDashboard = axios.create({
 
 api.interceptors.response.use(
   response => {
+    console.log('retornou');
     return response;
   },
   (error: AxiosError) => {
@@ -74,10 +76,11 @@ api.interceptors.response.use(
               isRefreshing = false;
             });
         }
-
+        console.log('se deu certo');
         return new Promise((resolve, reject) => {
           failedRequestsQueue.push({
             onSuccess: (token: string) => {
+              console.log('token', token);
               originalConfig.headers.authorization = `Bearer ${token}`;
 
               resolve(api(originalConfig));
@@ -89,6 +92,7 @@ api.interceptors.response.use(
         });
       } else {
         const { signOut } = useAuth();
+        console.log('saiu');
         signOut();
       }
     }

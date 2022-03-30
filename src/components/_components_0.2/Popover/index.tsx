@@ -55,7 +55,6 @@ export default function PopoverComp({
 }: Props) {
   const { user } = useAuth();
   const [loading, setLoading] = useState(false);
-  console.log('isLoading={loadingUpdate}', appointments);
   const formateDateStartAppointments = useMemo(() => {
     if (appointments.start_date !== '') {
       return format(
