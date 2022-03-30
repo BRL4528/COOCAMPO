@@ -104,7 +104,12 @@ export function ModalScheduleConfirmationAppointment({
           </Flex>
         </Flex>
         <ModalFooter>
-          <Button onClick={onClose} isLoading={loading} bg="gray.600" mr={3}>
+          <Button
+            onClick={onClose}
+            isLoading={loading}
+            colorScheme="gray"
+            mr={3}
+          >
             Cancelar
           </Button>
           <Button colorScheme="blue" isLoading={loading} type="submit">

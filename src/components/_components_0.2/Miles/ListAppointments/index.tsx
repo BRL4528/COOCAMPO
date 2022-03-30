@@ -182,7 +182,7 @@ export function ListAppointments({
           })
           .then(response => {
             setUpdateSatatus(response.data);
-            handleSendEmailForRequesterAppointments(user.email, status);
+            handleSendEmailForRequesterAppointments(response.data, status);
             setSelectedItems([]);
             handleSetStatusFilter(status);
             handleUpdateAppointment(response.data);
@@ -195,13 +195,7 @@ export function ListAppointments({
         setLoadingUpdate(false);
       }
     },
-    [
-      handleSetStatusFilter,
-      handleUpdateAppointment,
-      selectedItems,
-      user.email,
-      user.id,
-    ],
+    [handleSetStatusFilter, handleUpdateAppointment, selectedItems, user.id],
   );
 
   const handleSelectItem = useCallback(

@@ -336,7 +336,7 @@ export function FloatlistHours({
                   mt="15"
                   mb="20"
                   mr="5"
-                  bg="gray.600"
+                  colorScheme="gray"
                   isDisabled={end_date === ''}
                 >
                   Cancelar
@@ -346,7 +346,7 @@ export function FloatlistHours({
                   onClick={onOpen}
                   mt="15"
                   mb="20"
-                  bg="blue.500"
+                  colorScheme="blue"
                   isDisabled={end_date === ''}
                 >
                   Agendar

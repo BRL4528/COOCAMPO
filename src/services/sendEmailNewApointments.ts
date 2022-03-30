@@ -91,7 +91,7 @@ export async function handleResendEmailAppointments(schedule: string) {
 }
 
 export async function handleSendEmailForRequesterAppointments(
-  userEmail: string,
+  appointments: Appointments,
   status: string,
 ) {
   try {
@@ -101,7 +101,7 @@ export async function handleSendEmailForRequesterAppointments(
       conductor: '',
       link: 'https://cooasgo.samasc.com.br/miles/schedule',
       subject: `Solicitação de veículo`,
-      to: [userEmail],
+      to: [appointments.conductor.email],
     };
     console.log(bodyEmail);
     await api.post('/send-email-appointment', bodyEmail);
