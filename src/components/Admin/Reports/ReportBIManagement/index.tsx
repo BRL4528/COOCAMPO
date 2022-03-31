@@ -13,13 +13,13 @@ import {
   Spinner,
   Center,
   ScaleFade,
-  MenuButton,
-  MenuItem,
-  Menu,
-  MenuList,
-  Button,
+  // MenuButton,
+  // MenuItem,
+  // Menu,
+  // MenuList,
+  // Button,
 } from '@chakra-ui/react';
-import { BiChevronDown } from 'react-icons/bi';
+// import { BiChevronDown } from 'react-icons/bi';
 
 import { SetToggleThemeContext } from '../../../../contexts/SetToggleThemeContext';
 import {
@@ -224,7 +224,7 @@ export const ReportBIManagement = ({
       <Center>{loadingRendered ? <Spinner /> : ''}</Center>
 
       <ScaleFade initialScale={0.9} in>
-        <Box
+        {/* <Box
           width="100%"
           alignItems="end"
           display={loadingRendered ? 'none' : 'flex'}
@@ -253,7 +253,7 @@ export const ReportBIManagement = ({
               <MenuItem>Manutenções</MenuItem>
             </MenuList>
           </Menu>
-        </Box>
+        </Box> */}
         <Box
           display={loadingRendered ? 'none' : ''}
           style={layoutSettings()}
