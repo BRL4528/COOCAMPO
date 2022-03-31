@@ -3,7 +3,7 @@ import React, {
   useRef,
   useState,
   useContext,
-  useCallback,
+  // useCallback,
 } from 'react';
 import { useReport } from 'powerbi-report-component';
 import { models } from 'powerbi-client';
@@ -75,12 +75,12 @@ export const ReportBIManagement = ({
   //   setProgress(load);
   // }, 1000);
 
-  const handleSetPage = useCallback(
-    (pageName: string) => {
-      report.setPage(pageName);
-    },
-    [report],
-  );
+  // const handleSetPage = useCallback(
+  //   (pageName: string) => {
+  //     report.setPage(pageName);
+  //   },
+  //   [report],
+  // );
 
   useEffect(() => {
     async function loadTokenBI(): Promise<void> {
