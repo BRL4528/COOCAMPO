@@ -59,8 +59,8 @@ export async function handleSendEmailNewAppointments(
           subject: `Agendamento do ${appointments.vehicle.name}`,
           to: addresFormated,
         };
-        console.log('bodyEmail', bodyEmail);
-        // api.post('/send-email-appointment', bodyEmail);
+        // console.log('bodyEmail', bodyEmail);
+        api.post('/send-email-appointment', bodyEmail);
       });
   } catch (err) {
     console.log(err);
@@ -88,8 +88,8 @@ export async function handleResendEmailAppointments(schedule: string) {
           subject: `Solicitação de veículo`,
           to: addresFormated,
         };
-        console.log(bodyEmail);
-        // api.post('/send-email-appointment', bodyEmail);
+        // console.log(bodyEmail);
+        api.post('/send-email-appointment', bodyEmail);
       });
   } catch (err) {
     console.log(err);
@@ -111,8 +111,8 @@ export async function handleSendEmailForRequesterAppointments(
       subject: `Solicitação de veículo`,
       to: [appointments.conductor.email],
     };
-    console.log(bodyEmail);
-    // await api.post('/send-email-appointment', bodyEmail);
+    // console.log(bodyEmail);
+    await api.post('/send-email-appointment', bodyEmail);
   } catch (err) {
     console.log(err);
   }
