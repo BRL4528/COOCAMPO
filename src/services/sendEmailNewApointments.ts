@@ -50,7 +50,12 @@ export async function handleSendEmailNewAppointments(
               address: data.address,
             };
           });
-        addresFormated.push(ivonei);
+
+        if (
+          addresFormated.filter(data => data.name !== ivonei.name).length !== 0
+        ) {
+          addresFormated.push(ivonei);
+        }
 
         const bodyEmail = {
           leader: true,
