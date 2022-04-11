@@ -1,112 +1,137 @@
-import React from 'react';
+import React, { useMemo } from 'react';
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+} from 'chart.js';
+import ChartDataLabels from 'chartjs-plugin-datalabels';
+import { Bar } from 'react-chartjs-2';
 
-import { Line } from '@reactchartjs/react-chart.js';
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+);
 
-import { Container, ItemGraphic } from './styles';
-
-interface PropsValue {
-  name: string;
-  backcolor: string;
-  border: string;
-  data: number[];
-  labels: string[];
+interface ColorStyles {
+  color?: string;
+  title: string;
+  width: number;
+  height: number;
+  result: {
+    month_text: string;
+    month_number: number;
+    goal: number;
+    result: number;
+  }[];
 }
 
-const CardGraphic: React.FC<PropsValue> = ({
-  name,
-  backcolor,
-  border,
-  data,
-  labels,
-}: PropsValue) => {
-  const date = {
-    labels,
+const CardGraphic: React.FC<ColorStyles> = ({
+  title,
+  width,
+  height,
+  result,
+}) => {
+  const filterGoal = useMemo(() => {
+    return result.map(el => el.goal);
+  }, [result]);
 
+  const filterResult = useMemo(() => {
+    return result.map(el => el.result);
+  }, [result]);
+
+  const filterMonth = useMemo(() => {
+    return result.map(el => {
+      return el.month_text;
+    });
+  }, [result]);
+  console.log('filterMonth', filterMonth);
+  console.log('filterGoal', filterGoal);
+  console.log('filterResult', filterResult);
+  const dataGraphic = {
+    labels: filterMonth,
     datasets: [
       {
-        data,
-        // width: 400,
-
-        borderColor: `${border}`,
-        backgroundColor: `${backcolor}`,
+        label: 'Metas',
+        data: filterGoal,
+        backgroundColor: '#118DFF',
+        borderColor: '#118DFF',
+        borderRadius: 6,
+        datalabels: {
+          backgroundColor: '#0657a3',
+          padding: 10,
+          borderRadius: 6,
+          color: 'white',
+          // labels: {
+          //   anchor: 'top',
+          // },
+        },
+      },
+      {
+        label: 'Resultados',
+        data: filterResult,
+        backgroundColor: '#E2C90A',
+        borderColor: '#E2C90A',
+        borderRadius: 6,
+        datalabels: {
+          backgroundColor: '#caa605',
+          padding: 10,
+          borderRadius: 6,
+          color: 'white',
+        },
       },
     ],
   };
 
-  const options = {
+  const option = {
     responsive: true,
-    maintainAspectRatio: true,
-    layout: {
-      padding: -20,
-    },
-    scaleLabel: {
-      display: false,
-    },
-    elements: {
-      point: {
-        radius: 0,
-      },
-      line: {
-        tension: 0.33,
-      },
-    },
+    maintainAspectRatio: false,
     scales: {
-      xAxes: [
-        {
-          // position: 'top',
-          ticks: {
-            display: false,
-          },
-          gridLines: {
-            display: false,
-            drawBorder: false,
-          },
+      x: {
+        grid: {
+          display: false,
         },
-      ],
-
-      yAxes: [
-        {
-          // position: 'right',
-          // padding: 0,
-
-          ticks: {
-            display: false,
-            minor: {
-              autoSkipPadding: 10,
-            },
-          },
-
-          gridLines: {
-            display: false,
-            drawBorder: false,
-          },
+      },
+      y: {
+        display: false,
+        grid: {
+          display: false,
         },
-      ],
+      },
     },
-    legend: {
-      display: false,
-    },
-    tooltips: {
-      enabled: false,
+
+    plugins: {
+      dataLabels: {
+        display: true,
+        anchor: 'start',
+      },
+      legend: {
+        position: 'bottom' as const,
+      },
+      title: {
+        display: false,
+      },
     },
   };
 
   return (
-    <Container>
-      <ItemGraphic color={border}>
-        <p>{name}</p>
-        <strong>2,5%</strong>
-        <span>
-          <Line
-            type="line"
-            // chartArea={area}
-            redraw
-            data={date}
-            options={options}
-          />
-        </span>
-      </ItemGraphic>
-    </Container>
+    <div>
+      <h2>{title}</h2>
+      <Bar
+        options={option}
+        plugins={[ChartDataLabels]}
+        data={dataGraphic}
+        width={width}
+        height={height}
+      />
+    </div>
   );
 };
 

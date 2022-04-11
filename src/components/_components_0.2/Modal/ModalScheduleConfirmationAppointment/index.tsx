@@ -9,6 +9,7 @@ import Input from '../../../Global/Input';
 import TextArea from '../../../Global/TextArea';
 import Select from '../../../Global/SelectRelease';
 import getValidationErrors from '../../../../utils/getValidationErrors';
+import { apllyToast } from '../../../Global/Toast2.0';
 
 interface DestinyInfos {
   destiny: string;
@@ -26,6 +27,10 @@ interface IpropsModal {
 }
 
 const options = [
+  {
+    label: 'Selecione...',
+    value: '',
+  },
   {
     label: 'Ivonei Scotton',
     value: 'Ivonei Scotton',
@@ -70,6 +75,10 @@ export function ModalScheduleConfirmationAppointment({
           abortEarly: false,
         });
 
+        if (reasonItem === '') {
+          throw new Error('sem autorizador');
+        }
+
         const { description, destiny } = data;
         const formateData = {
           description,
@@ -79,9 +88,12 @@ export function ModalScheduleConfirmationAppointment({
         handleSubmitScheduleVehicle(formateData);
       } catch (err) {
         console.log(err);
+        apllyToast(
+          'error',
+          'Problemas ao agendar veiculo, revise as infromações.',
+        );
         if (err instanceof Yup.ValidationError) {
           const errors = getValidationErrors(err);
-
           formRef.current?.setErrors(errors);
         }
       }

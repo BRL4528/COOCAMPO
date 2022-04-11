@@ -28,6 +28,10 @@ const LayoutAdm: React.FC<LayoutProps> = ({ children, path }: LayoutProps) => {
   if (path.substring(0, 14) === '/profile') {
     return <>{children}</>;
   }
+  if (path.substring(0, 18) === '/management-energy') {
+    return <>{children}</>;
+  }
+
   return (
     <>
       <Header>

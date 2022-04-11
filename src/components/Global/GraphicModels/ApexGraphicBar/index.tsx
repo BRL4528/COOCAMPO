@@ -1,6 +1,8 @@
 import React, { useMemo } from 'react';
-
+import { ApexOptions } from 'apexcharts';
 import Chart from 'react-apexcharts';
+
+import { Container } from './styles';
 
 interface ColorStyles {
   color?: string;
@@ -35,7 +37,7 @@ const GraphicBarApex: React.FC<ColorStyles> = ({
     });
   }, [result]);
 
-  const options = {
+  const dataGraphic = {
     series: [
       {
         name: 'Metas',
@@ -48,21 +50,7 @@ const GraphicBarApex: React.FC<ColorStyles> = ({
         color: '#E2C90A',
       },
     ],
-    plotOptions: {
-      bar: {
-        dataLabels: {
-          position: 'top', // top, center, bottom
-        },
-      },
-    },
 
-    xaxis: {
-      categories: filterMonth,
-    },
-    // chart: {
-    //   height: 350,
-    //   type: 'line',
-    // },
     // stroke: {
     //   width: [0, 4],
     // },
@@ -73,19 +61,36 @@ const GraphicBarApex: React.FC<ColorStyles> = ({
     // },
   };
 
+  const option: ApexOptions = {
+    // options: {
+    plotOptions: {
+      bar: {
+        borderRadius: [10, 10],
+        horizontal: false,
+        dataLabels: {
+          position: 'top', // top, center, bottom
+        },
+      },
+    },
+    // },
+    xaxis: {
+      categories: filterMonth,
+    },
+  };
+
   // const Item = chart.render();
   // console.log(Chart);
   return (
-    <div>
+    <Container>
       <h2>{title}</h2>
       <Chart
-        options={options}
-        series={options.series}
+        options={option}
+        series={dataGraphic.series}
         type="bar"
         width={width}
         height={height}
       />
-    </div>
+    </Container>
   );
 };
 

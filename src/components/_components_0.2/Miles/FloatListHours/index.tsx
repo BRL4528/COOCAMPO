@@ -73,7 +73,7 @@ export function FloatlistHours({
             params: {
               vehicle_id: vehicleSelected,
 
-              day: dayFormated.getDate(),
+              // day: dayFormated.getDate(),
 
               year: dayFormated.getFullYear(),
 

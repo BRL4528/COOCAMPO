@@ -6,7 +6,7 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import ReactToPrint from 'react-to-print';
 import Button from '../../../../../components/Global/Button';
 import GraphicSpeed from '../../../../../components/Global/GraphicModels/GraphicSpeedometer';
-import GraphicBar from '../../../../../components/Global/GraphicModels/ApexGraphicBar';
+import GraphicBar from '../../../../../components/Global/GraphicModels/CardGraphic';
 // import GraphicLine from '../../../../components/Global/GraphicModels/ApexGraphicLine';
 
 import { formatPrice } from '../../../../../utils/format';
@@ -18,6 +18,7 @@ import logo2 from '../../../../../assets/logo2.png';
 // import Sidebard from '../../../components/Sidebar';
 
 import { apiGeninfo } from '../../../../../services/api';
+import months from '../../../../../utils/resultsforIncomeStatement.json';
 
 import {
   CardButton,
@@ -88,80 +89,8 @@ const years = [
   {
     year_number: 2021,
   },
-];
-
-const months = [
   {
-    month_text: 'Janeiro',
-    month_number: 1,
-    goal: 5.61,
-    result: 4.85,
-  },
-  {
-    month_text: 'Fevereiro',
-    month_number: 2,
-    goal: 5.43,
-    result: 3.14,
-  },
-  {
-    month_text: 'Março',
-    month_number: 3,
-    goal: 4.75,
-    result: 2.86,
-  },
-  {
-    month_text: 'Abril',
-    month_number: 4,
-    goal: 4.77,
-    result: 2.97,
-  },
-  {
-    month_text: 'Maio',
-    month_number: 5,
-    goal: 4.45,
-    result: 3.24,
-  },
-  {
-    month_text: 'Junho',
-    month_number: 6,
-    goal: 4.33,
-    result: 3.57,
-  },
-  {
-    month_text: 'Julho',
-    month_number: 7,
-    goal: 4.17,
-    result: 3.56,
-  },
-  {
-    month_text: 'Agosto',
-    month_number: 8,
-    goal: 4.05,
-    result: 3.25,
-  },
-  {
-    month_text: 'Setembro',
-    month_number: 9,
-    goal: 3.95,
-    result: 3.3,
-  },
-  {
-    month_text: 'Outubro',
-    month_number: 10,
-    goal: 3.92,
-    result: 3.9,
-  },
-  {
-    month_text: 'Novembro',
-    month_number: 11,
-    goal: 3.95,
-    result: 3.71,
-  },
-  {
-    month_text: 'Dezembro',
-    month_number: 12,
-    goal: 4.04,
-    result: 3.58,
+    year_number: 2022,
   },
 ];
 
@@ -180,9 +109,9 @@ const SelectorFolders: React.FC = () => {
 
   const [monthSelected, setMonthSelected] = useState(
     // Number(String(new Date('31/12/2021').getMonth() + 1).padStart(2, '0')) - 1,
-    12,
+    1,
   );
-  const [yearSelected, setYearSelected] = useState(2021);
+  const [yearSelected, setYearSelected] = useState(2022);
 
   useEffect(() => {
     apiGeninfo
@@ -317,9 +246,11 @@ const SelectorFolders: React.FC = () => {
   }, [dataHeader]);
 
   const filterMonths = useMemo(() => {
-    const formated = months.filter(el => el.month_number <= monthSelected);
+    const formated = months.filter(
+      el => el.month_number <= monthSelected && el.year === yearSelected,
+    );
     return formated;
-  }, [monthSelected]);
+  }, [monthSelected, yearSelected]);
 
   const handleSelectedMonth = useCallback((month: number) => {
     setMonthSelected(month);
@@ -330,13 +261,26 @@ const SelectorFolders: React.FC = () => {
   }, []);
 
   const handleMonthFormated = useMemo(() => {
-    console.log('VER', monthSelected);
     const result = months.filter(el => {
       return el.month_number === monthSelected;
     });
 
     return result;
   }, [monthSelected]);
+
+  const handleVerifyMonthDisponibility = useCallback(
+    (monthCurrent, status) => {
+      console.log('status', status);
+      if (status) {
+        if (monthSelected === monthCurrent) {
+          return 'selected';
+        }
+        return 'unselected';
+      }
+      return 'disabled';
+    },
+    [monthSelected],
+  );
 
   return (
     <>
@@ -388,17 +332,23 @@ const SelectorFolders: React.FC = () => {
 
         <section>
           <h4>Selecione o mês final</h4>
-          {months.map(month => (
-            <button
-              type="button"
-              onClick={() => handleSelectedMonth(month.month_number)}
-              className={
-                monthSelected === month.month_number ? 'selected' : 'unselected'
-              }
-            >
-              {month.month_text}
-            </button>
-          ))}
+          {months.map(month =>
+            month.year === yearSelected ? (
+              <button
+                type="button"
+                onClick={() => handleSelectedMonth(month.month_number)}
+                disabled={!month.status}
+                className={handleVerifyMonthDisponibility(
+                  month.month_number,
+                  month.status,
+                )}
+              >
+                {month.month_text}
+              </button>
+            ) : (
+              ''
+            ),
+          )}
         </section>
 
         <div id="print">

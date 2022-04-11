@@ -59,6 +59,13 @@ export const Container = styled.div`
       border: 2px solid #34cb79;
       color: #34cb79;
     }
+    .disabled {
+      background: #eee;
+      border: 2px solid var(--dark-tertiary);
+      color: var(--dark-tertiary);
+      cursor: not-allowed;
+      /* display: block; */
+    }
   }
 `;
 
@@ -97,7 +104,7 @@ export const CardButton = styled.div`
 `;
 export const CardHeader = styled.div<Colors>`
   box-shadow: 0 0 14px 0 rgba(0, 0, 0, 0.02);
-  border-radius: 2px;
+  border-radius: 12px;
   padding: 20px 10px 20px 30px;
   min-height: 80px;
   max-height: 120px;
@@ -161,6 +168,7 @@ export const CardHeader = styled.div<Colors>`
     /* display: flex;
     height: 200px; */
     border-right: 3px solid #fff;
+    border-radius: 20px;
   }
 `;
 
