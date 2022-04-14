@@ -8,7 +8,7 @@ interface Iprops {
 export const Calendar = styled.div`
   .DayPicker {
     border-radius: 4px;
-    color: #fff;
+    /* color: #fff; */
     /* height: 50px; */
   }
   .DayPicker-wrapper {

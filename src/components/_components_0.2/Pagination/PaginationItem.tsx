@@ -21,7 +21,7 @@ export function PaginationItem({
         colorScheme="blue"
         disabled
         _disabled={{
-          bg: 'blue',
+          // bg: 'blue',
           cursor: 'default',
         }}
       >

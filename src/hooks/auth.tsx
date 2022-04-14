@@ -24,6 +24,8 @@ interface User {
   report: boolean;
   service_send_email: boolean;
   schedule: boolean;
+  permissions: string[];
+  roles: string[];
 }
 
 interface AuthState {
@@ -62,13 +64,61 @@ const AuthProvider: React.FC = ({ children }) => {
     return {} as AuthState;
   });
 
+  useEffect(() => {
+    console.log('chamou useEffect');
+    if (data.token !== undefined) {
+      console.log('validou token');
+      api
+        .get(`/accesses/${data.user.id}`)
+        .then(response => {
+          // if (
+          //   data.user.permissions !== response.data.permissions ||
+          //   response.data.roles !== data.user.roles
+          // ) {
+          //   console.log('response', response.data);
+          //   console.log(
+          //     'data.user.permissions',
+          //     data.user.permissions !== response.data.permissions,
+          //   );
+          //   console.log('response.data.permissions', response.data.permissions);
+          //   console.log('response.data.roles', response.data.roles);
+          //   console.log('data.user.roles', data.user.roles);
+          //   console.log('atualizar permissões');
+          //   // localStorage.setItem('@Samasc:user', JSON.stringify(response.data));
+          // }
+          const { token, access, permissions, roles } = response.data;
+          const formatData = {
+            ...access,
+            permissions,
+            roles,
+          };
+          const user = formatData;
+          setData({ token, user });
+        })
+        .catch(() => {
+          console.log('deu erro');
+          signOut();
+        });
+    } else {
+      console.log('não tem token');
+      signOut();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const signIn = useCallback(async ({ nickname, password }) => {
     const response = await api.post('sessions', {
       nickname,
       password,
     });
-    const { token, refresh_token, access } = response.data;
-    const user = access;
+    const { token, refresh_token, access, permissions, roles } = response.data;
+    const formatData = {
+      ...access,
+      permissions,
+      roles,
+    };
+    const user = formatData;
+    console.log('user', user);
     localStorage.setItem('@Samasc:token', token);
     localStorage.setItem('@Samasc:refresh_token', refresh_token);
     localStorage.setItem('@Samasc:user', JSON.stringify(user));

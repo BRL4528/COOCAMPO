@@ -1,3 +1,4 @@
+/* eslint-disable react/require-default-props */
 import {
   Modal,
   ModalOverlay,
@@ -13,6 +14,7 @@ interface IpropsModal {
   onClose: any;
   isOpen: boolean;
   children: any;
+  scrollBehavior?: 'inside' | 'outside';
 }
 
 export function ModalComponent({
@@ -20,6 +22,7 @@ export function ModalComponent({
   children,
   isOpen,
   onClose,
+  scrollBehavior,
 }: IpropsModal) {
   const isWideVersion = useBreakpointValue({
     base: false,
@@ -34,7 +37,7 @@ export function ModalComponent({
         isCentered
         motionPreset="slideInBottom"
         size={isWideVersion ? 'lg' : 'full'}
-        scrollBehavior="outside"
+        scrollBehavior={scrollBehavior || 'outside'}
       >
         <ModalOverlay />
         <ModalContent bg="gray.700">

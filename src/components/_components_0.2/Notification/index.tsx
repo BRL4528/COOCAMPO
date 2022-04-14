@@ -88,6 +88,7 @@ export function NotificationAppointments() {
   return (
     <Popover>
       <PopoverTrigger>
+        {/* <Tooltip hasArrow bg="gray.650" label="Notificações"> */}
         <Button bg="transparent" as={Button}>
           <Box display="flex" alignItems="center">
             <Icon as={RiNotificationLine} fontSize="20" />
@@ -111,12 +112,13 @@ export function NotificationAppointments() {
             )}
           </Box>
         </Button>
+        {/* </Tooltip> */}
       </PopoverTrigger>
       <PopoverContent>
         <PopoverArrow />
         <PopoverCloseButton />
         <PopoverHeader bg="gray.800">Notificações</PopoverHeader>
-        <PopoverBody bg="gray.800" overflow="scroll">
+        <PopoverBody bg="gray.800" overflow="auto">
           {appt?.appointment.map(data => (
             <Button
               as={Link}
