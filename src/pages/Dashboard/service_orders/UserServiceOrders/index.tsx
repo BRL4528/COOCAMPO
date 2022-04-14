@@ -27,21 +27,23 @@ interface PropsItem {
 }
 
 interface Iuser {
-  id: string;
-  name: string;
-  nickname: string;
-  status: string;
-  tag: string;
-  email: string;
-  dashboard: boolean;
-  goals_and_sub_goals: boolean;
-  sector: boolean;
-  employers: boolean;
-  module_analyze: boolean;
-  imports: boolean;
-  report: boolean;
-  service_send_email: boolean;
-  schedule: boolean;
+  access: {
+    id: string;
+    name: string;
+    nickname: string;
+    status: string;
+    tag: string;
+    email: string;
+    dashboard: boolean;
+    goals_and_sub_goals: boolean;
+    sector: boolean;
+    employers: boolean;
+    module_analyze: boolean;
+    imports: boolean;
+    report: boolean;
+    service_send_email: boolean;
+    schedule: boolean;
+  };
 }
 
 interface IdataTable {
@@ -92,7 +94,7 @@ const Reports: React.FC<PropsItem> = ({ title }) => {
       .then(async (response: { data: any[] }) => {
         const { status } = (
           await api.get<Iuser>('/accesses/58231ccb-5a12-42cb-ab1a-11ce837dff3b')
-        ).data;
+        ).data.access;
 
         if (status === 'Presente') {
           const servicesFiltred = response.data.filter(
