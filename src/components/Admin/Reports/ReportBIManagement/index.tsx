@@ -116,6 +116,7 @@ export const ReportBIManagement = ({
     if (report) {
       report.off('loaded');
       report.on('loaded', async function () {
+        setLoadingRendered(false);
         const filtersArray = [
           {
             values: ['PPR Controladoria'],
@@ -152,6 +153,7 @@ export const ReportBIManagement = ({
   if (report) {
     report.off('rendered');
     report.on('rendered', async function () {
+      setLoadingRendered(false);
       if (toggleTheme === 'dark') {
         // const filtersArray = [
         //   {
@@ -179,7 +181,6 @@ export const ReportBIManagement = ({
           setLoadingRendered(false);
         }
       }
-      setLoadingRendered(false);
     });
   }
   // async function handleTheme() {
