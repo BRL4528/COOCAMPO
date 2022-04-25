@@ -107,7 +107,7 @@ export function SidebarNavBi() {
                   as={Link}
                   to="/bi-management/fleet"
                 >
-                  Controle de frotas
+                  Controle de frota
                 </MenuItem>
                 <MenuDivider />
               </>
