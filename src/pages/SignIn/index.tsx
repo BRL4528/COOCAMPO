@@ -1,5 +1,11 @@
 import React, { useCallback, useContext, useRef, useState } from 'react';
-import { Center, useBreakpointValue, Image } from '@chakra-ui/react';
+import {
+  Center,
+  useBreakpointValue,
+  Flex,
+  Button,
+  useColorModeValue,
+} from '@chakra-ui/react';
 import { FiUser, FiLock } from 'react-icons/fi';
 import { FormHandles } from '@unform/core';
 import { Form } from '@unform/web';
@@ -11,9 +17,10 @@ import { useAuth } from '../../hooks/auth';
 import getValidationErrors from '../../utils/getValidationErrors';
 
 import logoImg from '../../assets/logoatual.png';
+import { LogoCoocampo } from '../../assets/coocampo';
 
 import Input from '../../components/Global/Input';
-import Button from '../../components/Global/Button';
+// import Button from '../../components/Global/Button';
 
 import { Container, Content, ContainerCard } from './styles';
 import { apllyToast } from '../../components/Global/Toast2.0';
@@ -84,57 +91,43 @@ const SignIn: React.FC = () => {
 
   return (
     <ContainerCard>
-      {isWideVersion ? (
-        <div className="infohome">
-          <header>
-            <h1>Portal Cooasgo</h1>
-          </header>
+      {/* <Container theme={toggleTheme}> */}
+      <Flex
+        align="center"
+        flexDirection="column"
+        bg="#ffff"
+        py={{ base: '0', sm: '8' }}
+        px={{ base: '4', sm: '10' }}
+        // bg={useBreakpointValue({ base: 'transparent', sm: 'bg-surface' })}
+        boxShadow={{ base: 'none', sm: useColorModeValue('md', 'md-dark') }}
+        borderRadius={{ base: 'none', sm: 'xl' }}
+      >
+        {LogoCoocampo()}
+        <Form ref={formRef} onSubmit={handleSubmit}>
+          <h2>Realize seu login na plataforma</h2>
 
-          <div>
-            <h3>Facilidade</h3>
-            <p>
-              Em um único lugar e com o mesmo usuário, você tem acesso
-              centralizado aos sistemas Web da Cooasgo. Seja bem-vindo e fique a
-              vontade.
-            </p>
-          </div>
-        </div>
-      ) : (
-        ''
-      )}
+          <Input name="nickname" icon={FiUser} placeholder="Usuário" />
 
-      <Container theme={toggleTheme}>
-        <Content>
-          <Image boxSize="200px" src={logoImg} alt="cooasgo+somoscoop" />
+          <Input
+            name="password"
+            icon={FiLock}
+            type="password"
+            placeholder="Senha"
+          />
 
-          <Form ref={formRef} onSubmit={handleSubmit}>
-            <h2>Realize seu login</h2>
+          <Button
+            type="submit"
+            isLoading={loadSignInUser}
+            colorScheme="blue"
+            w="100%"
+          >
+            Entrar
+          </Button>
 
-            <Input name="nickname" icon={FiUser} placeholder="Usuário" />
-
-            <Input
-              name="password"
-              icon={FiLock}
-              type="password"
-              placeholder="Senha"
-            />
-
-            <Button type="submit" disabled={loadSignInUser}>
-              <Center>
-                {loadSignInUser ? (
-                  <div {...containerProps} ref={componentRef}>
-                    {indicatorEl}
-                  </div>
-                ) : (
-                  'Entrar'
-                )}
-              </Center>
-            </Button>
-
-            {/* <a href="forgot">Recuperar senha</a> */}
-          </Form>
-        </Content>
-      </Container>
+          <a href="forgot">Recuperar senha</a>
+        </Form>
+      </Flex>
+      {/* </Container> */}
     </ContainerCard>
   );
 };

@@ -12,9 +12,7 @@ const LayoutAdm: React.FC<LayoutProps> = ({ children, path }: LayoutProps) => {
   if (path === '/menu') {
     return (
       <>
-        <Header>
-          <span>{path}</span>
-        </Header>
+        <Sidebar pathname={path} />
         {children}
       </>
     );

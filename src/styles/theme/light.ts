@@ -22,6 +22,9 @@ export const light = extendTheme({
     yellow: {
       '500': '#f2c811',
     },
+    blue: {
+      '200': '#f0f7fe',
+    },
   },
 
   fonts: {
@@ -32,7 +35,7 @@ export const light = extendTheme({
   styles: {
     global: {
       body: {
-        bg: 'white.100',
+        bg: 'blue.200',
         color: 'gray.600',
         transition: '1s',
         webkitFontSmoothing: 'antialiased',

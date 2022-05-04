@@ -1,6 +1,12 @@
-<?xml version="1.0" encoding="iso-8859-1"?>
-<!-- Generator: Adobe Illustrator 19.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-<svg
+import './styles.css';
+
+export function LogoCoocampo() {
+  // const [styles] = useState('elem');
+  const styles = '';
+
+  return (
+    <>
+      <svg
         width="160"
         viewBox="0 0 1490 800"
         xmlns="http://www.w3.org/2000/svg"
@@ -57,3 +63,6 @@
           className={`svg-${styles}-9`}
         />
       </svg>
+    </>
+  );
+}

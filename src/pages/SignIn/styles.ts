@@ -26,6 +26,29 @@ export const ContainerCard = styled.div`
       }
     }
   }
+
+  form {
+    /* margin: 15px 0; */
+    width: 340px;
+    text-align: center;
+
+    h2 {
+      margin-bottom: 24px;
+      color: #433f59;
+    }
+
+    > a {
+      color: #a0a4a8;
+      display: block;
+      margin-top: 24px;
+      text-decoration: none;
+      transition: color 0.2s;
+
+      &:hover {
+        color: ${shade(0.2, '#a0a4a8')};
+      }
+    }
+  }
 `;
 
 export const Container = styled.div<PropsContainer>`
@@ -33,11 +56,11 @@ export const Container = styled.div<PropsContainer>`
     theme === 'light' ? '#ffff' : ''};
 
   width: 400px;
-  height: 500px;
+  height: 400px;
   /* padding: 25px; */
   display: flex;
   border-radius: 6px;
-  align-items: stretch;
+  align-items: center;
   transition: box-shadow 0.5s;
 
   :hover {
@@ -54,10 +77,10 @@ export const Content = styled.div`
 
   width: 100%;
   /* max-width: 700px; */
-
-  img {
+  /*
+  svg {
     width: 250px;
-  }
+  } */
 
   form {
     /* margin: 15px 0; */

@@ -81,6 +81,7 @@ export default createGlobalStyle`
     padding: 0;
     box-sizing: border-box;
     outline: 0;
+
   }
 
   body {
@@ -89,7 +90,7 @@ export default createGlobalStyle`
     color: var(--white-secondary); */
     -webkit-font-smoothing: antialiased;
 
-
+    /* #F7FAFC */
     a {
   /* color: inherit; */
   text-decoration: none;
