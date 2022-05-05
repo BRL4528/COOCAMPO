@@ -1,30 +1,19 @@
-import React, { useCallback, useContext, useRef, useState } from 'react';
-import {
-  Center,
-  useBreakpointValue,
-  Flex,
-  Button,
-  useColorModeValue,
-} from '@chakra-ui/react';
+import React, { useCallback, useRef, useState } from 'react';
+import { Flex, Button, useColorModeValue } from '@chakra-ui/react';
 import { FiUser, FiLock } from 'react-icons/fi';
 import { FormHandles } from '@unform/core';
 import { Form } from '@unform/web';
 import * as Yup from 'yup';
 
-import { useLoading, Oval } from '@agney/react-loading';
-
 import { useAuth } from '../../hooks/auth';
 import getValidationErrors from '../../utils/getValidationErrors';
 
-import logoImg from '../../assets/logoatual.png';
 import { LogoCoocampo } from '../../assets/coocampo';
 
 import Input from '../../components/Global/Input';
-// import Button from '../../components/Global/Button';
 
-import { Container, Content, ContainerCard } from './styles';
+import { ContainerCard } from './styles';
 import { apllyToast } from '../../components/Global/Toast2.0';
-import { SetToggleThemeContext } from '../../contexts/SetToggleThemeContext';
 
 interface SignInFormData {
   nickname: string;
@@ -32,13 +21,7 @@ interface SignInFormData {
 }
 
 const SignIn: React.FC = () => {
-  const isWideVersion = useBreakpointValue({
-    base: false,
-    lg: true,
-  });
-  const { toggleTheme } = useContext(SetToggleThemeContext);
   const formRef = useRef<FormHandles>(null);
-  const componentRef = useRef<HTMLDivElement>(null);
 
   const [loadSignInUser, setloadSignInUser] = useState(false);
 
@@ -83,11 +66,6 @@ const SignIn: React.FC = () => {
     },
     [signIn],
   );
-
-  const { containerProps, indicatorEl } = useLoading({
-    loading: loadSignInUser,
-    indicator: <Oval />,
-  });
 
   return (
     <ContainerCard>

@@ -45,6 +45,6 @@ export const OptionList = styled.li<LayoutProps>`
 export const Container = styled.div<IThemeProps>`
   .navbar {
     ${({ theme }: IThemeProps): string =>
-      theme === 'light' ? 'background: #fff' : 'background: #1F2029'};
+      theme === 'light' ? 'background: #060606' : 'background: #1F2029'};
   }
 `;
