@@ -6,10 +6,10 @@ import './styles.css';
 
 const redOptions = { color: 'red' };
 
-const rectangle = [
-  [51.49, -0.08],
-  [51.5, -0.06],
-];
+// const rectangle = [
+//   [51.49, -0.08],
+//   [51.5, -0.06],
+// ];
 
 export default function Maps() {
   return (
